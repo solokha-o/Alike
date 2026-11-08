@@ -6,7 +6,7 @@ import Testing
 /// A `final class` suite: each test gets its own `UserDefaults` suite, and `deinit`
 /// removes it. The repository is an actor and `UserDefaults` is not `Sendable`, so
 /// each repository gets its own `UserDefaults` instance of that suite.
-@Suite final class UserDefaultsBestShotPersonalizationRepositoryTests {
+final class UserDefaultsBestShotPersonalizationRepositoryTests {
     private let suiteName = "UserDefaultsBestShotPersonalizationRepositoryTests.\(UUID().uuidString)"
     private let defaults: UserDefaults
     private let examplesKey = "bestShot.overrideExamples.test"

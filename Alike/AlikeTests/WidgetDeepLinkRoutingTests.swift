@@ -12,7 +12,7 @@ import Testing
 /// `MainTabSelectionTests` covers each `WidgetDestination` case; these start from the
 /// URL string itself, the value home-screen widgets already hold.
 @MainActor
-@Suite struct WidgetDeepLinkRoutingTests {
+struct WidgetDeepLinkRoutingTests {
     @Test func testSimilarLinkLandsOnCleanupWithSimilarPhotosEntry() throws {
         let manager = try follow("alike://similar")
 

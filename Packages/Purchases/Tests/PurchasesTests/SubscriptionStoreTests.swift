@@ -4,7 +4,7 @@ import Testing
 import Core
 
 @MainActor
-@Suite struct SubscriptionStoreTests {
+struct SubscriptionStoreTests {
     private let catalog = SubscriptionCatalog(
         monthlyID: "test.alike.monthly",
         yearlyID: "test.alike.yearly"

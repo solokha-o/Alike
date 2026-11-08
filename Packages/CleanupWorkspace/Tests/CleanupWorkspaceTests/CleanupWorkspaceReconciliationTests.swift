@@ -9,7 +9,7 @@ import Testing
 /// so this covers what reconciliation is actually for: after photos are
 /// deleted, the workspace reflects the deletion.
 @MainActor
-@Suite struct CleanupWorkspaceReconciliationTests {
+struct CleanupWorkspaceReconciliationTests {
     @Test func testSuccessfulReconciliationRefreshesClustersCategoriesAndInsights() async {
         let survivingCluster = PhotoCluster(id: UUID(), assets: [])
         let analysis = MockPhotoAnalysisService()

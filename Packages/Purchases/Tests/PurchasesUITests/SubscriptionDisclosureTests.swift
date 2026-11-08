@@ -6,7 +6,7 @@ import Testing
 /// promise in prose. It is a rejection surface under App Review guideline 3.1.2 — the renewal
 /// terms, the trial duration and how to cancel all have to be shown before purchase — so at five
 /// new languages a drift between the two is worth failing a build over.
-@Suite struct SubscriptionDisclosureTests {
+struct SubscriptionDisclosureTests {
     private static let disclosureKeys = [
         "purchases.subscriptionPaywall.subscriptionsRenewAutomaticallyUnlessCancelled",
         "purchases.subscriptionPaywall.yearlyPlanIncludes7Day",

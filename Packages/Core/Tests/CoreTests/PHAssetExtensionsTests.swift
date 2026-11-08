@@ -5,7 +5,7 @@ import Photos
 @testable import Core
 
 @MainActor
-@Suite struct PHAssetExtensionsTests {
+struct PHAssetExtensionsTests {
     
     // MARK: - Image Data Loading Tests
     

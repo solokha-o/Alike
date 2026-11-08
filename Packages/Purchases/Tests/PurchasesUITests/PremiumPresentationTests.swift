@@ -4,7 +4,7 @@ import Core
 import Purchases
 @testable import PurchasesUI
 
-@Suite struct PremiumPresentationTests {
+struct PremiumPresentationTests {
     @Test func testPaywallDefaultsToYearlyAndUsesStableOrder() {
         let state = PaywallPresentationState()
 

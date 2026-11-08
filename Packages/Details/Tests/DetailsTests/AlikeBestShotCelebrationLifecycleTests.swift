@@ -3,7 +3,7 @@ import Testing
 import DesignSystem
 @testable import Details
 
-@Suite struct AlikeBestShotCelebrationLifecycleTests {
+struct AlikeBestShotCelebrationLifecycleTests {
     @Test func testVisibleActivePresentationLoopsOverlayWithoutAmbientMotion() {
         let presentation = AlikeBestShotCelebrationPresentation.resolve(
             isVisible: true,

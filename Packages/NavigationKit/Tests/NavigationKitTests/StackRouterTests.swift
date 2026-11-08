@@ -3,7 +3,7 @@ import Testing
 @testable import NavigationKit
 
 @MainActor
-@Suite struct StackRouterTests {
+struct StackRouterTests {
     @Test func testPushAppendsRoute() {
         let router = StackRouter<Int>()
 

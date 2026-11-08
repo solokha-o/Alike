@@ -3,7 +3,7 @@ import Foundation
 import Testing
 @testable import Details
 
-@Suite struct PhotoMetadataPresentationTests {
+struct PhotoMetadataPresentationTests {
     private func decimal(_ value: Double) -> String {
         value.formatted(.number.locale(.alikeFormatting))
     }

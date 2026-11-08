@@ -4,7 +4,7 @@ import Testing
 import DesignSystem
 @testable import Details
 
-@Suite struct AlikeComparisonReviewLifecycleTests {
+struct AlikeComparisonReviewLifecycleTests {
     @Test func testVisibleActivePresentationLoopsOverlayWithContinuousBreathing() {
         let presentation = AlikeComparisonReviewPresentation.resolve(
             isVisible: true,

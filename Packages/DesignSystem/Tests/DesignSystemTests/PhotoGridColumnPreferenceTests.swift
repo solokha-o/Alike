@@ -2,7 +2,7 @@ import Foundation
 import Testing
 @testable import DesignSystem
 
-@Suite struct PhotoGridColumnPreferenceTests {
+struct PhotoGridColumnPreferenceTests {
     @Test func testClampingKeepsValuesInsideTheCompactRange() {
         let policy = AdaptivePhotoGridLayoutPolicy.compact
 

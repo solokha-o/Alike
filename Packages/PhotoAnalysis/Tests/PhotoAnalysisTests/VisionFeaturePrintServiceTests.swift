@@ -8,7 +8,7 @@ import UIKit
 @testable import PhotoAnalysis
 
 @MainActor
-@Suite struct VisionFeaturePrintServiceTests {
+struct VisionFeaturePrintServiceTests {
     let service = VisionFeaturePrintService()
     
     // MARK: - Feature Print Generation Tests

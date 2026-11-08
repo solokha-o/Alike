@@ -5,7 +5,7 @@ import Foundation
 import Testing
 @testable import Details
 
-@Suite struct ClusterReviewSummaryCardLayoutTests {
+struct ClusterReviewSummaryCardLayoutTests {
     @MainActor
     @Test func testReservedSelectionCountsCoverEverySummaryVariant() {
         #expect(ClusterReviewSummaryCard.reservedSelectionCounts(assetCount: 1) == [0])

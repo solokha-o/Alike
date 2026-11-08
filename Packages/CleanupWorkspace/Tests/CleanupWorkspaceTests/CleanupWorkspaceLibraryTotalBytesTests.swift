@@ -6,7 +6,7 @@ import Testing
 /// The widget ring's denominator: unknown until a scan summed the library, then
 /// the scan's figure, across cold launches, until local data is deleted.
 @MainActor
-@Suite struct CleanupWorkspaceLibraryTotalBytesTests {
+struct CleanupWorkspaceLibraryTotalBytesTests {
     @Test func testIsNilBeforeTheFirstScan() async {
         let byteSizes = MockAssetByteSizeRepository()
         // A leftover total without a scan baseline must not surface.

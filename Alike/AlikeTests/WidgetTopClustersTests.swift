@@ -14,7 +14,7 @@ import WidgetSupport
 /// `WidgetClusterSummary.top` has its own ranking tests in `WidgetSupport`. These cover
 /// the half that lives in the app target, where the rows are built from clusters.
 @MainActor
-@Suite struct WidgetTopClustersTests {
+struct WidgetTopClustersTests {
     /// The user picks a smaller photo than the computed best shot. If both picks were
     /// the same asset, this test could not see the user's choice get lost.
     @Test func testRowLeavesOutTheKeeperTheUserChose() {

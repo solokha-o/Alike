@@ -10,7 +10,7 @@ private enum ScanPersistenceTestError: Error {
 }
 
 @MainActor
-@Suite struct CleanupWorkspaceModelTests {
+struct CleanupWorkspaceModelTests {
     @Test func testCachedContentWithoutBaselineIsNeverScanned() async {
         let workspace = makeWorkspace()
 

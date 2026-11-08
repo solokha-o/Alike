@@ -8,7 +8,7 @@ import CleanupWorkspace
 /// Pins what the Cleanup screen decides and says. The text tests compare against the
 /// compiled catalog string in the current locale, so they check which string and which
 /// arguments, not a translation.
-@Suite struct CleanupPresentationTests {
+struct CleanupPresentationTests {
     private let record = CleanupCompletionRecord(
         sourceClusterID: UUID(),
         deletedCount: 3,

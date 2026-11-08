@@ -5,7 +5,7 @@ import Testing
 @testable import Scanner
 
 @MainActor
-@Suite struct ScannerHomePresentationTests {
+struct ScannerHomePresentationTests {
     private let scanEventID = UUID(uuidString: "7FDF377A-F575-45D2-BEC5-E56C99323571")!
 
     @Test func testNeverScannedUsesReadyAliAndStartsScanning() {

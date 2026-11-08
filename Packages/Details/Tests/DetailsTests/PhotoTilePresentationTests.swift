@@ -7,7 +7,7 @@ import Testing
 
 /// A tile has three states and the Best Shot wins over the selection. VoiceOver
 /// must say the same thing the tile shows, so the precedence is pinned here.
-@Suite struct PhotoTilePresentationTests {
+struct PhotoTilePresentationTests {
     private func presentation(
         isBestShot: Bool = false,
         isSelected: Bool = false,

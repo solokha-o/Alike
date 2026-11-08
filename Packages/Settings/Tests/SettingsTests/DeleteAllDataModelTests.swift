@@ -3,7 +3,7 @@ import Testing
 @testable import Settings
 
 @MainActor
-@Suite struct DeleteAllDataModelTests {
+struct DeleteAllDataModelTests {
     @Test func testDeleteAllDataReturnsToIdleAfterSuccess() async {
         let model = DeleteAllDataModel {}
 

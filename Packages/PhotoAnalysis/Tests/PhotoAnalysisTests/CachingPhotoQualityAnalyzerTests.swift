@@ -4,7 +4,7 @@ import Photos
 import Testing
 @testable import PhotoAnalysis
 
-@Suite struct CachingPhotoQualityAnalyzerTests {
+struct CachingPhotoQualityAnalyzerTests {
     private let config = PhotoQualityScoringConfig.current
     private let modificationDate = Date(timeIntervalSince1970: 1_000)
 

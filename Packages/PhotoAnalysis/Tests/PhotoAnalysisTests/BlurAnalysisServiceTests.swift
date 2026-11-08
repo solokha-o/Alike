@@ -6,7 +6,7 @@ import UIKit
 #endif
 @testable import PhotoAnalysis
 
-@Suite struct BlurAnalysisServiceTests {
+struct BlurAnalysisServiceTests {
     @Test func testTaskPoolLimitsConcurrencyToFourAndPreservesOrder() async throws {
         let tracker = ConcurrencyTracker()
 

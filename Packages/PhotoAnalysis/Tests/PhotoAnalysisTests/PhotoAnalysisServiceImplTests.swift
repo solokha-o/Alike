@@ -6,7 +6,7 @@ import Core
 @testable import PhotoAnalysis
 
 @MainActor
-@Suite struct PhotoAnalysisServiceImplTests {
+struct PhotoAnalysisServiceImplTests {
     @Test func testAnalyzePhotoLibraryNoPhotosThrows() async throws {
         let didCallAssetsProvider = ThreadSafeFlag()
         let service = PhotoAnalysisServiceImpl(

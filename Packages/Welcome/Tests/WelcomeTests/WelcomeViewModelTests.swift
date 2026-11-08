@@ -4,7 +4,7 @@ import Core
 @testable import Welcome
 
 @MainActor
-@Suite struct WelcomeViewModelTests {
+struct WelcomeViewModelTests {
     let viewModel: WelcomeViewModel
     let mockPermissionManager: MockPhotoPermissionManager
     

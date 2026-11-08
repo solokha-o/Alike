@@ -3,7 +3,7 @@ import Testing
 import CoreGraphics
 @testable import Details
 
-@Suite struct ZoomingHelpersTests {
+struct ZoomingHelpersTests {
     @Test func testClampedOffsetWhenScaleIsOne() {
         let size = CGSize(width: 100, height: 100)
         let proposed = CGSize(width: 50, height: -40)

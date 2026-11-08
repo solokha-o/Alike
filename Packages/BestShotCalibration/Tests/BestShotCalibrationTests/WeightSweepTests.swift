@@ -3,7 +3,7 @@ import Testing
 @testable import BestShotCalibration
 @testable import Core
 
-@Suite struct WeightSweepTests {
+struct WeightSweepTests {
     private let config = PhotoQualityScoringConfig.current
 
     private func makeCorpus() -> BestShotCalibrationCorpus {

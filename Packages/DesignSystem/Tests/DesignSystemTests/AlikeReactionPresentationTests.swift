@@ -4,7 +4,7 @@ import SwiftUI
 import Testing
 @testable import DesignSystem
 
-@Suite struct AlikeReactionPresentationTests {
+struct AlikeReactionPresentationTests {
     @Test func testScanningLoopsOnlyWhileVisibleAndActive() {
         let cue = AlikeReactionCue(
             id: .init(eventID: .scan(UUID()), kind: .scanning),

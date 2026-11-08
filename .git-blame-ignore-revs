@@ -85,3 +85,6 @@ abdc8566b869dd59a8de65d6a421ccfe4e069f27
 
 # LATER rule 26 (ADR-0001): spaceAroundOperators (--ranges preserve), config only (no code change).
 3241e3704e336225ae1434e77f95ebbdfdd6b4d1
+
+# LATER rule 27 (ADR-0001): redundantSwiftTestingSuite, format only.
+f4b7a529cc5062c66e2d6bea7247e2de941f4282

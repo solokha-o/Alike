@@ -6,7 +6,7 @@ import Vision
 import Testing
 @testable import PhotoAnalysis
 
-@Suite struct PhotoQualityAnalysisServiceTests {
+struct PhotoQualityAnalysisServiceTests {
     private let service = PhotoQualityAnalysisService(faceDetector: { _ in [] })
 
     // MARK: - Raw signal ordering

@@ -5,7 +5,7 @@ import Testing
 /// The cluster delete alert title used to branch on `selectedCount == 1` in the view model, which
 /// covered `one`/`other` only. It now resolves through catalog plural variations, so these tests
 /// assert the category Foundation selects for a count against a bundle compiled from the catalog.
-@Suite struct ClusterDetailsPluralTests {
+struct ClusterDetailsPluralTests {
     @Test func testUkrainianDeleteAlertTitleSelectsThePluralFormForEachCount() throws {
         let bundle = try CompiledCatalogFixture.bundle(language: "uk")
         let uk = Locale(identifier: "uk")

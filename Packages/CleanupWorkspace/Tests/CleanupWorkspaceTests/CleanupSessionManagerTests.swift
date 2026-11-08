@@ -3,7 +3,7 @@ import Testing
 import Core
 @testable import CleanupWorkspace
 
-@Suite struct CleanupSessionManagerTests {
+struct CleanupSessionManagerTests {
     @Test func testProgressIncludesSelectedItemsAndRemainingClusters() {
         let repo = MockCleanupSessionRepository()
         let manager = CleanupSessionManager(repository: repo)

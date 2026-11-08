@@ -9,7 +9,7 @@ import Testing
 /// means, and that a repository failure degrades to an empty section instead of
 /// taking the whole workspace down.
 @MainActor
-@Suite struct CleanupWorkspaceCategoryTests {
+struct CleanupWorkspaceCategoryTests {
     @Test func testEachCategoryCarriesItsOwnSnapshotNumbersInKindOrder() async {
         let categoryRepository = MockCleanupCategorySnapshotRepository()
         await categoryRepository.setStoredSnapshots([

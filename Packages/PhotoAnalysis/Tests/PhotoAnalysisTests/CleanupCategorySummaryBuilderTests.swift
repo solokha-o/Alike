@@ -2,7 +2,7 @@ import Testing
 import Core
 @testable import PhotoAnalysis
 
-@Suite struct CleanupCategorySummaryBuilderTests {
+struct CleanupCategorySummaryBuilderTests {
     @Test func testScreenshotSnapshotIncludesScreenshotsOnly() {
         let snapshot = CleanupCategorySummaryBuilder.screenshotSnapshot(from: [
             CleanupCategoryAssetSnapshot(localIdentifier: "shot-1", isScreenshot: true, estimatedCleanupBytes: 100),

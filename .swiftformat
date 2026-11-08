@@ -134,3 +134,4 @@
 --rules wrapMultilineStatementBraces
 --rules hoistPatternLet
 --rules spaceAroundOperators
+--rules redundantSwiftTestingSuite

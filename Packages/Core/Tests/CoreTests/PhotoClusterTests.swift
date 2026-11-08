@@ -3,7 +3,7 @@ import Testing
 import Photos
 @testable import Core
 
-@Suite struct PhotoClusterTests {
+struct PhotoClusterTests {
     @Test func testCountAndThumbnailWhenEmpty() {
         let cluster = PhotoCluster(assets: [])
 

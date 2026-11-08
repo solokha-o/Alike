@@ -8,7 +8,7 @@ import Core
 /// at an unlocked build. So the override has to apply to exactly the feature
 /// whose key is set, and to nothing else.
 @MainActor
-@Suite final class DebugPremiumAccessControllerTests {
+final class DebugPremiumAccessControllerTests {
     private let defaults: UserDefaults
     private let suiteName: String
 

@@ -21,7 +21,7 @@ import Testing
 /// `@MainActor`: the baseline test fetches through `viewContext`, a main-queue
 /// context, and Swift Testing would otherwise run it on a worker thread.
 @MainActor
-@Suite final class ModelVersionMigrationTests {
+final class ModelVersionMigrationTests {
 
     private let storeDirectory: URL
 

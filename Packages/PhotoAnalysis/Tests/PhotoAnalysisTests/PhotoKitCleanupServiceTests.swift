@@ -5,7 +5,7 @@ import Core
 @testable import PhotoAnalysis
 
 @MainActor
-@Suite struct PhotoKitCleanupServiceTests {
+struct PhotoKitCleanupServiceTests {
     @Test func testDeleteAssetsThrowsWhenNothingSelected() async {
         let service = PhotoKitCleanupService(
             authorizationStatusProvider: { .authorized },

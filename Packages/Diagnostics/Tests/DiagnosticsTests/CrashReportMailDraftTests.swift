@@ -2,7 +2,7 @@ import Foundation
 import Testing
 @testable import Diagnostics
 
-@Suite struct CrashReportMailDraftTests {
+struct CrashReportMailDraftTests {
     private let fallback = CrashReportMailDraft.Fallback(
         appVersion: "9.9.9",
         appBuild: "99",

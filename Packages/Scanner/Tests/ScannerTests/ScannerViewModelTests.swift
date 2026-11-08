@@ -6,7 +6,7 @@ import Testing
 @testable import Scanner
 
 @MainActor
-@Suite struct ScannerViewModelTests {
+struct ScannerViewModelTests {
     @Test func testInitialStateIsIdleWithFullFreeAllowance() {
         let viewModel = makeViewModel()
 

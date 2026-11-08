@@ -3,7 +3,7 @@ import Testing
 @testable import Storage
 
 @MainActor
-@Suite struct CoreDataPhotoClusterRepositoryDataTests {
+struct CoreDataPhotoClusterRepositoryDataTests {
     private let repository: CoreDataPhotoClusterRepository
     private let controller: PersistenceController
 

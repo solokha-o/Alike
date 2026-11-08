@@ -2,7 +2,7 @@ import Foundation
 import Testing
 @testable import Core
 
-@Suite struct SensitivityLevelTests {
+struct SensitivityLevelTests {
     
     // MARK: - Enum Cases Tests
     

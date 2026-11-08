@@ -14,7 +14,7 @@ import Testing
 /// whole symbol names rather than prefixes — a prefix list built from `arrow.right.square` never
 /// saw `arrow.up.right.square`, and a prefix list wide enough to catch it would have condemned
 /// the resize glyph.
-@Suite struct DirectionalSymbolTests {
+struct DirectionalSymbolTests {
     private static let bannedSymbols: Set<String> = [
         "chevron.left", "chevron.right",
         "chevron.left.circle", "chevron.right.circle",

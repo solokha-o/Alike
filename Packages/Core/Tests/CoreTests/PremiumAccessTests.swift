@@ -3,7 +3,7 @@ import Testing
 @testable import Core
 
 @MainActor
-@Suite struct PremiumAccessTests {
+struct PremiumAccessTests {
     @Test func testFreeTierLocksUnconditionalPremiumFeatures() {
         let controller = PremiumAccessController()
 

@@ -9,7 +9,7 @@ import Testing
 /// values back to Western digits and the Gregorian calendar, and these tests hold both halves
 /// of that promise — that the pin actually changes what `ar_SA` renders, and that no user-facing
 /// call site formats a number or a date around it.
-@Suite struct AlikeFormattingTests {
+struct AlikeFormattingTests {
     private let arabic = Locale(identifier: "ar_SA")
 
     private var pinnedArabic: Locale { .alikeFormatting(basedOn: Locale(identifier: "ar_SA")) }
