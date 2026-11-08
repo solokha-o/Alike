@@ -101,7 +101,7 @@ struct PersistedByteSizeVersionTests {
     @Test func testLegacyReviewStateIsRemeasuredFromItsClusterSelection() {
         let cluster = PhotoCluster(assets: [
             SizedAsset(localIdentifier: "best", pixelWidth: 100, pixelHeight: 100),
-            SizedAsset(localIdentifier: "x", pixelWidth: 40, pixelHeight: 10)
+            SizedAsset(localIdentifier: "x", pixelWidth: 40, pixelHeight: 10),
         ])
         let legacy = reviewState(clusterID: cluster.id, selected: ["x", "deleted"], bytes: 9_999, version: nil)
 

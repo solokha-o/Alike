@@ -521,7 +521,7 @@ public enum BestShotRanker {
                 + (runnerUp.facePenalty - winner.facePenalty)),
             (.lessNoise, weights.noiseArtifacts * (winner.noise - runnerUp.noise)),
             (.higherResolution, min(weights.resolution, config.resolutionWeightCap)
-                * (winner.resolution - runnerUp.resolution))
+                * (winner.resolution - runnerUp.resolution)),
         ]
         if !winner.hasClosedEyes, runnerUp.hasClosedEyes {
             weighted.append((.openEyes, runnerUp.closedEyesPenalty - winner.closedEyesPenalty))

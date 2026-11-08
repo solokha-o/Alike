@@ -13,7 +13,7 @@ struct CleanupSessionManagerTests {
         let clusters = [
             PhotoCluster(id: reviewedID, assets: []),
             PhotoCluster(id: inReviewID, assets: []),
-            PhotoCluster(assets: [])
+            PhotoCluster(assets: []),
         ]
 
         let states: [UUID: ClusterReviewState] = [
@@ -32,7 +32,7 @@ struct CleanupSessionManagerTests {
                 mode: .selection,
                 status: .inReview,
                 estimatedSavingsBytes: 200
-            )
+            ),
         ]
 
         let progress = manager.progress(for: clusters, reviewStates: states, activeSession: nil)
@@ -55,7 +55,7 @@ struct CleanupSessionManagerTests {
         let reviewedID = UUID()
         let clusters = [
             PhotoCluster(id: needsReviewID, assets: []),
-            PhotoCluster(id: reviewedID, assets: [])
+            PhotoCluster(id: reviewedID, assets: []),
         ]
 
         let states: [UUID: ClusterReviewState] = [
@@ -75,7 +75,7 @@ struct CleanupSessionManagerTests {
                 mode: .selection,
                 status: .reviewed,
                 estimatedSavingsBytes: 200
-            )
+            ),
         ]
 
         let progress = manager.progress(for: clusters, reviewStates: states, activeSession: nil)
@@ -126,7 +126,7 @@ struct CleanupSessionManagerTests {
                 mode: .selection,
                 status: .inReview,
                 estimatedSavingsBytes: 50
-            )
+            ),
         ]
 
         let first = manager.nextClusterToReview(
@@ -156,7 +156,7 @@ struct CleanupSessionManagerTests {
         let secondID = UUID()
         let clusters = [
             PhotoCluster(id: firstID, assets: []),
-            PhotoCluster(id: secondID, assets: [])
+            PhotoCluster(id: secondID, assets: []),
         ]
 
         let states: [UUID: ClusterReviewState] = [
@@ -175,7 +175,7 @@ struct CleanupSessionManagerTests {
                 mode: .selection,
                 status: .reviewed,
                 estimatedSavingsBytes: 200
-            )
+            ),
         ]
 
         let next = manager.nextClusterToReview(from: clusters, reviewStates: states)
@@ -201,7 +201,7 @@ struct CleanupSessionManagerTests {
         let keepAllID = UUID()
         let clusters = [
             PhotoCluster(id: multiKeepID, assets: []),
-            PhotoCluster(id: keepAllID, assets: [])
+            PhotoCluster(id: keepAllID, assets: []),
         ]
 
         let states: [UUID: ClusterReviewState] = [
@@ -220,7 +220,7 @@ struct CleanupSessionManagerTests {
                 isReviewConfirmed: true,
                 status: .reviewed,
                 estimatedSavingsBytes: 0
-            )
+            ),
         ]
 
         let next = manager.nextClusterToReview(from: clusters, reviewStates: states)

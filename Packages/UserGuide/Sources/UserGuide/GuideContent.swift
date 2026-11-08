@@ -15,7 +15,7 @@ enum GuideContent {
         deletingSafely,
         settingsAndReminders,
         freeAndPro,
-        privacy
+        privacy,
     ]
 
     /// Total lookup. `GuideTopicID` is exhaustive over `topics`, which `GuideContentTests` asserts.
@@ -56,7 +56,7 @@ enum GuideContent {
                         symbol: "trash",
                         title: "userGuide.gettingStarted.loop.move.title",
                         body: "userGuide.gettingStarted.loop.move.body"
-                    )
+                    ),
                 ]
             ),
             GuideSection(
@@ -81,7 +81,7 @@ enum GuideContent {
                         symbol: "drop.triangle",
                         title: "userGuide.gettingStarted.scope.blurred.title",
                         body: "userGuide.gettingStarted.scope.blurred.body"
-                    )
+                    ),
                 ]
             ),
             GuideSection(
@@ -106,9 +106,9 @@ enum GuideContent {
                         symbol: "exclamationmark.shield",
                         title: "userGuide.gettingStarted.access.noAutoDelete.title",
                         body: "userGuide.gettingStarted.access.noAutoDelete.body"
-                    )
+                    ),
                 ]
-            )
+            ),
         ]
     )
 
@@ -143,7 +143,7 @@ enum GuideContent {
                         symbol: "bolt",
                         title: "userGuide.scanning.run.cache.title",
                         body: "userGuide.scanning.run.cache.body"
-                    )
+                    ),
                 ]
             ),
             GuideSection(
@@ -161,7 +161,7 @@ enum GuideContent {
                         symbol: "gauge.medium",
                         title: "userGuide.scanning.status.allowance.title",
                         body: "userGuide.scanning.status.allowance.body"
-                    )
+                    ),
                 ]
             ),
             GuideSection(
@@ -186,9 +186,9 @@ enum GuideContent {
                         symbol: "exclamationmark.triangle",
                         title: "userGuide.scanning.rescan.error.title",
                         body: "userGuide.scanning.rescan.error.body"
-                    )
+                    ),
                 ]
-            )
+            ),
         ]
     )
 
@@ -222,7 +222,7 @@ enum GuideContent {
                         symbol: "clock.arrow.circlepath",
                         title: "userGuide.cleanupQueue.progress.history.title",
                         body: "userGuide.cleanupQueue.progress.history.body"
-                    )
+                    ),
                 ]
             ),
             GuideSection(
@@ -242,7 +242,7 @@ enum GuideContent {
                         symbol: "square.grid.2x2",
                         title: "userGuide.cleanupQueue.sections.all.title",
                         body: "userGuide.cleanupQueue.sections.all.body"
-                    )
+                    ),
                 ]
             ),
             GuideSection(
@@ -282,7 +282,7 @@ enum GuideContent {
                         symbol: "arrow.triangle.2.circlepath",
                         title: "userGuide.cleanupQueue.badges.changed.title",
                         body: "userGuide.cleanupQueue.badges.changed.body"
-                    )
+                    ),
                 ]
             ),
             GuideSection(
@@ -308,9 +308,9 @@ enum GuideContent {
                         symbol: "square.grid.3x2",
                         title: "userGuide.cleanupQueue.controls.columns.title",
                         body: "userGuide.cleanupQueue.controls.columns.body"
-                    )
+                    ),
                 ]
-            )
+            ),
         ]
     )
 
@@ -345,7 +345,7 @@ enum GuideContent {
                         symbol: "square.stack",
                         title: "userGuide.comparingPhotos.selection.batch.title",
                         body: "userGuide.comparingPhotos.selection.batch.body"
-                    )
+                    ),
                 ]
             ),
             GuideSection(
@@ -365,7 +365,7 @@ enum GuideContent {
                         symbol: "hand.point.up.left",
                         title: "userGuide.comparingPhotos.bestShot.override.title",
                         body: "userGuide.comparingPhotos.bestShot.override.body"
-                    )
+                    ),
                 ]
             ),
             GuideSection(
@@ -398,7 +398,7 @@ enum GuideContent {
                         symbol: "exclamationmark.triangle",
                         title: "userGuide.comparingPhotos.enhance.limits.title",
                         body: "userGuide.comparingPhotos.enhance.limits.body"
-                    )
+                    ),
                 ]
             ),
             GuideSection(
@@ -423,7 +423,7 @@ enum GuideContent {
                         symbol: "arrow.uturn.backward",
                         title: "userGuide.comparingPhotos.personalization.reset.title",
                         body: "userGuide.comparingPhotos.personalization.reset.body"
-                    )
+                    ),
                 ]
             ),
             GuideSection(
@@ -441,7 +441,7 @@ enum GuideContent {
                         symbol: "arrow.up.left.and.arrow.down.right",
                         title: "userGuide.comparingPhotos.inspect.fullscreen.title",
                         body: "userGuide.comparingPhotos.inspect.fullscreen.body"
-                    )
+                    ),
                 ]
             ),
             GuideSection(
@@ -468,9 +468,9 @@ enum GuideContent {
                         symbol: "trash",
                         title: "userGuide.comparingPhotos.review.move.title",
                         body: "userGuide.comparingPhotos.review.move.body"
-                    )
+                    ),
                 ]
-            )
+            ),
         ]
     )
 
@@ -500,7 +500,7 @@ enum GuideContent {
                         symbol: "drop.triangle",
                         title: "userGuide.smartCategories.categories.blurred.title",
                         body: "userGuide.smartCategories.categories.blurred.body"
-                    )
+                    ),
                 ]
             ),
             GuideSection(
@@ -518,7 +518,7 @@ enum GuideContent {
                         symbol: "info.circle",
                         title: "userGuide.smartCategories.workflow.inspect.title",
                         body: "userGuide.smartCategories.workflow.inspect.body"
-                    )
+                    ),
                 ]
             ),
             GuideSection(
@@ -538,9 +538,9 @@ enum GuideContent {
                         symbol: "heart",
                         title: "userGuide.smartCategories.blurDetection.favorites.title",
                         body: "userGuide.smartCategories.blurDetection.favorites.body"
-                    )
+                    ),
                 ]
-            )
+            ),
         ]
     )
 
@@ -581,7 +581,7 @@ enum GuideContent {
                         symbol: "icloud",
                         title: "userGuide.deletingSafely.flow.icloud.title",
                         body: "userGuide.deletingSafely.flow.icloud.body"
-                    )
+                    ),
                 ]
             ),
             GuideSection(
@@ -599,9 +599,9 @@ enum GuideContent {
                         symbol: "list.bullet.rectangle",
                         title: "userGuide.deletingSafely.history.activity.title",
                         body: "userGuide.deletingSafely.history.activity.body"
-                    )
+                    ),
                 ]
-            )
+            ),
         ]
     )
 
@@ -629,7 +629,7 @@ enum GuideContent {
                         symbol: "globe",
                         title: "userGuide.settingsAndReminders.analysis.language.title",
                         body: "userGuide.settingsAndReminders.analysis.language.body"
-                    )
+                    ),
                 ]
             ),
             GuideSection(
@@ -649,7 +649,7 @@ enum GuideContent {
                         symbol: "calendar.badge.clock",
                         title: "userGuide.settingsAndReminders.reminder.schedule.title",
                         body: "userGuide.settingsAndReminders.reminder.schedule.body"
-                    )
+                    ),
                 ]
             ),
             GuideSection(
@@ -667,9 +667,9 @@ enum GuideContent {
                         symbol: "arrow.counterclockwise",
                         title: "userGuide.settingsAndReminders.subscription.restore.title",
                         body: "userGuide.settingsAndReminders.subscription.restore.body"
-                    )
+                    ),
                 ]
-            )
+            ),
         ]
     )
 
@@ -709,7 +709,7 @@ enum GuideContent {
                         symbol: "arrow.up.arrow.down",
                         title: "userGuide.freeAndPro.free.sorting.title",
                         body: "userGuide.freeAndPro.free.sorting.body"
-                    )
+                    ),
                 ]
             ),
             GuideSection(
@@ -758,9 +758,9 @@ enum GuideContent {
                         symbol: "calendar.badge.clock",
                         title: "userGuide.freeAndPro.pro.reminder.title",
                         body: "userGuide.freeAndPro.pro.reminder.body"
-                    )
+                    ),
                 ]
-            )
+            ),
         ]
     )
 
@@ -794,7 +794,7 @@ enum GuideContent {
                         symbol: "exclamationmark.bubble",
                         title: "userGuide.privacy.onDevice.crashReports.title",
                         body: "userGuide.privacy.onDevice.crashReports.body"
-                    )
+                    ),
                 ]
             ),
             GuideSection(
@@ -812,7 +812,7 @@ enum GuideContent {
                         symbol: "bell",
                         title: "userGuide.privacy.permissions.notifications.title",
                         body: "userGuide.privacy.permissions.notifications.body"
-                    )
+                    ),
                 ]
             ),
             GuideSection(
@@ -838,9 +838,9 @@ enum GuideContent {
                         symbol: "arrow.counterclockwise",
                         title: "userGuide.privacy.deleteData.replay.title",
                         body: "userGuide.privacy.deleteData.replay.body"
-                    )
+                    ),
                 ]
-            )
+            ),
         ]
     )
 }

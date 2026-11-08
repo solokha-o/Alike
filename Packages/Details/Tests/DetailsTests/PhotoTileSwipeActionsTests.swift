@@ -188,7 +188,7 @@ struct PhotoTileSwipeActionsTests {
             assetSnapshots: [
                 clusterSnapshot(id: "best", area: 900),
                 clusterSnapshot(id: "candidate", area: 500),
-                clusterSnapshot(id: "other", area: 300)
+                clusterSnapshot(id: "other", area: 300),
             ],
             completionDelay: {}
         )
@@ -239,7 +239,7 @@ struct PhotoTileSwipeActionsTests {
             premiumAccess: PremiumAccessController(),
             assetSnapshots: [
                 clusterSnapshot(id: "one", area: 200),
-                clusterSnapshot(id: "two", area: 100)
+                clusterSnapshot(id: "two", area: 100),
             ],
             completionDelay: {}
         )

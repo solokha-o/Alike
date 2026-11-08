@@ -234,7 +234,7 @@ struct WidgetLibraryCompositionTests {
         let snapshots: [WidgetSnapshot?] = [
             nil, snapshot(), snapshot(clusterCount: 0, screenshots: 0, blurred: 0),
             snapshot(clusterCount: nil, screenshots: nil, blurred: nil),
-            snapshot(hasCompletedScan: false), snapshot(authorization: .denied)
+            snapshot(hasCompletedScan: false), snapshot(authorization: .denied),
         ]
 
         for candidate in snapshots {

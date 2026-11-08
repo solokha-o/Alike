@@ -247,7 +247,7 @@ struct CleanupWorkspaceModelTests {
                 isReviewConfirmed: true,
                 status: .reviewed,
                 estimatedSavingsBytes: 128
-            )
+            ),
         ])
         await workspace.reloadReviewState()
 

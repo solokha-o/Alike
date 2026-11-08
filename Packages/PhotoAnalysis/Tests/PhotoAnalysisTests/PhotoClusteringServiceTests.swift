@@ -19,7 +19,7 @@ struct PhotoClusteringServiceTests {
     @Test func testClusterSinglePhoto() throws {
         let service = makeService()
         let candidates = [
-            makeCandidate(id: 1)
+            makeCandidate(id: 1),
         ]
 
         let clusters = try service.clusterCandidates(candidates, threshold: 0.9)
@@ -32,12 +32,12 @@ struct PhotoClusteringServiceTests {
         let id2 = UUID.uuid(for: 2)
         let service = makeService(distances: [
             id1: [id2: 0.1],
-            id2: [id1: 0.1]
+            id2: [id1: 0.1],
         ])
 
         let candidates = [
             makeCandidate(id: 1),
-            makeCandidate(id: 2)
+            makeCandidate(id: 2),
         ]
 
         let clusters = try service.clusterCandidates(candidates, threshold: 0.2)
@@ -51,12 +51,12 @@ struct PhotoClusteringServiceTests {
         let id2 = UUID.uuid(for: 2)
         let service = makeService(distances: [
             id1: [id2: 0.9],
-            id2: [id1: 0.9]
+            id2: [id1: 0.9],
         ])
 
         let candidates = [
             makeCandidate(id: 1),
-            makeCandidate(id: 2)
+            makeCandidate(id: 2),
         ]
 
         let clusters = try service.clusterCandidates(candidates, threshold: 0.5)
@@ -71,13 +71,13 @@ struct PhotoClusteringServiceTests {
         let service = makeService(distances: [
             id1: [id2: 0.1, id3: 0.9],
             id2: [id1: 0.1, id3: 0.1],
-            id3: [id1: 0.9, id2: 0.1]
+            id3: [id1: 0.9, id2: 0.1],
         ])
 
         let candidates = [
             makeCandidate(id: 1),
             makeCandidate(id: 2),
-            makeCandidate(id: 3)
+            makeCandidate(id: 3),
         ]
 
         let clusters = try service.clusterCandidates(candidates, threshold: 0.2)
@@ -93,13 +93,13 @@ struct PhotoClusteringServiceTests {
         let service = makeService(distances: [
             id1: [id2: 0.1, id3: 0.8],
             id2: [id1: 0.1, id3: 0.8],
-            id3: [id1: 0.8, id2: 0.8]
+            id3: [id1: 0.8, id2: 0.8],
         ])
 
         let candidates = [
             makeCandidate(id: 1),
             makeCandidate(id: 2),
-            makeCandidate(id: 3)
+            makeCandidate(id: 3),
         ]
 
         let strictClusters = try service.clusterCandidates(candidates, threshold: 0.2)
@@ -118,13 +118,13 @@ struct PhotoClusteringServiceTests {
         let service = makeService(distances: [
             id1: [id2: 0.05, id3: 0.05],
             id2: [id1: 0.05, id3: 0.05],
-            id3: [id1: 0.05, id2: 0.05]
+            id3: [id1: 0.05, id2: 0.05],
         ])
 
         let candidates = [
             makeCandidate(id: 1),
             makeCandidate(id: 2),
-            makeCandidate(id: 3)
+            makeCandidate(id: 3),
         ]
 
         let clusters = try service.clusterCandidates(candidates, threshold: 0.1)
@@ -142,7 +142,7 @@ struct PhotoClusteringServiceTests {
 
         let candidates = [
             makeCandidate(id: 1, creationDate: baseDate, location: nil),
-            makeCandidate(id: 2, creationDate: farDate, location: nil)
+            makeCandidate(id: 2, creationDate: farDate, location: nil),
         ]
 
         let clusters = try service.clusterCandidates(candidates, threshold: 0.1)
@@ -157,7 +157,7 @@ struct PhotoClusteringServiceTests {
 
         let candidates = [
             makeCandidate(id: 1, creationDate: nil, location: location1),
-            makeCandidate(id: 2, creationDate: nil, location: location2)
+            makeCandidate(id: 2, creationDate: nil, location: location2),
         ]
 
         let clusters = try service.clusterCandidates(candidates, threshold: 0.1)
@@ -171,7 +171,7 @@ struct PhotoClusteringServiceTests {
         let service = makeService(
             distances: [
                 id1: [id2: 0.05],
-                id2: [id1: 0.05]
+                id2: [id1: 0.05],
             ],
             enablePreFilter: false
         )
@@ -180,7 +180,7 @@ struct PhotoClusteringServiceTests {
 
         let candidates = [
             makeCandidate(id: 1, creationDate: Date(), location: location1),
-            makeCandidate(id: 2, creationDate: Date().addingTimeInterval(60 * 60 * 30), location: location2)
+            makeCandidate(id: 2, creationDate: Date().addingTimeInterval(60 * 60 * 30), location: location2),
         ]
 
         let clusters = try service.clusterCandidates(candidates, threshold: 0.1)
@@ -191,7 +191,7 @@ struct PhotoClusteringServiceTests {
     @Test func testMinimumClusterSize() throws {
         let service = makeService()
         let candidates = [
-            makeCandidate(id: 1)
+            makeCandidate(id: 1),
         ]
 
         let clusters = try service.clusterCandidates(candidates, threshold: 0.9)

@@ -596,7 +596,7 @@ struct PersonalWeightModelTests {
             .init(sharpness: 0.3, faceQuality: -0.3, exposure: 0.3, noiseArtifacts: 0.3, resolution: 0.3),
             .init(sharpness: -0.6, faceQuality: 0.6, exposure: -0.6, noiseArtifacts: 0.6, resolution: 0.6),
             .init(sharpness: 1, faceQuality: 1, exposure: 1, noiseArtifacts: 1, resolution: 1),
-            .init(sharpness: -1, faceQuality: -1, exposure: -1, noiseArtifacts: -1, resolution: -1)
+            .init(sharpness: -1, faceQuality: -1, exposure: -1, noiseArtifacts: -1, resolution: -1),
         ]
 
         for direction in directions {

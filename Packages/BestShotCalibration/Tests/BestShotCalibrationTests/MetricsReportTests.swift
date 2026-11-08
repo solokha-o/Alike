@@ -150,10 +150,10 @@ struct MetricsReportTests {
                             faces: [],
                             rejections: FaceRejectionCounts(tooSmallInFrame: 2, insufficientResolution: 1)
                         ),
-                        makeCandidate("nobody", globalSharpness: 36, faces: [], rejections: .empty)
+                        makeCandidate("nobody", globalSharpness: 36, faces: [], rejections: .empty),
                     ],
                     humanBestShotID: "measured"
-                )
+                ),
             ]
         )
 
@@ -196,10 +196,10 @@ struct MetricsReportTests {
                         makeCandidate("measured", globalSharpness: 40, faces: [Self.face()], rejections: .empty),
                         makeFailedCandidate("offline", failure: .assetUnavailable),
                         makeFailedCandidate("tiny", failure: .tooSmallToAnalyze),
-                        makeFailedCandidate("broken", failure: .renderFailed)
+                        makeFailedCandidate("broken", failure: .renderFailed),
                     ],
                     humanBestShotID: "measured"
-                )
+                ),
             ]
         )
 

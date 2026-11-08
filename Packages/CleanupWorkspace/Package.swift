@@ -5,7 +5,7 @@ let package = Package(
     name: "CleanupWorkspace",
     platforms: [
         .iOS(.v17),
-        .macOS(.v14)
+        .macOS(.v14),
     ],
     products: [
         .library(
@@ -16,14 +16,14 @@ let package = Package(
     dependencies: [
         .package(path: "../Core"),
         .package(path: "../Storage"),
-        .package(path: "../PhotoAnalysis")
+        .package(path: "../PhotoAnalysis"),
     ],
     targets: [
         .target(
             name: "CleanupWorkspace",
             dependencies: ["Core", "Storage", "PhotoAnalysis"],
             swiftSettings: [
-                .enableExperimentalFeature("StrictConcurrency")
+                .enableExperimentalFeature("StrictConcurrency"),
             ]
         ),
         .testTarget(

@@ -17,6 +17,7 @@
 --ranges preserve
 --self remove
 --decimal-grouping 3,4
+--trailing-commas collections-only
 
 # Generated, vendored, and non-app code.
 --exclude **/.build,build,vendor,Skills,site,fastlane
@@ -144,3 +145,5 @@
 --rules blankLinesAtEndOfScope
 # numberFormatting (ADR row 30) added after row 31 by owner decision
 --rules numberFormatting
+# trailingCommas (ADR row 32) added after row 31 by owner decision
+--rules trailingCommas

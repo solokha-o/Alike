@@ -52,7 +52,7 @@ public struct CrashReportMailDraft: Equatable, Sendable {
         subject = [
             "Alike crash \(newest.appVersion ?? fallback.appVersion) (\(newest.appBuild ?? fallback.appBuild))",
             newest.osVersion.map(Self.displayOSVersion) ?? fallback.osVersion,
-            newest.deviceModel ?? fallback.deviceModel
+            newest.deviceModel ?? fallback.deviceModel,
         ].joined(separator: " — ")
         self.body = body
         attachments = attachmentURLs.enumerated().map { position, url in

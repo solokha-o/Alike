@@ -6,7 +6,7 @@ let package = Package(
     defaultLocalization: "en",
     platforms: [
         .iOS(.v17),
-        .macOS(.v14)
+        .macOS(.v14),
     ],
     products: [
         .library(
@@ -17,7 +17,7 @@ let package = Package(
     dependencies: [
         .package(path: "../Core"),
         .package(path: "../PhotoAnalysis"),
-        .package(path: "../DesignSystem")
+        .package(path: "../DesignSystem"),
     ],
     targets: [
         .target(
@@ -25,13 +25,13 @@ let package = Package(
             dependencies: [
                 "Core",
                 "PhotoAnalysis",
-                "DesignSystem"
+                "DesignSystem",
             ],
             resources: [
-                .process("Resources")
+                .process("Resources"),
             ],
             swiftSettings: [
-                .enableExperimentalFeature("StrictConcurrency")
+                .enableExperimentalFeature("StrictConcurrency"),
             ]
         ),
         .testTarget(

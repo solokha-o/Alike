@@ -22,7 +22,7 @@ struct WidgetAccessoryCompositionTests {
         .hasSuggestions(bytes: bytes, clusterCount: 24, scannedAt: scannedAt, isStale: true),
         .libraryChanged(bytes: bytes, scannedAt: scannedAt),
         .resumeReview(progress: progress, isStale: false),
-        .resumeReview(progress: progress, isStale: true)
+        .resumeReview(progress: progress, isStale: true),
     ]
 
     private func composition(

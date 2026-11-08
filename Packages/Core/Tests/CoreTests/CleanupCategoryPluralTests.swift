@@ -177,7 +177,7 @@ struct CleanupCategoryPluralTests {
             "core.cleanupCategory.summaryBlurredPhotos",
             "core.cleanupCategory.selectionSummary",
             "core.cleanupCategory.alertTitleScreenshots",
-            "core.cleanupCategory.alertTitleBlurredPhotos"
+            "core.cleanupCategory.alertTitleBlurredPhotos",
         ] {
             #expect(
                 try catalog.pluralCategories(of: key, language: "en") == ["one", "other"],
@@ -208,7 +208,7 @@ struct CleanupCategoryPluralTests {
             "core.cleanupCategory.selectedScreenshotWillBeRemoved",
             "core.cleanupCategory.selectedScreenshotsWillBeRemoved",
             "core.cleanupCategory.selectedPhotoWillBeRemoved",
-            "core.cleanupCategory.selectedPhotosWillBeRemoved"
+            "core.cleanupCategory.selectedPhotosWillBeRemoved",
         ] {
             for (language, localization) in try catalog.localizations(of: key) {
                 let unit = try #require(

@@ -225,7 +225,7 @@ public actor PhotoAnalysisServiceImpl: PhotoAnalysisService {
     private nonisolated static func fetchAllPhotoAssets() -> [PHAsset] {
         let fetchOptions = PHFetchOptions()
         fetchOptions.sortDescriptors = [
-            NSSortDescriptor(key: "creationDate", ascending: false)
+            NSSortDescriptor(key: "creationDate", ascending: false),
         ]
 
         // Only fetch images (not videos)

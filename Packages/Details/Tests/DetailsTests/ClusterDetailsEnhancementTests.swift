@@ -256,7 +256,7 @@ struct ClusterDetailsEnhancementTests {
                 scoringModelVersion: config.scoringModelVersion,
                 thumbnailConfigVersion: config.thumbnailConfigVersion,
                 signals: PhotoQualitySignals(globalSharpness: 90, subjectLumaStdDev: 0.25, pixelArea: 1_000)
-            )
+            ),
         ])
         await loading.value
 
@@ -294,7 +294,7 @@ struct ClusterDetailsEnhancementTests {
                 scoringModelVersion: config.scoringModelVersion,
                 thumbnailConfigVersion: config.thumbnailConfigVersion,
                 signals: PhotoQualitySignals(globalSharpness: 90, subjectLumaStdDev: 0.25, pixelArea: 1_000)
-            )
+            ),
         ])
         await loading.value
         await viewModel.enhance(previewSize: CGSize(width: 100, height: 100), for: requestedID)
@@ -444,7 +444,7 @@ struct ClusterDetailsEnhancementTests {
                     pixelWidth: 100,
                     pixelHeight: 100,
                     creationDate: Date(timeIntervalSince1970: 10)
-                )
+                ),
             ],
             completionDelay: {},
             // A test has no photo library to re-read from; recording the ask is

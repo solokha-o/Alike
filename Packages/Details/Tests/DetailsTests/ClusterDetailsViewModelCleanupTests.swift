@@ -32,7 +32,7 @@ struct ClusterDetailsViewModelCleanupTests: ClusterDetailsViewModelFixture {
             snapshots: [
                 snapshot(id: "best", isFavorite: true, area: 120, createdAt: nil),
                 snapshot(id: "one", isFavorite: false, area: 100, createdAt: nil),
-                snapshot(id: "two", isFavorite: false, area: 90, createdAt: nil)
+                snapshot(id: "two", isFavorite: false, area: 90, createdAt: nil),
             ],
             premiumAccess: MockPremiumAccessController(unlockedFeatures: [.batchCleanup])
         )
@@ -70,7 +70,7 @@ struct ClusterDetailsViewModelCleanupTests: ClusterDetailsViewModelFixture {
             snapshots: [
                 snapshot(id: "best", isFavorite: true, area: 120, createdAt: nil),
                 snapshot(id: "one", isFavorite: false, area: 100, createdAt: nil),
-                snapshot(id: "two", isFavorite: false, area: 90, createdAt: nil)
+                snapshot(id: "two", isFavorite: false, area: 90, createdAt: nil),
             ],
             premiumAccess: MockPremiumAccessController(unlockedFeatures: [.batchCleanup])
         )
@@ -107,7 +107,7 @@ struct ClusterDetailsViewModelCleanupTests: ClusterDetailsViewModelFixture {
         let viewModel = makeViewModel(
             snapshots: [
                 snapshot(id: "best", isFavorite: true, area: 100, createdAt: nil),
-                snapshot(id: "candidate", isFavorite: false, area: 90, createdAt: nil)
+                snapshot(id: "candidate", isFavorite: false, area: 90, createdAt: nil),
             ],
             reviewRepository: suspendedRepository
         )
@@ -140,7 +140,7 @@ struct ClusterDetailsViewModelCleanupTests: ClusterDetailsViewModelFixture {
         let viewModel = makeViewModel(
             snapshots: [
                 snapshot(id: "best", isFavorite: true, area: 100, createdAt: nil),
-                snapshot(id: "candidate", isFavorite: false, area: 90, createdAt: nil)
+                snapshot(id: "candidate", isFavorite: false, area: 90, createdAt: nil),
             ],
             completionDelay: { await completionDelay.wait() }
         )
@@ -167,7 +167,7 @@ struct ClusterDetailsViewModelCleanupTests: ClusterDetailsViewModelFixture {
         let viewModel = makeViewModel(
             snapshots: [
                 snapshot(id: "best", isFavorite: true, area: 100, createdAt: nil),
-                snapshot(id: "one", isFavorite: false, area: 90, createdAt: nil)
+                snapshot(id: "one", isFavorite: false, area: 90, createdAt: nil),
             ]
         )
 
@@ -190,7 +190,7 @@ struct ClusterDetailsViewModelCleanupTests: ClusterDetailsViewModelFixture {
         let viewModel = makeViewModel(
             snapshots: [
                 snapshot(id: "best", isFavorite: true, area: 100, createdAt: nil),
-                snapshot(id: "one", isFavorite: false, area: 90, createdAt: nil)
+                snapshot(id: "one", isFavorite: false, area: 90, createdAt: nil),
             ]
         )
 
@@ -206,7 +206,7 @@ struct ClusterDetailsViewModelCleanupTests: ClusterDetailsViewModelFixture {
         let viewModel = makeViewModel(
             snapshots: [
                 snapshot(id: "best", isFavorite: true, area: 100, createdAt: nil),
-                snapshot(id: "candidate", isFavorite: false, area: 90, createdAt: nil)
+                snapshot(id: "candidate", isFavorite: false, area: 90, createdAt: nil),
             ]
         )
 
@@ -227,7 +227,7 @@ struct ClusterDetailsViewModelCleanupTests: ClusterDetailsViewModelFixture {
             snapshots: [
                 snapshot(id: "best", isFavorite: true, area: 300, createdAt: nil),
                 snapshot(id: "one", isFavorite: false, area: 200, createdAt: nil),
-                snapshot(id: "two", isFavorite: false, area: 100, createdAt: nil)
+                snapshot(id: "two", isFavorite: false, area: 100, createdAt: nil),
             ]
         )
 
@@ -253,7 +253,7 @@ struct ClusterDetailsViewModelCleanupTests: ClusterDetailsViewModelFixture {
         let viewModel = makeViewModel(
             snapshots: [
                 snapshot(id: "best", isFavorite: true, area: 100, createdAt: nil),
-                snapshot(id: "one", isFavorite: false, area: 90, createdAt: nil)
+                snapshot(id: "one", isFavorite: false, area: 90, createdAt: nil),
             ]
         )
         await viewModel.load()
@@ -270,7 +270,7 @@ struct ClusterDetailsViewModelCleanupTests: ClusterDetailsViewModelFixture {
             snapshots: [
                 snapshot(id: "best", isFavorite: true, area: 100, createdAt: nil),
                 snapshot(id: "one", isFavorite: false, area: 90, createdAt: nil),
-                snapshot(id: "two", isFavorite: false, area: 80, createdAt: nil)
+                snapshot(id: "two", isFavorite: false, area: 80, createdAt: nil),
             ]
         )
         await viewModel.load()
@@ -291,7 +291,7 @@ struct ClusterDetailsViewModelCleanupTests: ClusterDetailsViewModelFixture {
             snapshots: [
                 snapshot(id: "best", isFavorite: true, area: 100, createdAt: nil),
                 snapshot(id: "one", isFavorite: false, area: 90, createdAt: nil),
-                snapshot(id: "two", isFavorite: false, area: 80, createdAt: nil)
+                snapshot(id: "two", isFavorite: false, area: 80, createdAt: nil),
             ]
         )
         await viewModel.load()
@@ -310,7 +310,7 @@ struct ClusterDetailsViewModelCleanupTests: ClusterDetailsViewModelFixture {
         let viewModel = makeViewModel(
             snapshots: [
                 snapshot(id: "best", isFavorite: true, area: 100, createdAt: nil),
-                snapshot(id: "one", isFavorite: false, area: 90, createdAt: nil)
+                snapshot(id: "one", isFavorite: false, area: 90, createdAt: nil),
             ],
             reviewRepository: reviewRepository
         )
@@ -336,7 +336,7 @@ struct ClusterDetailsViewModelCleanupTests: ClusterDetailsViewModelFixture {
         let viewModel = makeViewModel(
             snapshots: [
                 snapshot(id: "best", isFavorite: true, area: 100, createdAt: nil),
-                snapshot(id: "one", isFavorite: false, area: 90, createdAt: nil)
+                snapshot(id: "one", isFavorite: false, area: 90, createdAt: nil),
             ],
             reviewRepository: reviewRepository
         )
@@ -371,7 +371,7 @@ struct ClusterDetailsViewModelCleanupTests: ClusterDetailsViewModelFixture {
             snapshots: [
                 snapshot(id: "best", isFavorite: true, area: 100, createdAt: nil),
                 snapshot(id: "one", isFavorite: false, area: 90, createdAt: nil),
-                snapshot(id: "two", isFavorite: false, area: 80, createdAt: nil)
+                snapshot(id: "two", isFavorite: false, area: 80, createdAt: nil),
             ],
             reviewRepository: reviewRepository
         )

@@ -62,7 +62,7 @@ struct WidgetHeroAssetsTests {
             (2.0, .twoX),
             (2.49, .twoX),
             (2.5, .threeX),
-            (3.0, .threeX)
+            (3.0, .threeX),
         ]
     )
     func scaleFromDisplayScale(displayScale: CGFloat, expected: WidgetHeroScale) {

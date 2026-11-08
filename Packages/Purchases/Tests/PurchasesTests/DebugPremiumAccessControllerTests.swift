@@ -50,7 +50,7 @@ final class DebugPremiumAccessControllerTests {
             .scan(completedThisMonth: 0),
             .scan(completedThisMonth: 99),
             .cleanupSelection(count: 1),
-            .cleanupSelection(count: 50)
+            .cleanupSelection(count: 50),
         ]
 
         for feature in PremiumFeature.allCases {

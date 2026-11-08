@@ -11,7 +11,7 @@ struct SubscriptionDisclosureTests {
         "purchases.subscriptionPaywall.subscriptionsRenewAutomaticallyUnlessCancelled",
         "purchases.subscriptionPaywall.yearlyPlanIncludes7Day",
         "purchases.subscriptionPaywall.privacyPolicy",
-        "purchases.subscriptionPaywall.termsOfUse"
+        "purchases.subscriptionPaywall.termsOfUse",
     ]
 
     /// Trial eligibility is decided by StoreKit per subscription group: a customer who already
@@ -30,7 +30,7 @@ struct SubscriptionDisclosureTests {
         "pl": "uprawnionych nowych subskrybentów",
         "tr": "uygun yeni aboneler",
         "zh-Hant": "符合資格的新訂閱者",
-        "ar": "الجدد المؤهلين"
+        "ar": "الجدد المؤهلين",
     ]
 
     /// Compares each catalog value against the value parsed from *that locale's* documented
@@ -55,7 +55,7 @@ struct SubscriptionDisclosureTests {
             "purchases.subscriptionPaywall.subscriptionsRenewAutomaticallyUnlessCancelled": renewalParagraph,
             "purchases.subscriptionPaywall.yearlyPlanIncludes7Day": trialParagraph,
             "purchases.subscriptionPaywall.privacyPolicy": linkRow.mapValues(\.privacyPolicy),
-            "purchases.subscriptionPaywall.termsOfUse": linkRow.mapValues(\.termsOfUse)
+            "purchases.subscriptionPaywall.termsOfUse": linkRow.mapValues(\.termsOfUse),
         ]
 
         var mismatches: [String] = []
@@ -116,7 +116,7 @@ struct SubscriptionDisclosureTests {
         for (key, number) in [
             ("purchases.subscriptionPaywall.subscriptionsRenewAutomaticallyUnlessCancelled", "24"),
             ("purchases.subscriptionPaywall.yearlyPlanIncludes7Day", "24"),
-            ("purchases.subscriptionPaywall.yearlyPlanIncludes7Day", "7")
+            ("purchases.subscriptionPaywall.yearlyPlanIncludes7Day", "7"),
         ] {
             for language in LocalizationCatalog.shippedLanguages {
                 let localization = try #require(catalog.localizations(of: key)[language])

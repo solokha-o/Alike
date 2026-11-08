@@ -545,7 +545,7 @@ struct ClusterAssemblyTests {
         let repository = CoreDataPhotoClusterRepository(persistence: .preview())
         try await repository.saveClusterData([
             clusterData(["a"], createdAt: Date(timeIntervalSince1970: 200)),
-            clusterData(["b"], createdAt: Date(timeIntervalSince1970: 100))
+            clusterData(["b"], createdAt: Date(timeIntervalSince1970: 100)),
         ])
         let recorder = FetchRecorder()
         let handle = TaskHandle()

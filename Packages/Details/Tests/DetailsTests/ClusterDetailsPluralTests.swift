@@ -130,7 +130,7 @@ struct ClusterDetailsPluralTests {
 
         for key in [
             "details.clusterDetails.selectedPhotoWillBeRemoved",
-            "details.clusterDetails.selectedPhotosWillBeRemoved"
+            "details.clusterDetails.selectedPhotosWillBeRemoved",
         ] {
             for (language, localization) in try catalog.localizations(of: key) {
                 let unit = try #require(localization["stringUnit"] as? [String: Any], "\(key) [\(language)] is not a plain entry")

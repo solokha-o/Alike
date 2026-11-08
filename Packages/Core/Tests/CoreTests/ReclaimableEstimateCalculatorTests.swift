@@ -54,7 +54,7 @@ struct ReclaimableEstimateCalculatorTests {
         let estimate = ReclaimableEstimateCalculator.estimate(
             clusters: [
                 cluster(["k1": 1, "dup": 30], keeper: "k1"),
-                cluster(["k2": 1, "dup": 30, "c": 5], keeper: "k2")
+                cluster(["k2": 1, "dup": 30, "c": 5], keeper: "k2"),
             ],
             categories: []
         )

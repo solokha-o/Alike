@@ -6,7 +6,7 @@ let package = Package(
     defaultLocalization: "en",
     platforms: [
         .iOS(.v17),
-        .macOS(.v14)
+        .macOS(.v14),
     ],
     products: [
         .library(
@@ -21,7 +21,7 @@ let package = Package(
         .package(path: "../PhotoAnalysis"),
         .package(path: "../DesignSystem"),
         .package(path: "../NavigationKit"),
-        .package(path: "../Purchases")
+        .package(path: "../Purchases"),
     ],
     targets: [
         .target(
@@ -29,20 +29,20 @@ let package = Package(
             dependencies: [
                 "CleanupWorkspace", "Core", "Storage", "PhotoAnalysis", "DesignSystem", "NavigationKit",
                 .product(name: "Purchases", package: "Purchases"),
-                .product(name: "PurchasesUI", package: "Purchases")
+                .product(name: "PurchasesUI", package: "Purchases"),
             ],
             resources: [
-                .process("Resources")
+                .process("Resources"),
             ],
             swiftSettings: [
-                .enableExperimentalFeature("StrictConcurrency")
+                .enableExperimentalFeature("StrictConcurrency"),
             ]
         ),
         .testTarget(
             name: "CleanupTests",
             dependencies: [
                 "Cleanup", "CleanupWorkspace", "Core", "Storage", "PhotoAnalysis",
-                .product(name: "PurchasesUI", package: "Purchases")
+                .product(name: "PurchasesUI", package: "Purchases"),
             ]
         ),
     ]

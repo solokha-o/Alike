@@ -37,7 +37,7 @@ struct AlikeStatusWidget: Widget {
     private static var families: [WidgetFamily] {
         var families: [WidgetFamily] = [
             .systemSmall, .systemMedium,
-            .accessoryCircular, .accessoryRectangular, .accessoryInline
+            .accessoryCircular, .accessoryRectangular, .accessoryInline,
         ]
         if #available(iOS 27.0, *) {
             families.append(.systemExtraLargePortrait)

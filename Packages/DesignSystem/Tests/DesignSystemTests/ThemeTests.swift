@@ -50,7 +50,7 @@ struct ThemeTests {
             Font.appCallout,
             Font.appSubheadline,
             Font.appFootnote,
-            Font.appCaption
+            Font.appCaption,
         ]
         
         // Then: All should exist
@@ -94,7 +94,7 @@ struct ThemeTests {
             Spacing.large,
             Spacing.xLarge,
             Spacing.xxLarge,
-            Spacing.xxxLarge
+            Spacing.xxxLarge,
         ]
         
         // Then: Should be in ascending order
@@ -125,7 +125,7 @@ struct ThemeTests {
             CornerRadius.small,
             CornerRadius.medium,
             CornerRadius.large,
-            CornerRadius.xLarge
+            CornerRadius.xLarge,
         ]
         
         // Then: Should be in ascending order

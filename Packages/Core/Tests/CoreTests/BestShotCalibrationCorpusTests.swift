@@ -24,7 +24,7 @@ struct BestShotCalibrationCorpusTests {
                                 sharpness: 55,
                                 hasClosedEyes: false,
                                 isCroppedByFrame: false
-                            )
+                            ),
                         ],
                         pixelArea: 12_000_000
                     ),
@@ -42,7 +42,7 @@ struct BestShotCalibrationCorpusTests {
                     pixelWidth: 4_000,
                     pixelHeight: 3_000,
                     isFavorite: false
-                )
+                ),
             ],
             humanBestShotID: "asset-1"
         )
@@ -61,7 +61,7 @@ struct BestShotCalibrationCorpusTests {
                     signals: PhotoQualitySignals(globalSharpness: 45, pixelArea: 8_000_000),
                     pixelWidth: 3_000,
                     pixelHeight: 2_000
-                )
+                ),
             ],
             humanBestShotID: "asset-4"
         )

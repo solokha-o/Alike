@@ -14,7 +14,7 @@ struct LocalizationCatalog {
     /// carries it — which is the point.
     static let shippedLanguages = [
         "en", "uk", "es-419", "es", "pt-BR", "de", "fr", "it", "nl", "pl", "tr", "zh-Hant",
-        "ar"
+        "ar",
     ]
 
     let strings: [String: [String: Any]]
