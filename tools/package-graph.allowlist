@@ -16,11 +16,3 @@
 # that no current dependency uses.
 
 sdk DesignSystem https://github.com/airbnb/lottie-spm.git  # ADR-0004 SDK rule: only DesignSystem plays Lottie animations.
-
-# Debt: Scanner.swift re-exports Storage and PhotoAnalysis, which reach Scanner only
-# through CleanupWorkspace. Impact: every importer of Scanner also sees Storage and
-# PhotoAnalysis, so the ADR-0004 baseline under-reports the surface of Scanner.
-# Fix: declare both in Scanner/Package.swift with an ADR baseline update, or remove
-# the re-exports.
-import Packages/Scanner/Sources/Scanner/Scanner.swift Storage  # debt card https://app.notion.com/p/41104d81c943817585e2d626948b49a3
-import Packages/Scanner/Sources/Scanner/Scanner.swift PhotoAnalysis  # debt card https://app.notion.com/p/41104d81c943817585e2d626948b49a3
