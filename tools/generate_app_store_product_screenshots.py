@@ -308,7 +308,7 @@ COPY = {
         (
             "ВІЛЬНЕ МІСЦЕ",
             "Поверніть\nсобі місце",
-            "Видно, скільки місця можна звільнити, ще до видалення.",
+            "Побачте, скільки місця можна звільнити, ще до видалення.",
         ),
         (
             "ЧЕРГА",
@@ -387,7 +387,7 @@ COPY = {
         (
             "ESPACE LIBRE",
             "Récupérez\nde l’espace",
-            "Voyez combien d’espace vous libérez avant toute suppression.",
+            "Voyez combien d’espace vous pouvez libérer avant toute suppression.",
         ),
         (
             "UNE SEULE FILE",
@@ -428,7 +428,7 @@ COPY = {
         (
             "ESPACIO LIBRE",
             "Recupera\nespacio",
-            "Ves cuánto espacio liberas antes de borrar nada.",
+            "Mira cuánto espacio puedes liberar antes de borrar nada.",
         ),
         (
             "UNA SOLA COLA",
@@ -465,7 +465,7 @@ COPY = {
         (
             "ESPACIO LIBRE",
             "Recupera\nespacio",
-            "Ves cuánto espacio liberas antes de eliminar nada.",
+            "Mira cuánto espacio puedes liberar antes de eliminar nada.",
         ),
         (
             "UNA SOLA COLA",
