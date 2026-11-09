@@ -1074,7 +1074,7 @@ METADATA = {
         # new build. It opens on the benefit and the privacy promise; the trial
         # sits in the middle rather than as the closing line.
         "promotional_text": "See how much space you could free. Photos stay on your iPhone. Yearly Pro: 7 days free for eligible new subscribers. No ads, no account.",
-        "release_notes": "This update fixes a freeze: with a large photo library, Alike could stop responding for several seconds right after it opened, and iOS could then close it. Your groups of similar photos now load in the background.\n\nEverything still runs on your device: no account, no uploads, and what you clear goes to Recently Deleted, where iOS keeps it for about 30 days.\n\nFeedback and bug reports are genuinely welcome — the support link on the App Store page reaches me directly.",
+        "release_notes": "A maintenance update: I cleaned up the code inside Alike and added more automated checks, so the next updates can come with fewer bugs. Nothing changes in how you use the app.\n\nEverything still runs on your device: no account, no uploads, and what you clear goes to Recently Deleted, where iOS keeps it for about 30 days.\n\nFeedback and bug reports are genuinely welcome — the support link on the App Store page reaches me directly.",
     },
     "uk": {
         "subtitle": "Дублікати й очищення фото",
@@ -1083,7 +1083,7 @@ METADATA = {
         # hence the four English words at the end.
         "keywords": "видалити,видалення,памʼяті,галерея,схожі,скріншот,місце,сховище,клінер,cleanup,storage,clean,up",
         "promotional_text": "Поверніть місце: видно, скільки звільниться, ще до видалення, і жодне фото не залишає iPhone. Pro: 7 днів безкоштовно на річному плані. Без реклами й акаунта.",
-        "release_notes": "Це оновлення виправляє зависання: з великою фототекою Alike міг не відповідати кілька секунд одразу після відкриття, і тоді iOS могла закрити його. Тепер групи схожих фото завантажуються у фоні.\n\nУсе так само виконується на вашому пристрої: без облікового запису й без вивантаження, а прибране потрапляє до «Нещодавно видалених», де iOS зберігає його близько 30 днів.\n\nВідгуки та повідомлення про помилки дуже вітаються — посилання на підтримку на сторінці App Store веде безпосередньо до розробника.",
+        "release_notes": "Це технічне оновлення: я впорядкував код Alike і додав більше автоматичних перевірок, щоб наступні оновлення виходили з меншою кількістю помилок. Те, як ви користуєтеся застосунком, не змінюється.\n\nУсе так само виконується на вашому пристрої: без облікового запису й без вивантаження, а прибране потрапляє до альбому «Недавно видалені», де iOS зберігає його близько 30 днів.\n\nВідгуки та повідомлення про помилки дуже вітаються — посилання на підтримку на сторінці App Store веде безпосередньо до розробника.",
     },
     # Subtitle and keyword words below come from each storefront's own search
     # suggestions and Search Popularity (September 2026), not from a translation
@@ -1095,35 +1095,35 @@ METADATA = {
         "description": DE_DE_DESCRIPTION,
         "keywords": "aussortieren,bilder,duplikate,speicher,reinigen,aufräumen,galerie,sortieren,ähnliche,cleanup",
         "promotional_text": "Hol dir Speicher zurück: Du siehst vor dem Löschen, wie viel frei wird, und kein Foto verlässt dein iPhone. Pro: 7 Tage gratis im Jahresplan. Keine Werbung, kein Konto.",
-        "release_notes": "Dieses Update behebt ein Einfrieren: Bei einer großen Fotomediathek konnte Alike direkt nach dem Öffnen mehrere Sekunden nicht reagieren, und iOS konnte die App dann schließen. Deine Gruppen ähnlicher Fotos laden jetzt im Hintergrund.\n\nAlles läuft weiterhin auf deinem Gerät: kein Konto, keine Uploads, und was du aufräumst, geht nach „Zuletzt gelöscht“, wo iOS es rund 30 Tage aufbewahrt.\n\nRückmeldungen und Fehlerberichte sind ausdrücklich willkommen — der Support-Link auf der App-Store-Seite erreicht mich direkt.",
+        "release_notes": "Ein Wartungsupdate: Ich habe den Code von Alike aufgeräumt und mehr automatische Prüfungen ergänzt, damit kommende Updates mit weniger Fehlern erscheinen. An der Bedienung der App ändert sich nichts.\n\nAlles läuft weiterhin auf deinem Gerät: kein Konto, keine Uploads, und was du aufräumst, geht nach „Zuletzt gelöscht“, wo iOS es rund 30 Tage aufbewahrt.\n\nRückmeldungen und Fehlerberichte sind ausdrücklich willkommen — der Support-Link auf der App-Store-Seite erreicht mich direkt.",
     },
     "fr-FR": {
         "subtitle": "Tri et nettoyage des doublons",
         "description": FR_FR_DESCRIPTION,
         "keywords": "supprimer,trier,nettoyeur,nettoyer,liberer,espace,stockage,galerie,similaires,double,capture,cleanup",
         "promotional_text": "Gagnez de l'espace : voyez combien vous libérez avant de supprimer, et aucune photo ne quitte votre iPhone. Pro : 7 jours offerts en formule annuelle. Ni pub ni compte.",
-        "release_notes": "Cette mise à jour corrige un blocage : avec une grande photothèque, Alike pouvait ne plus répondre pendant plusieurs secondes juste après son ouverture, puis iOS pouvait le fermer. Vos groupes de photos similaires se chargent désormais en arrière-plan.\n\nTout se passe toujours sur votre appareil : aucun compte, aucun envoi, et ce que vous nettoyez part dans « Supprimés récemment », où iOS le conserve environ 30 jours.\n\nVos retours et vos rapports de bugs sont sincèrement bienvenus — le lien d'assistance sur la page App Store me parvient directement.",
+        "release_notes": "Une mise à jour de maintenance : j’ai remis de l’ordre dans le code d’Alike et ajouté davantage de vérifications automatiques, pour que les prochaines mises à jour arrivent avec moins de bugs. Rien ne change dans votre façon d’utiliser l’app.\n\nTout se passe toujours sur votre appareil : aucun compte, aucun envoi, et ce que vous nettoyez part dans « Supprimées récemment », où iOS le conserve environ 30 jours.\n\nVos retours et signalements de bugs sont les bienvenus. Le lien d’assistance sur la page App Store vous permet de me contacter directement.",
     },
     "es-ES": {
         "subtitle": "Borrar fotos duplicadas",
         "description": ES_ES_DESCRIPTION,
         "keywords": "eliminar,repetidas,similares,limpiar,limpiador,liberar,espacio,almacenamiento,galería,captura",
         "promotional_text": "Recupera espacio: ves cuánto liberas antes de borrar nada y ninguna foto sale de tu iPhone. Pro: 7 días gratis en el plan anual. Sin anuncios ni cuenta.",
-        "release_notes": "Esta actualización corrige un bloqueo: con una fototeca grande, Alike podía dejar de responder durante varios segundos justo después de abrirse, y entonces iOS podía cerrarlo. Ahora tus grupos de fotos similares se cargan en segundo plano.\n\nTodo sigue ejecutándose en tu dispositivo: sin cuenta, sin subidas, y lo que limpias va a «Eliminados recientemente», donde iOS lo guarda unos 30 días.\n\nLos comentarios y los informes de errores son muy bienvenidos: el enlace de soporte de la página de App Store llega directamente a mí.",
+        "release_notes": "Una actualización de mantenimiento: he ordenado el código de Alike y he añadido más comprobaciones automáticas, para que las próximas actualizaciones lleguen con menos errores. Nada cambia en la forma de usar la app.\n\nTodo sigue ejecutándose en tu dispositivo: sin cuenta, sin subidas, y lo que limpias va a «Eliminados», donde iOS lo guarda unos 30 días.\n\nLos comentarios y los informes de errores son muy bienvenidos: el enlace de soporte de la página de App Store llega directamente a mí.",
     },
     "es-MX": {
         "subtitle": "Eliminar fotos duplicadas",
         "description": ES_MX_DESCRIPTION,
         "keywords": "borrar,repetidas,limpiar,limpiador,liberar,espacio,almacenamiento,galería,swipe,tidy,sort,picture",
         "promotional_text": "Recupera espacio: ves cuánto liberas antes de eliminar nada y ninguna foto sale de tu iPhone. Pro: 7 días gratis en el plan anual. Sin anuncios ni cuenta.",
-        "release_notes": "Esta actualización corrige un bloqueo: con una fototeca grande, Alike podía dejar de responder durante varios segundos justo después de abrirse, y entonces iOS podía cerrarlo. Ahora tus grupos de fotos similares se cargan en segundo plano.\n\nTodo sigue ejecutándose en tu dispositivo: sin cuenta, sin subidas, y lo que limpias va a «Eliminados recientemente», donde iOS lo guarda unos 30 días.\n\nLos comentarios y los reportes de errores son muy bienvenidos: el enlace de soporte de la página de App Store llega directamente a mí.",
+        "release_notes": "Una actualización de mantenimiento: ordené el código de Alike y agregué más verificaciones automáticas, para que las próximas actualizaciones lleguen con menos errores. Nada cambia en la forma de usar la app.\n\nTodo sigue ejecutándose en tu dispositivo: sin cuenta, sin subidas, y lo que limpias va a «Eliminados», donde iOS lo guarda unos 30 días.\n\nLos comentarios y los reportes de errores son muy bienvenidos: el enlace de soporte de la página de App Store llega directamente a mí.",
     },
     "pt-BR": {
         "subtitle": "Apagar fotos duplicadas",
         "description": PT_BR_DESCRIPTION,
         "keywords": "limpar,limpeza,limpador,repetidas,iguais,excluir,liberar,espaço,armazenamento,galeria,organizar",
         "promotional_text": "Recupere espaço: veja quanto vai liberar antes de apagar qualquer coisa, e nenhuma foto sai do seu iPhone. Pro: 7 dias grátis no plano anual. Sem anúncios, sem conta.",
-        "release_notes": "Esta atualização corrige um travamento: com uma fototeca grande, o Alike podia parar de responder por alguns segundos logo depois de abrir, e então o iOS podia fechar o app. Agora seus grupos de fotos semelhantes carregam em segundo plano.\n\nTudo continua rodando no seu dispositivo: sem conta, sem envios, e o que você limpa vai para «Apagados recentemente», onde o iOS guarda por cerca de 30 dias.\n\nComentários e relatos de erros são muito bem-vindos — o link de suporte na página da App Store chega direto a mim.",
+        "release_notes": "Uma atualização de manutenção: organizei o código do Alike e adicionei mais verificações automáticas, para que as próximas atualizações cheguem com menos erros. Nada muda no jeito de usar o app.\n\nTudo continua rodando no seu dispositivo: sem conta, sem envios, e o que você limpa vai para «Apagados», onde o iOS guarda por cerca de 30 dias.\n\nComentários e relatos de erros são muito bem-vindos — o link de suporte na página da App Store chega direto a mim.",
     },
     # pt-PT: Portugal indexes en-GB next to pt-PT, so none of these repeats an
     # en-GB keyword (cross_indexed_keyword_errors() enforces it). The words
@@ -1134,7 +1134,7 @@ METADATA = {
         "description": PT_PT_DESCRIPTION,
         "keywords": "limpar,limpeza,repetidas,iguais,apagar,libertar,espaço,armazenamento,galeria,organizar,telemóvel",
         "promotional_text": "Recupere espaço: veja quanto vai libertar antes de eliminar o que quer que seja, e nenhuma foto sai do seu iPhone. Pro: 7 dias grátis no plano anual. Sem anúncios.",
-        "release_notes": "Esta atualização corrige um bloqueio: com uma fototeca grande, o Alike podia deixar de responder durante alguns segundos logo depois de abrir, e o iOS podia fechá-lo. Agora os seus grupos de fotos semelhantes carregam em segundo plano.\n\nTudo continua a correr no seu dispositivo: sem conta, sem envios, e o que limpa vai para «Apagados recentemente», onde o iOS o guarda durante cerca de 30 dias.\n\nComentários e relatos de erros são muito bem-vindos — a ligação de suporte na página da App Store chega diretamente a mim.",
+        "release_notes": "Uma atualização de manutenção: organizei o código do Alike e acrescentei mais verificações automáticas, para que as próximas atualizações cheguem com menos erros. Nada muda na forma como usas a app.\n\nTudo continua a correr no teu dispositivo: sem conta, sem envios, e o que apagas vai para «Apagado», onde o iOS o guarda durante cerca de 30 dias.\n\nComentários e relatos de erros são muito bem-vindos — a ligação de suporte na página da App Store chega diretamente a mim.",
     },
     # The same rules hold for the six locales below. tr keeps English words
     # because that is what that storefront measurably searches for, and the
@@ -1173,35 +1173,35 @@ METADATA = {
         "description": IT_DESCRIPTION,
         "keywords": "doppioni,galleria,pulisci,ordina,immagini,duplicati,scatti,raffica,sfocate,uguali,doppie,rimuovi",
         "promotional_text": "Recupera spazio: vedi quanto liberi prima di eliminare qualcosa, e nessuna foto lascia il tuo iPhone. Pro: 7 giorni gratis nel piano annuale. Senza pubblicità né account.",
-        "release_notes": "Questo aggiornamento corregge un blocco: con una libreria di foto grande, Alike poteva non rispondere per alcuni secondi subito dopo l’apertura, e iOS poi poteva chiuderlo. Ora i tuoi gruppi di foto simili si caricano in background.\n\nTutto avviene ancora sul tuo dispositivo: nessun account, nessun caricamento, e ciò che elimini finisce in «Eliminati di recente», dove iOS lo conserva per circa 30 giorni.\n\nCommenti e segnalazioni sono davvero benvenuti: il link di assistenza sulla pagina App Store arriva direttamente a me.",
+        "release_notes": "Un aggiornamento di manutenzione: ho riordinato il codice di Alike e aggiunto più controlli automatici, così i prossimi aggiornamenti arriveranno con meno errori. Nel modo di usare l’app non cambia nulla.\n\nTutto avviene ancora sul tuo dispositivo: nessun account, nessun caricamento, e ciò che elimini finisce in «Eliminati di recente», dove iOS lo conserva per circa 30 giorni.\n\nCommenti e segnalazioni sono davvero benvenuti: il link di assistenza sulla pagina App Store arriva direttamente a me.",
     },
     "nl-NL": {
         "subtitle": "Dubbele foto's verwijderen",
         "description": NL_NL_DESCRIPTION,
         "keywords": "opruimen,opschonen,opslag,galerij,telefoon,sorteren,ruimte,vergelijkbare,wazige,fotos,swipe,clean",
         "promotional_text": "Win ruimte terug: je ziet vóór het verwijderen hoeveel er vrijkomt, en geen foto verlaat je iPhone. Pro: 7 dagen gratis op het jaarabonnement. Geen reclame, geen account.",
-        "release_notes": "Deze update lost een vastloper op: met een grote fotobibliotheek kon Alike direct na het openen enkele seconden niet reageren, waarna iOS de app kon sluiten. Je groepen vergelijkbare foto’s laden nu op de achtergrond.\n\nAlles draait nog steeds op je apparaat: geen account, geen uploads, en wat je opruimt gaat naar 'Recent verwijderd', waar iOS het ongeveer 30 dagen bewaart.\n\nReacties en foutmeldingen zijn oprecht welkom — de ondersteuningslink op de App Store-pagina komt rechtstreeks bij mij terecht.",
+        "release_notes": "Een onderhoudsupdate: ik heb de code van Alike opgeruimd en meer automatische controles toegevoegd, zodat volgende updates met minder fouten komen. Aan het gebruik van de app verandert niets.\n\nAlles draait nog steeds op je apparaat: geen account, geen uploads, en wat je opruimt gaat naar 'Recent verwijderd', waar iOS het ongeveer 30 dagen bewaart.\n\nReacties en foutmeldingen zijn oprecht welkom — de ondersteuningslink op de App Store-pagina komt rechtstreeks bij mij terecht.",
     },
     "pl": {
         "subtitle": "Czyszczenie galerii, duplikaty",
         "description": PL_DESCRIPTION,
         "keywords": "usuwanie,zdjec,zdjęcia,podobne,pamieci,telefonu,sortowanie,porządki,miejsce,clean,swipe",
         "promotional_text": "Zobacz szacowane miejsce do odzyskania. Zdjęcia zostają na iPhonie. Plan roczny: 7 dni Pro gratis dla uprawnionych nowych subskrybentów. Bez reklam i konta.",
-        "release_notes": "Ta aktualizacja naprawia zawieszanie się aplikacji: przy dużej bibliotece zdjęć Alike mógł przez kilka sekund nie reagować zaraz po otwarciu, a wtedy iOS mógł go zamknąć. Grupy podobnych zdjęć ładują się teraz w tle.\n\nWszystko nadal działa na Twoim urządzeniu: bez konta, bez wysyłania czegokolwiek, a to, co uporządkujesz, trafia do albumu „Ostatnio usunięte”, gdzie iOS przechowuje je przez około 30 dni.\n\nUwagi i zgłoszenia błędów są naprawdę mile widziane — link do pomocy na stronie App Store trafia bezpośrednio do mnie.",
+        "release_notes": "To aktualizacja serwisowa: uporządkowałem kod Alike i dodałem więcej automatycznych testów, aby kolejne wersje miały mniej błędów. Sposób korzystania z aplikacji się nie zmienia.\n\nWszystko nadal działa na Twoim urządzeniu: bez konta, bez wysyłania czegokolwiek, a to, co uporządkujesz, trafia do albumu „Ostatnio usunięte”, gdzie iOS przechowuje je przez około 30 dni.\n\nUwagi i zgłoszenia błędów są naprawdę mile widziane — link do pomocy na stronie App Store trafia bezpośrednio do mnie.",
     },
     "tr": {
         "subtitle": "Fotoğraf silme ve temizleyici",
         "description": TR_DESCRIPTION,
         "keywords": "temizleme,galeri,depolama,alanı,yer,açma,telefon,yinelenen,aynı,benzer,kopya,bulanık,albüm,cleanup",
         "promotional_text": "Yer kazan: silmeden önce ne kadar alan açılacağını gör; hiçbir fotoğraf iPhone'undan çıkmaz. Pro: yıllık planda 7 gün ücretsiz. Reklam yok, hesap yok.",
-        "release_notes": "Bu güncelleme bir donmayı düzeltiyor: büyük bir fotoğraf arşivinde Alike açıldıktan hemen sonra birkaç saniye yanıt vermeyebiliyor ve iOS uygulamayı kapatabiliyordu. Benzer fotoğraf grupların artık arka planda yükleniyor.\n\nHer şey yine cihazında çalışıyor: hesap yok, yükleme yok; temizlediklerin Son Silinenler'e gider, iOS onları yaklaşık 30 gün orada tutar.\n\nGeri bildirimler ve hata bildirimleri gerçekten memnuniyetle karşılanır — App Store sayfasındaki destek bağlantısı doğrudan bana ulaşır.",
+        "release_notes": "Bu bir bakım güncellemesi: Alike'ın kodunu düzenledim ve daha fazla otomatik kontrol ekledim; böylece sonraki güncellemeler daha az hatayla gelecek. Uygulamayı kullanma biçiminde hiçbir şey değişmiyor.\n\nHer şey yine cihazında çalışıyor: hesap yok, yükleme yok; temizlediklerin Son Silinenler'e gider, iOS onları yaklaşık 30 gün orada tutar.\n\nGeri bildirimler ve hata bildirimleri memnuniyetle karşılanır — App Store sayfasındaki destek bağlantısı doğrudan bana ulaşır.",
     },
     "zh-Hant": {
         "subtitle": "一鍵清理重複與多餘照片，整理手機相簿",
         "description": ZH_HANT_DESCRIPTION,
         "keywords": "相似,刪除,儲存,空間,截圖,大師,瘦身,釋放,連拍,模糊,相片,圖庫,助手,管家,清除,容量,記憶體,近似,最佳,分類,工具,圖片,智能,神器,優化,幫手,快照",
         "promotional_text": "騰出空間：刪除之前就能看到可以釋出多少空間，而且沒有任何照片會離開你的 iPhone。Pro：年繳方案 7 天免費。沒有廣告，不需帳戶。",
-        "release_notes": "此更新修正了一個無回應問題：照片圖庫很大時，Alike 在開啟後可能立即有數秒沒有回應，接著 iOS 可能會將它關閉。現在相似照片群組會在背景載入。\n\n一切仍在你的裝置上執行：沒有帳戶、不上傳任何東西，清理掉的照片會移到「最近刪除」，iOS 會在那裡保留約 30 天。\n\n歡迎提供意見與回報問題——App Store 頁面上的支援連結會直接寄到我這裡。",
+        "release_notes": "這是一次維護更新：我整理了 Alike 的程式碼，並加入更多自動檢查，讓之後的更新更少出錯。使用方式完全不變。\n\n一切仍在你的裝置上執行：沒有帳戶、不上傳任何東西，清理掉的照片會移到「最近刪除」，iOS 會在那裡保留約 30 天。\n\n歡迎提供意見與回報問題——你可以透過 App Store 頁面上的支援連結直接聯絡我。",
     },
     "ar-SA": {
         "subtitle": "حذف الصور المكررة من الجوال",
@@ -1210,7 +1210,7 @@ METADATA = {
         # in the SA storefront's suggestions.
         "keywords": "تنظيف,منظف,مساحة,تخزين,المكرره,الايفون,المتشابهة,معرض,ألبوم,ضبابية,لقطة,شاشة,ذاكرة,cleanup,storage",
         "promotional_text": "اعرف المساحة التي يمكنك استرجاعها قبل الحذف. صورك تبقى على iPhone. تجربة Pro مجانية لمدة 7 أيام بالخطة السنوية للمشتركين الجدد المؤهلين. بلا إعلانات أو حساب.",
-        "release_notes": "يصلح هذا التحديث مشكلة تجمّد: مع مكتبة صور كبيرة، كان من الممكن أن يتوقف Alike عن الاستجابة لعدة ثوانٍ بعد فتحه مباشرة، ثم يغلقه iOS. الآن تُحمَّل مجموعات الصور المتشابهة في الخلفية.\n\nكل شيء ما زال يجري على جهازك: لا حساب ولا رفع، وما تنظّفه ينتقل إلى «المحذوفة مؤخرًا» حيث يحتفظ به iOS نحو 30 يومًا.\n\nملاحظاتك وبلاغاتك مرحَّب بها — رابط الدعم في صفحة App Store يصلني مباشرة.",
+        "release_notes": "هذا تحديث صيانة: نظّمتُ شيفرة Alike وأضفتُ مزيدًا من الفحوص التلقائية، لتصل التحديثات القادمة بأخطاء أقل. لا يتغيّر شيء في طريقة استخدامك للتطبيق.\n\nكل شيء ما زال يجري على جهازك: لا حساب ولا رفع، وما تنظّفه ينتقل إلى «المحذوفة مؤخرًا» حيث يحتفظ به iOS نحو 30 يومًا.\n\nملاحظاتك وبلاغاتك مرحَّب بها — رابط الدعم في صفحة App Store يصلني مباشرة.",
     },
 }
 
@@ -1346,18 +1346,6 @@ METADATA['zh-Hant'].update(
                 '\n'
                 'Alike Pro 是自動續訂的訂閱項目，提供年繳與月繳方案，並以你的當地貨幣定價。年繳方案為符合資格的新訂閱者提供 7 天免費試用。除非你在試用結束前至少 24 小時取消，否則試用結束時即開始計費。除非在目前週期結束前至少 '
                 '24 小時取消，訂閱項目將自動續訂，款項將向你的 Apple 帳戶收取。你可以隨時在 iOS「設定」中管理或取消訂閱項目。',
- 'release_notes': 'Alike 已支援 iOS 27，帶來新的小工具，以及更快整理照片的方式。\n'
-                  '\n'
-                  '- 新的直式大型小工具會顯示你能釋放多少空間和你最大的幾個群組，並提供前往「相似照片」、「截圖」和「模糊照片」的捷徑。從主畫面的小工具圖庫加入即可。\n'
-                  '- 在群組中滑動照片，不用打開就能選取、保留或設為最佳照片。在「截圖」中和使用 VoiceOver 時也能這樣操作。\n'
-                  '- 「清理」的按鈕現在在較小的 iPhone 上也放得下，照片開啟時也更流暢。\n'
-                  '- 當主畫面圖像設為著色或透明時，小工具的插圖仍會保留原本的顏色。\n'
-                  '\n'
-                  '新的小工具、滑動操作和「清理」按鈕需要 iOS 27。\n'
-                  '\n'
-                  '一切仍在你的裝置上執行：沒有帳戶、不上傳任何東西，清理掉的照片會移到「最近刪除」，iOS 會在那裡保留約 30 天。\n'
-                  '\n'
-                  '歡迎提供意見與回報問題——你可以透過 App Store 頁面上的支援連結直接聯絡我。',
  'promotional_text': '刪除前先查看預估可釋出的空間。照片留在你的 iPhone 上。年繳方案為符合資格的新訂閱者提供 7 天 Pro 免費試用。沒有廣告，不需帳戶。'}
 )
 
@@ -1437,24 +1425,6 @@ METADATA['uk'].update(
                 'автоматично, якщо її не скасувати щонайменше за 24 години до завершення поточного періоду, '
                 'а оплата стягується з вашого облікового запису Apple. Керувати підпискою або скасувати її '
                 'можна будь-коли в Налаштуваннях iOS.',
- 'release_notes': 'Alike готовий до iOS 27: новий віджет і швидший спосіб розібрати фото.\n'
-                  '\n'
-                  '- Новий високий віджет показує, скільки місця можна звільнити, і ваші найбільші групи, а '
-                  'також веде до розділів «Схожі фото», «Знімки екрана» і «Розмиті фото». Додайте його з '
-                  'галереї віджетів на головному екрані.\n'
-                  '- У групі проведіть по фото, щоб «Вибрати», «Залишити» або зробити його найкращим кадром, '
-                  'не відкриваючи його. Цей жест працює і на екрані «Знімки екрана», і з VoiceOver.\n'
-                  '- Кнопки в «Очищенні» тепер вміщаються на менших iPhone, а фото відкриваються плавніше.\n'
-                  '- Малюнок на віджеті зберігає кольори, коли іконки на головному екрані тоновані або '
-                  'прозорі.\n'
-                  '\n'
-                  'Новий віджет, жести проведення і кнопки в «Очищенні» працюють на iOS 27.\n'
-                  '\n'
-                  'Усе так само виконується на вашому пристрої: без облікового запису й без вивантаження, а '
-                  'прибране потрапляє до альбому «Недавно видалені», де iOS зберігає його близько 30 днів.\n'
-                  '\n'
-                  'Відгуки та повідомлення про помилки дуже вітаються — посилання на підтримку на сторінці '
-                  'App Store веде безпосередньо до розробника.',
  'promotional_text': 'Оцініть місце для звільнення. Фото лишаються на iPhone. Річний план: 7 днів Pro '
                      'безкоштовно для нових підписників, які мають на це право. Без реклами й акаунта.'}
 )
@@ -1534,26 +1504,6 @@ METADATA['pt-BR'].update(
                 'automaticamente, a menos que sejam canceladas pelo menos 24 horas antes do fim do período '
                 'atual, e o pagamento é debitado da sua Conta Apple. Você pode gerenciar ou cancelar quando '
                 'quiser nos Ajustes do iOS.',
- 'release_notes': 'O Alike está pronto para o iOS 27, com um widget novo e um jeito mais rápido de organizar '
-                  'suas fotos.\n'
-                  '\n'
-                  '- Um widget alto novo mostra quanto espaço você pode liberar e seus maiores grupos, com '
-                  'atalhos para «Fotos semelhantes», «Capturas de tela» e «Fotos desfocadas». Adicione pela '
-                  'galeria de widgets da sua Tela de Início.\n'
-                  '- Em um grupo, deslize uma foto para selecionar, manter ou definir como melhor foto, sem '
-                  'abrir. Também funciona em «Capturas de tela» e com o VoiceOver.\n'
-                  '- Os botões de «Limpeza» agora cabem nos iPhones menores, e as fotos abrem com mais '
-                  'suavidade.\n'
-                  '- O desenho do widget mantém as cores quando os ícones da sua Tela de Início estão com '
-                  'tonalidade ou transparentes.\n'
-                  '\n'
-                  'O widget novo, os gestos de deslizar e os botões de «Limpeza» precisam do iOS 27.\n'
-                  '\n'
-                  'Tudo continua rodando no seu dispositivo: sem conta, sem envios, e o que você limpa vai '
-                  'para «Apagados», onde o iOS guarda por cerca de 30 dias.\n'
-                  '\n'
-                  'Comentários e relatos de erros são muito bem-vindos — o link de suporte na página da App '
-                  'Store chega direto a mim.',
  'promotional_text': 'Veja quanto espaço pode recuperar. Suas fotos ficam no iPhone. Pro grátis por 7 dias '
                      'no plano anual para novos assinantes elegíveis. Sem anúncios nem conta.'}
 )
@@ -1632,26 +1582,6 @@ METADATA['es-MX'].update(
                 'suscripciones se renuevan automáticamente a menos que se cancelen al menos 24 horas antes '
                 'del final del periodo en curso, y el pago se carga a tu cuenta de Apple. Puedes '
                 'administrarla o cancelarla cuando quieras en la Configuración de iOS.',
- 'release_notes': 'Alike está listo para iOS 27, con un widget nuevo y una forma más rápida de ordenar tus '
-                  'fotos.\n'
-                  '\n'
-                  '- Un widget alto nuevo muestra cuánto espacio puedes liberar y tus grupos más grandes, '
-                  'con accesos a «Fotos similares», «Capturas» y «Fotos borrosas». Agrégalo desde la galería '
-                  'de widgets de tu pantalla de inicio.\n'
-                  '- En un grupo, desliza una foto para seleccionarla, conservarla o marcarla como mejor '
-                  'toma, sin abrirla. También funciona en «Capturas de pantalla» y con VoiceOver.\n'
-                  '- Los botones de «Limpieza» ya caben en los iPhone más pequeños, y las fotos se abren con '
-                  'más suavidad.\n'
-                  '- El dibujo del widget conserva sus colores cuando los íconos de tu pantalla de inicio '
-                  'tienen tinte o son transparentes.\n'
-                  '\n'
-                  'El widget nuevo, los deslizamientos y los botones de «Limpieza» necesitan iOS 27.\n'
-                  '\n'
-                  'Todo sigue ejecutándose en tu dispositivo: sin cuenta, sin subidas, y lo que limpias va a '
-                  '«Eliminados», donde iOS lo guarda unos 30 días.\n'
-                  '\n'
-                  'Los comentarios y los reportes de errores son muy bienvenidos: el enlace de soporte de la '
-                  'página de App Store llega directamente a mí.',
  'promotional_text': 'Ve cuánto espacio podrías liberar. Tus fotos quedan en el iPhone. Prueba Pro: 7 días '
                      'gratis con el plan anual para nuevos suscriptores elegibles. Sin anuncios ni cuenta.'}
 )
@@ -1729,26 +1659,6 @@ METADATA['es-ES'].update(
                 'suscripciones se renuevan automáticamente salvo que se cancelen al menos 24 horas antes del '
                 'final del periodo en curso, y el pago se carga a tu cuenta de Apple. Puedes gestionarla o '
                 'cancelarla cuando quieras en los Ajustes de iOS.',
- 'release_notes': 'Alike está listo para iOS 27, con un widget nuevo y una forma más rápida de ordenar tus '
-                  'fotos.\n'
-                  '\n'
-                  '- Un widget alto nuevo muestra cuánto espacio puedes liberar y tus grupos más grandes, '
-                  'con accesos a «Fotos similares», «Capturas» y «Fotos borrosas». Añádelo desde la galería '
-                  'de widgets de tu pantalla de inicio.\n'
-                  '- En un grupo, desliza una foto para seleccionarla, conservarla o marcarla como mejor '
-                  'toma, sin abrirla. También funciona en «Capturas de pantalla» y con VoiceOver.\n'
-                  '- Los botones de «Limpieza» ya caben en los iPhone más pequeños, y las fotos se abren con '
-                  'más suavidad.\n'
-                  '- El dibujo del widget conserva sus colores cuando los iconos de tu pantalla de inicio '
-                  'están tintados o son transparentes.\n'
-                  '\n'
-                  'El widget nuevo, los deslizamientos y los botones de «Limpieza» necesitan iOS 27.\n'
-                  '\n'
-                  'Todo sigue ejecutándose en tu dispositivo: sin cuenta, sin subidas, y lo que limpias va a '
-                  '«Eliminados», donde iOS lo guarda unos 30 días.\n'
-                  '\n'
-                  'Los comentarios y los informes de errores son muy bienvenidos: el enlace de soporte de la '
-                  'página de App Store llega directamente a mí.',
  'promotional_text': 'Estima el espacio a liberar. Tus fotos quedan en el iPhone. Prueba Pro: 7 días gratis '
                      'con el plan anual para nuevos suscriptores elegibles. Sin anuncios ni cuenta.'}
 )
@@ -1990,27 +1900,6 @@ METADATA['fr-FR'].update(
                 "L'abonnement se renouvelle automatiquement sauf résiliation au moins 24 heures avant la fin "
                 'de la période en cours, et le paiement est prélevé sur votre compte Apple. Vous pouvez le '
                 'gérer ou le résilier à tout moment dans les Réglages iOS.',
- 'release_notes': 'Alike est prêt pour iOS 27, avec un nouveau widget et une façon plus rapide de trier vos '
-                  'photos.\n'
-                  '\n'
-                  '- Un nouveau widget en hauteur montre l’espace que vous pouvez libérer et vos plus grands '
-                  'groupes, avec des raccourcis vers « Photos similaires », « Captures d’écran » et « Photos '
-                  'floues ». Ajoutez-le depuis la galerie de widgets de votre écran d’accueil.\n'
-                  '- Dans un groupe, balayez une photo pour la sélectionner, la garder ou la définir comme '
-                  'meilleure photo, sans l’ouvrir. Le balayage marche aussi dans « Captures d’écran » et '
-                  'avec VoiceOver.\n'
-                  '- Les boutons de « Nettoyage » tiennent désormais sur les petits iPhone, et les photos '
-                  's’ouvrent plus en douceur.\n'
-                  '- L’image du widget garde ses couleurs quand les icônes de votre écran d’accueil sont '
-                  'teintées ou transparentes.\n'
-                  '\n'
-                  'Le nouveau widget, les balayages et les boutons de « Nettoyage » demandent iOS 27.\n'
-                  '\n'
-                  'Tout se passe toujours sur votre appareil : aucun compte, aucun envoi, et ce que vous '
-                  'nettoyez part dans « Supprimées récemment », où iOS le conserve environ 30 jours.\n'
-                  '\n'
-                  'Vos retours et signalements de bugs sont les bienvenus. Le lien d’assistance sur la page '
-                  'App Store vous permet de me contacter directement.',
  'promotional_text': 'Estimez l’espace à libérer. Vos photos restent sur iPhone. 7 jours de Pro gratuits en '
                      'formule annuelle pour les nouveaux abonnés éligibles. Sans publicité ni compte.'}
 )
@@ -2091,48 +1980,7 @@ METADATA['de-DE'].update(
                 'Zeitraums gekündigt werden, und die Zahlung erfolgt über deinen Apple-Account. Verwalten '
                 'oder kündigen kannst du jederzeit in den iOS-Einstellungen.',
  'promotional_text': 'Sieh, wie viel Speicher du freigeben kannst. Fotos bleiben auf deinem iPhone. 7 Tage '
-                     'Pro gratis im Jahresabo für berechtigte neue Abonnenten. Ohne Werbung oder Konto.',
- 'release_notes': 'Alike ist bereit für iOS 27: mit einem neuen Widget und einem schnelleren Weg, deine '
-                  'Fotos zu sortieren.\n'
-                  '\n'
-                  '- Ein neues hohes Widget zeigt, wie viel Speicher du freigeben kannst, und deine größten '
-                  'Gruppen, dazu Schnellzugriffe auf „Ähnliche Fotos“, „Bildschirmfotos“ und „Unscharfe '
-                  'Fotos“. Füge es über die Widget-Galerie auf deinem Home-Bildschirm hinzu.\n'
-                  '- Wische in einer Gruppe über ein Foto, um es auszuwählen, zu behalten oder als beste '
-                  'Aufnahme festzulegen, ohne es zu öffnen. Das klappt auch bei „Bildschirmfotos“ und mit '
-                  'VoiceOver.\n'
-                  '- Die Tasten in „Aufräumen“ passen jetzt auch auf kleinere iPhones, und Fotos öffnen sich '
-                  'flüssiger.\n'
-                  '- Das Bild im Widget behält seine Farben, wenn deine Symbole auf dem Home-Bildschirm '
-                  'getönt oder klar sind.\n'
-                  '\n'
-                  'Das neue Widget, das Wischen und die Tasten in „Aufräumen“ brauchen iOS 27.\n'
-                  '\n'
-                  'Alles läuft weiterhin auf deinem Gerät: kein Konto, keine Uploads, und was du aufräumst, '
-                  'geht nach „Zuletzt gelöscht“, wo iOS es rund 30 Tage aufbewahrt.\n'
-                  '\n'
-                  'Rückmeldungen und Fehlerberichte sind ausdrücklich willkommen — der Support-Link auf der '
-                  'App-Store-Seite erreicht mich direkt.'}
-)
-
-METADATA['en-CA'].update(
-    {'release_notes': 'Alike is ready for iOS 27, with a new widget and a quicker way to sort your photos.\n'
-                  '\n'
-                  '- A new tall widget shows how much space you can free and your largest groups, with '
-                  'shortcuts to Similar Photos, Screenshots and Blurred Photos. Add it from the widget '
-                  'gallery on your Home Screen.\n'
-                  '- In a group, swipe a photo to Select it, Keep it or make it the Best Shot, without '
-                  'opening it. Swiping works in Screenshots too, and with VoiceOver.\n'
-                  '- The Cleanup buttons now fit on smaller iPhones, and photos open more smoothly.\n'
-                  '- The widget picture keeps its colours when your Home Screen icons are tinted or clear.\n'
-                  '\n'
-                  'The new widget, the swipes and the Cleanup buttons need iOS 27.\n'
-                  '\n'
-                  'Everything still runs on your device: no account, no uploads, and what you clear goes to '
-                  'Recently Deleted, where iOS keeps it for about 30 days.\n'
-                  '\n'
-                  'Feedback and bug reports are genuinely welcome — the support link on the App Store page '
-                  'reaches me directly.'}
+                     'Pro gratis im Jahresabo für berechtigte neue Abonnenten. Ohne Werbung oder Konto.'}
 )
 
 METADATA['pt-PT'].update(
@@ -2210,26 +2058,6 @@ METADATA['pt-PT'].update(
                 'automaticamente, a menos que sejam canceladas pelo menos 24 horas antes do fim do período '
                 'atual, e o pagamento é debitado da tua Conta Apple. Podes gerir ou cancelar a subscrição '
                 'quando quiseres nas Definições do iOS.',
- 'release_notes': 'O Alike está pronto para o iOS 27, com um widget novo e uma forma mais rápida de '
-                  'organizar as tuas fotografias.\n'
-                  '\n'
-                  '- Um widget alto novo mostra quanto espaço podes libertar e os teus maiores grupos, com '
-                  'atalhos para «Fotos semelhantes», «Capturas de ecrã» e «Fotos desfocadas». Adiciona-o a '
-                  'partir da galeria de widgets do ecrã principal.\n'
-                  '- Num grupo, desliza uma fotografia para a selecionar, manter ou definir como melhor '
-                  'foto, sem a abrir. Também funciona em «Capturas de ecrã» e com o VoiceOver.\n'
-                  '- Os botões de «Limpeza» já cabem nos iPhone mais pequenos, e as fotos abrem com mais '
-                  'fluidez.\n'
-                  '- O desenho do widget mantém as cores quando os ícones do ecrã principal estão com '
-                  'tonalidade ou transparentes.\n'
-                  '\n'
-                  'O widget novo, os gestos de deslizar e os botões de «Limpeza» precisam do iOS 27.\n'
-                  '\n'
-                  'Tudo continua a correr no teu dispositivo: sem conta, sem envios, e o que apagas vai para '
-                  '«Apagado», onde o iOS o guarda durante cerca de 30 dias.\n'
-                  '\n'
-                  'Comentários e relatos de erros são muito bem-vindos — a ligação de suporte na página da '
-                  'App Store chega diretamente a mim.',
  'promotional_text': 'Vê quanto espaço podes recuperar. As tuas fotos ficam no iPhone. Pro grátis por 7 dias '
                      'no plano anual para novos subscritores elegíveis. Sem anúncios nem conta.'}
 )
@@ -2310,27 +2138,6 @@ METADATA['fr-CA'].update(
                 "L'abonnement se renouvelle automatiquement sauf annulation au moins 24 heures avant la fin "
                 'de la période en cours, et le paiement est prélevé sur votre compte Apple. Vous pouvez le '
                 'gérer ou l’annuler en tout temps dans les Réglages iOS.',
- 'release_notes': 'Alike est prêt pour iOS 27, avec un nouveau widget et une façon plus rapide de trier vos '
-                  'photos.\n'
-                  '\n'
-                  '- Un nouveau widget en hauteur montre l’espace que vous pouvez libérer et vos plus grands '
-                  'groupes, avec des raccourcis vers « Photos similaires », « Captures d’écran » et « Photos '
-                  'floues ». Ajoutez-le depuis la galerie de widgets de votre écran d’accueil.\n'
-                  '- Dans un groupe, balayez une photo pour la sélectionner, la garder ou la définir comme '
-                  'meilleure photo, sans l’ouvrir. Le balayage marche aussi dans « Captures d’écran » et '
-                  'avec VoiceOver.\n'
-                  '- Les boutons de « Nettoyage » tiennent désormais sur les petits iPhone, et les photos '
-                  's’ouvrent plus en douceur.\n'
-                  '- L’image du widget garde ses couleurs quand les icônes de votre écran d’accueil sont '
-                  'teintées ou transparentes.\n'
-                  '\n'
-                  'Le nouveau widget, les balayages et les boutons de « Nettoyage » demandent iOS 27.\n'
-                  '\n'
-                  'Tout se passe toujours sur votre appareil : aucun compte, aucun envoi, et ce que vous '
-                  'nettoyez part dans « Supprimées récemment », où iOS le conserve environ 30 jours.\n'
-                  '\n'
-                  "Vos retours et vos rapports de bugs sont sincèrement bienvenus — le lien d'assistance sur "
-                  'la page App Store me parvient directement.',
  'promotional_text': 'Estimez l’espace à libérer. Vos photos restent sur iPhone. 7 jours de Pro gratuits au '
                      'forfait annuel pour les nouveaux abonnés admissibles. Sans publicité ni compte.'}
 )
@@ -2410,26 +2217,7 @@ METADATA['tr'].update(
                 "Apple Hesabından tahsil edilir. Aboneliğini istediğin zaman iOS Ayarları'ndan yönetebilir "
                 'veya iptal edebilirsin.',
  'promotional_text': "Kazanabileceğin alanı gör. Fotoğrafların iPhone'unda kalır. Yıllık planda uygun yeni "
-                     'abonelere 7 günlük ücretsiz Pro denemesi. Reklam ve hesap yok.',
- 'release_notes': "Alike iOS 27'ye hazır: yeni bir widget ve fotoğraflarını daha hızlı ayıklamanın bir "
-                  'yolu.\n'
-                  '\n'
-                  '- Yeni uzun widget ne kadar alan açabileceğini ve en büyük gruplarını gösterir; Benzer '
-                  "Fotoğraflar, Ekran görüntüleri ve Bulanık Fotoğraflar kısayolları da var. Ana Ekran'daki "
-                  'widget galerisinden ekleyebilirsin.\n'
-                  '- Bir grupta fotoğrafı açmadan kaydırarak seçebilir, saklayabilir veya En İyi Kare '
-                  'yapabilirsin. Kaydırma, Ekran Görüntüleri ekranında ve VoiceOver ile de çalışır.\n'
-                  "- Temizlik düğmeleri artık küçük iPhone'lara sığıyor ve fotoğraflar daha akıcı açılıyor.\n"
-                  '- Ana Ekran simgelerin renklendirilmiş veya şeffaf olduğunda widget çizimi renklerini '
-                  'korur.\n'
-                  '\n'
-                  'Yeni widget, kaydırma ve Temizlik düğmeleri iOS 27 gerektirir.\n'
-                  '\n'
-                  'Her şey yine cihazında çalışıyor: hesap yok, yükleme yok; temizlediklerin Son '
-                  "Silinenler'e gider, iOS onları yaklaşık 30 gün orada tutar.\n"
-                  '\n'
-                  'Geri bildirimler ve hata bildirimleri memnuniyetle karşılanır — App Store sayfasındaki '
-                  'destek bağlantısı doğrudan bana ulaşır.'}
+                     'abonelere 7 günlük ücretsiz Pro denemesi. Reklam ve hesap yok.'}
 )
 
 

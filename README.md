@@ -30,13 +30,18 @@ Alike is an iOS app that finds and groups visually similar photos using Computer
 - 🌍 **Thirteen languages** — English, Ukrainian, Spanish (Spain and Latin America), Brazilian Portuguese, German, French, Italian, Dutch, Polish, Turkish, Traditional Chinese and Arabic
 - 🌓 **Dark Mode** — full support
 
-## 🆕 What ships in 1.7.1
+## 🆕 What ships in 1.7.2
 
-A patch release with one user-visible fix:
+A maintenance release with no user-visible change:
+
+- **Code health.** SwiftLint and SwiftFormat rules are on and enforced, with warnings treated as errors; `CleanupWorkspace` splits its workspace model by responsibility; `Scanner` declares `Storage` instead of re-exporting it. The DesignSystem and Storage tests check real values. There is no change to stored data.
+- **Store listing.** The en-US subtitle names similar photos again, with narrower keywords. What's New now comes from one place for every locale, so en-CA, fr-CA and the reviewed listings no longer keep the 1.7.0 text.
+
+Earlier: 1.7.1 was a patch release with one user-visible fix:
 
 - **No freeze while groups load.** `CoreDataPhotoClusterRepository.loadClusters()` used to call `PHAsset.fetchAssets` once per cluster on the main queue. On a large library the calls added up past the 10-second scene-update watchdog, and iOS killed the app (`0x8BADF00D`). The store is now read on a background context, and the assets are fetched on a background task in batches of up to 500 identifiers that never split a cluster. Each cluster is still resolved by a single fetch, so cluster order and the order of photos inside a cluster are unchanged.
 
-Earlier: 1.7.0 was a minor release for iOS 27; on iOS 17–26 the app behaves as in 1.6.2:
+Before 1.7.1, 1.7.0 was a minor release for iOS 27; on iOS 17–26 the app behaves as in 1.6.2:
 
 - **Extra-large portrait widget.** On iOS 27, `AlikeStatusWidget` also offers `systemExtraLargePortrait`: the reclaimable figure, its share of the library, the group count, up to four largest groups and links to Similar Photos, Screenshots and Blurred Photos, with the Pro lock on the paid categories. The snapshot gains an optional `topClusters` field (bytes and photo count, no identifiers); a 1.6.2 snapshot without it still decodes.
 - **The widget hero keeps its colours.** On tinted and clear Home Screens (iOS 18+), the hero illustration renders in full colour; iOS 17 and the Lock Screen are unchanged.
