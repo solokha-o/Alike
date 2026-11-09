@@ -1048,14 +1048,28 @@ AR_DESCRIPTION = """\
 
 METADATA = {
     "en-US": {
-        "subtitle": "Duplicate & Storage Cleanup",
+        # ASO iteration 2 (November 2026) returns the 1.6.1 subtitle. With
+        # "Duplicate & Storage Cleanup" (1.6.2) search impressions doubled but
+        # search downloads fell from 18 to 3 a week: the exact phrase "similar
+        # photos" in the subtitle is what people downloaded from. The repeat of
+        # the name's "similar" and "photo" is on purpose; see
+        # INTENTIONAL_NAME_REPEATS. en-GB, en-CA and en-AU keep the 1.6.2
+        # subtitle, so this iteration changes one variable in en-US only.
+        "subtitle": "Find and clear similar photos",
         "description": EN_US_DESCRIPTION,
         # The name, the subtitle and this field are indexed together, so no
         # word appears in more than one of them; search_field_errors() refuses
         # to build the bundle otherwise. Keywords are single words: the store
         # combines them with the name and subtitle into phrases such as
-        # "camera roll cleaner" or "free up storage".
-        "keywords": "delete,space,gallery,screenshot,blurry,camera,roll,clean,up,free,album,declutter,sorter,best,shot",
+        # "similar images" or "duplicate finder".
+        #
+        # Iteration 2 drops the broad words that had no rank (delete, space,
+        # gallery, free, clean, up, declutter, sorter, best, shot) for the long
+        # tail whose US top 10 is weak (iTunes Search API, 9.11.2026, median
+        # ratings of the top 10): similar images 1.5, similar pics 1.5, similar
+        # shots 1, screenshot cleaner 0, duplicate finder 29.5, burst photos
+        # 49.5, remove similar photos 70.5. "picture" stays out: es-MX has it.
+        "keywords": "screenshot,blurry,camera,roll,album,duplicate,finder,remove,images,pics,shots,burst,dedupe",
         # Promotional text is the one field App Store Connect accepts without a
         # new build. It opens on the benefit and the privacy promise; the trial
         # sits in the middle rather than as the closing line.
@@ -1136,7 +1150,15 @@ METADATA = {
     # Cleanup"). it: the Italian searches with measured demand (elimina foto
     # 26, libera spazio iphone 23, pulisci telefono 22, pulizia iphone 17,
     # cancella foto 17, spazio iphone 16); duplicate, simili and the other
-    # duplicate searches sit at the floor of 5, so only doppioni stays. nl-NL
+    # duplicate searches sit at the floor of 5, so only doppioni stays.
+    # ASO iteration 2 (November 2026) narrowed it the way it narrowed en-US:
+    # in October Italy gave 793 impressions and 2 downloads, so the broad
+    # storage words (libera, spazio, iphone, telefono, cancella, eliminare,
+    # swipe) gave way to the Italian pair of "similar photos" and its long
+    # tail. Median ratings of the IT top 10 (iTunes Search API, 9.11.2026):
+    # elimina foto simili 0.5, foto simili 12, doppioni foto 0, pulisci
+    # galleria 23.5, ordina foto 6, immagini simili 14.5, trova duplicati
+    # 2.5, raffica foto 1, scatti simili 0. nl-NL
     # and pl: every Dutch and Polish search checked sits at 5, so their own
     # words stay and the room en-GB already covered goes to clean (42) and
     # swipe (photo delete swipe 21).
@@ -1147,9 +1169,9 @@ METADATA = {
     # without popularity data, and none of tr, pl, nl-NL, zh-Hant or ar-SA has
     # been read by a native speaker; an agent language review was the check.
     "it": {
-        "subtitle": "Pulizia: elimina foto doppie",
+        "subtitle": "Trova ed elimina foto simili",
         "description": IT_DESCRIPTION,
-        "keywords": "libera,spazio,iphone,telefono,pulisci,pulire,cancella,eliminare,galleria,sfocate,swipe,doppioni",
+        "keywords": "doppioni,galleria,pulisci,ordina,immagini,duplicati,scatti,raffica,sfocate,uguali,doppie,rimuovi",
         "promotional_text": "Recupera spazio: vedi quanto liberi prima di eliminare qualcosa, e nessuna foto lascia il tuo iPhone. Pro: 7 giorni gratis nel piano annuale. Senza pubblicità né account.",
         "release_notes": "Questo aggiornamento corregge un blocco: con una libreria di foto grande, Alike poteva non rispondere per alcuni secondi subito dopo l’apertura, e iOS poi poteva chiuderlo. Ora i tuoi gruppi di foto simili si caricano in background.\n\nTutto avviene ancora sul tuo dispositivo: nessun account, nessun caricamento, e ciò che elimini finisce in «Eliminati di recente», dove iOS lo conserva per circa 30 giorni.\n\nCommenti e segnalazioni sono davvero benvenuti: il link di assistenza sulla pagina App Store arriva direttamente a me.",
     },
@@ -1220,10 +1242,12 @@ def british_spelling(text: str) -> str:
     return text
 
 
-def regional_copy(source: str, keywords: str, spelling=lambda text: text) -> dict[str, str]:
+def regional_copy(
+    source: str, keywords: str, spelling=lambda text: text, subtitle: str | None = None
+) -> dict[str, str]:
     values = METADATA[source]
     return {
-        "subtitle": values["subtitle"],
+        "subtitle": subtitle if subtitle is not None else values["subtitle"],
         "description": spelling(values["description"]),
         "keywords": keywords,
         "promotional_text": spelling(values["promotional_text"]),
@@ -1231,21 +1255,29 @@ def regional_copy(source: str, keywords: str, spelling=lambda text: text) -> dic
     }
 
 
+# ASO iteration 2 changed the en-US subtitle only. The other English listings
+# keep the 1.6.2 subtitle until the en-US effect is measured, so the change has
+# one variable and one storefront.
+REGIONAL_ENGLISH_SUBTITLE = "Duplicate & Storage Cleanup"
+
 METADATA.update(
     {
         "en-GB": regional_copy(
             "en-US",
             "delete,space,camera,roll,clear,free,up,memory,phone,tidy,declutter,gallery,screenshot,blurry,pics",
             british_spelling,
+            subtitle=REGIONAL_ENGLISH_SUBTITLE,
         ),
         "en-CA": regional_copy(
             "en-US",
             "delete,space,camera,roll,clear,free,up,memory,phone,cell,tidy,gallery,screenshot,blurry,pics,album",
+            subtitle=REGIONAL_ENGLISH_SUBTITLE,
         ),
         "en-AU": regional_copy(
             "en-US",
             "remove,iphone,album,picture,images,sort,sorter,best,shot,swipe,organiser,full,mobile",
             british_spelling,
+            subtitle=REGIONAL_ENGLISH_SUBTITLE,
         ),
         "fr-CA": regional_copy(
             "fr-FR",
@@ -2967,6 +2999,15 @@ def search_tokens(text: str) -> list[str]:
     return [token.casefold() for token in re.findall(r"[^\W_]+", text)]
 
 
+# Subtitle words that may repeat the name in one locale, on purpose. en-US: ASO
+# iteration 2 tests whether the exact phrase "similar photos" in the subtitle
+# brings back the search conversion 1.6.1 had (4.9%, against 0.4% after 1.6.2).
+# The exception covers the subtitle only; keywords still may not repeat the name.
+INTENTIONAL_NAME_REPEATS: dict[str, frozenset[str]] = {
+    "en-US": frozenset({"similar", "photos"}),
+}
+
+
 def search_field_errors(locale: str, name: str, subtitle: str, keywords: str) -> list[str]:
     """Rules for the three fields App Store search indexes together.
 
@@ -2987,7 +3028,8 @@ def search_field_errors(locale: str, name: str, subtitle: str, keywords: str) ->
     # repeat: "photos" next to "Photo" is the mistake the old subtitles made.
     name_forms = name_tokens | {f"{token}s" for token in name_tokens}
     subtitle_tokens = set(search_tokens(subtitle))
-    for token in sorted(subtitle_tokens & name_forms):
+    allowed_repeats = INTENTIONAL_NAME_REPEATS.get(locale, frozenset())
+    for token in sorted((subtitle_tokens & name_forms) - allowed_repeats):
         errors.append(f"{locale} subtitle repeats {token!r} from the name")
 
     items = keywords.split(",")

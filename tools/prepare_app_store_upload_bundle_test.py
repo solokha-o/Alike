@@ -45,6 +45,21 @@ class SearchFieldTests(unittest.TestCase):
     def test_subtitle_repeating_name_fails(self) -> None:
         self.assertTrue(any("subtitle repeats 'photos'" in error for error in self.errors("Find and clear similar photos", "delete")))
 
+    def test_intentional_name_repeat_passes_only_in_its_locale(self) -> None:
+        subtitle = "Find and clear similar photos"
+        self.assertEqual(bundle.search_field_errors("en-US", NAME, subtitle, "duplicate"), [])
+        self.assertTrue(
+            any("subtitle repeats 'photos'" in error for error in bundle.search_field_errors("en-GB", NAME, subtitle, "duplicate"))
+        )
+
+    def test_intentional_name_repeat_does_not_cover_other_name_words(self) -> None:
+        errors = bundle.search_field_errors("en-US", NAME, "Similar photo cleaner", "duplicate")
+        self.assertTrue(any("subtitle repeats 'cleaner'" in error for error in errors))
+
+    def test_intentional_name_repeat_does_not_cover_keywords(self) -> None:
+        errors = bundle.search_field_errors("en-US", NAME, "Find and clear similar photos", "duplicate,similar")
+        self.assertTrue(any("keyword 'similar' repeats the name" in error for error in errors))
+
     def test_han_keyword_inside_unspaced_subtitle_fails(self) -> None:
         self.assertTrue(any("repeats the subtitle" in error for error in self.errors("一鍵清理重複照片", "相似,清理")))
 
@@ -82,7 +97,15 @@ class SearchFieldTests(unittest.TestCase):
                 continue
             with self.subTest(locale=mapping.apple):
                 self.assertNotEqual(bundle.METADATA[mapping.apple]["keywords"], bundle.METADATA[source]["keywords"])
-                self.assertEqual(bundle.METADATA[mapping.apple]["subtitle"], bundle.METADATA[source]["subtitle"])
+                if mapping.apple not in ("en-GB", "en-CA", "en-AU"):
+                    self.assertEqual(bundle.METADATA[mapping.apple]["subtitle"], bundle.METADATA[source]["subtitle"])
+
+    def test_regional_english_listings_keep_their_subtitle(self) -> None:
+        # ASO iteration 2 changes the en-US subtitle only.
+        for locale in ("en-GB", "en-CA", "en-AU"):
+            with self.subTest(locale=locale):
+                self.assertEqual(bundle.METADATA[locale]["subtitle"], "Duplicate & Storage Cleanup")
+        self.assertNotEqual(bundle.METADATA["en-US"]["subtitle"], bundle.METADATA["en-GB"]["subtitle"])
 
     def test_british_listings_use_british_spelling(self) -> None:
         for locale in ("en-GB", "en-AU"):
