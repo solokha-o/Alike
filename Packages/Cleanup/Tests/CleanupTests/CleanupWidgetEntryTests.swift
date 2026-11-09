@@ -6,7 +6,7 @@ import Testing
 /// What a widget tap means once it reaches a workspace whose contents may have moved on
 /// since the snapshot the widget was drawn from. The view that acts on this has no test
 /// action worth the name, so the decision is made here.
-@Suite struct CleanupWidgetEntryTests {
+struct CleanupWidgetEntryTests {
     private func summary(_ kind: CleanupCategoryKind, assetCount: Int = 5) -> CleanupCategorySummary {
         CleanupCategorySummary(kind: kind, assetCount: assetCount, estimatedSavingsBytes: 1_000)
     }
@@ -27,13 +27,13 @@ import Testing
         #expect(resolution == .openCategory(screenshots))
     }
 
-    @Test func testEachCategoryResolvesToItsOwnSummary() {
+    @Test func testEachCategoryResolvesToItsOwnSummary() throws {
         let categories = [summary(.screenshots, assetCount: 86), summary(.blurredPhotos, assetCount: 12)]
 
         for kind in CleanupCategoryKind.allCases {
             let resolution = CleanupWidgetEntry.category(kind)
                 .resolution(categories: categories, orderedClusterIDs: [])
-            #expect(resolution == .openCategory(categories.first { $0.kind == kind }!))
+            #expect(resolution == .openCategory(try #require(categories.first { $0.kind == kind })))
         }
     }
 
@@ -63,7 +63,7 @@ import Testing
         let screenshots = summary(.screenshots)
 
         #expect(CleanupWidgetEntry.category(.screenshots)
-                .resolution(categories: [screenshots], orderedClusterIDs: []) == .openCategory(screenshots))
+            .resolution(categories: [screenshots], orderedClusterIDs: []) == .openCategory(screenshots))
     }
 
     // MARK: - Similar photos

@@ -2,11 +2,11 @@ import Core
 import CoreGraphics
 import Foundation
 import Photos
-import Vision
 import Testing
+import Vision
 @testable import PhotoAnalysis
 
-@Suite struct PhotoQualityAnalysisServiceTests {
+struct PhotoQualityAnalysisServiceTests {
     private let service = PhotoQualityAnalysisService(faceDetector: { _ in [] })
 
     // MARK: - Raw signal ordering
@@ -96,7 +96,7 @@ import Testing
             [
                 // Vision boxes are normalized with a bottom-left origin.
                 VNFaceObservation(boundingBox: CGRect(x: 0.05, y: 0.2, width: 0.4, height: 0.6)),
-                VNFaceObservation(boundingBox: CGRect(x: 0.6, y: 0.4, width: 0.3, height: 0.3))
+                VNFaceObservation(boundingBox: CGRect(x: 0.6, y: 0.4, width: 0.3, height: 0.3)),
             ]
         })
 
@@ -253,6 +253,7 @@ import Testing
 
         #expect(scores.first?.signals.analysisFailure == .tooSmallToAnalyze)
         #expect(sides.count == 1)
+        // swiftformat:disable:next isEmpty - CallCounter has no isEmpty
         #expect(detectorCalls.count == 0)
     }
 
@@ -302,7 +303,7 @@ import Testing
             image.width == config.analysisImageLongSide
                 ? [
                     VNFaceObservation(boundingBox: Self.faceBox(fraction: 0.08, x: 0.05)),
-                    VNFaceObservation(boundingBox: Self.faceBox(fraction: 0.08, x: 0.60))
+                    VNFaceObservation(boundingBox: Self.faceBox(fraction: 0.08, x: 0.60)),
                 ]
                 : []
         })
@@ -509,7 +510,7 @@ import Testing
         let assets = [
             TestPHAsset(identifier: "good"),
             TestPHAsset(identifier: "broken"),
-            TestPHAsset(identifier: "also-good")
+            TestPHAsset(identifier: "also-good"),
         ]
 
         let scores = try await service.scores(for: assets)

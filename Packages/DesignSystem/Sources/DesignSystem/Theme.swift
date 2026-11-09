@@ -1,10 +1,11 @@
 import SwiftUI
 
 // MARK: - Colors
+
 extension Color {
     /// Primary accent for cleanup actions and primary CTAs.
     public static let accent = Color(red: 0.12, green: 0.62, blue: 0.72)
-    
+
     /// Secondary accent for supporting highlights.
     public static let secondaryAccent = Color(red: 0.18, green: 0.76, blue: 0.86)
 
@@ -18,15 +19,15 @@ extension Color {
     public static let statusReviewed = Color(red: 0.22, green: 0.70, blue: 0.38)
     public static let statusSavings = Color(red: 0.16, green: 0.72, blue: 0.64)
     public static let statusNew = Color(red: 0.19, green: 0.73, blue: 0.66)
-    
-    /// Card background
+
+    // Card background
     #if os(iOS)
     public static let cardBackground = Color(.systemBackground)
     #else
     public static let cardBackground = Color(white: 1.0)
     #endif
-    
-    /// Secondary background
+
+    // Secondary background
     #if os(iOS)
     public static let secondaryBackground = Color(.secondarySystemBackground)
     #else
@@ -35,6 +36,7 @@ extension Color {
 }
 
 // MARK: - Opacity Tokens
+
 public enum ColorOpacity {
     public static let progressTrack: Double = 0.2
     public static let placeholderFill: Double = 0.2
@@ -49,6 +51,7 @@ public enum ColorOpacity {
 }
 
 // MARK: - Typography
+
 extension Font {
     public static let appLargeTitle = Font.system(size: 34, weight: .bold, design: .rounded)
     public static let appTitle = Font.system(size: 28, weight: .bold, design: .rounded)
@@ -63,6 +66,7 @@ extension Font {
 }
 
 // MARK: - Spacing
+
 public enum Spacing {
     public static let xxxSmall: CGFloat = 2
     public static let xxSmall: CGFloat = 4
@@ -76,6 +80,7 @@ public enum Spacing {
 }
 
 // MARK: - Corner Radius
+
 public enum CornerRadius {
     public static let small: CGFloat = 8
     public static let medium: CGFloat = 12
@@ -84,12 +89,13 @@ public enum CornerRadius {
 }
 
 // MARK: - Shadows
+
 extension View {
     public func cardShadow() -> some View {
-        self.shadow(color: Color.black.opacity(ColorOpacity.elevatedShadow), radius: 10, x: 0, y: 4)
+        shadow(color: Color.black.opacity(ColorOpacity.elevatedShadow), radius: 10, x: 0, y: 4)
     }
-    
+
     public func subtleShadow() -> some View {
-        self.shadow(color: Color.black.opacity(ColorOpacity.subtleShadow), radius: 5, x: 0, y: 2)
+        shadow(color: Color.black.opacity(ColorOpacity.subtleShadow), radius: 5, x: 0, y: 2)
     }
 }

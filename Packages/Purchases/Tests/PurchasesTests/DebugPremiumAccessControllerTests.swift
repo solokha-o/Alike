@@ -1,14 +1,14 @@
+import Core
 import Foundation
 import Testing
 @testable import Purchases
-import Core
 
 /// `DebugPremiumAccessController` is scaffolding, but a leaky one would make
 /// manual QA lie: a tester comparing "free" behaviour would silently be looking
 /// at an unlocked build. So the override has to apply to exactly the feature
 /// whose key is set, and to nothing else.
 @MainActor
-@Suite final class DebugPremiumAccessControllerTests {
+final class DebugPremiumAccessControllerTests {
     private let defaults: UserDefaults
     private let suiteName: String
 
@@ -50,7 +50,7 @@ import Core
             .scan(completedThisMonth: 0),
             .scan(completedThisMonth: 99),
             .cleanupSelection(count: 1),
-            .cleanupSelection(count: 50)
+            .cleanupSelection(count: 50),
         ]
 
         for feature in PremiumFeature.allCases {

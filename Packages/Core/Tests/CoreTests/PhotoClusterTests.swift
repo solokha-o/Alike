@@ -1,17 +1,18 @@
 import Foundation
-import Testing
 import Photos
+import Testing
 @testable import Core
 
-@Suite struct PhotoClusterTests {
+struct PhotoClusterTests {
     @Test func testCountAndThumbnailWhenEmpty() {
         let cluster = PhotoCluster(assets: [])
 
+        // swiftformat:disable:next isEmpty - PhotoCluster has no isEmpty
         #expect(cluster.count == 0)
         #expect(cluster.thumbnail == nil)
     }
 
-    @Test func testEqualityUsesId() {
+    @Test func testEqualityUsesID() {
         let id = UUID()
         let clusterA = PhotoCluster(id: id, assets: [])
         let clusterB = PhotoCluster(id: id, assets: [])
@@ -21,7 +22,7 @@ import Photos
         #expect(clusterA != clusterC)
     }
 
-    @Test func testHashableUsesId() {
+    @Test func testHashableUsesID() {
         let id = UUID()
         let clusterA = PhotoCluster(id: id, assets: [])
         let clusterB = PhotoCluster(id: id, assets: [])
@@ -33,6 +34,7 @@ import Photos
     #if DEBUG
     @Test func testMockValues() {
         let mock = PhotoCluster.mock
+        // swiftformat:disable:next isEmpty - PhotoCluster has no isEmpty
         #expect(mock.count == 0)
         let eps: Float = 0.001
         #expect(abs(mock.averageSimilarity - 0.85) <= eps)

@@ -2,7 +2,7 @@ import Foundation
 import Testing
 @testable import Core
 
-@Suite struct PersonalWeightModelTests {
+struct PersonalWeightModelTests {
     private let global = PhotoQualityScoringConfig.current
 
     // MARK: - Floor
@@ -396,7 +396,7 @@ import Testing
             )
         }
         let withNonFinite = (0..<50).map { index -> BestShotOverrideExample in
-            var sharpnessDelta: Double = 0.2
+            var sharpnessDelta = 0.2
             if index == 5 { sharpnessDelta = .infinity }
             var exposureDelta: Double = 0
             if index == 12 { exposureDelta = .nan }
@@ -453,6 +453,7 @@ import Testing
     }
 
     // MARK: - Projection regression coverage (Euclidean box projection)
+
     //
     // The old two-pass clamp+renormalize could push a component back outside
     // its box on the renormalize step (the sharpness/resolution fixtures
@@ -595,7 +596,7 @@ import Testing
             .init(sharpness: 0.3, faceQuality: -0.3, exposure: 0.3, noiseArtifacts: 0.3, resolution: 0.3),
             .init(sharpness: -0.6, faceQuality: 0.6, exposure: -0.6, noiseArtifacts: 0.6, resolution: 0.6),
             .init(sharpness: 1, faceQuality: 1, exposure: 1, noiseArtifacts: 1, resolution: 1),
-            .init(sharpness: -1, faceQuality: -1, exposure: -1, noiseArtifacts: -1, resolution: -1)
+            .init(sharpness: -1, faceQuality: -1, exposure: -1, noiseArtifacts: -1, resolution: -1),
         ]
 
         for direction in directions {

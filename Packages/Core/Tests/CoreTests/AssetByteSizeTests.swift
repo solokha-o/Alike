@@ -3,7 +3,7 @@ import Photos
 import Testing
 @testable import Core
 
-@Suite struct AssetByteSizeTests {
+struct AssetByteSizeTests {
     @Test func testAssetWithoutPhotoKitResourcesFallsBackToThePixelHeuristic() {
         let asset = SizedAsset(localIdentifier: "fake", pixelWidth: 400, pixelHeight: 300)
 
@@ -30,7 +30,7 @@ import Testing
     }
 }
 
-@Suite struct PersistedByteSizeVersionTests {
+struct PersistedByteSizeVersionTests {
     @Test func testCategorySnapshotWithoutMarkerDecodesAsHeuristic() throws {
         let json = """
         {"kind":"screenshots","localIdentifiers":["a","b"],"assetCount":2,"estimatedSavingsBytes":300,"refreshedAt":1000}
@@ -86,11 +86,11 @@ import Testing
         let state = try JSONDecoder().decode(ClusterReviewState.self, from: Data(json.utf8))
 
         #expect(state.byteSizeVersion == nil)
-        #expect(state.estimatedSavingsBytes == 2048)
+        #expect(state.estimatedSavingsBytes == 2_048)
     }
 
     @Test func testRemappedKeepsTheMarkerOfKeptBytesAndStampsNewBytes() {
-        let legacy = reviewState(clusterID: UUID(), selected: ["x"], bytes: 2048, version: nil)
+        let legacy = reviewState(clusterID: UUID(), selected: ["x"], bytes: 2_048, version: nil)
 
         #expect(legacy.remapped(clusterID: UUID()).byteSizeVersion == nil)
         #expect(
@@ -101,7 +101,7 @@ import Testing
     @Test func testLegacyReviewStateIsRemeasuredFromItsClusterSelection() {
         let cluster = PhotoCluster(assets: [
             SizedAsset(localIdentifier: "best", pixelWidth: 100, pixelHeight: 100),
-            SizedAsset(localIdentifier: "x", pixelWidth: 40, pixelHeight: 10)
+            SizedAsset(localIdentifier: "x", pixelWidth: 40, pixelHeight: 10),
         ])
         let legacy = reviewState(clusterID: cluster.id, selected: ["x", "deleted"], bytes: 9_999, version: nil)
 
@@ -157,7 +157,7 @@ private final class SizedAsset: PHAsset, @unchecked Sendable {
     override var pixelHeight: Int { heightOverride }
 }
 
-@Suite struct AssetByteSizeSeedTests {
+struct AssetByteSizeSeedTests {
     @Test func testSeededRecordsComeBackWithoutChangingTheGeneration() {
         let identifier = "seed-\(UUID().uuidString)"
         let record = AssetByteSizeRecord(

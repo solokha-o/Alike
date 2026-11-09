@@ -1,0 +1,38 @@
+# Package categories for the Alike dependency rules.
+#
+# Decision record: Docs/adr/0004-package-dependencies.md
+# Stage 5 of the clean-code epic adds tools/check-package-graph. It reads this
+# file and checks each edge against the matrix in ADR-0004.
+#
+# Format: one line `<Package> <Category>`. Lines that start with `#` are comments.
+# Categories: App, Feature, Foundation, Utility, Tool.
+# "Foundation with UI" (UserGuide, Diagnostics, and the
+# PurchasesUI product of Purchases) uses the Foundation rules, so it is
+# written as Foundation here.
+# A change to this file needs a new ADR (see ADR-0004).
+
+# App: the Xcode targets. AlikeTests belongs to Alike (ADR-0004), so it is App too.
+# Each Xcode target that links a package product needs a line.
+Alike App
+AlikeTests App
+AlikeWidgets App
+
+Cleanup Feature
+Details Feature
+Launch Feature
+Scanner Feature
+Settings Feature
+Welcome Feature
+
+CleanupWorkspace Foundation
+Core Foundation
+DesignSystem Foundation
+Diagnostics Foundation
+NavigationKit Foundation
+PhotoAnalysis Foundation
+Purchases Foundation
+Storage Foundation
+UserGuide Foundation
+WidgetSupport Foundation
+
+BestShotCalibration Tool

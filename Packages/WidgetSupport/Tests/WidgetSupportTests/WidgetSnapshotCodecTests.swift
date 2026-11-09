@@ -56,7 +56,7 @@ struct WidgetSnapshotCodecTests {
     @Test("Two payloads differing only in when they were generated say the same thing")
     func contentComparisonIgnoresGeneratedAt() {
         let later = WidgetSnapshot(
-            generatedAt: Self.reference.generatedAt.addingTimeInterval(3600),
+            generatedAt: Self.reference.generatedAt.addingTimeInterval(3_600),
             photoAuthorization: Self.reference.photoAuthorization,
             hasCompletedScan: Self.reference.hasCompletedScan,
             lastScanDate: Self.reference.lastScanDate,
@@ -90,7 +90,7 @@ struct WidgetSnapshotCodecTests {
             WidgetSnapshot(generatedAt: base.generatedAt, photoAuthorization: base.photoAuthorization, hasCompletedScan: base.hasCompletedScan, lastScanDate: base.lastScanDate, libraryChangedSinceScan: base.libraryChangedSinceScan, estimatedSavingsBytes: base.estimatedSavingsBytes, libraryTotalBytes: base.libraryTotalBytes, clusterCount: base.clusterCount, screenshotAssetCount: 1, blurredPhotoAssetCount: base.blurredPhotoAssetCount, isPremium: base.isPremium, sessionProgress: base.sessionProgress),
             WidgetSnapshot(generatedAt: base.generatedAt, photoAuthorization: base.photoAuthorization, hasCompletedScan: base.hasCompletedScan, lastScanDate: base.lastScanDate, libraryChangedSinceScan: base.libraryChangedSinceScan, estimatedSavingsBytes: base.estimatedSavingsBytes, libraryTotalBytes: base.libraryTotalBytes, clusterCount: base.clusterCount, screenshotAssetCount: base.screenshotAssetCount, blurredPhotoAssetCount: 1, isPremium: base.isPremium, sessionProgress: base.sessionProgress),
             WidgetSnapshot(generatedAt: base.generatedAt, photoAuthorization: base.photoAuthorization, hasCompletedScan: base.hasCompletedScan, lastScanDate: base.lastScanDate, libraryChangedSinceScan: base.libraryChangedSinceScan, estimatedSavingsBytes: base.estimatedSavingsBytes, libraryTotalBytes: base.libraryTotalBytes, clusterCount: base.clusterCount, screenshotAssetCount: base.screenshotAssetCount, blurredPhotoAssetCount: base.blurredPhotoAssetCount, isPremium: false, sessionProgress: base.sessionProgress),
-            WidgetSnapshot(generatedAt: base.generatedAt, photoAuthorization: base.photoAuthorization, hasCompletedScan: base.hasCompletedScan, lastScanDate: base.lastScanDate, libraryChangedSinceScan: base.libraryChangedSinceScan, estimatedSavingsBytes: base.estimatedSavingsBytes, libraryTotalBytes: base.libraryTotalBytes, clusterCount: base.clusterCount, screenshotAssetCount: base.screenshotAssetCount, blurredPhotoAssetCount: base.blurredPhotoAssetCount, isPremium: base.isPremium, sessionProgress: nil)
+            WidgetSnapshot(generatedAt: base.generatedAt, photoAuthorization: base.photoAuthorization, hasCompletedScan: base.hasCompletedScan, lastScanDate: base.lastScanDate, libraryChangedSinceScan: base.libraryChangedSinceScan, estimatedSavingsBytes: base.estimatedSavingsBytes, libraryTotalBytes: base.libraryTotalBytes, clusterCount: base.clusterCount, screenshotAssetCount: base.screenshotAssetCount, blurredPhotoAssetCount: base.blurredPhotoAssetCount, isPremium: base.isPremium, sessionProgress: nil),
         ]
 
         for variant in variants {

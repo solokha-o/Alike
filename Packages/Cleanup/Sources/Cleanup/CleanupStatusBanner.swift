@@ -1,7 +1,7 @@
-import SwiftUI
 import CleanupWorkspace
 import Core
 import DesignSystem
+import SwiftUI
 
 struct CleanupStatusBanner: View {
     @Environment(\.dynamicTypeSize) private var dynamicTypeSize
@@ -9,11 +9,11 @@ struct CleanupStatusBanner: View {
     let icon: String
     let title: String
     let message: String
-    var actionTitle: String? = nil
-    var action: (() -> Void)? = nil
+    var actionTitle: String?
+    var action: (() -> Void)?
     var showsProgress = false
-    var progress: Double? = nil
-    var dismiss: (() -> Void)? = nil
+    var progress: Double?
+    var dismiss: (() -> Void)?
 
     var body: some View {
         Group {

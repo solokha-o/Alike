@@ -10,7 +10,7 @@ import Testing
 /// `PremiumAccessTests` covers the free-tier boundaries themselves; these cover
 /// that the boundaries do not move depending on who is asking.
 @MainActor
-@Suite struct PremiumAccessConsistencyTests {
+struct PremiumAccessConsistencyTests {
     /// Contexts a caller might pass, including the mismatched ones. A screen
     /// that reuses whatever context it already has must not accidentally unlock
     /// an unrelated feature.
@@ -19,7 +19,7 @@ import Testing
         .scan(completedThisMonth: 0),
         .scan(completedThisMonth: 99),
         .cleanupSelection(count: 1),
-        .cleanupSelection(count: 50)
+        .cleanupSelection(count: 50),
     ]
 
     @Test func testPremiumUnlocksEveryFeatureInEveryContext() {
@@ -36,18 +36,18 @@ import Testing
     @Test func testFreeTierIgnoresContextsThatDoNotBelongToTheFeature() {
         for feature in PremiumFeature.allCases {
             for context in contexts {
-                let isMatchingScan: Bool
-                if case .scan = context, feature == .unlimitedScans {
-                    isMatchingScan = true
-                } else {
-                    isMatchingScan = false
-                }
-                let isMatchingSelection: Bool
-                if case .cleanupSelection = context, feature == .batchCleanup {
-                    isMatchingSelection = true
-                } else {
-                    isMatchingSelection = false
-                }
+                let isMatchingScan =
+                    if case .scan = context, feature == .unlimitedScans {
+                        true
+                    } else {
+                        false
+                    }
+                let isMatchingSelection =
+                    if case .cleanupSelection = context, feature == .batchCleanup {
+                        true
+                    } else {
+                        false
+                    }
                 guard !isMatchingScan, !isMatchingSelection else { continue }
 
                 #expect(

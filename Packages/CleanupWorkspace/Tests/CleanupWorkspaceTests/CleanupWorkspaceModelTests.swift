@@ -1,8 +1,8 @@
 import CleanupWorkspace
 import Core
+import Foundation
 import Observation
 import Photos
-import Foundation
 import Testing
 
 private enum ScanPersistenceTestError: Error {
@@ -10,7 +10,7 @@ private enum ScanPersistenceTestError: Error {
 }
 
 @MainActor
-@Suite struct CleanupWorkspaceModelTests {
+struct CleanupWorkspaceModelTests {
     @Test func testCachedContentWithoutBaselineIsNeverScanned() async {
         let workspace = makeWorkspace()
 
@@ -158,7 +158,7 @@ private enum ScanPersistenceTestError: Error {
 
         #expect(summary.clusterCount == 0)
         #expect(workspace.scanOperation == .idle)
-        #expect(workspace.contentState == .content(workspace.content!))
+        #expect(workspace.contentState == .content(try #require(workspace.content)))
     }
 
     @Test func testUnchangedReviewReloadDoesNotPublishWorkspaceContent() async {
@@ -185,7 +185,7 @@ private enum ScanPersistenceTestError: Error {
         #expect(!observation.hasChanged)
     }
 
-    @Test func testChangedReviewReloadPublishesWorkspaceContent() async {
+    @Test func testChangedReviewReloadPublishesWorkspaceContent() async throws {
         let cluster = PhotoCluster(id: UUID(), assets: [])
         let repository = MockPhotoClusterRepository()
         await repository.setLoadClustersResult(.success([cluster]))
@@ -216,7 +216,7 @@ private enum ScanPersistenceTestError: Error {
 
         #expect(observation.hasChanged)
         #expect(workspace.reviewStates[cluster.id] == updatedState)
-        #expect(workspace.contentState == .content(workspace.content!))
+        #expect(workspace.contentState == .content(try #require(workspace.content)))
     }
 
     /// `sessionProgress()` and `cleanupEntryCluster()` are computed when content
@@ -247,7 +247,7 @@ private enum ScanPersistenceTestError: Error {
                 isReviewConfirmed: true,
                 status: .reviewed,
                 estimatedSavingsBytes: 128
-            )
+            ),
         ])
         await workspace.reloadReviewState()
 
@@ -257,8 +257,8 @@ private enum ScanPersistenceTestError: Error {
     }
 }
 
-private extension CleanupWorkspaceModelTests {
-    func makeWorkspace(
+extension CleanupWorkspaceModelTests {
+    private func makeWorkspace(
         analysisService: any PhotoAnalysisService = MockPhotoAnalysisService(),
         repository: any PhotoClusterRepository = MockPhotoClusterRepository(),
         reviewRepository: any ClusterReviewStateRepository = MockClusterReviewStateRepository()
@@ -279,13 +279,13 @@ private extension CleanupWorkspaceModelTests {
 }
 
 private actor FailingReviewStateRepository: ClusterReviewStateRepository {
-    func loadReviewState(clusterID: UUID) async throws -> ClusterReviewState? { nil }
+    func loadReviewState(clusterID _: UUID) async throws -> ClusterReviewState? { nil }
 
     func loadAllReviewStates() async throws -> [UUID: ClusterReviewState] { [:] }
 
-    func saveReviewState(_ state: ClusterReviewState) async throws {}
+    func saveReviewState(_: ClusterReviewState) async throws {}
 
-    func deleteReviewState(clusterID: UUID) async throws {}
+    func deleteReviewState(clusterID _: UUID) async throws {}
 
     func deleteAllReviewStates() async throws {
         throw ReviewPersistenceError()

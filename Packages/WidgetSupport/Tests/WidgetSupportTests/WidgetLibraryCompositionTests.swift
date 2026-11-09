@@ -96,7 +96,7 @@ struct WidgetLibraryCompositionTests {
     /// claim as "there are none". The row stays — it is still a working way into that
     /// list — but it shows no figure.
     @Test("an unknown count leaves the row without a figure rather than showing zero")
-    func unknownCountDrawsNoFigure() throws {
+    func unknownCountDrawsNoFigure() {
         let resolved = composition(snapshot(clusterCount: nil, screenshots: nil, blurred: nil))
 
         #expect(resolved.rows.count == 3)
@@ -234,7 +234,7 @@ struct WidgetLibraryCompositionTests {
         let snapshots: [WidgetSnapshot?] = [
             nil, snapshot(), snapshot(clusterCount: 0, screenshots: 0, blurred: 0),
             snapshot(clusterCount: nil, screenshots: nil, blurred: nil),
-            snapshot(hasCompletedScan: false), snapshot(authorization: .denied)
+            snapshot(hasCompletedScan: false), snapshot(authorization: .denied),
         ]
 
         for candidate in snapshots {
@@ -297,7 +297,7 @@ struct WidgetLibraryCompositionTests {
     /// spending a refresh budget. It is scheduled on the same threshold as the status
     /// widget's, from the same arithmetic.
     @Test("the timeline starts now and never schedules an entry in the past")
-    func timelineShape() throws {
+    func timelineShape() {
         let steps = WidgetPresentation.libraryTimeline(for: snapshot(), now: Self.scannedAt)
 
         #expect(steps.first?.date == Self.scannedAt)

@@ -1,8 +1,8 @@
+import DesignSystem
 import Foundation
 import Photos
-import SwiftUI
-import DesignSystem
 import Storage
+import SwiftUI
 
 // MARK: - Reversible auto-enhancement
 
@@ -206,21 +206,21 @@ extension ClusterDetailsViewModel {
     static func enhancementErrorMessage(for error: PhotoEnhancementError) -> String {
         switch error {
         case .notAuthorized:
-            return DetailsL10n.Common.alikeNeedsPhotoLibraryAccess
+            DetailsL10n.Common.alikeNeedsPhotoLibraryAccess
         case .limitedAccessNotEditable:
-            return DetailsL10n.ClusterDetails.enhancementLimitedAccess
+            DetailsL10n.ClusterDetails.enhancementLimitedAccess
         case .originalUnavailable:
-            return DetailsL10n.ClusterDetails.enhancementOriginalUnavailable
+            DetailsL10n.ClusterDetails.enhancementOriginalUnavailable
         case .renderFailed:
-            return DetailsL10n.ClusterDetails.enhancementRenderFailed
+            DetailsL10n.ClusterDetails.enhancementRenderFailed
         case .saveFailed:
-            return DetailsL10n.ClusterDetails.enhancementSaveFailed
+            DetailsL10n.ClusterDetails.enhancementSaveFailed
         case .notEnhancedByAlike:
-            return DetailsL10n.ClusterDetails.enhancementNotOurs
+            DetailsL10n.ClusterDetails.enhancementNotOurs
         case .unsupportedAsset:
-            return DetailsL10n.ClusterDetails.enhancementUnsupportedAsset
+            DetailsL10n.ClusterDetails.enhancementUnsupportedAsset
         case .editedInAnotherApp:
-            return DetailsL10n.ClusterDetails.enhancementEditedElsewhere
+            DetailsL10n.ClusterDetails.enhancementEditedElsewhere
         }
     }
 }

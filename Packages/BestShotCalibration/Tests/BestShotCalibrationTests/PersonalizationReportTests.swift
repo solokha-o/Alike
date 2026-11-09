@@ -3,13 +3,13 @@ import Testing
 @testable import BestShotCalibration
 @testable import Core
 
-@Suite struct PersonalizationReportTests {
+struct PersonalizationReportTests {
     private let config = PhotoQualityScoringConfig.current
 
     // MARK: - Prefix parsing
 
     @Test func testPrefixParsingAcceptsCommaSeparatedIntegers() throws {
-        let sizes = try PersonalizationReport.parsePrefixes("10,30", corpusSize: 1000)
+        let sizes = try PersonalizationReport.parsePrefixes("10,30", corpusSize: 1_000)
         #expect(sizes == [10, 30])
     }
 
@@ -56,9 +56,9 @@ import Testing
         #expect(prefixResult.evalClusterIDs == second.prefixResults[0].evalClusterIDs)
     }
 
-    @Test func testAllPrefixYieldsEmptyEvalSetWithoutCrashing() {
+    @Test func testAllPrefixYieldsEmptyEvalSetWithoutCrashing() throws {
         let corpus = makeCorpus(clusterIDs: ["a", "b", "c"])
-        let sizes = try! PersonalizationReport.parsePrefixes("all", corpusSize: corpus.entries.count)
+        let sizes = try PersonalizationReport.parsePrefixes("all", corpusSize: corpus.entries.count)
         #expect(sizes == [3])
 
         let result = PersonalizationReport.run(corpus: corpus, prefixSizes: sizes, global: config)
@@ -317,8 +317,8 @@ import Testing
     private func makeCandidate(
         _ assetID: String,
         globalSharpness: Double,
-        pixelWidth: Int = 4000,
-        pixelHeight: Int = 3000
+        pixelWidth: Int = 4_000,
+        pixelHeight: Int = 3_000
     ) -> BestShotCalibrationCandidate {
         BestShotCalibrationCandidate(
             assetID: assetID,

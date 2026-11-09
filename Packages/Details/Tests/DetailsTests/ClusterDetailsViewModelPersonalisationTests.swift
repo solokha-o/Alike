@@ -1,11 +1,11 @@
-import Foundation
-import Testing
 import Core
+import Foundation
 import Photos
+import Testing
 @testable import Details
 
 @MainActor
-@Suite struct ClusterDetailsViewModelPersonalisationTests: ClusterDetailsViewModelFixture {
+struct ClusterDetailsViewModelPersonalisationTests: ClusterDetailsViewModelFixture {
     let repository = MockClusterReviewStateRepository()
     let cleanupService = MockPhotoCleanupService()
     let cleanupHistoryRepository = MockCleanupHistoryRepository()
@@ -19,7 +19,7 @@ import Photos
         let viewModel = makeViewModel(
             snapshots: [
                 snapshot(id: "sharper", isFavorite: false, area: 1_000, createdAt: Date(timeIntervalSince1970: 10)),
-                snapshot(id: "softer", isFavorite: false, area: 1_000, createdAt: Date(timeIntervalSince1970: 20))
+                snapshot(id: "softer", isFavorite: false, area: 1_000, createdAt: Date(timeIntervalSince1970: 20)),
             ],
             // Close enough that neither candidate is excluded for critical
             // blur (the ranker would then refuse to build an example from
@@ -47,7 +47,7 @@ import Photos
             snapshots: [
                 snapshot(id: "a", isFavorite: false, area: 1_000, createdAt: Date(timeIntervalSince1970: 10)),
                 snapshot(id: "b", isFavorite: false, area: 1_000, createdAt: Date(timeIntervalSince1970: 20)),
-                snapshot(id: "c", isFavorite: false, area: 1_000, createdAt: Date(timeIntervalSince1970: 30))
+                snapshot(id: "c", isFavorite: false, area: 1_000, createdAt: Date(timeIntervalSince1970: 30)),
             ],
             qualityScores: [("a", 60), ("b", 20), ("c", 25)],
             personalizedConfigProvider: provider
@@ -70,7 +70,7 @@ import Photos
         let viewModel = makeViewModel(
             snapshots: [
                 snapshot(id: "a", isFavorite: false, area: 1_000, createdAt: Date(timeIntervalSince1970: 10)),
-                snapshot(id: "b", isFavorite: true, area: 1_000, createdAt: Date(timeIntervalSince1970: 20))
+                snapshot(id: "b", isFavorite: true, area: 1_000, createdAt: Date(timeIntervalSince1970: 20)),
             ],
             personalizedConfigProvider: provider
         )
@@ -101,11 +101,11 @@ import Photos
                 subjectLumaStdDev: 0.25,
                 noiseEstimate: 0.1,
                 pixelArea: 1_000
-            )
+            ),
         ]
         let snapshots = [
             snapshot(id: "sharpButClipped", isFavorite: false, area: 1_000, createdAt: Date(timeIntervalSince1970: 10)),
-            snapshot(id: "softButExposed", isFavorite: false, area: 1_000, createdAt: Date(timeIntervalSince1970: 20))
+            snapshot(id: "softButExposed", isFavorite: false, area: 1_000, createdAt: Date(timeIntervalSince1970: 20)),
         ]
 
         let globalViewModel = ClusterDetailsViewModel(
@@ -226,7 +226,7 @@ import Photos
         let viewModel = makeViewModel(
             snapshots: [
                 snapshot(id: "sharp", isFavorite: false, area: 1_000, createdAt: Date(timeIntervalSince1970: 10)),
-                snapshot(id: "enhanced", isFavorite: false, area: 1_000, createdAt: Date(timeIntervalSince1970: 20))
+                snapshot(id: "enhanced", isFavorite: false, area: 1_000, createdAt: Date(timeIntervalSince1970: 20)),
             ],
             qualityScores: [("sharp", 60), ("enhanced", 20)],
             enhancedIdentifiers: ["enhanced"]
@@ -253,7 +253,7 @@ import Photos
             qualityAnalyzer: analyzer,
             assetSnapshots: [
                 snapshot(id: "plain", isFavorite: false, area: 4_000, createdAt: Date(timeIntervalSince1970: 10)),
-                snapshot(id: "favorite", isFavorite: true, area: 1_000, createdAt: Date(timeIntervalSince1970: 20))
+                snapshot(id: "favorite", isFavorite: true, area: 1_000, createdAt: Date(timeIntervalSince1970: 20)),
             ],
             completionDelay: {}
         )
@@ -283,7 +283,7 @@ import Photos
             qualityAnalyzer: analyzer,
             assetSnapshots: [
                 snapshot(id: "plain", isFavorite: false, area: 4_000, createdAt: Date(timeIntervalSince1970: 10)),
-                snapshot(id: "favorite", isFavorite: true, area: 1_000, createdAt: Date(timeIntervalSince1970: 20))
+                snapshot(id: "favorite", isFavorite: true, area: 1_000, createdAt: Date(timeIntervalSince1970: 20)),
             ],
             completionDelay: {}
         )
@@ -311,7 +311,7 @@ import Photos
                 scoringModelVersion: config.scoringModelVersion,
                 thumbnailConfigVersion: config.thumbnailConfigVersion,
                 signals: PhotoQualitySignals(globalSharpness: 10, subjectLumaStdDev: 0.25, pixelArea: 1_000)
-            )
+            ),
         ])
         await loading.value
 
@@ -331,7 +331,7 @@ import Photos
             qualityAnalyzer: analyzer,
             assetSnapshots: [
                 snapshot(id: "plain", isFavorite: false, area: 4_000, createdAt: Date(timeIntervalSince1970: 10)),
-                snapshot(id: "favorite", isFavorite: true, area: 1_000, createdAt: Date(timeIntervalSince1970: 20))
+                snapshot(id: "favorite", isFavorite: true, area: 1_000, createdAt: Date(timeIntervalSince1970: 20)),
             ],
             completionDelay: {}
         )
@@ -360,7 +360,7 @@ import Photos
             qualityAnalyzer: analyzer,
             assetSnapshots: [
                 snapshot(id: "plain", isFavorite: false, area: 4_000, createdAt: Date(timeIntervalSince1970: 10)),
-                snapshot(id: "favorite", isFavorite: true, area: 1_000, createdAt: Date(timeIntervalSince1970: 20))
+                snapshot(id: "favorite", isFavorite: true, area: 1_000, createdAt: Date(timeIntervalSince1970: 20)),
             ],
             completionDelay: {}
         )
@@ -386,7 +386,7 @@ import Photos
                 scoringModelVersion: config.scoringModelVersion,
                 thumbnailConfigVersion: config.thumbnailConfigVersion,
                 signals: PhotoQualitySignals(globalSharpness: 80, subjectLumaStdDev: 0.25, pixelArea: 1_000)
-            )
+            ),
         ])
         await loading.value
 
@@ -428,7 +428,7 @@ import Photos
             personalizedConfigProvider: personalizedConfigProvider,
             assetSnapshots: [
                 snapshot(id: "plain", isFavorite: false, area: 4_000, createdAt: Date(timeIntervalSince1970: 10)),
-                snapshot(id: "favorite", isFavorite: true, area: 1_000, createdAt: Date(timeIntervalSince1970: 20))
+                snapshot(id: "favorite", isFavorite: true, area: 1_000, createdAt: Date(timeIntervalSince1970: 20)),
             ],
             completionDelay: {}
         )
@@ -487,7 +487,7 @@ import Photos
             personalizedConfigProvider: configProvider,
             assetSnapshots: [
                 snapshot(id: "plain", isFavorite: false, area: 4_000, createdAt: Date(timeIntervalSince1970: 10)),
-                snapshot(id: "favorite", isFavorite: true, area: 1_000, createdAt: Date(timeIntervalSince1970: 20))
+                snapshot(id: "favorite", isFavorite: true, area: 1_000, createdAt: Date(timeIntervalSince1970: 20)),
             ],
             completionDelay: {}
         )
@@ -565,7 +565,7 @@ private actor SuspendableLoadWeightsPersonalizationRepository: BestShotPersonali
 
     func loadExamples() async -> [BestShotOverrideExample] { [] }
 
-    func record(_ example: BestShotOverrideExample) async {}
+    func record(_: BestShotOverrideExample) async {}
 
     func loadWeights() async -> BestShotPersonalWeights? {
         loadStarted = true
@@ -574,7 +574,7 @@ private actor SuspendableLoadWeightsPersonalizationRepository: BestShotPersonali
         }
     }
 
-    func saveWeights(_ weights: BestShotPersonalWeights) async {}
+    func saveWeights(_: BestShotPersonalWeights) async {}
 
     func reset() async {}
 
@@ -613,7 +613,7 @@ private actor SecondCallSuspendingConfigProvider: BestShotConfigProviding {
         return .current
     }
 
-    func recordOverride(_ example: BestShotOverrideExample) async {}
+    func recordOverride(_: BestShotOverrideExample) async {}
 
     func waitUntilSecondCallStarted() async {
         while !secondCallStarted {

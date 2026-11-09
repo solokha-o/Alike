@@ -1,6 +1,6 @@
+import Core
 import Foundation
 import Observation
-import Core
 
 @MainActor
 @Observable
@@ -24,9 +24,9 @@ public final class SubscriptionStore: PremiumAccessControlling {
 
     public init(catalog: SubscriptionCatalog = .production) {
         self.catalog = catalog
-        self.client = AppStoreKitClient()
-        self.defaults = .standard
-        self.cacheKey = AppPreferenceKey.Premium.subscriptionEntitlement
+        client = AppStoreKitClient()
+        defaults = .standard
+        cacheKey = AppPreferenceKey.Premium.subscriptionEntitlement
     }
 
     init(
@@ -166,7 +166,7 @@ public final class SubscriptionStore: PremiumAccessControlling {
         updatesTask = Task { [weak self, client] in
             for await update in client.transactionUpdates() {
                 guard let self else { return }
-                await self.reconcileEntitlements(supplementing: update.entitlement)
+                await reconcileEntitlements(supplementing: update.entitlement)
             }
         }
     }
@@ -227,10 +227,10 @@ public final class SubscriptionStore: PremiumAccessControlling {
         return entitlements
             .filter {
                 $0.isVerified &&
-                $0.revocationDate == nil &&
-                !$0.isUpgraded &&
-                ($0.expirationDate == nil || $0.expirationDate! > now) &&
-                catalog.plan(for: $0.productID) != nil
+                    $0.revocationDate == nil &&
+                    !$0.isUpgraded &&
+                    ($0.expirationDate == nil || $0.expirationDate! > now) &&
+                    catalog.plan(for: $0.productID) != nil
             }
             .max { ($0.expirationDate ?? .distantFuture) < ($1.expirationDate ?? .distantFuture) }
     }

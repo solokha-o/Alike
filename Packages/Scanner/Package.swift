@@ -6,7 +6,7 @@ let package = Package(
     defaultLocalization: "en",
     platforms: [
         .iOS(.v17),
-        .macOS(.v14)
+        .macOS(.v14),
     ],
     products: [
         .library(
@@ -20,21 +20,22 @@ let package = Package(
         .package(path: "../CleanupWorkspace"),
         .package(path: "../NavigationKit"),
         .package(path: "../Purchases"),
-        .package(path: "../UserGuide")
+        .package(path: "../Storage"),
+        .package(path: "../UserGuide"),
     ],
     targets: [
         .target(
             name: "Scanner",
             dependencies: [
-                "Core", "DesignSystem", "CleanupWorkspace", "NavigationKit", "UserGuide",
+                "Core", "DesignSystem", "CleanupWorkspace", "NavigationKit", "Storage", "UserGuide",
                 .product(name: "Purchases", package: "Purchases"),
-                .product(name: "PurchasesUI", package: "Purchases")
+                .product(name: "PurchasesUI", package: "Purchases"),
             ],
             resources: [
-                .process("Resources")
+                .process("Resources"),
             ],
             swiftSettings: [
-                .enableExperimentalFeature("StrictConcurrency")
+                .enableExperimentalFeature("StrictConcurrency"),
             ]
         ),
         .testTarget(

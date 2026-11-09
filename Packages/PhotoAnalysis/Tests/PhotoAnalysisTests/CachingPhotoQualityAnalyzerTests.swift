@@ -4,7 +4,7 @@ import Photos
 import Testing
 @testable import PhotoAnalysis
 
-@Suite struct CachingPhotoQualityAnalyzerTests {
+struct CachingPhotoQualityAnalyzerTests {
     private let config = PhotoQualityScoringConfig.current
     private let modificationDate = Date(timeIntervalSince1970: 1_000)
 
@@ -31,7 +31,7 @@ import Testing
 
         let scores = try await analyzer.scores(for: [
             TestPHAsset(identifier: "cached"),
-            TestPHAsset(identifier: "fresh")
+            TestPHAsset(identifier: "fresh"),
         ])
 
         let measured = await inner.receivedIdentifiers
@@ -48,7 +48,7 @@ import Testing
         let analyzer = CachingPhotoQualityAnalyzer(repository: repository, analyzer: inner, config: config)
 
         _ = try await analyzer.scores(for: [
-            TestPHAsset(identifier: "edited", modificationDate: modificationDate.addingTimeInterval(60))
+            TestPHAsset(identifier: "edited", modificationDate: modificationDate.addingTimeInterval(60)),
         ])
 
         let measured = await inner.receivedIdentifiers
@@ -58,7 +58,7 @@ import Testing
     @Test func testAStaleScoringModelVersionIsMeasuredAgain() async throws {
         let repository = MockPhotoQualityScoreRepository()
         await repository.setStoredScores([
-            makeCachedScore("old-model", globalSharpness: 33, scoringModelVersion: config.scoringModelVersion - 1)
+            makeCachedScore("old-model", globalSharpness: 33, scoringModelVersion: config.scoringModelVersion - 1),
         ])
         let inner = RecordingQualityAnalyzer()
         let analyzer = CachingPhotoQualityAnalyzer(repository: repository, analyzer: inner, config: config)
@@ -75,14 +75,14 @@ import Testing
     @Test func testAnAlikeEnhancedPhotoIsNotRescoredAndKeepsItsPreEnhancementSignals() async throws {
         let repository = MockPhotoQualityScoreRepository()
         await repository.setStoredScores([
-            makeCachedScore("enhanced", globalSharpness: 21, isAlikeEnhanced: true)
+            makeCachedScore("enhanced", globalSharpness: 21, isAlikeEnhanced: true),
         ])
         let inner = RecordingQualityAnalyzer()
         let analyzer = CachingPhotoQualityAnalyzer(repository: repository, analyzer: inner, config: config)
 
         // The enhancement rewrote the asset's modification date.
         let scores = try await analyzer.scores(for: [
-            TestPHAsset(identifier: "enhanced", modificationDate: modificationDate.addingTimeInterval(3_600))
+            TestPHAsset(identifier: "enhanced", modificationDate: modificationDate.addingTimeInterval(3_600)),
         ])
 
         let measured = await inner.receivedIdentifiers
@@ -97,7 +97,7 @@ import Testing
     @Test func testAnEnhancedPhotoStillCarryingOurEditKeepsItsSignals() async throws {
         let repository = MockPhotoQualityScoreRepository()
         await repository.setStoredScores([
-            makeCachedScore("enhanced", globalSharpness: 21, isAlikeEnhanced: true)
+            makeCachedScore("enhanced", globalSharpness: 21, isAlikeEnhanced: true),
         ])
         let inner = RecordingQualityAnalyzer()
         let analyzer = CachingPhotoQualityAnalyzer(
@@ -108,7 +108,7 @@ import Testing
         )
 
         let scores = try await analyzer.scores(for: [
-            TestPHAsset(identifier: "enhanced", modificationDate: modificationDate.addingTimeInterval(3_600))
+            TestPHAsset(identifier: "enhanced", modificationDate: modificationDate.addingTimeInterval(3_600)),
         ])
 
         let measured = await inner.receivedIdentifiers
@@ -123,7 +123,7 @@ import Testing
     @Test func testAnEnhancedPhotoEditedElsewhereIsMeasuredAgain() async throws {
         let repository = MockPhotoQualityScoreRepository()
         await repository.setStoredScores([
-            makeCachedScore("enhanced", globalSharpness: 21, isAlikeEnhanced: true)
+            makeCachedScore("enhanced", globalSharpness: 21, isAlikeEnhanced: true),
         ])
         let inner = RecordingQualityAnalyzer()
         let analyzer = CachingPhotoQualityAnalyzer(
@@ -134,7 +134,7 @@ import Testing
         )
 
         let scores = try await analyzer.scores(for: [
-            TestPHAsset(identifier: "enhanced", modificationDate: modificationDate.addingTimeInterval(3_600))
+            TestPHAsset(identifier: "enhanced", modificationDate: modificationDate.addingTimeInterval(3_600)),
         ])
 
         let measured = await inner.receivedIdentifiers
@@ -148,7 +148,7 @@ import Testing
     @Test func testAnEnhancedPhotoRevertedInPhotosIsMeasuredAgain() async throws {
         let repository = MockPhotoQualityScoreRepository()
         await repository.setStoredScores([
-            makeCachedScore("enhanced", globalSharpness: 21, isAlikeEnhanced: true)
+            makeCachedScore("enhanced", globalSharpness: 21, isAlikeEnhanced: true),
         ])
         let inner = RecordingQualityAnalyzer()
         let analyzer = CachingPhotoQualityAnalyzer(
@@ -170,7 +170,7 @@ import Testing
     @Test func testAnUnreadableEnhancedPhotoKeepsItsSignals() async throws {
         let repository = MockPhotoQualityScoreRepository()
         await repository.setStoredScores([
-            makeCachedScore("enhanced", globalSharpness: 21, isAlikeEnhanced: true)
+            makeCachedScore("enhanced", globalSharpness: 21, isAlikeEnhanced: true),
         ])
         let inner = RecordingQualityAnalyzer()
         let analyzer = CachingPhotoQualityAnalyzer(
@@ -206,7 +206,7 @@ import Testing
 
         _ = try await analyzer.scores(for: [
             TestPHAsset(identifier: "cached"),
-            TestPHAsset(identifier: "fresh")
+            TestPHAsset(identifier: "fresh"),
         ])
 
         let identifiers = await asked.identifiers

@@ -1,7 +1,7 @@
-import SwiftUI
 import Core
-import Purchases
 import DesignSystem
+import Purchases
+import SwiftUI
 
 public struct PremiumLockedAccessory: View {
     public init() {}

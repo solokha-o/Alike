@@ -1,8 +1,8 @@
+import DesignSystem
 import Foundation
 import Photos
-import SwiftUI
-import DesignSystem
 import Storage
+import SwiftUI
 
 extension ClusterDetailsViewModel {
     /// A cluster is reviewed once the user says so, not once only one photo is
@@ -21,8 +21,8 @@ extension ClusterDetailsViewModel {
     }
 }
 
-private extension ClusterDetailsViewModel {
-    static func bestShotLocalIdentifier(from snapshots: [ReviewAssetSnapshot]) -> String? {
+extension ClusterDetailsViewModel {
+    fileprivate static func bestShotLocalIdentifier(from snapshots: [ReviewAssetSnapshot]) -> String? {
         PhotoClusterBestShot.bestShotLocalIdentifier(from: snapshots.map(\.photoClusterAssetSnapshot))
     }
 }

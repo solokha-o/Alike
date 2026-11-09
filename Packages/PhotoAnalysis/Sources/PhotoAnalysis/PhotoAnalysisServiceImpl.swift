@@ -1,7 +1,7 @@
+import Core
 import Foundation
 @preconcurrency import Photos
 @preconcurrency import Vision
-import Core
 
 /// Main photo analysis service that coordinates Vision analysis and clustering
 public actor PhotoAnalysisServiceImpl: PhotoAnalysisService {
@@ -12,7 +12,7 @@ public actor PhotoAnalysisServiceImpl: PhotoAnalysisService {
     private let blurAnalysisService: BlurAnalysisService
     private let assetsProvider: @Sendable () -> [PHAsset]
     private var measuredLibraryTotalBytes: Int64?
-    
+
     public init(
         visionService: VisionFeaturePrintService = VisionFeaturePrintService(),
         clusteringService: PhotoClusteringService = PhotoClusteringService(),
@@ -44,7 +44,7 @@ public actor PhotoAnalysisServiceImpl: PhotoAnalysisService {
         self.blurAnalysisService = blurAnalysisService
         self.assetsProvider = assetsProvider
     }
-    
+
     /// Analyze entire photo library and return clusters
     public func analyzePhotoLibrary(
         sensitivity: Float,
@@ -55,7 +55,7 @@ public actor PhotoAnalysisServiceImpl: PhotoAnalysisService {
 
         // Fetch all photo assets
         let assets = assetsProvider()
-        
+
         guard !assets.isEmpty else {
             throw PhotoAnalysisError.noPhotosFound
         }
@@ -127,9 +127,9 @@ public actor PhotoAnalysisServiceImpl: PhotoAnalysisService {
         AssetByteSize.prewarm(clusters.lazy.flatMap(\.assets))
         let duration = startTime.duration(to: ContinuousClock().now)
         AppLog.scan.info("\(AppLog.tag(.finish, "Clustering done. clusters=\(clusters.count) duration=\(duration)"))")
-        
+
         progress(1.0)
-        
+
         return clusters
     }
 
@@ -172,7 +172,8 @@ public actor PhotoAnalysisServiceImpl: PhotoAnalysisService {
         let byIdentifier = Dictionary(uniqueKeysWithValues: assets.map { ($0.localIdentifier, $0) })
 
         if let cleanupCategoryRepository,
-           let snapshot = try await cleanupCategoryRepository.loadSnapshot(for: category) {
+           let snapshot = try await cleanupCategoryRepository.loadSnapshot(for: category)
+        {
             let resolved = snapshot.localIdentifiers.compactMap { byIdentifier[$0] }
             if !resolved.isEmpty {
                 // The review screen reads bytes on the main actor; measure them here.
@@ -181,37 +182,38 @@ public actor PhotoAnalysisServiceImpl: PhotoAnalysisService {
             }
         }
 
-        let fallback: [PHAsset]
-        switch category {
-        case .screenshots:
-            fallback = assets.filter { $0.mediaSubtypes.contains(.photoScreenshot) }
-        case .blurredPhotos:
-            fallback = []
-        }
+        let fallback: [PHAsset] =
+            switch category {
+            case .screenshots:
+                assets.filter { $0.mediaSubtypes.contains(.photoScreenshot) }
+            case .blurredPhotos:
+                []
+            }
         AssetByteSize.prewarm(fallback)
         return fallback
     }
-    
+
     /// Calculate similarity between two specific assets
     public func calculateSimilarity(asset1: PHAsset, asset2: PHAsset) async throws -> Float {
         guard let featurePrint1 = try await visionService.generateFeaturePrint(for: asset1),
-              let featurePrint2 = try await visionService.generateFeaturePrint(for: asset2) else {
+              let featurePrint2 = try await visionService.generateFeaturePrint(for: asset2)
+        else {
             return 0.0
         }
-        
+
         let distance = try visionService.computeDistance(
             between: featurePrint1,
             and: featurePrint2
         )
-        
+
         // Convert distance to similarity (0-1, where 1 is most similar)
         return max(0.0, min(1.0, 1.0 - (distance / 100.0)))
     }
-    
+
     // MARK: - Private Helpers
-    
+
     /// `nil` for an empty library: a zero total would draw a ring around nothing.
-    nonisolated private static func totalBytes(of assets: [PHAsset]) -> Int64? {
+    private nonisolated static func totalBytes(of assets: [PHAsset]) -> Int64? {
         guard !assets.isEmpty else { return nil }
         let startTime = ContinuousClock().now
         let total = assets.reduce(into: Int64(0)) { $0 += AssetByteSize.bytes(for: $1) }
@@ -220,27 +222,26 @@ public actor PhotoAnalysisServiceImpl: PhotoAnalysisService {
         return total
     }
 
-    nonisolated private static func fetchAllPhotoAssets() -> [PHAsset] {
+    private nonisolated static func fetchAllPhotoAssets() -> [PHAsset] {
         let fetchOptions = PHFetchOptions()
         fetchOptions.sortDescriptors = [
-            NSSortDescriptor(key: "creationDate", ascending: false)
+            NSSortDescriptor(key: "creationDate", ascending: false),
         ]
 
         // Only fetch images (not videos)
         let fetchResult = PHAsset.fetchAssets(with: .image, options: fetchOptions)
-        
+
         var assets: [PHAsset] = []
         fetchResult.enumerateObjects { asset, _, _ in
             assets.append(asset)
         }
-        
+
         return assets
     }
-    
 }
 
-private extension PhotoAnalysisServiceImpl {
-    func buildCleanupCategorySnapshots(
+extension PhotoAnalysisServiceImpl {
+    private func buildCleanupCategorySnapshots(
         from assets: [PHAsset],
         progress: @Sendable @escaping (Double) -> Void
     ) async throws -> [CleanupCategorySnapshot] {
@@ -274,7 +275,7 @@ private extension PhotoAnalysisServiceImpl {
         return snapshots
     }
 
-    func loadCachedFeaturePrints(for assets: [PHAsset]) async -> [String: VNFeaturePrintObservation] {
+    private func loadCachedFeaturePrints(for assets: [PHAsset]) async -> [String: VNFeaturePrintObservation] {
         guard let featurePrintRepository else { return [:] }
 
         let identifiers = assets.map(\.localIdentifier)
@@ -299,12 +300,13 @@ private extension PhotoAnalysisServiceImpl {
         return cachedFeaturePrints
     }
 
-    func saveFeaturePrintCache(for results: [(asset: PHAsset, featurePrint: VNFeaturePrintObservation?)]) async {
+    private func saveFeaturePrintCache(for results: [(asset: PHAsset, featurePrint: VNFeaturePrintObservation?)]) async {
         guard let featurePrintRepository else { return }
 
         let entries: [PhotoFeaturePrintCacheEntry] = results.compactMap { item in
             guard let featurePrint = item.featurePrint,
-                  let data = encodeFeaturePrint(featurePrint) else {
+                  let data = encodeFeaturePrint(featurePrint)
+            else {
                 return nil
             }
 
@@ -319,21 +321,21 @@ private extension PhotoAnalysisServiceImpl {
         try? await featurePrintRepository.upsertFeaturePrints(entries)
     }
 
-    nonisolated static func isCacheValid(
+    fileprivate nonisolated static func isCacheValid(
         cachedModificationDate: Date?,
         assetModificationDate: Date?
     ) -> Bool {
         switch (cachedModificationDate, assetModificationDate) {
         case (nil, nil):
-            return true
+            true
         case (let cached?, let asset?):
-            return abs(cached.timeIntervalSince1970 - asset.timeIntervalSince1970) < 1
+            abs(cached.timeIntervalSince1970 - asset.timeIntervalSince1970) < 1
         default:
-            return false
+            false
         }
     }
 
-    func decodeFeaturePrint(from data: Data) -> VNFeaturePrintObservation? {
+    private func decodeFeaturePrint(from data: Data) -> VNFeaturePrintObservation? {
         do {
             return try NSKeyedUnarchiver.unarchivedObject(
                 ofClass: VNFeaturePrintObservation.self,
@@ -344,7 +346,7 @@ private extension PhotoAnalysisServiceImpl {
         }
     }
 
-    func encodeFeaturePrint(_ observation: VNFeaturePrintObservation) -> Data? {
+    private func encodeFeaturePrint(_ observation: VNFeaturePrintObservation) -> Data? {
         do {
             return try NSKeyedArchiver.archivedData(
                 withRootObject: observation,

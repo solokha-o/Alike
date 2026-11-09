@@ -16,102 +16,56 @@ Use this skill when the user wants a modular SwiftUI iOS architecture with Swift
 - Prefer clear dependency boundaries so features can be developed, tested, and replaced independently.
 - Treat "different responsibility" as the main signal for a new package, not file size alone.
 
-## Project layout (recommended)
+## Alike packages and categories
 
-- Main app target: app entry point + wiring
-- `Packages/` (feature modules), examples:
-  - `Status`
-  - `Timeline`
-  - `Explore`
-  - `Conversations`
-  - `Account`
-  - `Notifications`
-- `Packages/` (shared/core), examples:
-  - `Core` (models, utilities)
-  - `Networking`
-  - `Storage`
-  - `DesignSystem`
+The source of truth is `Docs/adr/0004-package-dependencies.md` (ADR-0004) and
+`tools/package-categories`. Summary:
 
-## Example module structure (with protocols)
+| Category | Members |
+|---|---|
+| App | `Alike` (composition root, with `AlikeTests`), `AlikeWidgets` |
+| Feature | `Cleanup`, `Details`, `Launch`, `Scanner`, `Settings`, `Welcome` |
+| Foundation | `CleanupWorkspace`, `Core`, `DesignSystem`, `NavigationKit`, `PhotoAnalysis`, `Purchases`, `Storage`, `WidgetSupport` |
+| Foundation with UI | `Diagnostics`, `UserGuide`, `PurchasesUI` (product of `Purchases`) |
+| Utility | none today (helper libraries any package can use) |
+| Tool | `BestShotCalibration` (macOS calibration tool, not shipped; nothing depends on it) |
 
-Example layout for a `Places` feature:
+Permitted edges (row depends on column):
 
-```
-Packages/
-  Core/
-    Sources/Core/
-      Models/Place.swift
-      Protocols/PlaceRepository.swift
-  Networking/
-    Sources/Networking/
-      HTTPClient.swift
-  Storage/
-    Sources/Storage/
-      PlaceCache.swift
-      SQLiteStore.swift
-  Places/
-    Sources/Places/
-      PlacesView.swift
-      PlacesViewModel.swift
-      PlacesService.swift
-      PlacesRepositoryImpl.swift
-      PlaceRow.swift
-```
+| From \ To | Feature | Foundation | SDK | Utility | Tool |
+|---|---|---|---|---|---|
+| App | ✓ | ✓ | ✓ | ✓ | ✗ |
+| Feature | ✗ | ✓ | ✗ | ✓ | ✗ |
+| Foundation | ✗ | ✓ | Named in ADR-0004 only | ✓ | ✗ |
+| Utility | ✗ | ✗ | ✗ | ✓ | ✗ |
+| Tool | ✗ | ✓ | ✗ | ✓ | ✗ |
 
-Protocol examples (simplified):
+- No package depends on an App target.
+- The only SDK is `lottie-spm`, and only `DesignSystem` uses it.
+- A Tool (`BestShotCalibration`) can depend on Foundation; nothing depends on a Tool.
+- The graph is a DAG. Levels are computed by `tools/check-package-graph`, not written.
+- A new edge, a new SDK, a new package, or a category change needs a new ADR.
 
-```swift
-// Core/Protocols/PlaceRepository.swift
-public protocol PlaceRepository {
-    func list() async throws -> [Place]
-    func refresh() async throws -> [Place]
-}
+Run `tools/check-package-graph` after each change to a `Package.swift`, a
+category, or a local `import`. It checks the matrix, the SDK rule, cycles, and
+that each package imports only the local modules it declares. It also prints
+the level of each module. `tools/quick` and `tools/full` run it. If it reports
+a new edge, write an ADR first. Then update `tools/package-categories` or add
+the exception with its reason to `tools/package-graph.allowlist`.
 
-// Storage/PlaceCache.swift
-public protocol PlaceCache {
-    func load() async throws -> [Place]
-    func save(_ places: [Place]) async throws
-    func invalidate() async
-}
-```
-
-Composition root (app target or AppWiring package):
-
-```swift
-let http = HTTPClient()
-let cache = SQLitePlaceCache()
-let repo = PlacesRepositoryImpl(http: http, cache: cache)
-let viewModel = PlacesViewModel(repository: repo)
-```
+Composition root: the `Alike` app target creates the concrete services and
+passes them to the view models of the Feature packages.
 
 ## View model pattern (team convention)
 
 - One main view + one view model per screen/flow.
-- The main view owns the view model via `@StateObject` (or `@State` for `@Observable` types).
-- Pass the view model to subviews via `@ObservedObject`/`@Bindable` or plain `let`.
+- The view model is a `@MainActor @Observable final class`. The main view owns it via `@State`, made in `init`.
+- Give subviews narrow inputs (values and closures). Use `@Bindable` only when a subview needs bindings to the view model.
 - Compose the UI from small, targeted subviews.
-
-## Data layer & dependencies
-
-- Use a `Repository` or `Client` protocol per domain to isolate data access.
-- Keep networking in a shared `Networking` package; prefer `URLSession` + `async/await`.
-- Cache policies (memory/disk) live behind repositories; keep UI unaware of cache details.
-- Use DTOs at the network boundary and map to domain models in the data layer.
-- Prefer immutable domain models; store mutability in caches/repositories.
-
-## Offline-first & caching guidelines
-
-- Treat cache as the primary read source; network is for refresh.
-- Flow: `load cache → show UI → refresh in background → update cache → UI updates`.
-- Expose cache age or freshness so UI can show "last updated".
-- Use write-through: on successful network fetch, update cache immediately.
-- Support a manual refresh path even when cache is available.
-- Choose cache policy per feature (stale-while-revalidate, time-based expiry, or size-based eviction).
-- If offline, return cached data with an explicit "stale" marker; avoid empty screens.
 
 ## Dependency injection
 
-- Depend on protocols in features; provide concrete implementations in a `CompositionRoot` (app target or a dedicated `AppWiring` package).
+- Depend on protocols in features; provide concrete implementations in the `Alike` app target (the composition root).
 - Use constructor injection for view models and services; avoid global singletons.
 - Provide test doubles in each package’s test target.
 
@@ -132,10 +86,11 @@ Do not create a new package when:
 
 ## How to add a new feature
 
-1) Create a new Swift Package under `Packages/<Feature>`.
-2) Add feature views + view models + service protocols.
-3) Wire it in the app target (routing/navigation).
-4) Add tests inside the package.
+1) Write an ADR for the new package and its edges (ADR-0004), and add it to `tools/package-categories`.
+2) Create `Packages/<Feature>` from `references/templates/Package.swift` (its header lists the README and Xcode project steps).
+3) Add feature views + view models + service protocols.
+4) Wire it in the app target (routing/navigation).
+5) Add tests inside the package.
 
 ## Guardrails
 
@@ -151,8 +106,9 @@ Do not create a new package when:
 
 ## Dependency rules
 
-- `Feature` → `Core/Networking/Storage/DesignSystem`
-- `Core` should not depend on `Feature` packages
+- Follow the matrix above and ADR-0004.
+- A screen that more than one feature shows goes into a Foundation package
+  (example: `UserGuide`, `Diagnostics`), never into a Feature package.
 
 ## Navigation
 
@@ -167,46 +123,20 @@ Do not create a new package when:
 - Prefer testable view models and repositories with protocol-based dependencies.
 - Add integration tests for data flows that span multiple packages where practical.
 
-## Error handling & resiliency
+## References
 
-- Model domain errors explicitly; avoid pinpointing UI to raw network errors.
-- Handle transient failures with retry/backoff at the data layer.
-- Provide user-friendly error states at the view level (empty, loading, error).
+| Need | Reference |
+|---|---|
+| Style: what SwiftFormat and SwiftLint enforce, the 15 written rules (ADR-0001 to ADR-0003) | `references/swift-code-style.md` |
+| File layout, when and how to split, one way per task (DI, errors, logging, navigation), known debt. A new way needs an ADR. | `references/file-structure.md` |
+| Templates: `View`, `ViewModel`, `Service`, `FeatureTests`, `Package` | `references/templates/` |
+| SwiftUI view rules, state wrapper table, 6-item review checklist | `references/swiftui-view-rules.md`, `references/view-review-checklist.md` |
+| Data layer, caching, error resiliency, observability | `references/data-layer.md` |
+| `///` and `//` comments, markers. Comments are in English; translate a non-English comment in a file that you change. | `references/code-documentation.md` |
+| README of a new package (category from ADR-0004) | `references/package-readme-template.md` |
+| Schemes, build configurations, `#if DEBUG`, feature flags | `references/xcode-schemes-configurations.md` |
 
-## Observability (non-CI)
-
-- Add lightweight logging in data/repository layers for request/response failures.
-- Use analytics/telemetry behind a protocol so it can be mocked in tests.
-
-## Code style and documentation
-
-### Style guide
-
-Follow Google Swift Style Guide conventions for formatting, naming, and code organization. See `references/swift-code-style.md` for:
-- File organization and imports
-- Formatting rules (100 char limit, braces, whitespace)
-- Line wrapping strategies
-- Naming conventions (types, properties, functions)
-- Programming practices (optionals, guards, error handling)
-- Code organization with `// MARK:`
-
-### Documentation
-
-Follow structured documentation standards for public APIs and inline comments. See `references/code-documentation.md` for:
-- When and how to use `///` doc comments with markup
-- Inline comment (`//`) best practices
-- Special markers (`TODO`, `FIXME`, `WARNING`)
-- Complete examples for classes, protocols, and functions
-- Use English only for code documentation and comments (`///`, `//`, `// MARK:`).
-- If existing comments are non-English, convert them to English when touching the file.
-
-### Build configurations and schemes
-
-Organize Xcode schemes and build configurations for multiple deployment targets. See `references/xcode-schemes-configurations.md` for:
-- Setting up Debug/Staging/Release configurations
-- Creating schemes per environment (Production, Staging, Testing)
-- Conditional compilation (`#if DEBUG`, `#if STAGING`)
-- Testing with test data (launch arguments, environment variables, mock injection)
-- Bundle identifier strategies for side-by-side installs
-- CI/CD integration (GitHub Actions, Fastlane)
-- Debug menu and feature flags patterns
+`tools/quick` and `tools/full` run `ALIKE_LINT_STRICT=1 tools/lint` on the
+changed Swift files before the package tests. Install the pre-commit hook once
+with `tools/install-hooks`. If a commit stops, run `tools/lint --fix`, then
+`git add` the files.

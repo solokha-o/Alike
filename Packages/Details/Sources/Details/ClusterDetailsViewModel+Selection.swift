@@ -1,8 +1,8 @@
+import DesignSystem
 import Foundation
 import Photos
-import SwiftUI
-import DesignSystem
 import Storage
+import SwiftUI
 
 extension ClusterDetailsViewModel {
     func isBestShot(_ localIdentifier: String) -> Bool {
@@ -19,5 +19,4 @@ extension ClusterDetailsViewModel {
     func isSelected(_ localIdentifier: String) -> Bool {
         selectedAssetIDs.contains(localIdentifier)
     }
-
 }

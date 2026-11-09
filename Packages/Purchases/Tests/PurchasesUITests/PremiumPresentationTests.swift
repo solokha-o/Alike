@@ -1,10 +1,10 @@
-import Foundation
-import Testing
 import Core
+import Foundation
 import Purchases
+import Testing
 @testable import PurchasesUI
 
-@Suite struct PremiumPresentationTests {
+struct PremiumPresentationTests {
     @Test func testPaywallDefaultsToYearlyAndUsesStableOrder() {
         let state = PaywallPresentationState()
 
@@ -220,7 +220,7 @@ import Purchases
         for key in [
             "purchases.paywall.postFirstScan",
             "purchases.paywall.postFirstScan.withSavings",
-            "purchases.paywall.batchCleanup"
+            "purchases.paywall.batchCleanup",
         ] {
             #expect(try catalog.pluralCategories(of: key, language: "en") == ["one", "other"], Comment(rawValue: key))
             #expect(

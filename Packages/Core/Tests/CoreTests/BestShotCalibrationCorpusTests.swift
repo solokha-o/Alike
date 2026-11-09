@@ -2,7 +2,7 @@ import Foundation
 import Testing
 @testable import Core
 
-@Suite struct BestShotCalibrationCorpusTests {
+struct BestShotCalibrationCorpusTests {
     private func makeCorpus() -> BestShotCalibrationCorpus {
         let withFaces = BestShotCalibrationCluster(
             clusterID: "cluster-faces",
@@ -24,14 +24,14 @@ import Testing
                                 sharpness: 55,
                                 hasClosedEyes: false,
                                 isCroppedByFrame: false
-                            )
+                            ),
                         ],
                         pixelArea: 12_000_000
                     ),
                     creationDate: Date(timeIntervalSince1970: 1_000),
                     modificationDate: Date(timeIntervalSince1970: 1_000),
-                    pixelWidth: 4000,
-                    pixelHeight: 3000,
+                    pixelWidth: 4_000,
+                    pixelHeight: 3_000,
                     isFavorite: true
                 ),
                 BestShotCalibrationCandidate(
@@ -39,10 +39,10 @@ import Testing
                     signals: PhotoQualitySignals(globalSharpness: 20, pixelArea: 12_000_000),
                     creationDate: Date(timeIntervalSince1970: 1_001),
                     modificationDate: nil,
-                    pixelWidth: 4000,
-                    pixelHeight: 3000,
+                    pixelWidth: 4_000,
+                    pixelHeight: 3_000,
                     isFavorite: false
-                )
+                ),
             ],
             humanBestShotID: "asset-1"
         )
@@ -53,15 +53,15 @@ import Testing
                 BestShotCalibrationCandidate(
                     assetID: "asset-3",
                     signals: PhotoQualitySignals(globalSharpness: 40, pixelArea: 8_000_000),
-                    pixelWidth: 3000,
-                    pixelHeight: 2000
+                    pixelWidth: 3_000,
+                    pixelHeight: 2_000
                 ),
                 BestShotCalibrationCandidate(
                     assetID: "asset-4",
                     signals: PhotoQualitySignals(globalSharpness: 45, pixelArea: 8_000_000),
-                    pixelWidth: 3000,
-                    pixelHeight: 2000
-                )
+                    pixelWidth: 3_000,
+                    pixelHeight: 2_000
+                ),
             ],
             humanBestShotID: "asset-4"
         )

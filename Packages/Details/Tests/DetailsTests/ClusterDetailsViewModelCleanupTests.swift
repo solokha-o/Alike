@@ -1,11 +1,11 @@
-import Foundation
-import Testing
 import Core
+import Foundation
 import Photos
+import Testing
 @testable import Details
 
 @MainActor
-@Suite struct ClusterDetailsViewModelCleanupTests: ClusterDetailsViewModelFixture {
+struct ClusterDetailsViewModelCleanupTests: ClusterDetailsViewModelFixture {
     let repository = MockClusterReviewStateRepository()
     let cleanupService = MockPhotoCleanupService()
     let cleanupHistoryRepository = MockCleanupHistoryRepository()
@@ -32,7 +32,7 @@ import Photos
             snapshots: [
                 snapshot(id: "best", isFavorite: true, area: 120, createdAt: nil),
                 snapshot(id: "one", isFavorite: false, area: 100, createdAt: nil),
-                snapshot(id: "two", isFavorite: false, area: 90, createdAt: nil)
+                snapshot(id: "two", isFavorite: false, area: 90, createdAt: nil),
             ],
             premiumAccess: MockPremiumAccessController(unlockedFeatures: [.batchCleanup])
         )
@@ -70,7 +70,7 @@ import Photos
             snapshots: [
                 snapshot(id: "best", isFavorite: true, area: 120, createdAt: nil),
                 snapshot(id: "one", isFavorite: false, area: 100, createdAt: nil),
-                snapshot(id: "two", isFavorite: false, area: 90, createdAt: nil)
+                snapshot(id: "two", isFavorite: false, area: 90, createdAt: nil),
             ],
             premiumAccess: MockPremiumAccessController(unlockedFeatures: [.batchCleanup])
         )
@@ -107,7 +107,7 @@ import Photos
         let viewModel = makeViewModel(
             snapshots: [
                 snapshot(id: "best", isFavorite: true, area: 100, createdAt: nil),
-                snapshot(id: "candidate", isFavorite: false, area: 90, createdAt: nil)
+                snapshot(id: "candidate", isFavorite: false, area: 90, createdAt: nil),
             ],
             reviewRepository: suspendedRepository
         )
@@ -140,7 +140,7 @@ import Photos
         let viewModel = makeViewModel(
             snapshots: [
                 snapshot(id: "best", isFavorite: true, area: 100, createdAt: nil),
-                snapshot(id: "candidate", isFavorite: false, area: 90, createdAt: nil)
+                snapshot(id: "candidate", isFavorite: false, area: 90, createdAt: nil),
             ],
             completionDelay: { await completionDelay.wait() }
         )
@@ -167,7 +167,7 @@ import Photos
         let viewModel = makeViewModel(
             snapshots: [
                 snapshot(id: "best", isFavorite: true, area: 100, createdAt: nil),
-                snapshot(id: "one", isFavorite: false, area: 90, createdAt: nil)
+                snapshot(id: "one", isFavorite: false, area: 90, createdAt: nil),
             ]
         )
 
@@ -190,7 +190,7 @@ import Photos
         let viewModel = makeViewModel(
             snapshots: [
                 snapshot(id: "best", isFavorite: true, area: 100, createdAt: nil),
-                snapshot(id: "one", isFavorite: false, area: 90, createdAt: nil)
+                snapshot(id: "one", isFavorite: false, area: 90, createdAt: nil),
             ]
         )
 
@@ -206,7 +206,7 @@ import Photos
         let viewModel = makeViewModel(
             snapshots: [
                 snapshot(id: "best", isFavorite: true, area: 100, createdAt: nil),
-                snapshot(id: "candidate", isFavorite: false, area: 90, createdAt: nil)
+                snapshot(id: "candidate", isFavorite: false, area: 90, createdAt: nil),
             ]
         )
 
@@ -227,7 +227,7 @@ import Photos
             snapshots: [
                 snapshot(id: "best", isFavorite: true, area: 300, createdAt: nil),
                 snapshot(id: "one", isFavorite: false, area: 200, createdAt: nil),
-                snapshot(id: "two", isFavorite: false, area: 100, createdAt: nil)
+                snapshot(id: "two", isFavorite: false, area: 100, createdAt: nil),
             ]
         )
 
@@ -236,24 +236,24 @@ import Photos
 
         #expect(viewModel.deleteConfirmationTitle == DetailsL10n.ClusterDetails.deleteAlertTitle(1))
         #expect(viewModel.deleteConfirmationMessage == String(
-                format: DetailsL10n.ClusterDetails.selectedPhotoWillBeRemoved,
-                viewModel.estimatedSavingsText
-            ))
+            format: DetailsL10n.ClusterDetails.selectedPhotoWillBeRemoved,
+            viewModel.estimatedSavingsText
+        ))
 
         viewModel.toggleSelection(for: "two")
 
         #expect(viewModel.deleteConfirmationTitle == DetailsL10n.ClusterDetails.deleteAlertTitle(2))
         #expect(viewModel.deleteConfirmationMessage == String(
-                format: DetailsL10n.ClusterDetails.selectedPhotosWillBeRemoved,
-                viewModel.estimatedSavingsText
-            ))
+            format: DetailsL10n.ClusterDetails.selectedPhotosWillBeRemoved,
+            viewModel.estimatedSavingsText
+        ))
     }
 
     @Test func testFreeUserCanRequestSinglePhotoCleanup() async {
         let viewModel = makeViewModel(
             snapshots: [
                 snapshot(id: "best", isFavorite: true, area: 100, createdAt: nil),
-                snapshot(id: "one", isFavorite: false, area: 90, createdAt: nil)
+                snapshot(id: "one", isFavorite: false, area: 90, createdAt: nil),
             ]
         )
         await viewModel.load()
@@ -270,7 +270,7 @@ import Photos
             snapshots: [
                 snapshot(id: "best", isFavorite: true, area: 100, createdAt: nil),
                 snapshot(id: "one", isFavorite: false, area: 90, createdAt: nil),
-                snapshot(id: "two", isFavorite: false, area: 80, createdAt: nil)
+                snapshot(id: "two", isFavorite: false, area: 80, createdAt: nil),
             ]
         )
         await viewModel.load()
@@ -291,7 +291,7 @@ import Photos
             snapshots: [
                 snapshot(id: "best", isFavorite: true, area: 100, createdAt: nil),
                 snapshot(id: "one", isFavorite: false, area: 90, createdAt: nil),
-                snapshot(id: "two", isFavorite: false, area: 80, createdAt: nil)
+                snapshot(id: "two", isFavorite: false, area: 80, createdAt: nil),
             ]
         )
         await viewModel.load()
@@ -310,7 +310,7 @@ import Photos
         let viewModel = makeViewModel(
             snapshots: [
                 snapshot(id: "best", isFavorite: true, area: 100, createdAt: nil),
-                snapshot(id: "one", isFavorite: false, area: 90, createdAt: nil)
+                snapshot(id: "one", isFavorite: false, area: 90, createdAt: nil),
             ],
             reviewRepository: reviewRepository
         )
@@ -336,7 +336,7 @@ import Photos
         let viewModel = makeViewModel(
             snapshots: [
                 snapshot(id: "best", isFavorite: true, area: 100, createdAt: nil),
-                snapshot(id: "one", isFavorite: false, area: 90, createdAt: nil)
+                snapshot(id: "one", isFavorite: false, area: 90, createdAt: nil),
             ],
             reviewRepository: reviewRepository
         )
@@ -371,7 +371,7 @@ import Photos
             snapshots: [
                 snapshot(id: "best", isFavorite: true, area: 100, createdAt: nil),
                 snapshot(id: "one", isFavorite: false, area: 90, createdAt: nil),
-                snapshot(id: "two", isFavorite: false, area: 80, createdAt: nil)
+                snapshot(id: "two", isFavorite: false, area: 80, createdAt: nil),
             ],
             reviewRepository: reviewRepository
         )
@@ -502,7 +502,7 @@ private actor SuspendedClusterReviewStateRepository: ClusterReviewStateRepositor
     private var deleteStarted = false
 
     init(state: ClusterReviewState) {
-        self.states = [state.clusterID: state]
+        states = [state.clusterID: state]
     }
 
     func loadReviewState(clusterID: UUID) async throws -> ClusterReviewState? {

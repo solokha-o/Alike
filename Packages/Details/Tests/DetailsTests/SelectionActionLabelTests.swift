@@ -9,7 +9,7 @@ import Testing
 /// "Auswahl löschen", and "Effacer la sélection" above "Supprimer la sélection". Neither
 /// pair is catchable by a rule, so the labels are pinned here. If a future translation pass
 /// changes one, this test fails and the pair gets looked at again — which is the point.
-@Suite struct SelectionActionLabelTests {
+struct SelectionActionLabelTests {
     private static let clearKey = "details.common.clearSelection"
     private static let moveKey = "details.screenshotCleanupComponents.moveSelected"
     private static let selectAllKey = "details.screenshotCleanupComponents.selectAll"
@@ -29,7 +29,7 @@ import Testing
         "pl": ("Wyczyść wybór", "Przenieś wybrane"),
         "tr": ("Seçimi Temizle", "Seçilenleri Taşı"),
         "zh-Hant": ("清除選取", "移動已選取項目"),
-        "ar": ("مسح التحديد", "نقل المحدد")
+        "ar": ("مسح التحديد", "نقل المحدد"),
     ]
 
     @Test func testTheClearAndMoveButtonsStayDistinguishable() throws {
@@ -49,12 +49,12 @@ import Testing
         let catalog = try LocalizationCatalog.load()
         let forbidden = [
             "delete", "видал", "elimin", "apagar", "löschen", "supprim",
-            "usuń", "usun", "verwijder", "sil", "刪除"
+            "usuń", "usun", "verwijder", "sil", "刪除",
         ]
 
         for key in [Self.moveKey, "details.screenshotCleanupComponents.moving"] {
             for language in LocalizationCatalog.shippedLanguages {
-                let value = try self.value(key, language, catalog).lowercased()
+                let value = try value(key, language, catalog).lowercased()
                 for word in forbidden where value.contains(word) {
                     Issue.record("\(key) [\(language)] promises deletion: \(value)")
                 }

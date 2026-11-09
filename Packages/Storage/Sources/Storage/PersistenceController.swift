@@ -4,13 +4,13 @@ import Foundation
 /// Actor that manages CoreData persistence
 public actor PersistenceController: Sendable {
     public static let shared = PersistenceController()
-    
+
     private let container: NSPersistentContainer
-    
+
     public nonisolated var viewContext: NSManagedObjectContext {
         container.viewContext
     }
-    
+
     /// Compiled model this release ships, version 1 of `AlikeModel.xcdatamodeld`.
     ///
     /// Loaded once and shared by every container. Two `NSManagedObjectModel`
@@ -24,7 +24,8 @@ public actor PersistenceController: Sendable {
     /// Data itself expects one model to back many coordinators.
     nonisolated(unsafe) static let shippedModel: NSManagedObjectModel = {
         guard let modelURL = Bundle.module.url(forResource: "AlikeModel", withExtension: "momd"),
-              let model = NSManagedObjectModel(contentsOf: modelURL) else {
+              let model = NSManagedObjectModel(contentsOf: modelURL)
+        else {
             fatalError("Failed to load Core Data model")
         }
         return model
@@ -38,22 +39,22 @@ public actor PersistenceController: Sendable {
         }
         container.persistentStoreDescriptions.first?.shouldMigrateStoreAutomatically = true
         container.persistentStoreDescriptions.first?.shouldInferMappingModelAutomatically = true
-        
-        container.loadPersistentStores { description, error in
-            if let error = error {
+
+        container.loadPersistentStores { _, error in
+            if let error {
                 fatalError("Core Data store failed to load: \(error.localizedDescription)")
             }
         }
-        
+
         container.viewContext.automaticallyMergesChangesFromParent = true
         container.viewContext.mergePolicy = NSMergePolicy.mergeByPropertyObjectTrump
     }
-    
+
     /// Create an in-memory instance for testing/previews
     public static func preview() -> PersistenceController {
         PersistenceController(inMemory: true)
     }
-    
+
     /// Perform background task
     public func performBackgroundTask<T>(_ block: @escaping @Sendable (NSManagedObjectContext) throws -> T) async throws -> T {
         try await withCheckedThrowingContinuation { continuation in
@@ -67,22 +68,22 @@ public actor PersistenceController: Sendable {
             }
         }
     }
-    
+
     /// Save context if there are changes
     public func save(_ context: NSManagedObjectContext) async throws {
         guard context.hasChanges else { return }
-        
+
         try await context.perform {
             try context.save()
         }
     }
-    
+
     /// Delete all data
     public func deleteAllData() async throws {
         let deletedObjectIDs = try await performBackgroundTask { context in
             let entities = ["ClusterEntity", "PhotoEntity", "ScanMetadataEntity"]
             var deletedObjectIDs: [NSManagedObjectID] = []
-            
+
             for entityName in entities {
                 let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: entityName)
                 let deleteRequest = NSBatchDeleteRequest(fetchRequest: fetchRequest)

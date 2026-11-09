@@ -1,13 +1,14 @@
-import SwiftUI
-import Photos
-import MapKit
 import Core
 import DesignSystem
+import MapKit
 import NavigationKit
+import Photos
+import SwiftUI
 
 #if os(iOS)
 
 // MARK: - Metadata View
+
 struct MetadataView: View {
     let asset: PHAsset
     @Environment(\.dismiss) private var dismiss

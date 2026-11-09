@@ -2,7 +2,7 @@ import Foundation
 import Testing
 @testable import Diagnostics
 
-@Suite struct CrashReportMailDraftTests {
+struct CrashReportMailDraftTests {
     private let fallback = CrashReportMailDraft.Fallback(
         appVersion: "9.9.9",
         appBuild: "99",
@@ -54,7 +54,7 @@ import Testing
         let urls = [URL(fileURLWithPath: "/tmp/a.json"), URL(fileURLWithPath: "/tmp/b.json")]
         let reports = [
             CrashReport(receivedAt: Date(timeIntervalSince1970: 20)),
-            CrashReport(receivedAt: Date(timeIntervalSince1970: 10))
+            CrashReport(receivedAt: Date(timeIntervalSince1970: 10)),
         ]
 
         let draft = draft(reports, urls: urls)

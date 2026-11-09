@@ -3,7 +3,7 @@ import Testing
 @testable import BestShotCalibration
 @testable import Core
 
-@Suite struct WeightSweepTests {
+struct WeightSweepTests {
     private let config = PhotoQualityScoringConfig.current
 
     private func makeCorpus() -> BestShotCalibrationCorpus {
@@ -218,7 +218,7 @@ import Testing
         // terms vanish). Under the fix, an all-unresolved config is charged
         // the full blur penalty on every cluster: 0 agreement -
         // blurPenalty * (0 blurry winners + 4 unresolved) / 4 clusters == -blurPenalty.
-        #expect(abs(refusingScore.objective - (-5.0)) <= 1e-9, "refusing every cluster is charged the full blur penalty")
+        #expect(abs(refusingScore.objective - -5.0) <= 1e-9, "refusing every cluster is charged the full blur penalty")
         #expect(
             answeringScore.objective > refusingScore.objective,
             "a config that answers correctly and unblurred must strictly beat one that refuses everything"
@@ -324,16 +324,16 @@ import Testing
                     globalSharpness: 11,
                     darkClippedFraction: 0.20,
                     noiseEstimate: 0.9,
-                    pixelWidth: 2000,
-                    pixelHeight: 1500
+                    pixelWidth: 2_000,
+                    pixelHeight: 1_500
                 ),
                 makeCandidate(
                     winnerID,
                     globalSharpness: 9,
                     darkClippedFraction: 0,
                     noiseEstimate: 0.01,
-                    pixelWidth: 8000,
-                    pixelHeight: 6000
+                    pixelWidth: 8_000,
+                    pixelHeight: 6_000
                 ),
                 makeCandidate(
                     fillerID,
@@ -378,8 +378,8 @@ import Testing
         faceSharpness: Double? = nil,
         darkClippedFraction: Double = 0,
         noiseEstimate: Double = 0.1,
-        pixelWidth: Int = 4000,
-        pixelHeight: Int = 3000
+        pixelWidth: Int = 4_000,
+        pixelHeight: Int = 3_000
     ) -> BestShotCalibrationCandidate {
         let faces: [FaceQualitySignal]? = faceSharpness.map {
             [FaceQualitySignal(

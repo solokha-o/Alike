@@ -1,7 +1,7 @@
-import SwiftUI
-import Photos
 import Core
 import DesignSystem
+import Photos
+import SwiftUI
 
 struct ScreenshotCleanupSummaryCard: View {
     let category: CleanupCategoryKind
@@ -229,10 +229,10 @@ struct ScreenshotCleanupActionBar: View {
                         ? DetailsL10n.ScreenshotCleanupComponents.moving
                         : DetailsL10n.ScreenshotCleanupComponents.moveSelected
                 )
-                    .font(.appHeadline)
-                    .lineLimit(allowsWrapping ? 2 : 1)
-                    .multilineTextAlignment(.center)
-                    .fixedSize(horizontal: !allowsWrapping, vertical: allowsWrapping)
+                .font(.appHeadline)
+                .lineLimit(allowsWrapping ? 2 : 1)
+                .multilineTextAlignment(.center)
+                .fixedSize(horizontal: !allowsWrapping, vertical: allowsWrapping)
             }
             .frame(maxWidth: .infinity)
         }

@@ -2,7 +2,7 @@ import Foundation
 import Testing
 @testable import Core
 
-@Suite struct BestShotRankerTests {
+struct BestShotRankerTests {
     private let config = PhotoQualityScoringConfig.current
 
     // MARK: - Requirements from the task
@@ -15,7 +15,7 @@ import Testing
             snapshots: [blurredFavorite, sharp],
             scores: makeScores([
                 makeScore("blurred", globalSharpness: 12),
-                makeScore("sharp", globalSharpness: 60)
+                makeScore("sharp", globalSharpness: 60),
             ])
         )
 
@@ -33,7 +33,7 @@ import Testing
             snapshots: [favorite, other],
             scores: makeScores([
                 makeScore("favorite", globalSharpness: 50),
-                makeScore("other", globalSharpness: 50)
+                makeScore("other", globalSharpness: 50),
             ])
         )
 
@@ -41,14 +41,14 @@ import Testing
     }
 
     @Test func testSmallerSharpFrameBeatsHighResolutionMotionBlur() {
-        let bigBlurred = makeSnapshot("big", pixelWidth: 8000, pixelHeight: 6000)
-        let smallSharp = makeSnapshot("small", pixelWidth: 2000, pixelHeight: 1500)
+        let bigBlurred = makeSnapshot("big", pixelWidth: 8_000, pixelHeight: 6_000)
+        let smallSharp = makeSnapshot("small", pixelWidth: 2_000, pixelHeight: 1_500)
 
         let decision = BestShotRanker.decide(
             snapshots: [bigBlurred, smallSharp],
             scores: makeScores([
                 makeScore("big", globalSharpness: 14),
-                makeScore("small", globalSharpness: 55)
+                makeScore("small", globalSharpness: 55),
             ])
         )
 
@@ -73,7 +73,7 @@ import Testing
                     globalSharpness: 40,
                     subjectSharpness: 60,
                     faces: [makeFace(sharpness: 60)]
-                )
+                ),
             ])
         )
 
@@ -99,7 +99,7 @@ import Testing
                     globalSharpness: 50,
                     subjectSharpness: 50,
                     faces: [makeFace(sharpness: 50, hasClosedEyes: false)]
-                )
+                ),
             ])
         )
 
@@ -115,7 +115,7 @@ import Testing
             snapshots: [blownOut, exposed],
             scores: makeScores([
                 makeScore("blown", globalSharpness: 50, brightClippedFraction: 0.30),
-                makeScore("exposed", globalSharpness: 50, brightClippedFraction: 0.01)
+                makeScore("exposed", globalSharpness: 50, brightClippedFraction: 0.01),
             ])
         )
 
@@ -133,7 +133,7 @@ import Testing
             scores: makeScores([
                 makeScore("blurred", globalSharpness: 10),
                 makeScore("sharp1", globalSharpness: 60),
-                makeScore("sharp2", globalSharpness: 58)
+                makeScore("sharp2", globalSharpness: 58),
             ])
         )
 
@@ -149,7 +149,7 @@ import Testing
             scores: makeScores([
                 makeScore("a", globalSharpness: 4),
                 makeScore("b", globalSharpness: 3.5),
-                makeScore("c", globalSharpness: 3.8)
+                makeScore("c", globalSharpness: 3.8),
             ])
         )
 
@@ -164,12 +164,12 @@ import Testing
         let snapshots = [
             makeSnapshot("a", creationDate: Date(timeIntervalSince1970: 100)),
             makeSnapshot("b", creationDate: Date(timeIntervalSince1970: 100)),
-            makeSnapshot("c", creationDate: Date(timeIntervalSince1970: 100))
+            makeSnapshot("c", creationDate: Date(timeIntervalSince1970: 100)),
         ]
         let scores = makeScores([
             makeScore("a", globalSharpness: 40),
             makeScore("b", globalSharpness: 40),
-            makeScore("c", globalSharpness: 40)
+            makeScore("c", globalSharpness: 40),
         ])
 
         let first = BestShotRanker.decide(snapshots: snapshots, scores: scores)
@@ -187,7 +187,7 @@ import Testing
         let scores = makeScores([
             makeScore("a", globalSharpness: 20),
             makeScore("b", globalSharpness: 65),
-            makeScore("c", globalSharpness: 30)
+            makeScore("c", globalSharpness: 30),
         ])
 
         let first = BestShotRanker.decide(snapshots: snapshots, scores: scores)
@@ -216,7 +216,7 @@ import Testing
                     globalSharpness: 30,
                     subjectSharpness: 2,
                     faces: [makeFace(sharpness: 2)]
-                )
+                ),
             ])
         )
 
@@ -239,7 +239,7 @@ import Testing
                     globalSharpness: 50,
                     subjectSharpness: 50,
                     faces: [makeFace(sharpness: 50, hasClosedEyes: true)]
-                )
+                ),
             ])
         )
 
@@ -281,7 +281,7 @@ import Testing
                     signals: .failed(.assetUnavailable)
                 ),
                 makeScore("sharp1", globalSharpness: 60),
-                makeScore("sharp2", globalSharpness: 30)
+                makeScore("sharp2", globalSharpness: 30),
             ])
         )
 
@@ -303,7 +303,7 @@ import Testing
                     thumbnailConfigVersion: config.thumbnailConfigVersion,
                     signals: .failed(.assetUnavailable)
                 ),
-                makeScore("only-good", globalSharpness: 60)
+                makeScore("only-good", globalSharpness: 60),
             ])
         )
 
@@ -340,7 +340,7 @@ import Testing
             snapshots: [makeSnapshot("a"), makeSnapshot("b"), makeSnapshot("unscored")],
             scores: makeScores([
                 makeScore("a", globalSharpness: 60),
-                makeScore("b", globalSharpness: 20)
+                makeScore("b", globalSharpness: 20),
             ])
         )
 
@@ -390,7 +390,7 @@ import Testing
         let scores = makeScores([
             makeScore("blurred", globalSharpness: 5),
             makeScore("reference1", globalSharpness: 60),
-            makeScore("reference2", globalSharpness: 58)
+            makeScore("reference2", globalSharpness: 58),
         ])
 
         let ratios = BestShotRanker.sharpnessRatios(snapshots: snapshots, scores: scores, config: config)
@@ -416,7 +416,7 @@ import Testing
         let snapshots = [sharp, blurry]
         let scores = makeScores([
             makeScore("sharp", globalSharpness: 60),
-            makeScore("blurry", globalSharpness: 30)
+            makeScore("blurry", globalSharpness: 30),
         ])
         let decision = BestShotRanker.decide(snapshots: snapshots, scores: scores)
         #expect(decision.localIdentifier == "sharp")
@@ -441,7 +441,7 @@ import Testing
         let snapshots = [makeSnapshot("a"), makeSnapshot("b")]
         let scores = makeScores([
             makeScore("a", globalSharpness: 60),
-            makeScore("b", globalSharpness: 30)
+            makeScore("b", globalSharpness: 30),
         ])
 
         let example = BestShotRanker.overrideExample(
@@ -458,7 +458,7 @@ import Testing
         let snapshots = [makeSnapshot("a"), makeSnapshot("b")]
         let scores = makeScores([
             makeScore("a", globalSharpness: 60),
-            makeScore("b", globalSharpness: 30)
+            makeScore("b", globalSharpness: 30),
         ])
 
         let example = BestShotRanker.overrideExample(
@@ -479,7 +479,7 @@ import Testing
         let scores = makeScores([
             makeScore("blurred", globalSharpness: 5),
             makeScore("reference1", globalSharpness: 60),
-            makeScore("reference2", globalSharpness: 58)
+            makeScore("reference2", globalSharpness: 58),
         ])
 
         let exampleChosenExcluded = BestShotRanker.overrideExample(
@@ -503,7 +503,7 @@ import Testing
         let withFaces = [makeSnapshot("a"), makeSnapshot("b")]
         let facedScores = makeScores([
             makeScore("a", globalSharpness: 50, subjectSharpness: 50, faces: [makeFace(sharpness: 50)]),
-            makeScore("b", globalSharpness: 40, subjectSharpness: 40, faces: [makeFace(sharpness: 40)])
+            makeScore("b", globalSharpness: 40, subjectSharpness: 40, faces: [makeFace(sharpness: 40)]),
         ])
         let faced = try #require(BestShotRanker.overrideExample(
             snapshots: withFaces,
@@ -516,7 +516,7 @@ import Testing
         let withoutFaces = [makeSnapshot("c"), makeSnapshot("d")]
         let facelessScores = makeScores([
             makeScore("c", globalSharpness: 50),
-            makeScore("d", globalSharpness: 40)
+            makeScore("d", globalSharpness: 40),
         ])
         let faceless = try #require(BestShotRanker.overrideExample(
             snapshots: withoutFaces,
@@ -535,7 +535,7 @@ import Testing
         let snapshots = [favorite, other]
         let scores = makeScores([
             makeScore("favorite", globalSharpness: 50),
-            makeScore("other", globalSharpness: 50)
+            makeScore("other", globalSharpness: 50),
         ])
 
         let favoriteChosen = try #require(BestShotRanker.overrideExample(
@@ -561,7 +561,7 @@ import Testing
         let snapshots = [makeSnapshot("a"), makeSnapshot("b")]
         let scores = makeScores([
             makeScore("a", globalSharpness: 60),
-            makeScore("b", globalSharpness: 30)
+            makeScore("b", globalSharpness: 30),
         ])
 
         let example = BestShotRanker.overrideExample(
@@ -601,8 +601,8 @@ import Testing
     private func makeSnapshot(
         _ localIdentifier: String,
         isFavorite: Bool = false,
-        pixelWidth: Int = 4000,
-        pixelHeight: Int = 3000,
+        pixelWidth: Int = 4_000,
+        pixelHeight: Int = 3_000,
         creationDate: Date = Date(timeIntervalSince1970: 1_000)
     ) -> PhotoClusterAssetSnapshot {
         PhotoClusterAssetSnapshot(

@@ -14,16 +14,16 @@ import Storage
 @Observable
 public final class CleanupWorkspaceModel {
     public private(set) var contentState: CleanupContentState = .notLoaded
-    public private(set) var scanOperation: ScanOperationState = .idle
-    public private(set) var reconciliationState: CleanupReconciliationState?
-    public private(set) var lastScanSummary: ScanSummary?
-    public private(set) var lastCompletedScanDate: Date?
+    public internal(set) var scanOperation: ScanOperationState = .idle
+    public internal(set) var reconciliationState: CleanupReconciliationState?
+    public internal(set) var lastScanSummary: ScanSummary?
+    public internal(set) var lastCompletedScanDate: Date?
     /// The whole library's size as the last saved scan summed it — the widget
     /// ring's denominator. `nil` until a scan has measured it, never 0.
-    public private(set) var libraryTotalBytes: Int64?
+    public internal(set) var libraryTotalBytes: Int64?
     /// What the store is known to hold. A failed write leaves it behind
     /// `libraryTotalBytes`, so the next scan retries an unchanged total.
-    private var persistedLibraryTotalBytes: Int64?
+    var persistedLibraryTotalBytes: Int64?
     public let cleanupService: any PhotoCleanupService
     public let cleanupHistoryRepository: any CleanupHistoryRepository
     /// Best Shot quality scoring, cached in Core Data so reopening a cluster
@@ -51,6 +51,7 @@ public final class CleanupWorkspaceModel {
     public var resurfacingStates: [UUID: ClusterResurfacingState] {
         lastGoodContent.resurfacingStates
     }
+
     public var activeCleanupSession: CleanupSession? { lastGoodContent.activeSession }
     public var cleanupInsights: CleanupInsights { lastGoodContent.insights }
     public var hasCompletedScanBaseline: Bool { lastGoodContent.hasCompletedScanBaseline }
@@ -60,21 +61,21 @@ public final class CleanupWorkspaceModel {
     /// on every read, because resolving each cluster's keeper is not free.
     public private(set) var reclaimableEstimate: ReclaimableEstimate = .zero
 
-    private let analysisService: any PhotoAnalysisService
-    private let repository: any PhotoClusterRepository
-    private let reviewRepository: any ClusterReviewStateRepository
-    private let cleanupCategoryRepository: any CleanupCategorySnapshotRepository
-    private let cleanupManager: any CleanupSessionManaging
-    private let cleanupInsightsProvider: any CleanupInsightsProviding
-    private let now: @Sendable () -> Date
+    let analysisService: any PhotoAnalysisService
+    let repository: any PhotoClusterRepository
+    let reviewRepository: any ClusterReviewStateRepository
+    let cleanupCategoryRepository: any CleanupCategorySnapshotRepository
+    let cleanupManager: any CleanupSessionManaging
+    let cleanupInsightsProvider: any CleanupInsightsProviding
+    let now: @Sendable () -> Date
     /// Re-measures persisted category sums written with the pixel heuristic.
-    private let assetBytesByIdentifier: @Sendable ([String]) -> [String: Int64]
-    private let assetByteSizeRepository: any AssetByteSizeRepository
+    let assetBytesByIdentifier: @Sendable ([String]) -> [String: Int64]
+    let assetByteSizeRepository: any AssetByteSizeRepository
     /// `AssetByteSize.generation` at the last load or save of the size store.
-    private var persistedByteSizeGeneration: Int?
-    private let postProcessor = ScanPostProcessor()
+    var persistedByteSizeGeneration: Int?
+    let postProcessor = ScanPostProcessor()
 
-    private var lastGoodContent = CleanupWorkspaceContent.empty
+    private(set) var lastGoodContent = CleanupWorkspaceContent.empty
 
     /// Derived from `lastGoodContent` and refreshed only when it is replaced.
     ///
@@ -86,14 +87,14 @@ public final class CleanupWorkspaceModel {
     private(set) var sessionProgressSnapshot: CleanupSessionProgress = .empty
     private(set) var cleanupEntryClusterSnapshot: PhotoCluster?
     public private(set) var clusterIdentityKey: [UUID] = []
-    private var scanMutationGeneration = 0
+    var scanMutationGeneration = 0
     private var cachedContentLoadTask: Task<Void, Never>?
-    private var activeScan: (id: UUID, sensitivity: SensitivityLevel, purpose: ScanOperationPurpose)?
-    private var scanTask: Task<ScanSummary, Error>?
-    private var progressRelay: ScanProgressRelay?
+    var activeScan: (id: UUID, sensitivity: SensitivityLevel, purpose: ScanOperationPurpose)?
+    var scanTask: Task<ScanSummary, Error>?
+    var progressRelay: ScanProgressRelay?
     private var reconciliationTask: Task<Void, Never>?
-    private var activeReconciliation: (record: CleanupCompletionRecord, sensitivity: SensitivityLevel)?
-    private var queuedReconciliation: (record: CleanupCompletionRecord, sensitivity: SensitivityLevel)?
+    var activeReconciliation: (record: CleanupCompletionRecord, sensitivity: SensitivityLevel)?
+    var queuedReconciliation: (record: CleanupCompletionRecord, sensitivity: SensitivityLevel)?
 
     public init(
         analysisService: (any PhotoAnalysisService)? = nil,
@@ -131,7 +132,7 @@ public final class CleanupWorkspaceModel {
         self.bestShotOverrideMetrics = bestShotOverrideMetrics
         self.bestShotPersonalizedConfigProvider = bestShotPersonalizedConfigProvider
         self.cleanupManager = cleanupManager ?? CleanupSessionManager(repository: cleanupSessionRepository)
-        self.cleanupInsightsProvider = CleanupInsightsService(repository: self.cleanupHistoryRepository)
+        cleanupInsightsProvider = CleanupInsightsService(repository: self.cleanupHistoryRepository)
         self.assetBytesByIdentifier = assetBytesByIdentifier
         self.assetByteSizeRepository = assetByteSizeRepository
         self.now = now
@@ -167,7 +168,7 @@ public final class CleanupWorkspaceModel {
 
         let task = Task { @MainActor [weak self] in
             guard let self else { return }
-            await self.performCachedContentLoad()
+            await performCachedContentLoad()
         }
         cachedContentLoadTask = task
         await task.value
@@ -272,7 +273,7 @@ public final class CleanupWorkspaceModel {
 
         let task = Task { @MainActor [weak self] in
             guard let self else { return }
-            await self.runReconciliationQueue(initial: (record, sensitivity))
+            await runReconciliationQueue(initial: (record, sensitivity))
         }
         reconciliationTask = task
         await task.value
@@ -382,441 +383,7 @@ public final class CleanupWorkspaceModel {
     }
 }
 
-private extension CleanupWorkspaceModel {
-    /// Joins an in-flight scan only when it is analyzing at the same
-    /// sensitivity the caller asked for; a request at a different sensitivity
-    /// would otherwise silently report a summary computed at the wrong
-    /// sensitivity. A mismatched request instead waits for the in-flight scan
-    /// to finish and then runs its own, so the caller's chosen sensitivity is
-    /// always honored.
-    func startScan(
-        sensitivity: SensitivityLevel,
-        purpose: ScanOperationPurpose
-    ) async throws -> ScanOutcome {
-        try Task.checkCancellation()
-
-        // Loops rather than checking once: two mismatched requests can both be
-        // waiting on the same in-flight scan, and the one that resumes second
-        // must wait for the scan the first one started instead of racing it.
-        // Awaiting a task that is already finished returns immediately, so the
-        // identity check below is what guarantees the loop terminates.
-        while let inFlight = scanTask {
-            if activeScan?.sensitivity == sensitivity {
-                if purpose == .userInitiated, activeScan?.purpose == .reconciliation {
-                    reflectUserInitiatedJoin()
-                }
-                let summary = try await inFlight.value
-                return ScanOutcome(summary: summary, joinedInFlightOperation: true)
-            }
-            _ = try? await inFlight.value
-            if scanTask == inFlight { break }
-        }
-
-        scanMutationGeneration &+= 1
-        let scanID = UUID()
-        activeScan = (scanID, sensitivity, purpose)
-        scanOperation = .scanning(progress: 0, purpose: purpose)
-        // A scan whose owner has not finished its own cleanup yet leaves its
-        // relay behind; cancel it so it stops forwarding into a scan that is
-        // no longer the active one.
-        await progressRelay?.cancel()
-        progressRelay = ScanProgressRelay { [weak self] progress in
-            self?.publishScanProgress(progress, scanID: scanID)
-        }
-
-        let task = Task { @MainActor [weak self] () throws -> ScanSummary in
-            guard let self else { throw CancellationError() }
-            return try await self.performScan(
-                sensitivity: sensitivity,
-                purpose: purpose,
-                scanID: scanID
-            )
-        }
-        scanTask = task
-
-        // Each branch settles the workspace state before its only suspension
-        // point. Awaiting the relay first would let `prepareForDataDeletion`
-        // reset the workspace in that gap, and this scan would then write its
-        // stale outcome over the reset.
-        do {
-            let summary = try await task.value
-            if activeScan?.id == scanID {
-                let finishedRelay = progressRelay
-                progressRelay = nil
-                scanTask = nil
-                activeScan = nil
-                scanOperation = .idle
-                await finishedRelay?.cancel()
-            }
-            return ScanOutcome(summary: summary, joinedInFlightOperation: false)
-        } catch {
-            if activeScan?.id == scanID {
-                let finishedRelay = progressRelay
-                progressRelay = nil
-                scanTask = nil
-                let failurePurpose = activeScan?.purpose ?? purpose
-                activeScan = nil
-                scanOperation = .failed(message: error.localizedDescription, purpose: failurePurpose)
-                await finishedRelay?.cancel()
-            }
-            throw error
-        }
-    }
-
-    /// Flips the currently active scan's displayed purpose to `.userInitiated`
-    /// when a user scan joins a still-running reconciliation, so the UI shows
-    /// scanning rather than refreshing for the rest of that operation.
-    func reflectUserInitiatedJoin() {
-        guard var current = activeScan, current.purpose == .reconciliation else { return }
-        current.purpose = .userInitiated
-        activeScan = current
-        if case .scanning(let progress, _) = scanOperation {
-            scanOperation = .scanning(progress: progress, purpose: .userInitiated)
-        }
-    }
-
-    func runReconciliationQueue(
-        initial: (record: CleanupCompletionRecord, sensitivity: SensitivityLevel)
-    ) async {
-        var next: (record: CleanupCompletionRecord, sensitivity: SensitivityLevel)? = initial
-
-        while let request = next {
-            guard !Task.isCancelled else { break }
-            activeReconciliation = request
-            queuedReconciliation = nil
-            reconciliationState = .refreshing(request.record)
-
-            do {
-                _ = try await startScan(sensitivity: request.sensitivity, purpose: .reconciliation)
-                reconciliationState = .success(request.record)
-            } catch {
-                guard !Task.isCancelled else { break }
-                let refreshedInsights = await fetchCleanupInsights()
-                publish(replacing(lastGoodContent, insights: refreshedInsights))
-                reconciliationState = .failed(
-                    request.record,
-                    message: "The photos were deleted, but the library refresh failed. Run a new scan to refresh your results."
-                )
-            }
-
-            next = queuedReconciliation
-        }
-
-        activeReconciliation = nil
-        queuedReconciliation = nil
-    }
-
-    func performScan(
-        sensitivity: SensitivityLevel,
-        purpose: ScanOperationPurpose,
-        scanID: UUID
-    ) async throws -> ScanSummary {
-        let clustersBeforeScan = try await repository.loadClusters()
-        let categorySnapshotsBeforeScan = try? await cleanupCategoryRepository.loadAllSnapshots()
-        let scanMetadataBeforeScan = await repository.loadScanMetadata()
-        let previousSnapshots = try await repository.loadClusterSnapshots()
-        let previousReviewStates = try await reviewRepository.loadAllReviewStates()
-        // Analysis warms sizes for every cluster photo; reuse what a launch measured.
-        await seedByteSizesIfNeeded()
-
-        guard let progressRelay else { throw CancellationError() }
-        // Captured now, immediately before analysis takes its own snapshot of
-        // the library's assets. A photo added or removed while Vision/category
-        // work is running would otherwise be included in a late token/count
-        // while remaining absent from the clusters that work produces, so the
-        // next change check would see no delta and never prompt for the rescan
-        // that photo actually requires.
-        let capturedFingerprint = await repository.captureScanMetadata(completedAt: now())
-        let analyzedClusters = try await analysisService.analyzePhotoLibrary(
-            sensitivity: sensitivity.threshold
-        ) { progress in
-            Task { await progressRelay.submit(ScanProgressStages.analysis(progress)) }
-        }
-        try Task.checkCancellation()
-        await progressRelay.submit(ScanProgressStages.analysis(1), force: true)
-        let refreshedCategories = try await analysisService.refreshCleanupCategories { progress in
-            Task { await progressRelay.submit(ScanProgressStages.categories(progress)) }
-        }
-        try Task.checkCancellation()
-        await progressRelay.submit(ScanProgressStages.persistenceStart, force: true)
-
-        let completedAt: Date
-        do {
-            try await repository.saveClusters(analyzedClusters)
-            // The fingerprint itself was captured before analysis started, so it
-            // matches the asset input the persisted clusters were derived from.
-            // Only the completion timestamp is stamped now, and the pairing is
-            // persisted only after a successful scan — a failed scan below must
-            // not advance the baseline past clusters that were never saved.
-            completedAt = now()
-            try await repository.updateScanMetadata(
-                ScanMetadataSnapshot(
-                    lastScanDate: completedAt,
-                    libraryChangeToken: capturedFingerprint.libraryChangeToken,
-                    imageAssetCount: capturedFingerprint.imageAssetCount
-                )
-            )
-            try Task.checkCancellation()
-        } catch {
-            await restorePersistedContent(
-                clusters: clustersBeforeScan,
-                categorySnapshots: categorySnapshotsBeforeScan,
-                scanMetadata: scanMetadataBeforeScan
-            )
-            throw error
-        }
-
-        let sortedClusters = await postProcessor.canonicalSortedClusters(analyzedClusters)
-        try Task.checkCancellation()
-        let migratedStates = await postProcessor.migratedReviewStates(
-            previousSnapshots: previousSnapshots,
-            previousReviewStates: previousReviewStates,
-            newClusters: sortedClusters
-        )
-        let reviewData = await persistMigratedReviewData(migratedStates, clusters: sortedClusters)
-        let session = await cleanupManager.syncSession(
-            for: sortedClusters,
-            reviewStates: reviewData.states
-        )
-        let insights = await fetchCleanupInsights()
-        // The refresh above persisted the categories with their identifiers; the
-        // estimate needs those identifiers to count a screenshot inside a cluster once.
-        // A category the refresh reported but the repository cannot hand back keeps
-        // its summary figure, so the estimate never silently drops a category.
-        let categorySnapshots = await postProcessor.categorySnapshots(
-            persisted: fetchCleanupCategorySnapshots(),
-            refreshed: refreshedCategories,
-            refreshedAt: completedAt
-        )
-        let content = CleanupWorkspaceContent(
-            clusters: sortedClusters,
-            categories: refreshedCategories,
-            reviewStates: reviewData.states,
-            resurfacingStates: reviewData.resurfacingStates,
-            activeSession: session,
-            insights: insights,
-            hasCompletedScanBaseline: true,
-            shouldShowRescanPrompt: false,
-            categorySnapshots: categorySnapshots
-        )
-        publish(content)
-        await persistByteSizesIfNeeded(for: content)
-
-        let summary = ScanSummary(
-            clusterCount: sortedClusters.count,
-            cleanupCategoryCandidateCount: refreshedCategories.reduce(0) { $0 + max($1.assetCount, 0) },
-            // The same figure `reclaimableEstimate` now holds for this content, so the
-            // scanner card and a later cold launch cannot disagree.
-            estimatedSavingsBytes: reclaimableEstimate.totalBytes,
-            completedAt: completedAt
-        )
-        lastScanSummary = summary
-        lastCompletedScanDate = summary.completedAt
-        await adoptLibraryTotalBytes(await analysisService.libraryTotalBytes())
-        await progressRelay.submit(ScanProgressStages.completed, force: true)
-        return summary
-    }
-
-    func publishScanProgress(_ progress: Double, scanID: UUID) {
-        guard activeScan?.id == scanID,
-              case .scanning(let current, let purpose) = scanOperation else {
-            return
-        }
-        let next = max(current, min(max(progress, 0), 1))
-        scanOperation = .scanning(progress: next, purpose: purpose)
-    }
-
-    func persistMigratedReviewData(
-        _ result: ClusterReviewResurfacingResult,
-        clusters: [PhotoCluster]
-    ) async -> (
-        states: [UUID: ClusterReviewState],
-        resurfacingStates: [UUID: ClusterResurfacingState]
-    ) {
-        let states = await postProcessor.upgradingByteSizes(
-            of: result.migratedReviewStates,
-            clusters: clusters
-        ).states
-        do {
-            try await persistReviewStates(states)
-        } catch {
-            AppLog.storage.error(
-                "Failed to persist migrated review states: \(error.localizedDescription)"
-            )
-        }
-        return (states, result.resurfacingStates)
-    }
-
-    func makeReviewData(
-        for clusters: [PhotoCluster],
-        persistingRemeasurementsFor expectedGeneration: Int? = nil
-    ) async -> (
-        states: [UUID: ClusterReviewState],
-        resurfacingStates: [UUID: ClusterResurfacingState],
-        session: CleanupSession?
-    ) {
-        let states = await loadReviewStates()
-        return await makeReviewData(
-            for: clusters,
-            reviewStates: states,
-            persistingRemeasurementsFor: expectedGeneration
-        )
-    }
-
-    func loadReviewStates() async -> [UUID: ClusterReviewState] {
-        do {
-            return try await reviewRepository.loadAllReviewStates()
-        } catch {
-            return [:]
-        }
-    }
-
-    /// Legacy sums are re-measured and written back one state at a time. A cached
-    /// load passes the generation it started at: once a scan has begun, the states
-    /// it read belong to clusters the scan is replacing, and writing them back —
-    /// even between the scan's own delete and save — would resurrect stale cluster
-    /// IDs. Each write is re-checked, since a scan can start between two of them.
-    func makeReviewData(
-        for clusters: [PhotoCluster],
-        reviewStates states: [UUID: ClusterReviewState],
-        persistingRemeasurementsFor expectedGeneration: Int? = nil
-    ) async -> (
-        states: [UUID: ClusterReviewState],
-        resurfacingStates: [UUID: ClusterResurfacingState],
-        session: CleanupSession?
-    ) {
-        let upgrade = await postProcessor.upgradingByteSizes(of: states, clusters: clusters)
-        for state in upgrade.upgraded {
-            if let expectedGeneration, !canCommitCachedLoad(expectedGeneration) { break }
-            do {
-                try await reviewRepository.saveReviewState(state)
-            } catch {
-                AppLog.storage.error(
-                    "Failed to persist re-measured review state: \(error.localizedDescription)"
-                )
-            }
-        }
-        let states = upgrade.states
-        let resurfacingStates = await postProcessor.resurfacingStates(
-            for: clusters,
-            reviewStates: states
-        )
-        let session = await cleanupManager.syncSession(for: clusters, reviewStates: states)
-        return (states, resurfacingStates, session)
-    }
-
-    func persistReviewStates(_ states: [UUID: ClusterReviewState]) async throws {
-        try await reviewRepository.deleteAllReviewStates()
-        for state in states.values {
-            try await reviewRepository.saveReviewState(state)
-        }
-    }
-
-    func restorePersistedContent(
-        clusters: [PhotoCluster],
-        categorySnapshots: [CleanupCategoryKind: CleanupCategorySnapshot]?,
-        scanMetadata: ScanMetadataSnapshot?
-    ) async {
-        do {
-            try await repository.saveClusters(clusters)
-        } catch {
-            AppLog.storage.error("Failed to restore clusters after scan failure: \(error.localizedDescription)")
-        }
-
-        // The baseline may already have advanced before the failure; leaving it
-        // there would pair a new scan date with the previous scan's clusters.
-        do {
-            try await repository.updateScanMetadata(scanMetadata)
-        } catch {
-            AppLog.storage.error("Failed to restore scan metadata after scan failure: \(error.localizedDescription)")
-        }
-
-        guard let categorySnapshots else { return }
-        do {
-            try await cleanupCategoryRepository.replaceAllSnapshots(Array(categorySnapshots.values))
-        } catch {
-            AppLog.storage.error("Failed to restore cleanup categories after scan failure: \(error.localizedDescription)")
-        }
-    }
-
-    /// A scan that could not measure the library keeps the previous total.
-    func adoptLibraryTotalBytes(_ bytes: Int64?) async {
-        guard let bytes else { return }
-        libraryTotalBytes = bytes
-        guard bytes != persistedLibraryTotalBytes else { return }
-        do {
-            try await assetByteSizeRepository.saveLibraryTotalBytes(bytes)
-            persistedLibraryTotalBytes = bytes
-        } catch {
-            AppLog.storage.error("Failed to persist library total bytes: \(error.localizedDescription)")
-        }
-    }
-
-    func seedByteSizesIfNeeded() async {
-        guard persistedByteSizeGeneration == nil else { return }
-        AssetByteSize.seed(await assetByteSizeRepository.loadAll())
-        persistedByteSizeGeneration = AssetByteSize.generation
-    }
-
-    /// Writes the sizes of every photo the content refers to, and only those, so
-    /// deleted photos drop out of the store. Skipped when nothing was measured.
-    func persistByteSizesIfNeeded(for content: CleanupWorkspaceContent) async {
-        let generation = AssetByteSize.generation
-        guard generation != persistedByteSizeGeneration else { return }
-        let identifiers = content.clusters.flatMap { $0.assets.map(\.localIdentifier) }
-            + content.categorySnapshots.flatMap(\.localIdentifiers)
-        let records = AssetByteSize.records(for: identifiers)
-        do {
-            try await assetByteSizeRepository.replaceAll(records)
-            persistedByteSizeGeneration = generation
-        } catch {
-            AppLog.storage.error("Failed to persist asset byte sizes: \(error.localizedDescription)")
-        }
-    }
-
-    /// Categories in `CleanupCategoryKind.allCases` order, with their identifiers.
-    /// A repository failure degrades to an empty section, never to a failed load.
-    ///
-    /// Legacy sums are re-measured and written back. A cached load passes the
-    /// generation it started at: a scan that began meanwhile has already stored
-    /// fresh categories, and writing the re-measured legacy ones over them would
-    /// resurrect stale identifiers, so the write is skipped and the load's result
-    /// is discarded by its own commit check.
-    func fetchCleanupCategorySnapshots(
-        persistingRemeasurementsFor expectedGeneration: Int? = nil
-    ) async -> [CleanupCategorySnapshot] {
-        do {
-            let loaded = try await cleanupCategoryRepository.loadAllSnapshots()
-            let snapshots = CleanupCategoryKind.allCases.compactMap { loaded[$0] }
-            guard snapshots.contains(where: { !$0.hasCurrentByteSizes }) else { return snapshots }
-            let remeasured = await postProcessor.remeasuringByteSizes(
-                of: snapshots,
-                using: assetBytesByIdentifier
-            )
-            if let expectedGeneration, !canCommitCachedLoad(expectedGeneration) {
-                return remeasured
-            }
-            do {
-                try await cleanupCategoryRepository.replaceAllSnapshots(remeasured)
-            } catch {
-                AppLog.storage.error("Failed to persist re-measured cleanup categories: \(error.localizedDescription)")
-            }
-            return remeasured
-        } catch {
-            AppLog.storage.error("Failed to load cleanup categories: \(error.localizedDescription)")
-            return []
-        }
-    }
-
-    func fetchCleanupInsights() async -> CleanupInsights {
-        do {
-            return try await cleanupInsightsProvider.loadInsights()
-        } catch {
-            AppLog.storage.error("Failed to load cleanup insights: \(error.localizedDescription)")
-            return .empty
-        }
-    }
-
+extension CleanupWorkspaceModel {
     func canCommitCachedLoad(_ expectedGeneration: Int) -> Bool {
         scanMutationGeneration == expectedGeneration && scanTask == nil
     }
@@ -878,99 +445,5 @@ private extension CleanupWorkspaceModel {
             shouldShowRescanPrompt: shouldShowRescanPrompt ?? content.shouldShowRescanPrompt,
             categorySnapshots: content.categorySnapshots
         )
-    }
-}
-
-private actor ScanPostProcessor {
-    func prewarmByteSizes(for clusters: [PhotoCluster]) {
-        AssetByteSize.prewarm(clusters.lazy.flatMap(\.assets))
-    }
-
-    /// Review states written with the pixel heuristic, re-measured against their
-    /// cluster. States whose cluster is not loaded stay as they are until it is.
-    func upgradingByteSizes(
-        of states: [UUID: ClusterReviewState],
-        clusters: [PhotoCluster]
-    ) -> (states: [UUID: ClusterReviewState], upgraded: [ClusterReviewState]) {
-        guard states.values.contains(where: { !$0.hasCurrentByteSizes }) else { return (states, []) }
-        let clustersByID = Dictionary(clusters.map { ($0.id, $0) }, uniquingKeysWith: { first, _ in first })
-        var result = states
-        var upgraded: [ClusterReviewState] = []
-        for (id, state) in states where !state.hasCurrentByteSizes {
-            guard let cluster = clustersByID[id] else { continue }
-            let upgradedState = state.upgradingByteSizes(in: cluster)
-            result[id] = upgradedState
-            upgraded.append(upgradedState)
-        }
-        return (result, upgraded)
-    }
-
-    func remeasuringByteSizes(
-        of snapshots: [CleanupCategorySnapshot],
-        using bytesByIdentifier: @Sendable ([String]) -> [String: Int64]
-    ) -> [CleanupCategorySnapshot] {
-        snapshots.map { snapshot in
-            guard !snapshot.hasCurrentByteSizes else { return snapshot }
-            return snapshot.remeasured(bytesByIdentifier: bytesByIdentifier(snapshot.localIdentifiers))
-        }
-    }
-
-    func canonicalSortedClusters(
-        _ clusters: [PhotoCluster]
-    ) -> [PhotoCluster] {
-        clusters.sorted { lhs, rhs in
-            if lhs.createdAt != rhs.createdAt { return lhs.createdAt > rhs.createdAt }
-            if lhs.count != rhs.count { return lhs.count > rhs.count }
-            if lhs.averageSimilarity != rhs.averageSimilarity {
-                return lhs.averageSimilarity > rhs.averageSimilarity
-            }
-            return lhs.id.uuidString < rhs.id.uuidString
-        }
-    }
-
-    func migratedReviewStates(
-        previousSnapshots: [PhotoClusterSnapshot],
-        previousReviewStates: [UUID: ClusterReviewState],
-        newClusters: [PhotoCluster]
-    ) -> ClusterReviewResurfacingResult {
-        guard !previousSnapshots.isEmpty else {
-            return ClusterReviewResurfacingResult(
-                migratedReviewStates: [:],
-                resurfacingStates: Dictionary(
-                    uniqueKeysWithValues: newClusters.map { ($0.id, .unchanged) }
-                )
-            )
-        }
-        return ClusterReviewStateResurfacer.resurface(
-            previousSnapshots: previousSnapshots,
-            newClusters: newClusters,
-            existingReviewStates: previousReviewStates
-        )
-    }
-
-    func categorySnapshots(
-        persisted: [CleanupCategorySnapshot],
-        refreshed: [CleanupCategorySummary],
-        refreshedAt: Date
-    ) -> [CleanupCategorySnapshot] {
-        let persistedByKind = Dictionary(uniqueKeysWithValues: persisted.map { ($0.kind, $0) })
-        return refreshed.map { summary in
-            persistedByKind[summary.kind] ?? CleanupCategorySnapshot(
-                kind: summary.kind,
-                localIdentifiers: [],
-                assetCount: summary.assetCount,
-                estimatedSavingsBytes: summary.estimatedSavingsBytes,
-                refreshedAt: refreshedAt
-            )
-        }
-    }
-
-    func resurfacingStates(
-        for clusters: [PhotoCluster],
-        reviewStates: [UUID: ClusterReviewState]
-    ) -> [UUID: ClusterResurfacingState] {
-        Dictionary(uniqueKeysWithValues: clusters.map { cluster in
-            (cluster.id, reviewStates[cluster.id]?.resurfacingState ?? .unchanged)
-        })
     }
 }

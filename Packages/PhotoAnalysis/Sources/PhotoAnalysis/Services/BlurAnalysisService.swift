@@ -82,10 +82,10 @@ struct BlurSharpnessScorer {
                 let center = Double(pixels[x, y])
                 let laplacian = abs(
                     4 * center
-                    - Double(pixels[x - 1, y])
-                    - Double(pixels[x + 1, y])
-                    - Double(pixels[x, y - 1])
-                    - Double(pixels[x, y + 1])
+                        - Double(pixels[x - 1, y])
+                        - Double(pixels[x + 1, y])
+                        - Double(pixels[x, y - 1])
+                        - Double(pixels[x, y + 1])
                 )
                 total += laplacian
                 sampleCount += 1
@@ -128,8 +128,8 @@ struct BlurAnalysisService: Sendable {
             )
         }
 
-        let imageProvider = self.imageProvider
-        let scorer = self.scorer
+        let imageProvider = imageProvider
+        let scorer = scorer
         let candidates: [BlurAnalysisCandidate] = try await ImageAnalysisTaskPool.compactMap(
             workItems,
             maxConcurrentTasks: Self.maxConcurrentTasks,
@@ -179,5 +179,3 @@ private struct BlurAnalysisWorkItem: @unchecked Sendable {
     let pixelWidth: Int
     let pixelHeight: Int
 }
-
-

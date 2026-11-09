@@ -1,6 +1,6 @@
+import Core
 import Foundation
 import ImageIO
-import Core
 import os
 @preconcurrency import Photos
 @preconcurrency import Vision
@@ -17,11 +17,11 @@ public struct VisionFeaturePrintService: Sendable {
         4,
         max(2, ProcessInfo.processInfo.activeProcessorCount)
     )
-    
+
     public init() {}
-    
+
     /// Generate feature print for a single asset
-    nonisolated public func generateFeaturePrint(for asset: PHAsset) async throws -> VNFeaturePrintObservation? {
+    public nonisolated func generateFeaturePrint(for asset: PHAsset) async throws -> VNFeaturePrintObservation? {
         try Task.checkCancellation()
 
         #if canImport(UIKit)
@@ -37,7 +37,7 @@ public struct VisionFeaturePrintService: Sendable {
         return nil
         #endif
     }
-    
+
     /// Generate feature print from CGImage
     nonisolated func generateFeaturePrint(
         from cgImage: CGImage,
@@ -50,15 +50,15 @@ public struct VisionFeaturePrintService: Sendable {
                 options: [:]
             )
             let request = VNGenerateImageFeaturePrintRequest()
-            
+
             try requestHandler.perform([request])
-            
+
             return request.results?.first
         }
     }
-    
+
     /// Calculate distance between two feature prints (lower = more similar)
-    nonisolated public func computeDistance(
+    public nonisolated func computeDistance(
         between observation1: VNFeaturePrintObservation,
         and observation2: VNFeaturePrintObservation
     ) throws -> Float {
@@ -66,9 +66,9 @@ public struct VisionFeaturePrintService: Sendable {
         try observation1.computeDistance(&distance, to: observation2)
         return distance
     }
-    
+
     /// Batch process multiple assets
-    nonisolated public func generateFeaturePrints(
+    public nonisolated func generateFeaturePrints(
         for assets: [PHAsset],
         progress: @Sendable @escaping (Double) -> Void
     ) async throws -> [(asset: PHAsset, featurePrint: VNFeaturePrintObservation?)] {
@@ -93,7 +93,7 @@ public struct VisionFeaturePrintService: Sendable {
                 let asset = UncheckedSendableBox(assets[index])
                 group.addTask {
                     try Task.checkCancellation()
-                    let featurePrint = try await self.generateFeaturePrint(for: asset.value)
+                    let featurePrint = try await generateFeaturePrint(for: asset.value)
                     return FeaturePrintTaskResult(
                         index: index,
                         asset: asset.value,
@@ -119,7 +119,8 @@ public struct VisionFeaturePrintService: Sendable {
                 let elapsed = lastReportedTime.duration(to: now)
                 if currentProgress - lastReportedProgress >= Self.progressEpsilon
                     || elapsed >= Self.progressReportInterval
-                    || currentProgress == 1.0 {
+                    || currentProgress == 1.0
+                {
                     lastReportedProgress = currentProgress
                     lastReportedTime = now
                     progress(currentProgress)
@@ -165,8 +166,8 @@ struct ThumbnailCGImage {
     let orientation: CGImagePropertyOrientation
 }
 
-private extension VisionFeaturePrintService {
-    static let thumbnailRequestQueue: OperationQueue = {
+extension VisionFeaturePrintService {
+    fileprivate static let thumbnailRequestQueue: OperationQueue = {
         let queue = OperationQueue()
         queue.name = "com.alike.photo-analysis.thumbnail-requests"
         queue.qualityOfService = .userInitiated
@@ -174,7 +175,7 @@ private extension VisionFeaturePrintService {
         return queue
     }()
 
-    nonisolated func loadThumbnailCGImage(
+    fileprivate nonisolated func loadThumbnailCGImage(
         for asset: PHAsset,
         targetSize: CGSize
     ) async throws -> ThumbnailCGImage? {
@@ -216,7 +217,8 @@ private extension VisionFeaturePrintService {
                         }
 
                         if (info?[PHImageCancelledKey] as? Bool) == true
-                            || (info?[PHImageResultIsInCloudKey] as? Bool) == true {
+                            || (info?[PHImageResultIsInCloudKey] as? Bool) == true
+                        {
                             requestState.finish(.success(nil))
                             return
                         }
@@ -242,7 +244,6 @@ private extension VisionFeaturePrintService {
             requestState.cancel()
         }
     }
-
 }
 
 final class FeaturePrintThumbnailRequestState: @unchecked Sendable {
@@ -354,8 +355,8 @@ final class FeaturePrintThumbnailRequestState: @unchecked Sendable {
     }
 }
 
-private extension CGImagePropertyOrientation {
-    init(_ orientation: UIImage.Orientation) {
+extension CGImagePropertyOrientation {
+    fileprivate init(_ orientation: UIImage.Orientation) {
         switch orientation {
         case .up: self = .up
         case .down: self = .down

@@ -1,8 +1,8 @@
-import SwiftUI
 import Core
-import Purchases
 import DesignSystem
 import NavigationKit
+import Purchases
+import SwiftUI
 
 private enum HeroIconAnimationPhase: CaseIterable, Equatable {
     case idle
@@ -42,8 +42,8 @@ public struct SubscriptionPaywallView: View {
     ) {
         self.context = context
         self.store = store
-        self.legalLinksOverride = legalLinks
-        self._selectedPlan = State(initialValue: .yearly)
+        legalLinksOverride = legalLinks
+        _selectedPlan = State(initialValue: .yearly)
     }
 
     private var legalLinks: SubscriptionLegalLinks {
@@ -211,7 +211,6 @@ public struct SubscriptionPaywallView: View {
         }
     }
 
-    @ViewBuilder
     private func planCards(usesGlass: Bool) -> some View {
         ForEach(SubscriptionPlan.presentationOrder) { plan in
             if let product = store?.products[plan] {
@@ -328,7 +327,6 @@ public struct SubscriptionPaywallView: View {
         .background(.regularMaterial)
     }
 
-    @ViewBuilder
     private func purchaseControls(usesGlass: Bool) -> some View {
         VStack(spacing: Spacing.xSmall) {
             Button(action: purchaseSelectedPlan) {

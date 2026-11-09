@@ -8,7 +8,7 @@ import Testing
 ///
 /// That the one-column option is reachable rather than hypothetical is already asserted by
 /// `AdaptivePhotoGridLayoutTests.testCompactPolicyOffersOneOrTwoColumnsAndDefaultsToTwo`, so it is not restated here.
-@Suite struct PhotoGridColumnsPluralTests {
+struct PhotoGridColumnsPluralTests {
     @Test func testEnglishSwitchesTheNounAtOne() throws {
         let bundle = try CompiledCatalogFixture.bundle(language: "en")
         let english = Locale(identifier: "en")

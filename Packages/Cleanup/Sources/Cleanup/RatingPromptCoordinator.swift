@@ -1,5 +1,5 @@
-import Foundation
 import Core
+import Foundation
 import Storage
 
 /// Decides when the native App Store review sheet may be requested and records every ask.

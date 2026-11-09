@@ -1,13 +1,13 @@
 import Core
 import DesignSystem
-import SwiftUI
 import Foundation
+import SwiftUI
 import Testing
 @testable import Details
 
 /// A tile has three states and the Best Shot wins over the selection. VoiceOver
 /// must say the same thing the tile shows, so the precedence is pinned here.
-@Suite struct PhotoTilePresentationTests {
+struct PhotoTilePresentationTests {
     private func presentation(
         isBestShot: Bool = false,
         isSelected: Bool = false,
@@ -83,10 +83,10 @@ import Testing
 
     @Test func testImageLoadTaskIDFormat() {
         #expect(PhotoTilePresentation.imageLoadTaskID(
-                localIdentifier: "a",
-                modificationDate: Date(timeIntervalSinceReferenceDate: 5),
-                attempt: 2
-            ) == "a#5.0#2")
+            localIdentifier: "a",
+            modificationDate: Date(timeIntervalSinceReferenceDate: 5),
+            attempt: 2
+        ) == "a#5.0#2")
         #expect(PhotoTilePresentation.imageLoadTaskID(localIdentifier: "a", modificationDate: nil, attempt: 0) == "a#0.0#0")
     }
 
@@ -96,10 +96,10 @@ import Testing
         let base = PhotoTilePresentation.imageLoadTaskID(localIdentifier: "a", modificationDate: date, attempt: 0)
 
         #expect(base != PhotoTilePresentation.imageLoadTaskID(
-                localIdentifier: "a",
-                modificationDate: date.addingTimeInterval(1),
-                attempt: 0
-            ))
+            localIdentifier: "a",
+            modificationDate: date.addingTimeInterval(1),
+            attempt: 0
+        ))
         #expect(base != PhotoTilePresentation.imageLoadTaskID(localIdentifier: "a", modificationDate: date, attempt: 1))
     }
 }

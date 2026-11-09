@@ -1,6 +1,6 @@
+import Core
 import Photos
 import Vision
-import Core
 
 protocol VisionFeaturePrintServicing: Sendable {
     func generateFeaturePrint(for asset: PHAsset) async throws -> VNFeaturePrintObservation?

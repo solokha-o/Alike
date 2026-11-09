@@ -37,7 +37,7 @@ struct AlikeStatusWidget: Widget {
     private static var families: [WidgetFamily] {
         var families: [WidgetFamily] = [
             .systemSmall, .systemMedium,
-            .accessoryCircular, .accessoryRectangular, .accessoryInline
+            .accessoryCircular, .accessoryRectangular, .accessoryInline,
         ]
         if #available(iOS 27.0, *) {
             families.append(.systemExtraLargePortrait)
@@ -55,8 +55,8 @@ struct AlikeStatusWidgetView: View {
     @Environment(\.widgetFamily) private var widgetFamily
 
     let state: WidgetDisplayState
-    var libraryTotalBytes: Int64? = nil
-    var snapshot: WidgetSnapshot? = nil
+    var libraryTotalBytes: Int64?
+    var snapshot: WidgetSnapshot?
 
     var body: some View {
         if isExtraLargePortrait {
@@ -105,10 +105,6 @@ struct AlikeStatusWidgetView: View {
                 WidgetRectangularLayout(composition: composition)
             case .accessoryInline:
                 WidgetInlineLayout(composition: composition)
-            // The small layout is the safe reading of any family this switch has not
-            // been taught.
-            default:
-                WidgetSmallLayout(composition: composition)
             }
         }
         // Mandatory on iOS 17: without it the widget does not render on the
@@ -144,14 +140,14 @@ struct AlikeStatusWidgetView: View {
 
 // MARK: - Previews
 
-private extension WidgetSnapshot {
+extension WidgetSnapshot {
     /// Suggestions waiting: concept №1, "Available to clean up".
-    static func suggestions(now: Date = .now) -> WidgetSnapshot {
+    fileprivate static func suggestions(now: Date = .now) -> WidgetSnapshot {
         .placeholder(now: now)
     }
 
     /// A review part-way through: concept №2, "Continue review".
-    static func partialReview(now: Date = .now) -> WidgetSnapshot {
+    fileprivate static func partialReview(now: Date = .now) -> WidgetSnapshot {
         WidgetSnapshot(
             generatedAt: now,
             photoAuthorization: .authorized,

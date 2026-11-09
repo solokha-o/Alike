@@ -1,5 +1,5 @@
-import Foundation
 import Core
+import Foundation
 import os
 
 /// Persists the installation-lifetime App Store review request history.

@@ -1,5 +1,5 @@
-import SwiftUI
 import DesignSystem
+import SwiftUI
 
 /// Launch screen with 3-second animation
 public struct LaunchView: View {
@@ -7,16 +7,16 @@ public struct LaunchView: View {
     @State private var scale: CGFloat = 0.5
     @State private var opacity: Double = 0.0
     @State private var isSymbolAnimating = false
-    
+
     public init(isCompleted: Binding<Bool>) {
-        self._isCompleted = isCompleted
+        _isCompleted = isCompleted
     }
-    
+
     public var body: some View {
         ZStack {
             Color.accent
                 .ignoresSafeArea()
-            
+
             VStack(spacing: Spacing.large) {
                 Image(systemName: "camera.viewfinder")
                     .font(.system(size: 96, weight: .bold))
@@ -25,7 +25,7 @@ public struct LaunchView: View {
                     .symbolEffect(.pulse, options: .repeating, value: isSymbolAnimating)
                     .scaleEffect(scale)
                     .opacity(opacity)
-                
+
                 Text(LaunchL10n.Main.alike)
                     .font(.system(size: 48, weight: .bold, design: .rounded))
                     .foregroundColor(.white)
@@ -40,25 +40,26 @@ public struct LaunchView: View {
                 scale = 1.0
                 opacity = 1.0
             }
-            
+
             // Wait 3 seconds
             try? await Task.sleep(for: .seconds(3))
-            
+
             // Animate out
             withAnimation(.appSmooth) {
                 scale = 1.2
                 opacity = 0.0
             }
-            
+
             // Small delay for animation to complete
             try? await Task.sleep(for: .milliseconds(300))
-            
+
             isCompleted = true
         }
     }
 }
 
 // MARK: - Preview
+
 #Preview("Launch") {
     LaunchView(isCompleted: .constant(false))
 }

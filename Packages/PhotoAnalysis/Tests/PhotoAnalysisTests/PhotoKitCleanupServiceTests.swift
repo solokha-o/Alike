@@ -1,11 +1,11 @@
-import Photos
-import Foundation
-import Testing
 import Core
+import Foundation
+import Photos
+import Testing
 @testable import PhotoAnalysis
 
 @MainActor
-@Suite struct PhotoKitCleanupServiceTests {
+struct PhotoKitCleanupServiceTests {
     @Test func testDeleteAssetsThrowsWhenNothingSelected() async {
         let service = PhotoKitCleanupService(
             authorizationStatusProvider: { .authorized },

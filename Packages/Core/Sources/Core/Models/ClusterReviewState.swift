@@ -97,8 +97,8 @@ public struct ClusterReviewState: Identifiable, Equatable, Sendable, Codable {
     }
 }
 
-public extension ClusterReviewState {
-    func remapped(
+extension ClusterReviewState {
+    public func remapped(
         clusterID: UUID,
         bestShotLocalIdentifier: String? = nil,
         isBestShotUserSelected: Bool? = nil,
@@ -126,14 +126,14 @@ public extension ClusterReviewState {
         )
     }
 
-    var hasCurrentByteSizes: Bool {
+    public var hasCurrentByteSizes: Bool {
         byteSizeVersion == AssetByteSize.currentVersion
     }
 
     /// The state with `estimatedSavingsBytes` re-measured in the current unit from
     /// the cluster's assets, or `self` when it is already current or belongs to
     /// another cluster. Selected identifiers no longer in the cluster count as 0.
-    func upgradingByteSizes(in cluster: PhotoCluster) -> ClusterReviewState {
+    public func upgradingByteSizes(in cluster: PhotoCluster) -> ClusterReviewState {
         guard !hasCurrentByteSizes, cluster.id == clusterID else { return self }
         let bytes = cluster.assets.reduce(into: Int64(0)) { total, asset in
             if selectedLocalIdentifiers.contains(asset.localIdentifier) {

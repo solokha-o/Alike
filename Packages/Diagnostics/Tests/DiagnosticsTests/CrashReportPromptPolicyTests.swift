@@ -2,7 +2,7 @@ import Foundation
 import Testing
 @testable import Diagnostics
 
-@Suite struct CrashReportPromptPolicyTests {
+struct CrashReportPromptPolicyTests {
     private let policy = CrashReportPromptPolicy()
 
     private func report(_ second: TimeInterval, _ state: CrashReport.PromptState) -> CrashReport {

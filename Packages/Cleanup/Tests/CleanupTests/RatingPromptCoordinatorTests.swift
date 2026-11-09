@@ -1,10 +1,10 @@
+import Core
 import Foundation
 import Testing
-import Core
 @testable import Cleanup
 
 @MainActor
-@Suite struct RatingPromptCoordinatorTests {
+struct RatingPromptCoordinatorTests {
     private let appVersion = "1.4.0"
     private let referenceDate = Date(timeIntervalSince1970: 1_800_000_000)
 

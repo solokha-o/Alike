@@ -6,7 +6,7 @@ import Testing
 @testable import Scanner
 
 @MainActor
-@Suite struct ScannerViewModelTests {
+struct ScannerViewModelTests {
     @Test func testInitialStateIsIdleWithFullFreeAllowance() {
         let viewModel = makeViewModel()
 
@@ -24,7 +24,7 @@ import Testing
     }
 
     @Test func testLoadMigratesCurrentMonthWorkspaceBaselineIntoUsage() async {
-        let date = makeDate(year: 2026, month: 7, day: 15)
+        let date = makeDate(year: 2_026, month: 7, day: 15)
         let repository = MockPhotoClusterRepository()
         await repository.setGetLastScanDateResult(date)
         let workspace = makeWorkspace(repository: repository)
@@ -47,7 +47,7 @@ import Testing
     /// model synthesizes one; its figure must be the workspace's own estimate,
     /// not a second formula.
     @Test func testColdLaunchSummaryReadsTheWorkspaceReclaimableEstimate() async {
-        let date = makeDate(year: 2026, month: 7, day: 15)
+        let date = makeDate(year: 2_026, month: 7, day: 15)
         let repository = MockPhotoClusterRepository()
         await repository.setGetLastScanDateResult(date)
         let categoryRepository = MockCleanupCategorySnapshotRepository()
@@ -57,7 +57,7 @@ import Testing
                 localIdentifiers: ["s1", "s2"],
                 assetCount: 2,
                 estimatedSavingsBytes: 700
-            )
+            ),
         ])
         let workspace = makeWorkspace(repository: repository, categoryRepository: categoryRepository)
         let viewModel = makeViewModel(workspace: workspace, now: { date })
@@ -79,7 +79,7 @@ import Testing
         // 2 000 000 and 1 000 000 bytes.
         let cluster = PhotoCluster(assets: [
             SizedPhotoAsset(localIdentifier: "large", pixelWidth: 4_000, pixelHeight: 1_000),
-            SizedPhotoAsset(localIdentifier: "small", pixelWidth: 2_000, pixelHeight: 1_000)
+            SizedPhotoAsset(localIdentifier: "small", pixelWidth: 2_000, pixelHeight: 1_000),
         ])
         let analysis = MockPhotoAnalysisService()
         await analysis.setAnalyzePhotoLibraryResult(.success([cluster]))
@@ -101,7 +101,7 @@ import Testing
                 selectedLocalIdentifiers: [],
                 status: .inReview,
                 estimatedSavingsBytes: 0
-            )
+            ),
         ])
         await workspace.reloadReviewState()
 
@@ -109,8 +109,8 @@ import Testing
     }
 
     @Test func testLoadResetsStaleMonthlyUsage() async {
-        let july = makeDate(year: 2026, month: 7, day: 31)
-        let august = makeDate(year: 2026, month: 8, day: 1)
+        let july = makeDate(year: 2_026, month: 7, day: 31)
+        let august = makeDate(year: 2_026, month: 8, day: 1)
         let usage = TestScanUsageRepository(usage: makeUsage(count: 3, date: july))
         let viewModel = makeViewModel(usage: usage, now: { august })
 
@@ -121,8 +121,8 @@ import Testing
     }
 
     @Test func testStartScanningResetsMonthlyAllowanceWithoutRecreatingViewModel() async {
-        let july = makeDate(year: 2026, month: 7, day: 31)
-        let august = makeDate(year: 2026, month: 8, day: 1)
+        let july = makeDate(year: 2_026, month: 7, day: 31)
+        let august = makeDate(year: 2_026, month: 8, day: 1)
         let clock = TestClock(july)
         let usage = TestScanUsageRepository(usage: makeUsage(count: 3, date: july))
         let analysis = MockPhotoAnalysisService()
@@ -157,7 +157,7 @@ import Testing
         #expect(recordCallCount == 0)
     }
 
-    @Test func testSuccessfulScanRecordsAllowanceAndMapsCompletionState() async {
+    @Test func testSuccessfulScanRecordsAllowanceAndMapsCompletionState() async throws {
         let analysis = MockPhotoAnalysisService()
         let cluster = makeCluster()
         let category = CleanupCategorySummary(
@@ -180,7 +180,7 @@ import Testing
             clusterCount: 1,
             cleanupCategoryCandidateCount: 2,
             estimatedSavingsBytes: 1_024,
-            completedAt: viewModel.workspace.lastScanSummary!.completedAt
+            completedAt: try #require(viewModel.workspace.lastScanSummary?.completedAt)
         )))
     }
 
@@ -227,7 +227,7 @@ import Testing
         let analysis = MockPhotoAnalysisService()
         let firstCluster = makeCluster()
         await analysis.setAnalyzePhotoLibraryResult(.success([firstCluster]))
-        let clock = TestClock(makeDate(year: 2026, month: 7, day: 1))
+        let clock = TestClock(makeDate(year: 2_026, month: 7, day: 1))
         let workspace = makeWorkspace(analysis: analysis, now: { clock.now })
         let viewModel = makeViewModel(workspace: workspace)
 
@@ -351,7 +351,7 @@ import Testing
     /// reconciliation's must not silently join it: it should wait for the
     /// reconciliation to finish and then run its own scan at the requested
     /// sensitivity, and that fresh work should be charged normally.
-    @Test func testUserScanAtDifferentSensitivityThanInFlightReconciliationRunsFreshAndIsCharged() async {
+    @Test func testUserScanAtDifferentSensitivityThanInFlightReconciliationRunsFreshAndIsCharged() async throws {
         let analysis = SuspendedPhotoAnalysisService()
         let usage = TestScanUsageRepository(usage: makeUsage(count: 2, date: Date()))
         let workspace = makeWorkspace(analysis: analysis)
@@ -391,7 +391,7 @@ import Testing
             clusterCount: 1,
             cleanupCategoryCandidateCount: 0,
             estimatedSavingsBytes: 0,
-            completedAt: viewModel.workspace.lastScanSummary!.completedAt
+            completedAt: try #require(viewModel.workspace.lastScanSummary?.completedAt)
         )))
     }
 
@@ -443,8 +443,8 @@ import Testing
     }
 }
 
-private extension ScannerViewModelTests {
-    func makeViewModel(
+extension ScannerViewModelTests {
+    private func makeViewModel(
         workspace: CleanupWorkspaceModel? = nil,
         usage: TestScanUsageRepository = TestScanUsageRepository(),
         premiumAccess: any PremiumAccessControlling = TestPremiumAccess(),
@@ -461,7 +461,7 @@ private extension ScannerViewModelTests {
         )
     }
 
-    func makeWorkspace(
+    private func makeWorkspace(
         analysis: any PhotoAnalysisService = MockPhotoAnalysisService(),
         repository: any PhotoClusterRepository = MockPhotoClusterRepository(),
         reviewRepository: any ClusterReviewStateRepository = MockClusterReviewStateRepository(),
@@ -479,7 +479,7 @@ private extension ScannerViewModelTests {
         )
     }
 
-    func makeCluster() -> PhotoCluster {
+    private func makeCluster() -> PhotoCluster {
         PhotoCluster(
             id: UUID(),
             assets: [],
@@ -488,11 +488,11 @@ private extension ScannerViewModelTests {
         )
     }
 
-    func makeDate(year: Int, month: Int, day: Int) -> Date {
+    private func makeDate(year: Int, month: Int, day: Int) -> Date {
         utcCalendar.date(from: DateComponents(year: year, month: month, day: day))!
     }
 
-    func makeUsage(count: Int, date: Date) -> MonthlyScanUsage {
+    fileprivate func makeUsage(count: Int, date: Date) -> MonthlyScanUsage {
         let start = utcCalendar.date(from: utcCalendar.dateComponents([.year, .month], from: date))!
         return MonthlyScanUsage(
             periodStart: start,
@@ -501,7 +501,7 @@ private extension ScannerViewModelTests {
         )
     }
 
-    var utcCalendar: Calendar {
+    private var utcCalendar: Calendar {
         var calendar = Calendar(identifier: .gregorian)
         calendar.timeZone = TimeZone(secondsFromGMT: 0)!
         return calendar
@@ -528,7 +528,7 @@ private actor TestScanUsageRepository: ScanUsageRepository {
         guard let currentUsage = usage else { return nil }
         guard calendar.isDate(currentUsage.periodStart, equalTo: date, toGranularity: .month) else {
             let reset = makeUsage(count: 0, date: date)
-            self.usage = reset
+            usage = reset
             return reset
         }
         return currentUsage
@@ -623,8 +623,9 @@ private actor SuspendedPhotoAnalysisService: PhotoAnalysisService {
         progress(1)
         return []
     }
-    func loadAssets(for category: CleanupCategoryKind) async throws -> [PHAsset] { [] }
-    func calculateSimilarity(asset1: PHAsset, asset2: PHAsset) async throws -> Float { 0 }
+
+    func loadAssets(for _: CleanupCategoryKind) async throws -> [PHAsset] { [] }
+    func calculateSimilarity(asset1 _: PHAsset, asset2 _: PHAsset) async throws -> Float { 0 }
 
     func waitUntilAnalyzeCallCount(_ expectedCount: Int) async {
         while analyzeCalls < expectedCount { await Task.yield() }

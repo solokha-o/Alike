@@ -57,7 +57,8 @@ public struct PhotoQualityScore: Codable, Sendable, Equatable, Identifiable {
         // caller re-checks it: see `CachingPhotoQualityAnalyzer`.
         if isAlikeEnhanced { return true }
         guard self.scoringModelVersion == scoringModelVersion,
-              self.thumbnailConfigVersion == thumbnailConfigVersion else {
+              self.thumbnailConfigVersion == thumbnailConfigVersion
+        else {
             return false
         }
         return Self.isSameDate(sourceModificationDate, modificationDate)
@@ -66,12 +67,12 @@ public struct PhotoQualityScore: Codable, Sendable, Equatable, Identifiable {
     private static func isSameDate(_ lhs: Date?, _ rhs: Date?) -> Bool {
         switch (lhs, rhs) {
         case (nil, nil):
-            return true
-        case let (lhs?, rhs?):
+            true
+        case (let lhs?, let rhs?):
             // Core Data rounds dates to sub-millisecond precision on the way back.
-            return abs(lhs.timeIntervalSinceReferenceDate - rhs.timeIntervalSinceReferenceDate) < 0.001
+            abs(lhs.timeIntervalSinceReferenceDate - rhs.timeIntervalSinceReferenceDate) < 0.001
         default:
-            return false
+            false
         }
     }
 }

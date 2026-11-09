@@ -1,13 +1,13 @@
-import Testing
 import Core
+import Testing
 @testable import PhotoAnalysis
 
-@Suite struct CleanupCategorySummaryBuilderTests {
+struct CleanupCategorySummaryBuilderTests {
     @Test func testScreenshotSnapshotIncludesScreenshotsOnly() {
         let snapshot = CleanupCategorySummaryBuilder.screenshotSnapshot(from: [
             CleanupCategoryAssetSnapshot(localIdentifier: "shot-1", isScreenshot: true, estimatedCleanupBytes: 100),
             CleanupCategoryAssetSnapshot(localIdentifier: "shot-2", isScreenshot: true, estimatedCleanupBytes: 50),
-            CleanupCategoryAssetSnapshot(localIdentifier: "photo-1", isScreenshot: false, estimatedCleanupBytes: 500)
+            CleanupCategoryAssetSnapshot(localIdentifier: "photo-1", isScreenshot: false, estimatedCleanupBytes: 500),
         ])
 
         #expect(snapshot?.kind == .screenshots)
@@ -18,7 +18,7 @@ import Core
 
     @Test func testScreenshotSnapshotReturnsNilWhenNoScreenshotsExist() {
         let snapshot = CleanupCategorySummaryBuilder.screenshotSnapshot(from: [
-            CleanupCategoryAssetSnapshot(localIdentifier: "photo-1", isScreenshot: false, estimatedCleanupBytes: 100)
+            CleanupCategoryAssetSnapshot(localIdentifier: "photo-1", isScreenshot: false, estimatedCleanupBytes: 100),
         ])
 
         #expect(snapshot == nil)
@@ -37,7 +37,7 @@ import Core
                 localIdentifiers: ["shot-1"],
                 assetCount: 1,
                 estimatedSavingsBytes: 100
-            )
+            ),
         ])
 
         #expect(summaries.map(\.kind) == [.screenshots, .blurredPhotos])

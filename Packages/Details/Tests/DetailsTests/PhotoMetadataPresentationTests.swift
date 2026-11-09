@@ -3,7 +3,7 @@ import Foundation
 import Testing
 @testable import Details
 
-@Suite struct PhotoMetadataPresentationTests {
+struct PhotoMetadataPresentationTests {
     private func decimal(_ value: Double) -> String {
         value.formatted(.number.locale(.alikeFormatting))
     }
@@ -26,7 +26,7 @@ import Testing
             (.panorama, DetailsL10n.ClusterDetails.panorama),
             (.livePhoto, DetailsL10n.ClusterDetails.livePhoto),
             (.hdr, DetailsL10n.ClusterDetails.hdr),
-            (.depthEffect, DetailsL10n.ClusterDetails.depthEffect)
+            (.depthEffect, DetailsL10n.ClusterDetails.depthEffect),
         ]
         for (trait, label) in labels {
             #expect(PhotoMetadataPresentation.photoTypeText([trait]) == label)

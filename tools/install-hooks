@@ -1,0 +1,103 @@
+#!/usr/bin/env bash
+set -Eeuo pipefail
+
+# Installs the Alike pre-commit shim in the repository hooks directory.
+# Compatible with the macOS system bash 3.2.
+
+usage() {
+  cat <<'USAGE'
+Usage:
+  tools/install-hooks              Install or upgrade the pre-commit hook.
+  tools/install-hooks --force      Replace a different existing pre-commit hook.
+  tools/install-hooks --uninstall  Remove the pre-commit hook if this script installed it.
+
+The hook is a small shim script at <git common dir>/hooks/pre-commit. All linked
+worktrees share it. In each commit it runs tools/hooks/pre-commit of the worktree
+that commits. A branch without that file commits with a one-line note.
+
+This script never sets core.hooksPath. If a global core.hooksPath is set (for example
+the git-workflow dispatch), that dispatch runs its checks and then runs this hook.
+USAGE
+}
+
+FORCE=0
+UNINSTALL=0
+while [[ $# -gt 0 ]]; do
+  case "$1" in
+    --force) FORCE=1 ;;
+    --uninstall) UNINSTALL=1 ;;
+    -h|--help) usage; exit 0 ;;
+    *) usage >&2; exit 64 ;;
+  esac
+  shift
+done
+
+# Not `git rev-parse --git-path hooks`: that path follows core.hooksPath, and a
+# global core.hooksPath would put the hook in the shared global hooks directory.
+HOOKS_DIR="$(git rev-parse --path-format=absolute --git-common-dir)/hooks"
+HOOK="$HOOKS_DIR/pre-commit"
+MARKER="# alike-pre-commit-shim"
+
+# The shim does not depend on the worktree that ran this script: it finds the
+# hook of the worktree that commits.
+SHIM="#!/bin/sh
+$MARKER (installed by tools/install-hooks, do not edit)
+hook=\"\$(git rev-parse --show-toplevel)/tools/hooks/pre-commit\"
+if [ ! -x \"\$hook\" ]; then
+  echo \"pre-commit: this branch has no tools/hooks/pre-commit. The lint check is skipped.\" >&2
+  exit 0
+fi
+exec \"\$hook\" \"\$@\"
+"
+
+# Ours: the shim, or a legacy symbolic link to */tools/hooks/pre-commit (also a broken one).
+is_alike_hook() {
+  if [[ -L "$HOOK" ]]; then
+    case "$(readlink "$HOOK")" in
+      */tools/hooks/pre-commit) return 0 ;;
+    esac
+    return 1
+  fi
+  [[ -f "$HOOK" ]] && grep -qF -- "$MARKER" "$HOOK"
+}
+
+hook_exists() {
+  [[ -e "$HOOK" || -L "$HOOK" ]]
+}
+
+if [[ "$UNINSTALL" == 1 ]]; then
+  if is_alike_hook; then
+    rm "$HOOK"
+    echo "Removed $HOOK."
+  elif hook_exists; then
+    echo "error: $HOOK is not the Alike hook. Nothing was removed." >&2
+    exit 1
+  else
+    echo "No pre-commit hook is installed."
+  fi
+  exit 0
+fi
+
+if [[ -f "$HOOK" && ! -L "$HOOK" && -x "$HOOK" && "$(cat "$HOOK")" == "$(printf '%s' "$SHIM")" ]]; then
+  echo "The pre-commit hook is already installed: $HOOK"
+elif hook_exists && ! is_alike_hook && [[ "$FORCE" != 1 ]]; then
+  echo "error: $HOOK already exists and is a different hook. Nothing was changed." >&2
+  echo "  Run tools/install-hooks --force to replace it." >&2
+  exit 1
+else
+  mkdir -p "$HOOKS_DIR"
+  rm -f "$HOOK"
+  printf '%s' "$SHIM" >"$HOOK"
+  chmod +x "$HOOK"
+  echo "Installed the pre-commit hook: $HOOK"
+fi
+
+GLOBAL_HOOKS_PATH="$(git config --global --get core.hooksPath || true)"
+LOCAL_HOOKS_PATH="$(git config --local --get core.hooksPath || true)"
+if [[ -n "$LOCAL_HOOKS_PATH" ]]; then
+  echo "warning: this repository sets core.hooksPath=$LOCAL_HOOKS_PATH. Git does not run $HOOK."
+elif [[ -n "$GLOBAL_HOOKS_PATH" ]]; then
+  echo "A global core.hooksPath is set ($GLOBAL_HOOKS_PATH)."
+  echo "Its dispatch (git-workflow) runs its checks, then runs $HOOK."
+fi
+echo "In each worktree, the hook runs tools/hooks/pre-commit: ALIKE_LINT_STRICT=1 tools/lint --staged."

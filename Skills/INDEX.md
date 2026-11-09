@@ -8,7 +8,7 @@ request needs that extra depth.
 |---|---|---|---|
 | `Architecture/adaptive-ui-layout` | Responsive SwiftUI layout, iPhone/iPad adaptation, size classes, Dynamic Type | Rarely; use SwiftUI external only for platform API uncertainty | No |
 | `Architecture/change-safety` | Changing shipped code: public package APIs, persisted values, enum cases, user-visible flows; extension-vs-modification decisions, breaking-change gating | Rarely; pair with `Storage/persisted-data-evolution` when the change touches stored data | No |
-| `Architecture/SwiftUIModular` | New package/module, package boundaries, modular SwiftUI architecture | Rarely; use SwiftUI external only for broad platform API guidance | No |
+| `Architecture/SwiftUIModular` | New package/module, package boundaries and categories, modular SwiftUI architecture, Alike Swift Style and the 15 written rules, file structure and splitting, one way per task (DI, errors, logging, navigation), file templates, SwiftUI view rules and state wrappers | Rarely; use SwiftUI external only for broad platform API guidance | No |
 | `DesignConcept` | Native SwiftUI design concepts, colors, typography, SF Symbols | Rarely; use SwiftUI external only for API-specific design implementation | No |
 | `DesignConcept/app-store-screenshots` | App Store screenshots, product/marketing screenshots, screenshot copy, phone mockups, screenshot generator | No | No |
 | `External/core-data-expert` | Core Data, migrations, persistent history, fetch/context issues | This is already external depth; use directly only for Core Data tasks | No |
@@ -47,6 +47,18 @@ request needs that extra depth.
 | `Workflow/sqim-phone-setup` | Explicit request to set up, install, or push Alike on the user's physical phone/iPhone with SQIM; never ordinary build or simulator work | No | No |
 | `Workflow/todo-management` | Create, review, audit, resolve, or report TODO-family comments and deferred code work | No | No |
 | `Workflow/workspace-hygiene` | Keep temporary files, build artifacts, logs, screenshots, exports, and other disposable workspace clutter out of the repository | No | No |
+
+## Decisions
+
+Accepted architecture decisions are in `Docs/adr/` (index: `Docs/adr/README.md`).
+Read ADR-0001 (Swift style), ADR-0002 (SwiftLint), or ADR-0003 (format change
+process) before you change formatting or lint configuration. Read ADR-0004
+(package dependencies, `tools/package-categories`) before you add a package,
+an edge between packages, or an SDK.
+
+Domain terms (code name, UI name, definition) are in `Docs/glossary.md`. Each
+package has a `README.md`; new packages copy
+`Skills/Architecture/SwiftUIModular/references/package-readme-template.md`.
 
 ## Routine Commands
 

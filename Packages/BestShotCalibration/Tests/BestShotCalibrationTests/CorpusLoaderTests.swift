@@ -3,7 +3,7 @@ import Testing
 @testable import BestShotCalibration
 @testable import Core
 
-@Suite struct CorpusLoaderTests {
+struct CorpusLoaderTests {
     private func makeCorpus(
         schemaVersion: Int = BestShotCalibrationCorpus.currentSchemaVersion,
         scoringModelVersion: Int = PhotoQualityScoringConfig.current.scoringModelVersion,
@@ -24,8 +24,8 @@ import Testing
                             signals: PhotoQualitySignals(globalSharpness: 40, pixelArea: 12_000_000),
                             creationDate: Date(timeIntervalSince1970: 1_000),
                             modificationDate: Date(timeIntervalSince1970: 1_000),
-                            pixelWidth: 4000,
-                            pixelHeight: 3000
+                            pixelWidth: 4_000,
+                            pixelHeight: 3_000
                         ),
                     ],
                     humanBestShotID: "a1"

@@ -1,7 +1,7 @@
 import CleanupWorkspace
 import Core
-import Photos
 import Foundation
+import Photos
 import Testing
 
 /// Covers what the workspace does with smart-category and history data around a
@@ -9,12 +9,12 @@ import Testing
 /// means, and that a repository failure degrades to an empty section instead of
 /// taking the whole workspace down.
 @MainActor
-@Suite struct CleanupWorkspaceCategoryTests {
+struct CleanupWorkspaceCategoryTests {
     @Test func testEachCategoryCarriesItsOwnSnapshotNumbersInKindOrder() async {
         let categoryRepository = MockCleanupCategorySnapshotRepository()
         await categoryRepository.setStoredSnapshots([
             .blurredPhotos: snapshot(kind: .blurredPhotos, assetCount: 4, bytes: 400),
-            .screenshots: snapshot(kind: .screenshots, assetCount: 7, bytes: 700)
+            .screenshots: snapshot(kind: .screenshots, assetCount: 7, bytes: 700),
         ])
         let workspace = await makeScannedWorkspace(categoryRepository: categoryRepository)
 
@@ -40,7 +40,7 @@ import Testing
     @Test func testCategoryMissingFromRepositoryIsDroppedRatherThanShownEmpty() async {
         let categoryRepository = MockCleanupCategorySnapshotRepository()
         await categoryRepository.setStoredSnapshots([
-            .screenshots: snapshot(kind: .screenshots, assetCount: 2, bytes: 200)
+            .screenshots: snapshot(kind: .screenshots, assetCount: 2, bytes: 200),
         ])
         let workspace = await makeScannedWorkspace(categoryRepository: categoryRepository)
 
@@ -49,10 +49,10 @@ import Testing
         #expect(workspace.cleanupCategories.map(\.kind) == [.screenshots])
     }
 
-    @Test func testCategoryRepositoryFailureLeavesCategoriesEmptyWithoutFailingTheLoad() async {
+    @Test func testCategoryRepositoryFailureLeavesCategoriesEmptyWithoutFailingTheLoad() async throws {
         let categoryRepository = MockCleanupCategorySnapshotRepository()
         await categoryRepository.setStoredSnapshots([
-            .screenshots: snapshot(kind: .screenshots, assetCount: 2, bytes: 200)
+            .screenshots: snapshot(kind: .screenshots, assetCount: 2, bytes: 200),
         ])
         await categoryRepository.setLoadAllSnapshotsError(CategoryReadFailure())
         let workspace = await makeScannedWorkspace(categoryRepository: categoryRepository)
@@ -63,7 +63,7 @@ import Testing
         // The rest of the workspace still has to arrive: a category read is one
         // section of the Cleanup tab, not a precondition for it.
         #expect(workspace.content != nil)
-        #expect(workspace.contentState == .content(workspace.content!))
+        #expect(workspace.contentState == .content(try #require(workspace.content)))
     }
 
     @Test func testHistoryRepositoryFailureYieldsEmptyInsightsWithoutFailingTheLoad() async {
@@ -73,7 +73,7 @@ import Testing
                 deletedCount: 3,
                 estimatedSavingsBytes: 3_072,
                 completedAt: Date(timeIntervalSince1970: 1_000)
-            )
+            ),
         ])
         await historyRepository.setLoadEntriesError(HistoryReadFailure())
         let workspace = await makeScannedWorkspace(historyRepository: historyRepository)
@@ -183,7 +183,7 @@ private actor FailingSaveClusterRepository: PhotoClusterRepository {
         try await delegate.loadClusters()
     }
 
-    func saveClusters(_ clusters: [PhotoCluster]) async throws {
+    func saveClusters(_: [PhotoCluster]) async throws {
         throw ClusterSaveFailure()
     }
 
@@ -240,14 +240,14 @@ private actor CategoryWritingAnalysisService: PhotoAnalysisService {
     }
 
     func analyzePhotoLibrary(
-        sensitivity: Float,
-        progress: @escaping @Sendable (Double) -> Void
+        sensitivity _: Float,
+        progress _: @escaping @Sendable (Double) -> Void
     ) async throws -> [PhotoCluster] {
         [PhotoCluster(id: UUID(), assets: [])]
     }
 
     func refreshCleanupCategories(
-        progress: @escaping @Sendable (Double) -> Void
+        progress _: @escaping @Sendable (Double) -> Void
     ) async throws -> [CleanupCategorySummary] {
         try await repository.replaceAllSnapshots([refreshed])
         return [refreshed.summary]

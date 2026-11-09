@@ -106,21 +106,21 @@ public protocol PremiumAccessControlling: Sendable {
     ) -> PremiumAccessDecision
 }
 
-public extension PremiumAccessControlling {
+extension PremiumAccessControlling {
     /// Controllers with fixed access have nothing to wait for.
-    var isEntitlementSettled: Bool { true }
+    public var isEntitlementSettled: Bool { true }
 
-    func access(to feature: PremiumFeature) -> PremiumAccessDecision {
+    public func access(to feature: PremiumFeature) -> PremiumAccessDecision {
         access(to: feature, context: .none)
     }
 
-    func hasAccess(to feature: PremiumFeature) -> Bool {
+    public func hasAccess(to feature: PremiumFeature) -> Bool {
         access(to: feature).isAllowed
     }
 }
 
-public extension PremiumFeature {
-    var categoryKind: CleanupCategoryKind? {
+extension PremiumFeature {
+    public var categoryKind: CleanupCategoryKind? {
         switch self {
         case .screenshotCleanup:
             .screenshots
@@ -139,7 +139,7 @@ public struct PremiumAccessController: PremiumAccessControlling {
 
     public init(unlockedFeatures: Set<PremiumFeature> = []) {
         self.unlockedFeatures = unlockedFeatures
-        self.entitlementState = PremiumEntitlementState(
+        entitlementState = PremiumEntitlementState(
             isPremium: !unlockedFeatures.isEmpty,
             source: .unknown
         )

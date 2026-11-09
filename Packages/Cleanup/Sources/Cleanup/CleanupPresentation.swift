@@ -63,7 +63,8 @@ enum CleanupPresentation {
         categories: [CleanupCategorySummary]
     ) -> PremiumSurfaceContext {
         if let kind = feature.categoryKind,
-           let category = categories.first(where: { $0.kind == kind }) {
+           let category = categories.first(where: { $0.kind == kind })
+        {
             return .smartCategory(
                 feature: feature,
                 title: kind.presentation.title,
@@ -157,20 +158,20 @@ enum CleanupPresentation {
         status: ClusterReviewStatus,
         resurfacing: ClusterResurfacingState?
     ) -> String {
-        let resurfacingTitle: String
-        switch resurfacing {
-        case .new:
-            resurfacingTitle = CleanupL10n.Main.new
-        case .changed:
-            resurfacingTitle = CleanupL10n.Main.changed
-        case .none, .unchanged:
-            resurfacingTitle = ""
-        }
+        let resurfacingTitle: String =
+            switch resurfacing {
+            case .new:
+                CleanupL10n.Main.new
+            case .changed:
+                CleanupL10n.Main.changed
+            case .none, .unchanged:
+                ""
+            }
 
         return [
             CleanupL10n.Common.photos(photoCount),
             clusterStatusTitle(status),
-            resurfacingTitle
+            resurfacingTitle,
         ]
         .filter { !$0.isEmpty }
         .joined(separator: ". ")

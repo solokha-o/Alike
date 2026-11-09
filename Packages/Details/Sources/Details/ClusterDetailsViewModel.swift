@@ -1,8 +1,8 @@
+import DesignSystem
 import Foundation
 import Photos
-import SwiftUI
-import DesignSystem
 import Storage
+import SwiftUI
 
 @MainActor
 @Observable
@@ -161,12 +161,12 @@ final class ClusterDetailsViewModel {
                 try await Self.prepareAssetSnapshots(for: cluster)
             }
         }
-        self.bestShotAssetID = ""
-        self.bestShotLabel = DetailsL10n.Common.bestShot
-        self.selectedAssetIDs = []
-        self.reviewMode = .selection
-        self.reviewStatus = .notReviewed
-        self.estimatedSavingsBytes = 0
+        bestShotAssetID = ""
+        bestShotLabel = DetailsL10n.Common.bestShot
+        selectedAssetIDs = []
+        reviewMode = .selection
+        reviewStatus = .notReviewed
+        estimatedSavingsBytes = 0
     }
 
     var selectedCount: Int {
@@ -450,8 +450,8 @@ final class ClusterDetailsViewModel {
     func continueWithSingleFreeSelection() async {
         guard
             let retainedID = assetSnapshots
-                .map(\.localIdentifier)
-                .first(where: selectedAssetIDs.contains)
+            .map(\.localIdentifier)
+            .first(where: selectedAssetIDs.contains)
         else { return }
 
         selectionFeedbackTrigger &+= 1
@@ -554,7 +554,8 @@ final class ClusterDetailsViewModel {
         actionErrorTitle = DetailsL10n.Common.cleanupUnavailable
         shouldOfferOpenSettings = false
         if let currentAlikeReaction,
-           currentAlikeReaction.id.eventID == .cleanup(cleanupSelectionID) {
+           currentAlikeReaction.id.eventID == .cleanup(cleanupSelectionID)
+        {
             publishAlikeEvent(.reactionConsumed(id: currentAlikeReaction.id))
         }
         publishCleanupSelectionReaction()

@@ -13,6 +13,44 @@ Thank you for helping improve Alike.
 
 Alike uses `main` for production and `develop` for integration. Release and hotfix branches follow the conventions in `Skills/GitFlow/ios-git-flow`.
 
+## Code style
+
+Alike uses its own standard, "Alike Swift Style". The decisions are in
+[`Docs/adr/`](Docs/adr/README.md):
+
+- [ADR-0001](Docs/adr/0001-alike-swift-style.md): SwiftFormat rules and the 15 written rules.
+- [ADR-0002](Docs/adr/0002-selective-swiftlint.md): SwiftLint for safety and size only.
+- [ADR-0003](Docs/adr/0003-format-change-process.md): how to change the format.
+- [ADR-0004](Docs/adr/0004-package-dependencies.md): package categories and permitted dependencies.
+
+Install the pinned tools (versions in `tools/lint-versions`), then lint your
+change before you open a pull request:
+
+```sh
+brew install swiftformat swiftlint
+tools/lint          # changed Swift files, report only
+tools/lint --fix    # format the changed Swift files
+tools/lint --all    # whole project, report only
+```
+
+`tools/lint` exits 0 in report mode. `ALIKE_LINT_STRICT=1 tools/lint` exits 1
+on findings. `tools/quick` and `tools/full` run the strict lint on the changed
+Swift files. Details: [Docs/ci-cd.md](Docs/ci-cd.md#lint).
+
+Install the pre-commit hook once in each clone. It stops a commit with lint
+findings in the staged Swift files:
+
+```sh
+tools/install-hooks
+```
+
+Format-only commits are listed in `.git-blame-ignore-revs`. Run this command
+once, so that `git blame` skips them:
+
+```sh
+git config blame.ignoreRevsFile .git-blame-ignore-revs
+```
+
 ## Commit messages
 
 Start with an emoji and use a precise scope:

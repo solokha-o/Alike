@@ -6,7 +6,7 @@ let package = Package(
     defaultLocalization: "en",
     platforms: [
         .iOS(.v17),
-        .macOS(.v14)
+        .macOS(.v14),
     ],
     products: [
         .library(
@@ -22,7 +22,7 @@ let package = Package(
         .package(path: "../Purchases"),
         .package(path: "../UserGuide"),
         .package(path: "../PhotoAnalysis"),
-        .package(path: "../Diagnostics")
+        .package(path: "../Diagnostics"),
     ],
     targets: [
         .target(
@@ -31,13 +31,13 @@ let package = Package(
                 "Core", "DesignSystem", "NavigationKit", "Storage", "UserGuide", "PhotoAnalysis",
                 "Diagnostics",
                 .product(name: "Purchases", package: "Purchases"),
-                .product(name: "PurchasesUI", package: "Purchases")
+                .product(name: "PurchasesUI", package: "Purchases"),
             ],
             resources: [
-                .process("Resources")
+                .process("Resources"),
             ],
             swiftSettings: [
-                .enableExperimentalFeature("StrictConcurrency")
+                .enableExperimentalFeature("StrictConcurrency"),
             ]
         ),
         .testTarget(

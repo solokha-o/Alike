@@ -4,7 +4,7 @@ import Testing
 @testable import Details
 
 @MainActor
-@Suite struct PhotoTileTapGuardTests {
+struct PhotoTileTapGuardTests {
     private let start = Date(timeIntervalSinceReferenceDate: 1_000)
 
     @Test func testTapPassesWhenNoSwipeHappened() {

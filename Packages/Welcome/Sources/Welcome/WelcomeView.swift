@@ -1,6 +1,6 @@
-import SwiftUI
-import Photos
 import DesignSystem
+import Photos
+import SwiftUI
 
 public enum WelcomeMode: Equatable, Sendable {
     case permissionRequest
@@ -27,21 +27,21 @@ public struct WelcomeView: View {
     @State private var selectedWelcomePage = WelcomePage.welcome
     @State private var glassFinalActionFeedbackTrigger = 0
     private let mode: WelcomeMode
-    
+
     public init(
         isCompleted: Binding<Bool>,
         mode: WelcomeMode = .permissionRequest,
         viewModel: WelcomeViewModel? = nil
     ) {
-        self._isCompleted = isCompleted
+        _isCompleted = isCompleted
         self.mode = mode
         if let viewModel {
-            self._viewModel = State(initialValue: viewModel)
+            _viewModel = State(initialValue: viewModel)
         } else {
-            self._viewModel = State(initialValue: WelcomeViewModel())
+            _viewModel = State(initialValue: WelcomeViewModel())
         }
     }
-    
+
     public var body: some View {
         Group {
             if mode.replaysOnboarding {
@@ -71,8 +71,9 @@ public struct WelcomeView: View {
             isSymbolAnimating = true
         }
     }
-    
+
     // MARK: - Initial State
+
     private var initialState: some View {
         VStack(spacing: Spacing.small) {
             if mode.replaysOnboarding {
@@ -119,7 +120,6 @@ public struct WelcomeView: View {
         #endif
     }
 
-    @ViewBuilder
     private func welcomePage(_ page: WelcomePage) -> some View {
         ScrollView {
             Group {
@@ -366,7 +366,7 @@ public struct WelcomeView: View {
     /// Neutral wording on purpose: App Review 5.1.1(iv) reads a "Grant Access" button in front
     /// of the system prompt as steering the answer.
     private var finalActionTitle: String {
-        WelcomeL10n.Main.`continue`
+        WelcomeL10n.Main.continue
     }
 
     private func performFinalAction() {
@@ -378,8 +378,9 @@ public struct WelcomeView: View {
             }
         }
     }
-    
+
     // MARK: - Denied State
+
     private var deniedState: some View {
         ScrollView {
             VStack(spacing: Spacing.large) {
@@ -457,7 +458,7 @@ public struct WelcomeView: View {
     private var alikeWelcomeHero: some View {
         AnimatedImageOverlay(
             animationURL: playsAlikeWelcomeOverlay ? AlikeAssets.welcomeHeroOverlayURL : nil,
-            aspectRatio: 1080.0 / 912.0,
+            aspectRatio: 1_080.0 / 912.0,
             maximumWidth: 420,
             playback: .loop,
             ambientMotion: playsAlikeWelcomeOverlay ? .breathe : .none
@@ -508,8 +509,9 @@ public struct WelcomeView: View {
             .threeX
         }
     }
-    
+
     // MARK: - Authorized State
+
     private var authorizedState: some View {
         VStack(spacing: Spacing.medium) {
             Image(systemName: "checkmark.seal.fill")
@@ -517,7 +519,7 @@ public struct WelcomeView: View {
                 .symbolRenderingMode(.palette)
                 .foregroundStyle(Color.statusReviewed, Color.statusSavings, .foreground)
                 .symbolEffect(.pulse, options: .repeating, value: isSymbolAnimating)
-            
+
             Text(WelcomeL10n.Main.accessGranted)
                 .font(.appTitle)
                 .foregroundColor(.accent)
@@ -611,6 +613,7 @@ private struct PermissionRationaleCard: View {
 }
 
 // MARK: - Preview
+
 #Preview("Initial") {
     WelcomeView(isCompleted: .constant(false))
 }

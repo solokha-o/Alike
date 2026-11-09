@@ -1,5 +1,5 @@
-import Foundation
 import Core
+import Foundation
 
 public protocol CleanupSessionManaging: Sendable {
     func startSession(totalClusters: Int) async -> CleanupSession
@@ -118,25 +118,25 @@ public actor CleanupSessionManager: CleanupSessionManaging {
 
         do {
             let loaded = try await repository.loadActiveSession()
-            let sessionToSave: CleanupSession
-            if let loaded, loaded.totalClusters == clusters.count {
-                sessionToSave = CleanupSession(
-                    id: loaded.id,
-                    createdAt: loaded.createdAt,
-                    updatedAt: now,
-                    totalClusters: clusters.count,
-                    reviewedClusters: progress.reviewedCount,
-                    estimatedSavingsBytes: progress.reviewedSavingsBytes
-                )
-            } else {
-                sessionToSave = CleanupSession(
-                    createdAt: now,
-                    updatedAt: now,
-                    totalClusters: clusters.count,
-                    reviewedClusters: progress.reviewedCount,
-                    estimatedSavingsBytes: progress.reviewedSavingsBytes
-                )
-            }
+            let sessionToSave =
+                if let loaded, loaded.totalClusters == clusters.count {
+                    CleanupSession(
+                        id: loaded.id,
+                        createdAt: loaded.createdAt,
+                        updatedAt: now,
+                        totalClusters: clusters.count,
+                        reviewedClusters: progress.reviewedCount,
+                        estimatedSavingsBytes: progress.reviewedSavingsBytes
+                    )
+                } else {
+                    CleanupSession(
+                        createdAt: now,
+                        updatedAt: now,
+                        totalClusters: clusters.count,
+                        reviewedClusters: progress.reviewedCount,
+                        estimatedSavingsBytes: progress.reviewedSavingsBytes
+                    )
+                }
 
             try await repository.saveActiveSession(sessionToSave)
             return sessionToSave
@@ -184,15 +184,15 @@ public actor CleanupSessionManager: CleanupSessionManaging {
     }
 }
 
-private extension CleanupSessionManager {
-    nonisolated static func status(
+extension CleanupSessionManager {
+    fileprivate nonisolated static func status(
         for clusterID: UUID,
         reviewStates: [UUID: ClusterReviewState]
     ) -> ClusterReviewStatus {
         reviewStates[clusterID]?.status ?? .notReviewed
     }
 
-    nonisolated static func computedProgress(
+    fileprivate nonisolated static func computedProgress(
         for clusters: [PhotoCluster],
         reviewStates: [UUID: ClusterReviewState]
     ) -> CleanupSessionProgress {
@@ -234,14 +234,14 @@ private extension CleanupSessionManager {
         )
     }
 
-    nonisolated func status(
+    private nonisolated func status(
         for clusterID: UUID,
         reviewStates: [UUID: ClusterReviewState]
     ) -> ClusterReviewStatus {
         Self.status(for: clusterID, reviewStates: reviewStates)
     }
 
-    nonisolated func computedProgress(
+    private nonisolated func computedProgress(
         for clusters: [PhotoCluster],
         reviewStates: [UUID: ClusterReviewState]
     ) -> CleanupSessionProgress {

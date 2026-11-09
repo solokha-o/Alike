@@ -1,10 +1,10 @@
-import SwiftUI
-import Photos
 import Core
 import DesignSystem
-import Storage
+import Photos
 import Purchases
 import PurchasesUI
+import Storage
+import SwiftUI
 
 #if os(iOS)
 
@@ -33,7 +33,7 @@ public struct ScreenshotCleanupView: View {
         self.assets = assets
         self.onCleanupCompleted = onCleanupCompleted
         self.subscriptionStore = subscriptionStore
-        self._viewModel = State(initialValue: ScreenshotCleanupViewModel(
+        _viewModel = State(initialValue: ScreenshotCleanupViewModel(
             assets: assets,
             sourceCategory: sourceCategory,
             cleanupService: cleanupService ?? UnsupportedPhotoCleanupService(),
@@ -144,8 +144,8 @@ public struct ScreenshotCleanupView: View {
     }
 }
 
-private extension ScreenshotCleanupView {
-    var emptyState: some View {
+extension ScreenshotCleanupView {
+    fileprivate var emptyState: some View {
         ContentUnavailableView {
             Label(
                 viewModel.presentation.emptyTitle,
@@ -157,7 +157,7 @@ private extension ScreenshotCleanupView {
         .padding(.top, 80)
     }
 
-    var screenshotGrid: some View {
+    fileprivate var screenshotGrid: some View {
         LazyVGrid(
             columns: Array(
                 repeating: GridItem(.flexible(), spacing: Spacing.xxSmall),
@@ -195,7 +195,7 @@ private extension ScreenshotCleanupView {
         .padding(.bottom, Spacing.medium)
     }
 
-    var header: some View {
+    fileprivate var header: some View {
         VStack(spacing: Spacing.small) {
             ScreenshotCleanupSummaryCard(
                 category: viewModel.sourceCategory,
@@ -229,28 +229,28 @@ private extension ScreenshotCleanupView {
         .background(.regularMaterial)
     }
 
-    var columnsMenu: some View {
+    fileprivate var columnsMenu: some View {
         PhotoGridColumnsMenu()
     }
 
-    func requestDeleteConfirmation() {
+    fileprivate func requestDeleteConfirmation() {
         if viewModel.requestDeleteConfirmation() == .requiresPremium {
             presentedPremiumFeature = .batchCleanup
         }
     }
 
-    var deleteConfirmationTitle: String {
+    fileprivate var deleteConfirmationTitle: String {
         viewModel.sourceCategory.deleteAlertTitle(count: viewModel.selectedCount)
     }
 
-    var deleteConfirmationMessage: String {
+    fileprivate var deleteConfirmationMessage: String {
         viewModel.sourceCategory.deleteAlertMessage(
             count: viewModel.selectedCount,
             estimatedSize: viewModel.estimatedSavingsText
         )
     }
 
-    func openOriginal(for asset: PHAsset) {
+    fileprivate func openOriginal(for asset: PHAsset) {
         guard let index = assets.firstIndex(where: { $0.localIdentifier == asset.localIdentifier }) else {
             return
         }
@@ -262,14 +262,14 @@ private extension ScreenshotCleanupView {
 
 public struct ScreenshotCleanupView: View {
     public init(
-        assets: [PHAsset],
-        sourceCategory: CleanupCategoryKind = .screenshots,
-        cleanupService: (any PhotoCleanupService)? = nil,
-        cleanupHistoryRepository: CleanupHistoryRepository = FileCleanupHistoryRepository(),
-        premiumAccess: any PremiumAccessControlling = PremiumAccessController(),
-        subscriptionStore: SubscriptionStore? = nil,
-        openSettingsAction: (@MainActor @Sendable () -> Void)? = nil,
-        onCleanupCompleted: ((CleanupCompletionRecord) -> Void)? = nil
+        assets _: [PHAsset],
+        sourceCategory _: CleanupCategoryKind = .screenshots,
+        cleanupService _: (any PhotoCleanupService)? = nil,
+        cleanupHistoryRepository _: CleanupHistoryRepository = FileCleanupHistoryRepository(),
+        premiumAccess _: any PremiumAccessControlling = PremiumAccessController(),
+        subscriptionStore _: SubscriptionStore? = nil,
+        openSettingsAction _: (@MainActor @Sendable () -> Void)? = nil,
+        onCleanupCompleted _: ((CleanupCompletionRecord) -> Void)? = nil
     ) {}
 
     public var body: some View {

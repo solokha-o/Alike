@@ -40,7 +40,7 @@ public struct BestShotCalibrationLabelingView: View {
     @State private var remeasureResultMessage: String?
 
     public init(viewModel: BestShotCalibrationLabelingViewModel = BestShotCalibrationLabelingViewModel()) {
-        self._viewModel = State(initialValue: viewModel)
+        _viewModel = State(initialValue: viewModel)
     }
 
     public var body: some View {
@@ -151,7 +151,6 @@ public struct BestShotCalibrationLabelingView: View {
             + "whose photos could no longer be found in the library."
     }
 
-    @ViewBuilder
     private var content: some View {
         VStack(spacing: 0) {
             progressHeader
@@ -236,7 +235,7 @@ public struct BestShotCalibrationLabelingView: View {
 
     // MARK: - Large preview
 
-    private func largePreview(cluster: PhotoCluster, containerHeight: CGFloat) -> some View {
+    private func largePreview(cluster _: PhotoCluster, containerHeight: CGFloat) -> some View {
         let assets = viewModel.currentCandidateAssets
         return TabView(selection: focusedAssetIDBinding(assets: assets)) {
             ForEach(assets, id: \.localIdentifier) { asset in
@@ -380,7 +379,7 @@ private struct CalibrationPreviewTile: View {
         /// not "large"), so the preview needs a real target size. Large
         /// enough that scaling up to near-full width on any device stays
         /// sharp, but still a fraction of most originals.
-        static let targetSide: CGFloat = 1200
+        static let targetSide: CGFloat = 1_200
     }
 
     let asset: PHAsset
@@ -466,6 +465,7 @@ private struct CalibrationFilmstripTile: View {
 }
 
 // MARK: - Preview
+
 #Preview {
     NavigationStack {
         BestShotCalibrationLabelingView()

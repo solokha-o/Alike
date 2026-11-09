@@ -2,7 +2,7 @@ import Foundation
 import Testing
 @testable import Storage
 
-@Suite struct PhotoKitChangeDetectorTests {
+struct PhotoKitChangeDetectorTests {
     @Test func testAccumulateAssetChangesUnionsInsertedAndDeletedIdentifiers() {
         let providers: [() throws -> PhotoKitChangeDetector.AssetChangeDetails] = [
             {

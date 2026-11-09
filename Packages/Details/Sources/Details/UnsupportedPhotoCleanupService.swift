@@ -1,14 +1,14 @@
+import DesignSystem
 import Foundation
 import Photos
-import SwiftUI
-import DesignSystem
 import Storage
+import SwiftUI
 
 actor UnsupportedPhotoCleanupService: PhotoCleanupService {
     func deleteAssets(
-        localIdentifiers: Set<String>,
-        sourceClusterID: UUID,
-        estimatedSavingsBytes: Int64
+        localIdentifiers _: Set<String>,
+        sourceClusterID _: UUID,
+        estimatedSavingsBytes _: Int64
     ) async throws -> CleanupCompletionRecord {
         throw PhotoCleanupError.deleteFailed
     }

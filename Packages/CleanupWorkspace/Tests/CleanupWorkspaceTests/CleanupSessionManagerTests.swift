@@ -1,10 +1,10 @@
+import Core
 import Foundation
 import Testing
-import Core
 @testable import CleanupWorkspace
 
-@Suite struct CleanupSessionManagerTests {
-    @Test func testProgressIncludesSelectedItemsAndRemainingClusters() async {
+struct CleanupSessionManagerTests {
+    @Test func testProgressIncludesSelectedItemsAndRemainingClusters() {
         let repo = MockCleanupSessionRepository()
         let manager = CleanupSessionManager(repository: repo)
 
@@ -13,7 +13,7 @@ import Core
         let clusters = [
             PhotoCluster(id: reviewedID, assets: []),
             PhotoCluster(id: inReviewID, assets: []),
-            PhotoCluster(assets: [])
+            PhotoCluster(assets: []),
         ]
 
         let states: [UUID: ClusterReviewState] = [
@@ -32,10 +32,10 @@ import Core
                 mode: .selection,
                 status: .inReview,
                 estimatedSavingsBytes: 200
-            )
+            ),
         ]
 
-        let progress = await manager.progress(for: clusters, reviewStates: states, activeSession: nil)
+        let progress = manager.progress(for: clusters, reviewStates: states, activeSession: nil)
 
         #expect(progress.totalClusters == 3)
         #expect(progress.reviewedCount == 1)
@@ -47,7 +47,7 @@ import Core
         #expect(progress.remainingClusters == 2)
     }
 
-    @Test func testProgressExcludesNeedsReReviewFromSavedSelections() async {
+    @Test func testProgressExcludesNeedsReReviewFromSavedSelections() {
         let repo = MockCleanupSessionRepository()
         let manager = CleanupSessionManager(repository: repo)
 
@@ -55,7 +55,7 @@ import Core
         let reviewedID = UUID()
         let clusters = [
             PhotoCluster(id: needsReviewID, assets: []),
-            PhotoCluster(id: reviewedID, assets: [])
+            PhotoCluster(id: reviewedID, assets: []),
         ]
 
         let states: [UUID: ClusterReviewState] = [
@@ -75,10 +75,10 @@ import Core
                 mode: .selection,
                 status: .reviewed,
                 estimatedSavingsBytes: 200
-            )
+            ),
         ]
 
-        let progress = await manager.progress(for: clusters, reviewStates: states, activeSession: nil)
+        let progress = manager.progress(for: clusters, reviewStates: states, activeSession: nil)
 
         #expect(progress.reviewedCount == 1)
         #expect(progress.needsReReviewCount == 1)
@@ -87,7 +87,7 @@ import Core
         #expect(progress.remainingClusters == 1)
     }
 
-    @Test func testNextClusterToReviewPrefersNeedsReReviewThenNotReviewedThenInReview() async {
+    @Test func testNextClusterToReviewPrefersNeedsReReviewThenNotReviewedThenInReview() {
         let repo = MockCleanupSessionRepository()
         let manager = CleanupSessionManager(repository: repo)
 
@@ -126,29 +126,29 @@ import Core
                 mode: .selection,
                 status: .inReview,
                 estimatedSavingsBytes: 50
-            )
+            ),
         ]
 
-        let first = await manager.nextClusterToReview(
+        let first = manager.nextClusterToReview(
             from: [reviewed, inReview, notReviewed, needsReview],
             reviewStates: states
         )
         #expect(first?.id == needsReviewID)
 
-        let second = await manager.nextClusterToReview(
+        let second = manager.nextClusterToReview(
             from: [reviewed, inReview, notReviewed],
             reviewStates: states
         )
         #expect(second?.id == notReviewedID)
 
-        let third = await manager.nextClusterToReview(from: [reviewed, inReview], reviewStates: states)
+        let third = manager.nextClusterToReview(from: [reviewed, inReview], reviewStates: states)
         #expect(third?.id == inReviewID)
 
-        let completed = await manager.nextClusterToReview(from: [reviewed], reviewStates: states)
+        let completed = manager.nextClusterToReview(from: [reviewed], reviewStates: states)
         #expect(completed == nil)
     }
 
-    @Test func testProgressStaysAvailableWhenEveryClusterIsReviewed() async {
+    @Test func testProgressStaysAvailableWhenEveryClusterIsReviewed() {
         let repo = MockCleanupSessionRepository()
         let manager = CleanupSessionManager(repository: repo)
 
@@ -156,7 +156,7 @@ import Core
         let secondID = UUID()
         let clusters = [
             PhotoCluster(id: firstID, assets: []),
-            PhotoCluster(id: secondID, assets: [])
+            PhotoCluster(id: secondID, assets: []),
         ]
 
         let states: [UUID: ClusterReviewState] = [
@@ -175,13 +175,13 @@ import Core
                 mode: .selection,
                 status: .reviewed,
                 estimatedSavingsBytes: 200
-            )
+            ),
         ]
 
-        let next = await manager.nextClusterToReview(from: clusters, reviewStates: states)
+        let next = manager.nextClusterToReview(from: clusters, reviewStates: states)
         #expect(next == nil)
 
-        let progress = await manager.progress(for: clusters, reviewStates: states, activeSession: nil)
+        let progress = manager.progress(for: clusters, reviewStates: states, activeSession: nil)
 
         #expect(progress.totalClusters == 2)
         #expect(progress.reviewedCount == 2)
@@ -193,7 +193,7 @@ import Core
 
     /// A cluster the user finished while keeping several photos — or all of
     /// them — is done, so it must not come back around in the review queue.
-    @Test func testConfirmedMultiKeepClustersLeaveTheReviewQueue() async {
+    @Test func testConfirmedMultiKeepClustersLeaveTheReviewQueue() {
         let repo = MockCleanupSessionRepository()
         let manager = CleanupSessionManager(repository: repo)
 
@@ -201,7 +201,7 @@ import Core
         let keepAllID = UUID()
         let clusters = [
             PhotoCluster(id: multiKeepID, assets: []),
-            PhotoCluster(id: keepAllID, assets: [])
+            PhotoCluster(id: keepAllID, assets: []),
         ]
 
         let states: [UUID: ClusterReviewState] = [
@@ -220,13 +220,13 @@ import Core
                 isReviewConfirmed: true,
                 status: .reviewed,
                 estimatedSavingsBytes: 0
-            )
+            ),
         ]
 
-        let next = await manager.nextClusterToReview(from: clusters, reviewStates: states)
+        let next = manager.nextClusterToReview(from: clusters, reviewStates: states)
         #expect(next == nil)
 
-        let progress = await manager.progress(for: clusters, reviewStates: states, activeSession: nil)
+        let progress = manager.progress(for: clusters, reviewStates: states, activeSession: nil)
         #expect(progress.reviewedCount == 2)
         #expect(progress.remainingClusters == 0)
     }

@@ -1,11 +1,10 @@
-import Foundation
-import Testing
-import Photos
 import Core
+import Foundation
+import Photos
+import Testing
 @testable import Cleanup
 
-@Suite struct CleanupClusterArrangementTests {
-
+struct CleanupClusterArrangementTests {
     // MARK: - Content identity
 
     /// Regression guard for the scroll reset after deleting photos: reconciliation
@@ -70,7 +69,7 @@ import Core
         let inReview = cluster()
         let statuses: [UUID: ClusterReviewStatus] = [
             reviewed.id: .reviewed,
-            inReview.id: .inReview
+            inReview.id: .inReview,
         ]
 
         let arrangement = makeArrangement(

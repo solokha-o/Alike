@@ -71,7 +71,7 @@ public struct WidgetExtraLargeComposition: Equatable, Sendable {
     }
 }
 
-public extension WidgetPresentation {
+extension WidgetPresentation {
     /// Resolves one display state and the snapshot behind it into the extra-large
     /// portrait widget.
     ///
@@ -83,7 +83,7 @@ public extension WidgetPresentation {
     /// The category rows appear for every state that has been scanned, «All caught up»
     /// included — they say what is in the library, which stays true when there is
     /// nothing left to review.
-    static func extraLargeComposition(
+    public static func extraLargeComposition(
         for state: WidgetDisplayState,
         snapshot: WidgetSnapshot?
     ) -> WidgetExtraLargeComposition {
@@ -93,7 +93,7 @@ public extension WidgetPresentation {
         let showsFigures: Bool
         let scanned: Bool
         switch state {
-        case let .hasSuggestions(bytes, _, _, _), let .libraryChanged(bytes, _):
+        case .hasSuggestions(let bytes, _, _, _), .libraryChanged(let bytes, _):
             (figureBytes, showsFigures, scanned) = (bytes, true, true)
         case .resumeReview:
             // The headline is the review's progress, but the estimate behind it is
@@ -130,10 +130,10 @@ public extension WidgetPresentation {
     }
 }
 
-private extension WidgetPresentation {
+extension WidgetPresentation {
     /// «7% of your 26 GB of photos». A share that rounds to nothing still reads «1%»: the
     /// line is shown because there is something to reclaim, and «0%» would deny it.
-    static func libraryShare(of bytes: Int64?, in total: Int64?, drawsBar: Bool) -> WidgetLibraryShare? {
+    fileprivate static func libraryShare(of bytes: Int64?, in total: Int64?, drawsBar: Bool) -> WidgetLibraryShare? {
         guard let bytes, bytes > 0, let total, let fraction = share(of: bytes, in: total) else { return nil }
         let shown = max(fraction, 0.01)
         let percent = WidgetFormatting.percent(shown)

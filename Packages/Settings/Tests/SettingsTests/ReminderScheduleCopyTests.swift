@@ -1,6 +1,6 @@
+import Core
 import Foundation
 import Testing
-import Core
 @testable import Settings
 
 /// The reminder section shows the same schedule twice: the `Reminder schedule` row renders it
@@ -14,7 +14,7 @@ import Core
 /// actually calls — against a fixed locale, calendar, and schedule. Reverting the production
 /// formatting change, or wiring the wrong schedule into it, makes the exercised tests fail; the
 /// catalog-shape tests alone would not have caught either.
-@Suite struct ReminderScheduleCopyTests {
+struct ReminderScheduleCopyTests {
     private static let footerKey = "settings.main.freeRemindersUseSundayAt"
 
     /// A digit followed by `:` or `.` and two more digits — `18:00`, `6:00`, `18.00`. Written this
@@ -25,7 +25,7 @@ import Core
         let catalog = try LocalizationCatalog.load()
 
         for language in LocalizationCatalog.shippedLanguages {
-            let value = try self.value(Self.footerKey, language, catalog)
+            let value = try value(Self.footerKey, language, catalog)
 
             #expect(value.contains("%@"), "\(language) dropped the schedule argument: \(value)")
 
@@ -41,7 +41,7 @@ import Core
         let catalog = try LocalizationCatalog.load()
 
         for language in LocalizationCatalog.shippedLanguages {
-            let value = try self.value(Self.footerKey, language, catalog)
+            let value = try value(Self.footerKey, language, catalog)
             let specifiers = value.components(separatedBy: "%@").count - 1
 
             #expect(specifiers == 1, "\(language) has \(specifiers) arguments: \(value)")
@@ -183,7 +183,7 @@ import Core
 
     private func expectedTimeString(hour: Int, minute: Int, calendar: Calendar, locale: Locale) -> String {
         var components = DateComponents()
-        components.year = 2024
+        components.year = 2_024
         components.month = 1
         components.day = 1
         components.hour = hour

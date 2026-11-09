@@ -16,8 +16,8 @@ public enum PersonalizationReport {
 
         public var description: String {
             switch self {
-            case let .invalidToken(token):
-                return "Invalid --prefix value '\(token)': expected a non-negative integer or 'all'."
+            case .invalidToken(let token):
+                "Invalid --prefix value '\(token)': expected a non-negative integer or 'all'."
             }
         }
     }
@@ -55,10 +55,10 @@ public enum PersonalizationReport {
 
         public var description: String {
             switch self {
-            case let .invalidValue(token):
-                return "Invalid --folds value '\(token)': expected an integer >= 2."
-            case let .outOfRange(value, corpusSize):
-                return "Invalid --folds value \(value): must be between 2 and the corpus size "
+            case .invalidValue(let token):
+                "Invalid --folds value '\(token)': expected an integer >= 2."
+            case .outOfRange(let value, let corpusSize):
+                "Invalid --folds value \(value): must be between 2 and the corpus size "
                     + "(\(corpusSize) cluster(s))."
             }
         }
@@ -286,9 +286,9 @@ public enum PersonalizationReport {
             ))
         }
 
-        let faceBearingClusterCount = ordered.filter { cluster in
+        let faceBearingClusterCount = ordered.count(where: { cluster in
             cluster.candidates.contains { $0.signals.hasFaces }
-        }.count
+        })
 
         return KFoldResult(
             folds: folds,

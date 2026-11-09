@@ -3,7 +3,7 @@ import Testing
 @testable import Diagnostics
 
 /// A `final class` suite: the temporary directory is removed in `deinit`.
-@Suite final class CrashReportStoreTests {
+final class CrashReportStoreTests {
     private let directoryURL: URL
     private let store: CrashReportStore
 
@@ -77,7 +77,7 @@ import Testing
     /// One observer going away must not silence the store: the screen that watches it
     /// is torn down and rebuilt inside a single process.
     @Test func testAChangeStreamOpenedAfterAnotherOneWasCancelledStillReceivesChanges() async throws {
-        let store = self.store
+        let store = store
         let first = Task { for await _ in await store.changes() {} }
         try await Task.sleep(for: .milliseconds(50))
         first.cancel()
@@ -260,7 +260,7 @@ import Testing
                     osVersion: "iPhone OS 18.6 (22G86)",
                     deviceModel: "iPhone14,3",
                     promptState: .pending
-                )
+                ),
             ]
         )
     }
@@ -268,7 +268,7 @@ import Testing
     @Test func testIndexRoundTripsThroughTheEncoder() throws {
         let index = CrashReportIndex(reports: [
             CrashReport(receivedAt: Date(timeIntervalSince1970: 10), appVersion: "1.5.0", promptState: .sent),
-            CrashReport(receivedAt: Date(timeIntervalSince1970: 20))
+            CrashReport(receivedAt: Date(timeIntervalSince1970: 20)),
         ])
         let encoder = JSONEncoder()
         encoder.dateEncodingStrategy = .iso8601

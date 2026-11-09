@@ -1,5 +1,5 @@
-import SwiftUI
 import DesignSystem
+import SwiftUI
 
 /// The bottom bar carries exactly one job: the destructive action for the
 /// current selection. Review decisions and selection shortcuts live in the

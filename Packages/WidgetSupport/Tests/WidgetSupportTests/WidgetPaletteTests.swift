@@ -11,7 +11,10 @@ import Testing
 @Suite("Widget accent palette")
 struct WidgetPaletteTests {
     private struct Components: Equatable, CustomStringConvertible {
-        let red: Double, green: Double, blue: Double, alpha: Double
+        let red: Double
+        let green: Double
+        let blue: Double
+        let alpha: Double
         var description: String { "(\(red), \(green), \(blue), \(alpha))" }
     }
 
@@ -19,11 +22,11 @@ struct WidgetPaletteTests {
     /// live outside the package, which is the whole point of the comparison.
     private static var repositoryRoot: URL {
         URL(fileURLWithPath: #filePath)
-            .deletingLastPathComponent()   // WidgetSupportTests
-            .deletingLastPathComponent()   // Tests
-            .deletingLastPathComponent()   // WidgetSupport
-            .deletingLastPathComponent()   // Packages
-            .deletingLastPathComponent()   // repository root
+            .deletingLastPathComponent() // WidgetSupportTests
+            .deletingLastPathComponent() // Tests
+            .deletingLastPathComponent() // WidgetSupport
+            .deletingLastPathComponent() // Packages
+            .deletingLastPathComponent() // repository root
     }
 
     private func components(

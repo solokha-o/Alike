@@ -1,9 +1,9 @@
+import Core
 import Foundation
 import Testing
-import Core
 @testable import CleanupWorkspace
 
-@Suite struct ClusterReviewStateResurfacerTests {
+struct ClusterReviewStateResurfacerTests {
     private let previousClusterID = UUID(uuidString: "00000000-0000-0000-0000-0000000000A1")!
     private let newClusterID = UUID(uuidString: "00000000-0000-0000-0000-0000000000A2")!
 
@@ -89,7 +89,7 @@ import Core
             averageSimilarity: 0.9,
             assets: [
                 asset(id: "a", isFavorite: favoriteIdentifier == "a"),
-                asset(id: "b", isFavorite: favoriteIdentifier == "b")
+                asset(id: "b", isFavorite: favoriteIdentifier == "b"),
             ]
         )
     }

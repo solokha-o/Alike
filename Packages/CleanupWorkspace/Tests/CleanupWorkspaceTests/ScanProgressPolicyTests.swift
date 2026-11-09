@@ -1,8 +1,8 @@
-@testable import CleanupWorkspace
 import Foundation
 import Testing
+@testable import CleanupWorkspace
 
-@Suite struct ScanProgressPolicyTests {
+struct ScanProgressPolicyTests {
     @Test func testStageRangesReservePersistenceAndCompletion() {
         #expect(ScanProgressStages.analysis(0) == 0)
         #expect(ScanProgressStages.analysis(1) == 0.8)

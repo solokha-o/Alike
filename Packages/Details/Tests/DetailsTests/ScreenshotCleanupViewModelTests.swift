@@ -1,10 +1,10 @@
+import Core
 import Foundation
 import Testing
-import Core
 @testable import Details
 
 @MainActor
-@Suite struct ScreenshotCleanupViewModelTests {
+struct ScreenshotCleanupViewModelTests {
     private let cleanupService = MockPhotoCleanupService()
     private let cleanupHistoryRepository = MockCleanupHistoryRepository()
 
@@ -35,7 +35,7 @@ import Core
         #expect(viewModel.estimatedSavingsBytes == 0)
     }
 
-    @Test func testFreeUserCanDeleteSinglePhoto() async throws {
+    @Test func testFreeUserCanDeleteSinglePhoto() async {
         let expectedRecord = CleanupCompletionRecord(
             sourceClusterID: CleanupCategoryKind.screenshots.sourceClusterID,
             deletedCount: 1,
@@ -80,7 +80,7 @@ import Core
         #expect(viewModel.isDeleteConfirmationPresented)
     }
 
-    @Test func testPremiumUserCanDeleteMultiplePhotos() async throws {
+    @Test func testPremiumUserCanDeleteMultiplePhotos() async {
         let expectedRecord = CleanupCompletionRecord(
             sourceClusterID: CleanupCategoryKind.screenshots.sourceClusterID,
             deletedCount: 2,
@@ -177,7 +177,7 @@ import Core
             premiumAccess: premiumAccess,
             assetSnapshots: [
                 snapshot(id: "one", area: 200),
-                snapshot(id: "two", area: 100)
+                snapshot(id: "two", area: 100),
             ],
             completionDelay: completionDelay
         )

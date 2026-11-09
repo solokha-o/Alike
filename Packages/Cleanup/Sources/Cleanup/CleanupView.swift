@@ -1,13 +1,13 @@
-import SwiftUI
-import Photos
-import StoreKit
 import CleanupWorkspace
 import Core
 import DesignSystem
 import NavigationKit
 import PhotoAnalysis
+import Photos
 import Purchases
 import PurchasesUI
+import StoreKit
+import SwiftUI
 
 private enum CleanupRoute: Hashable {
     case cluster(PhotoCluster)
@@ -75,13 +75,13 @@ public struct CleanupView<ClusterDestination: View, ScreenshotDestination: View>
         @ViewBuilder screenshotDestination: @escaping (CleanupCategoryDestinationContext) -> ScreenshotDestination
     ) {
         self.workspace = workspace
-        self._sensitivity = sensitivity
+        _sensitivity = sensitivity
         self.premiumAccess = premiumAccess
         self.subscriptionStore = subscriptionStore
         self.ratingPrompt = ratingPrompt
         self.onOpenScanner = onOpenScanner
         self.onRequestScan = onRequestScan
-        self._pendingWidgetEntry = pendingWidgetEntry
+        _pendingWidgetEntry = pendingWidgetEntry
         self.clusterDestination = clusterDestination
         self.screenshotDestination = screenshotDestination
     }
@@ -351,7 +351,7 @@ public struct CleanupView<ClusterDestination: View, ScreenshotDestination: View>
             ContentUnavailableView {
                 Label(CleanupL10n.Main.noCleanupOpportunities, systemImage: "checkmark.seal")
             } description: { Text(CleanupL10n.Main.latestScanDidNotFind) }
-            .padding(.top, Spacing.xxLarge)
+                .padding(.top, Spacing.xxLarge)
         } else if arrangement.isEmptyAfterFiltering {
             ContentUnavailableView {
                 Label(CleanupL10n.Main.noClustersMatchTheseControls, systemImage: "line.3.horizontal.decrease.circle")
@@ -495,13 +495,13 @@ public struct CleanupView<ClusterDestination: View, ScreenshotDestination: View>
         pendingWidgetEntry = nil
 
         switch resolution {
-        case let .openCategory(summary):
+        case .openCategory(let summary):
             openCategory(summary)
-        case let .openCluster(cluster):
+        case .openCluster(let cluster):
             // The same push `CleanupProgressCard`'s Continue makes. The widget names the
             // intent; the destination is still the app's own answer to "where was I".
             router.push(.cluster(cluster))
-        case let .scrollTo(id):
+        case .scrollTo(let id):
             scrollAnchorID = id
         case .stayOnRoot:
             break

@@ -1,9 +1,9 @@
 import Foundation
-import Testing
 import Photos
+import Testing
 @testable import Core
 
-@Suite struct AssetMetadataTests {
+struct AssetMetadataTests {
     @Test func testResolutionFormatting() {
         let metadata = AssetMetadata(
             creationDate: nil,

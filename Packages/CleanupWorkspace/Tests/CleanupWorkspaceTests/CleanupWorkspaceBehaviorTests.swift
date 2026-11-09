@@ -1,12 +1,12 @@
 import CleanupWorkspace
 import Core
-import Photos
 import Foundation
+import Photos
 import Testing
 
 @MainActor
-@Suite struct CleanupWorkspaceBehaviorTests {
-    @Test func testCompletedEmptyCacheIsDistinctFromNeverScanned() async {
+struct CleanupWorkspaceBehaviorTests {
+    @Test func testCompletedEmptyCacheIsDistinctFromNeverScanned() async throws {
         let neverScannedRepository = MockPhotoClusterRepository()
         let neverScanned = makeWorkspace(repository: neverScannedRepository)
 
@@ -22,7 +22,7 @@ import Testing
         await completed.loadCachedContent()
 
         #expect(completed.content?.clusters == [])
-        #expect(completed.contentState == .content(completed.content!))
+        #expect(completed.contentState == .content(try #require(completed.content)))
     }
 
     @Test func testPrepareForDataDeletionCancelsScanBeforeItCanPersist() async {
@@ -86,7 +86,7 @@ import Testing
         }
 
         #expect(workspace.clusters == [initialCluster])
-        #expect(workspace.contentState == .content(workspace.content!))
+        #expect(workspace.contentState == .content(try #require(workspace.content)))
         #expect(workspace.scanOperation == .failed(message: TestError.failedRefresh.localizedDescription, purpose: .userInitiated))
     }
 
@@ -185,11 +185,11 @@ import Testing
         await reconciliation.value
 
         #expect(workspace.clusters == [cluster])
-        #expect(workspace.contentState == .content(workspace.content!))
+        #expect(workspace.contentState == .content(try #require(workspace.content)))
         #expect(workspace.reconciliationState == .failed(
-                record,
-                message: "The photos were deleted, but the library refresh failed. Run a new scan to refresh your results."
-            ))
+            record,
+            message: "The photos were deleted, but the library refresh failed. Run a new scan to refresh your results."
+        ))
     }
 
     @Test func testStaleCachedLoadCannotReplaceCompletedScan() async throws {
@@ -215,7 +215,7 @@ import Testing
         await cacheLoad.value
 
         #expect(workspace.clusters == [freshCluster])
-        #expect(workspace.contentState == .content(workspace.content!))
+        #expect(workspace.contentState == .content(try #require(workspace.content)))
     }
 
     @Test func testRepeatedCachedLoadsJoinOneRepositoryRead() async {
@@ -306,8 +306,8 @@ import Testing
     }
 }
 
-private extension CleanupWorkspaceBehaviorTests {
-    func makeWorkspace(
+extension CleanupWorkspaceBehaviorTests {
+    private func makeWorkspace(
         analysisService: any PhotoAnalysisService = MockPhotoAnalysisService(),
         repository: any PhotoClusterRepository = MockPhotoClusterRepository()
     ) -> CleanupWorkspaceModel {
@@ -325,7 +325,7 @@ private extension CleanupWorkspaceBehaviorTests {
         )
     }
 
-    func waitForProgress(in workspace: CleanupWorkspaceModel, toReach expected: Double) async {
+    private func waitForProgress(in workspace: CleanupWorkspaceModel, toReach expected: Double) async {
         for _ in 0..<20 {
             if workspace.scanOperation.progress == expected { return }
             await Task.yield()
@@ -349,7 +349,7 @@ private actor ControlledAnalysisService: PhotoAnalysisService {
     private var progress: (@Sendable (Double) -> Void)?
 
     func analyzePhotoLibrary(
-        sensitivity: Float,
+        sensitivity _: Float,
         progress: @escaping @Sendable (Double) -> Void
     ) async throws -> [PhotoCluster] {
         analyzeCallCountStorage += 1
@@ -377,9 +377,9 @@ private actor ControlledAnalysisService: PhotoAnalysisService {
         return []
     }
 
-    func loadAssets(for category: CleanupCategoryKind) async throws -> [PHAsset] { [] }
+    func loadAssets(for _: CleanupCategoryKind) async throws -> [PHAsset] { [] }
 
-    func calculateSimilarity(asset1: PHAsset, asset2: PHAsset) async throws -> Float { 1 }
+    func calculateSimilarity(asset1 _: PHAsset, asset2 _: PHAsset) async throws -> Float { 1 }
 
     func waitUntilAnalyzeStarts(expectedCallCount: Int = 1) async {
         guard analyzeCallCountStorage < expectedCallCount else { return }

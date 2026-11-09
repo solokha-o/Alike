@@ -1,10 +1,10 @@
 import Foundation
-import Testing
 import Photos
+import Testing
 @testable import Core
 
 @MainActor
-@Suite struct MockServicesTests {
+struct MockServicesTests {
     @Test func testMockPhotoPermissionManagerAuthorizationFlow() async {
         let manager = MockPhotoPermissionManager(authorizationStatus: .notDetermined)
 
@@ -74,7 +74,7 @@ import Photos
                 let lastSensitivity = await service.lastSensitivity
                 #expect(didCallAnalyze)
                 #expect(lastSensitivity == 0.9)
-                #expect(clusters.count == 0)
+                #expect(clusters.isEmpty)
             }
         }
     }
@@ -87,7 +87,7 @@ import Photos
             bestShotLocalIdentifier: "best",
             selectedLocalIdentifiers: ["other"],
             status: .inReview,
-            estimatedSavingsBytes: 1024
+            estimatedSavingsBytes: 1_024
         )
 
         try await repository.saveReviewState(state)

@@ -1,8 +1,8 @@
+import DesignSystem
 import Foundation
 import Photos
-import SwiftUI
-import DesignSystem
 import Storage
+import SwiftUI
 
 extension ClusterDetailsViewModel {
     func handleDeleteError(_ error: PhotoCleanupError) {
@@ -63,14 +63,14 @@ extension ClusterDetailsViewModel {
         persistedStatus: ClusterReviewStatus?
     ) {
         self.bestShotAssetID = bestShotAssetID
-        self.bestShotLabel = Self.bestShotLabel(
+        bestShotLabel = Self.bestShotLabel(
             for: bestShotAssetID,
             in: assetSnapshots
         )
         self.isBestShotUserSelected = isBestShotUserSelected
         self.selectedAssetIDs = selectedAssetIDs
         self.isReviewConfirmed = isReviewConfirmed
-        self.reviewMode = .selection
+        reviewMode = .selection
         refreshDerivedState()
         // A rescan that changed the cluster outranks the stored confirmation:
         // the user has not seen this set of photos yet.

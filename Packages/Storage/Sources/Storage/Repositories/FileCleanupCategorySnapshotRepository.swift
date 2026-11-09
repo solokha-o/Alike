@@ -6,7 +6,7 @@ public final class FileCleanupCategorySnapshotRepository: CleanupCategorySnapsho
     private let store: CleanupCategorySnapshotStore
 
     public init(fileURL: URL? = nil, fileManager: FileManager = .default) {
-        self.store = CleanupFileStoreRegistry.shared.categorySnapshotStore(
+        store = CleanupFileStoreRegistry.shared.categorySnapshotStore(
             for: fileURL ?? Self.defaultFileURL(fileManager: fileManager)
         )
     }
@@ -32,8 +32,8 @@ public final class FileCleanupCategorySnapshotRepository: CleanupCategorySnapsho
     }
 }
 
-private extension FileCleanupCategorySnapshotRepository {
-    static func defaultFileURL(fileManager: FileManager) -> URL {
+extension FileCleanupCategorySnapshotRepository {
+    fileprivate static func defaultFileURL(fileManager: FileManager) -> URL {
         let baseDirectory = fileManager.urls(for: .applicationSupportDirectory, in: .userDomainMask).first
             ?? fileManager.temporaryDirectory
         return baseDirectory

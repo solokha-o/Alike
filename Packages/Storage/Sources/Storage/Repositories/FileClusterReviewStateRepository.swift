@@ -6,7 +6,7 @@ public final class FileClusterReviewStateRepository: ClusterReviewStateRepositor
     private let store: ClusterReviewStateStore
 
     public init(fileURL: URL? = nil, fileManager: FileManager = .default) {
-        self.store = ClusterReviewStateStore(
+        store = ClusterReviewStateStore(
             fileURL: fileURL ?? Self.defaultFileURL(fileManager: fileManager)
         )
     }
@@ -32,8 +32,8 @@ public final class FileClusterReviewStateRepository: ClusterReviewStateRepositor
     }
 }
 
-private extension FileClusterReviewStateRepository {
-    static func defaultFileURL(fileManager: FileManager) -> URL {
+extension FileClusterReviewStateRepository {
+    fileprivate static func defaultFileURL(fileManager: FileManager) -> URL {
         let baseDirectory = fileManager.urls(for: .applicationSupportDirectory, in: .userDomainMask).first
             ?? fileManager.temporaryDirectory
         return baseDirectory

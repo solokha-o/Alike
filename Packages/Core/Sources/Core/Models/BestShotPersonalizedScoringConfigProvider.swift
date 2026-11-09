@@ -152,7 +152,7 @@ public actor BestShotPersonalizedScoringConfigProvider {
         let examples = await repository.loadExamples()
         guard generation == generationAtStart else { return }
         let fitted = PersonalWeightModel.personalWeights(from: examples, global: global)
-        let withFacesCount = examples.filter { $0.clusterHasFaces }.count
+        let withFacesCount = examples.count(where: { $0.clusterHasFaces })
         let weights = BestShotPersonalWeights(
             withFaces: fitted.withFaces,
             withoutFaces: fitted.withoutFaces,

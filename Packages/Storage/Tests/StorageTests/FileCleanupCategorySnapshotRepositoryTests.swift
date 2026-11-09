@@ -1,10 +1,10 @@
+import Core
 import Foundation
 import Testing
-import Core
 @testable import Storage
 
 /// A `final class` suite: each test gets its own `UUID` directory, and `deinit` removes it.
-@Suite final class FileCleanupCategorySnapshotRepositoryTests {
+final class FileCleanupCategorySnapshotRepositoryTests {
     private let directoryURL: URL
     private let fileURL: URL
     private let repository: FileCleanupCategorySnapshotRepository
@@ -77,7 +77,7 @@ import Core
         let loaded = try await repository.loadSnapshot(for: .screenshots)
 
         #expect(loaded?.localIdentifiers == ["one", "two"])
-        #expect(loaded?.estimatedSavingsBytes == 2048)
+        #expect(loaded?.estimatedSavingsBytes == 2_048)
         #expect(loaded?.byteSizeVersion == nil)
     }
 
@@ -125,7 +125,7 @@ import Core
     }
 
     @Test func testConcurrentReadersOnlyObserveCompleteReplacements() async throws {
-        let repository = self.repository
+        let repository = repository
         let firstGeneration = CleanupCategoryKind.allCases.map {
             makeSnapshot(kind: $0, generation: "first")
         }
@@ -169,7 +169,7 @@ import Core
 
         do {
             try await repository.replaceAllSnapshots([
-                makeSnapshot(kind: .screenshots, generation: "replacement")
+                makeSnapshot(kind: .screenshots, generation: "replacement"),
             ])
             Issue.record("Expected replacement to fail")
         } catch {
@@ -181,8 +181,8 @@ import Core
     }
 }
 
-private extension FileCleanupCategorySnapshotRepositoryTests {
-    func makeSnapshot(
+extension FileCleanupCategorySnapshotRepositoryTests {
+    private func makeSnapshot(
         kind: CleanupCategoryKind,
         generation: String
     ) -> CleanupCategorySnapshot {

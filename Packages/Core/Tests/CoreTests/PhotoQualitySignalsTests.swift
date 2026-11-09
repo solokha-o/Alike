@@ -2,7 +2,7 @@ import Foundation
 import Testing
 @testable import Core
 
-@Suite struct PhotoQualitySignalsTests {
+struct PhotoQualitySignalsTests {
     // MARK: - Rejected faces
 
     @Test func testEmptyFacesWithoutRejectionsMeansNobodyWasInThePhoto() {

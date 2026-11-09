@@ -19,7 +19,7 @@ struct LocalizationCatalog {
     /// catalog carries it — which is the point.
     static let shippedLanguages = [
         "en", "uk", "es-419", "es", "pt-BR", "de", "fr", "it", "nl", "pl", "tr", "zh-Hant",
-        "ar"
+        "ar",
     ]
 
     /// The CLDR plural categories each shipped language actually uses. `ar` needs all six —
@@ -54,9 +54,9 @@ struct LocalizationCatalog {
 
     static func packageRoot(file: StaticString = #filePath) -> URL {
         URL(fileURLWithPath: "\(file)")
-            .deletingLastPathComponent()  // Tests/<target>Tests
-            .deletingLastPathComponent()  // Tests
-            .deletingLastPathComponent()  // package root
+            .deletingLastPathComponent() // Tests/<target>Tests
+            .deletingLastPathComponent() // Tests
+            .deletingLastPathComponent() // package root
     }
 
     static func load(file: StaticString = #filePath) throws -> LocalizationCatalog {
@@ -168,7 +168,7 @@ struct LocalizationCatalog {
     static func formatShape(_ value: String) -> (specifiers: [String], literalPercents: Int) {
         var specifiers: [String] = []
         var literalPercents = 0
-        var characters = Array(value)
+        let characters = Array(value)
         var index = 0
 
         while index < characters.count {
@@ -201,7 +201,7 @@ struct LocalizationCatalog {
     /// A `%` that never resolves into a specifier or a literal — `String(format:)` reads
     /// whatever follows it as a conversion and prints garbage or drops the tail.
     static func hasDanglingPercent(_ value: String) -> Bool {
-        var characters = Array(value)
+        let characters = Array(value)
         var index = 0
 
         while index < characters.count {
@@ -233,7 +233,7 @@ struct LocalizationCatalog {
     }
 }
 
-@Suite struct LocalizationCatalogTests {
+struct LocalizationCatalogTests {
     /// What the narrowest phone shows beside the glyph in the inline slot. The system
     /// truncates silently and per locale, so the longest translation has to stay under this
     /// with the longest figure the estimate can print.
@@ -249,7 +249,7 @@ struct LocalizationCatalog {
             "widgetsupport.status.openApp": [],
             "widgetsupport.action.scan": [],
             "widgetsupport.action.review": [],
-            "widgetsupport.action.continueReview": []
+            "widgetsupport.action.continueReview": [],
         ]
     }
 
@@ -264,7 +264,7 @@ struct LocalizationCatalog {
             "widgetsupport.status.openApp": WidgetL10n.Status.openApp,
             "widgetsupport.action.scan": WidgetL10n.Action.scan,
             "widgetsupport.action.review": WidgetL10n.Action.review,
-            "widgetsupport.action.continueReview": WidgetL10n.Action.continueReview
+            "widgetsupport.action.continueReview": WidgetL10n.Action.continueReview,
         ]
     }
 
@@ -297,7 +297,7 @@ struct LocalizationCatalog {
         .libraryChanged(bytes: nil, scannedAt: nil),
         .resumeReview(progress: sampleProgress, isStale: false),
         .resumeReview(progress: sampleProgress, isStale: true),
-        .resumeReview(progress: unsizedProgress, isStale: false)
+        .resumeReview(progress: unsizedProgress, isStale: false),
     ]
 
     /// The inline Lock Screen slot is one short line above the clock, and the system
@@ -326,7 +326,7 @@ struct LocalizationCatalog {
     /// can actually show. Four of the seven states fall through to `Status.openApp`,
     /// `Action.scan` or the two review actions, so a state added without a short key of its
     /// own would ship an untested line. This walks the compositions and fails here first.
-    @Test func testEveryInlineAccessoryCaptionIsSampledByTheBudget() throws {
+    @Test func testEveryInlineAccessoryCaptionIsSampledByTheBudget() {
         let sampled = Set(Self.inlineRenderings.values)
         var unsampled: [String] = []
 
@@ -414,13 +414,15 @@ struct LocalizationCatalog {
             let localizations = try catalog.localizations(of: key)
             guard localizations["en"]?["variations"] != nil else { continue }
             for language in LocalizationCatalog.shippedLanguages
-            where localizations[language]?["variations"] == nil {
+                where localizations[language]?["variations"] == nil
+            {
                 flat.append("\(key) [\(language)]")
             }
         }
 
         #expect(flat.isEmpty, "plural in en but not in: \(flat)")
     }
+
     /// Format specifiers have to survive translation, but their *order* does not.
     ///
     /// Turkish writes a percentage as `%50`, so `tr` legitimately carries

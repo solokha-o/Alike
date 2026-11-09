@@ -5,7 +5,7 @@ import Testing
 /// A `final class` suite: the temporary directory is removed in `deinit`. The old
 /// `tearDown` was `async` only in its signature — the removal is synchronous.
 @MainActor
-@Suite final class CrashReportPromptCoordinatorTests {
+final class CrashReportPromptCoordinatorTests {
     private let directoryURL: URL
     private let store: CrashReportStore
     private let coordinator: CrashReportPromptCoordinator

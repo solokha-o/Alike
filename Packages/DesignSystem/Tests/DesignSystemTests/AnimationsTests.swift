@@ -1,90 +1,55 @@
-import Testing
 import SwiftUI
+import Testing
 @testable import DesignSystem
 
-@Suite struct AnimationsTests {
-    
-    // MARK: - Spring Animation Tests
-    
+struct AnimationsTests {
+    // MARK: - Spring Animations
+
     @Test func testSpringDefaultAnimation() {
-        // Given & When: Default spring animation
-        let spring = Animations.spring
-        
-        // Then: Should exist and be a Spring animation
-        #expect(spring != nil, "Spring animation should exist")
+        #expect(Animations.spring == .spring())
     }
-    
+
     @Test func testSpringSoftAnimation() {
-        // Given & When: Soft spring animation
-        let springSoft = Animations.springSoft
-        
-        // Then: Should exist
-        #expect(springSoft != nil, "Soft spring animation should exist")
+        #expect(Animations.springSoft == .spring(response: 0.5, dampingFraction: 0.85, blendDuration: 0))
     }
-    
+
     @Test func testSpringBouncyAnimation() {
-        // Given & When: Bouncy spring animation
-        let springBouncy = Animations.springBouncy
-        
-        // Then: Should exist
-        #expect(springBouncy != nil, "Bouncy spring animation should exist")
+        #expect(Animations.springBouncy == .spring(response: 0.6, dampingFraction: 0.7, blendDuration: 0))
+        #expect(Animations.springBouncy == .appBouncy)
     }
-    
-    // MARK: - Timing Animation Tests
-    
+
+    // MARK: - Timing Animations
+
     @Test func testEaseInOutAnimation() {
-        // Given & When: EaseInOut animation
-        let easeInOut = Animations.easeInOut
-        
-        // Then: Should exist
-        #expect(easeInOut != nil, "EaseInOut animation should exist")
+        #expect(Animations.easeInOut == .easeInOut(duration: 0.25))
     }
-    
+
     @Test func testEaseInAnimation() {
-        // Given & When: EaseIn animation
-        let easeIn = Animations.easeIn
-        
-        // Then: Should exist
-        #expect(easeIn != nil, "EaseIn animation should exist")
+        #expect(Animations.easeIn == .easeIn(duration: 0.25))
     }
-    
+
     @Test func testEaseOutAnimation() {
-        // Given & When: EaseOut animation
-        let easeOut = Animations.easeOut
-        
-        // Then: Should exist
-        #expect(easeOut != nil, "EaseOut animation should exist")
+        #expect(Animations.easeOut == .easeOut(duration: 0.25))
     }
-    
-    // MARK: - Custom Animation Tests
-    
+
+    // MARK: - Custom Animations
+
     @Test func testQuickAnimation() {
-        // Given & When: Quick animation
-        let quick = Animations.quick
-        
-        // Then: Should exist
-        #expect(quick != nil, "Quick animation should exist")
+        #expect(Animations.quick == .spring(response: 0.3, dampingFraction: 0.75, blendDuration: 0))
+        #expect(Animations.quick == .appQuick)
     }
-    
+
     @Test func testSmoothAnimation() {
-        // Given & When: Smooth animation
-        let smooth = Animations.smooth
-        
-        // Then: Should exist
-        #expect(smooth != nil, "Smooth animation should exist")
+        #expect(Animations.smooth == .spring(response: 0.4, dampingFraction: 0.8, blendDuration: 0))
+        #expect(Animations.smooth == .appSmooth)
     }
-    
-    // MARK: - Animation Consistency Tests
-    
+
+    // MARK: - Consistency
+
     @Test func testAnimationsAreNotIdentical() {
-        // Given: Different animations
-        let spring = Animations.spring
-        let easeInOut = Animations.easeInOut
-        
-        // Then: Should be different types
-        // Note: Can't easily compare Animation values in Swift
-        // This test verifies they're both defined
-        #expect(spring != nil)
-        #expect(easeInOut != nil)
+        #expect(Animations.spring != Animations.easeInOut)
+        #expect(Animations.easeIn != Animations.easeOut)
+        #expect(Animations.quick != Animations.smooth)
+        #expect(Animations.springSoft != Animations.springBouncy)
     }
 }

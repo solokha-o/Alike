@@ -4,7 +4,8 @@ import Testing
 
 /// The hint has to say what a double tap does to the photos: reopening, keeping
 /// every photo, or keeping the photos the user did not select.
-@Suite struct ClusterReviewToggleTests {
+@MainActor
+struct ClusterReviewToggleTests {
     @Test func testConfirmedReviewOffersToReopen() {
         for selectedCount in [0, 2] {
             #expect(ClusterReviewToggle.hint(isConfirmed: true, selectedCount: selectedCount) == DetailsL10n.ClusterDetails.doubleTapReopenThisCluster)

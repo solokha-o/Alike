@@ -33,7 +33,8 @@ enum ClusterReviewStateResurfacer {
 
         for newSnapshot in newSnapshots {
             if var matchingSnapshots = remainingExactMatches[newSnapshot.assetIdentifiers],
-               let matchedSnapshot = matchingSnapshots.first {
+               let matchedSnapshot = matchingSnapshots.first
+            {
                 matchingSnapshots.removeFirst()
                 remainingExactMatches[newSnapshot.assetIdentifiers] = matchingSnapshots
 
@@ -49,7 +50,8 @@ enum ClusterReviewStateResurfacer {
                 }
 
                 if userPickedBestShotID != nil
-                    || matchedSnapshot.bestShotLocalIdentifier == newSnapshot.bestShotLocalIdentifier {
+                    || matchedSnapshot.bestShotLocalIdentifier == newSnapshot.bestShotLocalIdentifier
+                {
                     resurfacingStates[newSnapshot.id] = .unchanged
                     if let existingState {
                         migratedReviewStates[newSnapshot.id] = existingState.remapped(
@@ -93,8 +95,8 @@ enum ClusterReviewStateResurfacer {
     }
 }
 
-private extension ClusterReviewStateResurfacer {
-    static func needsReviewState(
+extension ClusterReviewStateResurfacer {
+    fileprivate static func needsReviewState(
         for snapshot: PhotoClusterSnapshot,
         resurfacingState: ClusterResurfacingState,
         updatedAt: Date

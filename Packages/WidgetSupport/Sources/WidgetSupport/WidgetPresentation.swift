@@ -90,7 +90,8 @@ public enum WidgetPresentation {
         if let progress = snapshot.sessionProgress,
            progress.hasStartedReview,
            !progress.isComplete,
-           progress.totalClusters > 0 {
+           progress.totalClusters > 0
+        {
             return .resumeReview(progress: progress, isStale: isStale)
         }
 

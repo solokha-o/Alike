@@ -6,7 +6,7 @@ import PackageDescription
 let package = Package(
     name: "BestShotCalibration",
     platforms: [
-        .macOS(.v14)
+        .macOS(.v14),
     ],
     products: [
         .executable(
@@ -28,14 +28,14 @@ let package = Package(
             name: "BestShotCalibration",
             dependencies: ["Core"],
             swiftSettings: [
-                .enableExperimentalFeature("StrictConcurrency")
+                .enableExperimentalFeature("StrictConcurrency"),
             ]
         ),
         .executableTarget(
             name: "BestShotCalibrationCLI",
             dependencies: ["BestShotCalibration"],
             swiftSettings: [
-                .enableExperimentalFeature("StrictConcurrency")
+                .enableExperimentalFeature("StrictConcurrency"),
             ]
         ),
         .testTarget(

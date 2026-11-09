@@ -1,7 +1,7 @@
 import CleanupWorkspace
 import Core
-import Photos
 import Foundation
+import Photos
 import Testing
 
 /// The post-cleanup refresh. `CleanupWorkspaceBehaviorTests` already covers the
@@ -9,13 +9,13 @@ import Testing
 /// so this covers what reconciliation is actually for: after photos are
 /// deleted, the workspace reflects the deletion.
 @MainActor
-@Suite struct CleanupWorkspaceReconciliationTests {
+struct CleanupWorkspaceReconciliationTests {
     @Test func testSuccessfulReconciliationRefreshesClustersCategoriesAndInsights() async {
         let survivingCluster = PhotoCluster(id: UUID(), assets: [])
         let analysis = MockPhotoAnalysisService()
         await analysis.setAnalyzePhotoLibraryResult(.success([survivingCluster]))
         await analysis.setRefreshCleanupCategoriesResult(.success([
-            CleanupCategorySummary(kind: .screenshots, assetCount: 2, estimatedSavingsBytes: 200)
+            CleanupCategorySummary(kind: .screenshots, assetCount: 2, estimatedSavingsBytes: 200),
         ]))
 
         // The deletion flow appends the record before asking for a refresh, so

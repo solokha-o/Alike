@@ -5,7 +5,7 @@ import Testing
 @Suite("Widget deep links")
 struct WidgetDestinationTests {
     @Test("Every destination round-trips through its URL", arguments: WidgetDestination.allCases)
-    func roundTrip(destination: WidgetDestination) throws {
+    func roundTrip(destination: WidgetDestination) {
         #expect(WidgetDestination(url: destination.url) == destination)
     }
 
@@ -49,12 +49,12 @@ struct WidgetDestinationTests {
     @Test(
         "Anything unrecognised is ignored rather than routed somewhere plausible",
         arguments: [
-            "https://alike.app/cleanup",     // right host, wrong scheme
-            "alike://",                      // no destination at all
-            "alike://unknown",               // a destination this build does not have
-            "alikey://cleanup",              // near-miss scheme
+            "https://alike.app/cleanup", // right host, wrong scheme
+            "alike://", // no destination at all
+            "alike://unknown", // a destination this build does not have
+            "alikey://cleanup", // near-miss scheme
             "mailto:someone@example.com",
-            "cleanup"
+            "cleanup",
         ]
     )
     func rejected(raw: String) throws {

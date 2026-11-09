@@ -1,12 +1,12 @@
-import SwiftUI
-import Photos
-import MapKit
 import Core
 import DesignSystem
-import Storage
+import MapKit
 import NavigationKit
+import Photos
 import Purchases
 import PurchasesUI
+import Storage
+import SwiftUI
 
 #if os(iOS)
 
@@ -49,7 +49,7 @@ public struct ClusterDetailsView: View {
         self.onReviewStateChanged = onReviewStateChanged
         self.onCleanupCompleted = onCleanupCompleted
         self.subscriptionStore = subscriptionStore
-        self._viewModel = State(initialValue: ClusterDetailsViewModel(
+        _viewModel = State(initialValue: ClusterDetailsViewModel(
             cluster: cluster,
             cleanupService: cleanupService ?? UnsupportedPhotoCleanupService(),
             cleanupHistoryRepository: cleanupHistoryRepository,
@@ -63,15 +63,15 @@ public struct ClusterDetailsView: View {
     }
 
     init(
-        cluster: PhotoCluster,
+        cluster _: PhotoCluster,
         viewModel: ClusterDetailsViewModel,
         onReviewStateChanged: (() -> Void)? = nil,
         onCleanupCompleted: ((CleanupCompletionRecord) -> Void)? = nil
     ) {
         self.onReviewStateChanged = onReviewStateChanged
         self.onCleanupCompleted = onCleanupCompleted
-        self.subscriptionStore = nil
-        self._viewModel = State(initialValue: viewModel)
+        subscriptionStore = nil
+        _viewModel = State(initialValue: viewModel)
     }
 
     public var body: some View {
@@ -90,7 +90,7 @@ public struct ClusterDetailsView: View {
         // replaced by a wall of content the instant loading finishes.
         .animation(.appSmooth, value: viewModel.hasLoadedReviewState)
         .safeAreaInset(edge: .bottom, spacing: 0) {
-            if viewModel.isDeleteActionVisible && !viewModel.isDeleting {
+            if viewModel.isDeleteActionVisible, !viewModel.isDeleting {
                 ClusterReviewActionBar(
                     selectedCount: viewModel.selectedCount,
                     onDeleteSelected: requestDeleteConfirmation,
@@ -360,8 +360,8 @@ public struct ClusterDetailsView: View {
     }
 }
 
-private extension ClusterDetailsView {
-    func requestDeleteConfirmation() {
+extension ClusterDetailsView {
+    fileprivate func requestDeleteConfirmation() {
         if viewModel.requestDeleteConfirmation() == .requiresPremium {
             presentedPremiumFeature = .batchCleanup
         }
@@ -371,7 +371,7 @@ private extension ClusterDetailsView {
     /// the cleanup screen behind it is already up to date when it is revealed.
     /// The debounce is cancelled and restarted by every further persisted edit,
     /// so a burst of selection taps refreshes the host once.
-    func notifyHostOfPersistedReviewState() async {
+    fileprivate func notifyHostOfPersistedReviewState() async {
         guard viewModel.persistedRevision > 0 else { return }
         do {
             try await Task.sleep(for: Constants.hostReviewStateRefreshDebounce)
@@ -402,13 +402,13 @@ public struct ClusterDetailsView: View {
 
     public init(
         cluster: PhotoCluster,
-        cleanupService: (any PhotoCleanupService)? = nil,
-        cleanupHistoryRepository: CleanupHistoryRepository = FileCleanupHistoryRepository(),
-        premiumAccess: any PremiumAccessControlling = PremiumAccessController(),
-        subscriptionStore: SubscriptionStore? = nil,
-        openSettingsAction: (@MainActor @Sendable () -> Void)? = nil,
-        onReviewStateChanged: (() -> Void)? = nil,
-        onCleanupCompleted: ((CleanupCompletionRecord) -> Void)? = nil
+        cleanupService _: (any PhotoCleanupService)? = nil,
+        cleanupHistoryRepository _: CleanupHistoryRepository = FileCleanupHistoryRepository(),
+        premiumAccess _: any PremiumAccessControlling = PremiumAccessController(),
+        subscriptionStore _: SubscriptionStore? = nil,
+        openSettingsAction _: (@MainActor @Sendable () -> Void)? = nil,
+        onReviewStateChanged _: (() -> Void)? = nil,
+        onCleanupCompleted _: ((CleanupCompletionRecord) -> Void)? = nil
     ) {
         self.cluster = cluster
     }
@@ -425,6 +425,7 @@ public struct ClusterDetailsView: View {
 #endif
 
 // MARK: - Preview
+
 // PhotoCluster.mock only exists in DEBUG, and #Preview is expanded in every
 // configuration, so this preview has to be gated or the Release build fails
 // to compile.

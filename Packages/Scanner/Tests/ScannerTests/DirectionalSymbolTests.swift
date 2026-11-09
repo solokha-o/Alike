@@ -9,21 +9,21 @@ import Testing
 /// `arrow.forward` — mirror by definition, which is why they are the only ones this
 /// package is allowed to ship. Bidirectional glyphs such as `arrow.left.arrow.right`
 /// read the same either way and are deliberately not covered.
-@Suite struct DirectionalSymbolTests {
+struct DirectionalSymbolTests {
     private static let bannedSymbols = [
         "chevron.left",
         "chevron.right",
         "arrow.left.circle",
         "arrow.right.circle",
         "arrow.left.square",
-        "arrow.right.square"
+        "arrow.right.square",
     ]
 
     private static var sourcesRoot: URL {
         URL(fileURLWithPath: "\(#filePath)")
-            .deletingLastPathComponent()  // Tests/ScannerTests
-            .deletingLastPathComponent()  // Tests
-            .deletingLastPathComponent()  // package root
+            .deletingLastPathComponent() // Tests/ScannerTests
+            .deletingLastPathComponent() // Tests
+            .deletingLastPathComponent() // package root
             .appendingPathComponent("Sources/Scanner")
     }
 

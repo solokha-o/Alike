@@ -9,22 +9,27 @@ public enum CoreL10n {
         public static func alertTitleBlurredPhotos(_ count: Int, bundle: Bundle? = nil, locale: Locale? = nil) -> String {
             CoreL10n.plural("core.cleanupCategory.alertTitleBlurredPhotos", count, bundle: bundle, locale: locale)
         }
+
         /// Move %1$lld Selected Screenshots to Recently Deleted? (plural)
         public static func alertTitleScreenshots(_ count: Int, bundle: Bundle? = nil, locale: Locale? = nil) -> String {
             CoreL10n.plural("core.cleanupCategory.alertTitleScreenshots", count, bundle: bundle, locale: locale)
         }
+
         /// %1$lld selected, estimated size %2$@. (plural)
         public static func selectionSummary(_ count: Int, _ estimatedSize: String, bundle: Bundle? = nil, locale: Locale? = nil) -> String {
             CoreL10n.plural("core.cleanupCategory.selectionSummary", count, estimatedSize, bundle: bundle, locale: locale)
         }
+
         /// %1$lld likely blurred photos available for review. (plural)
         public static func summaryBlurredPhotos(_ count: Int, bundle: Bundle? = nil, locale: Locale? = nil) -> String {
             CoreL10n.plural("core.cleanupCategory.summaryBlurredPhotos", count, bundle: bundle, locale: locale)
         }
+
         /// %1$lld screenshots available for review. (plural)
         public static func summaryScreenshots(_ count: Int, bundle: Bundle? = nil, locale: Locale? = nil) -> String {
             CoreL10n.plural("core.cleanupCategory.summaryScreenshots", count, bundle: bundle, locale: locale)
         }
+
         /// Blurred Photo Cleanup
         public static var blurredPhotoCleanup: String { CoreL10n.string("core.cleanupCategory.blurredPhotoCleanup") }
         /// Blurred photo cleanup is a premium feature
@@ -74,10 +79,12 @@ public enum CoreL10n {
         public static func high(bundle: Bundle? = nil, locale: Locale? = nil) -> String {
             CoreL10n.string("core.sensitivityLevel.high", bundle: bundle, locale: locale)
         }
+
         /// Low
         public static func low(bundle: Bundle? = nil, locale: Locale? = nil) -> String {
             CoreL10n.string("core.sensitivityLevel.low", bundle: bundle, locale: locale)
         }
+
         /// Medium
         public static func medium(bundle: Bundle? = nil, locale: Locale? = nil) -> String {
             CoreL10n.string("core.sensitivityLevel.medium", bundle: bundle, locale: locale)

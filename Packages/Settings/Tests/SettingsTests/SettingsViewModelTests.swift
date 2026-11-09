@@ -1,10 +1,10 @@
+import Core
 import Foundation
 import Testing
-import Core
 @testable import Settings
 
 @MainActor
-@Suite struct SettingsViewModelTests {
+struct SettingsViewModelTests {
     @Test func testHandleRateTappedOpensWriteReviewPageWithoutRecordingAPrompt() {
         // Opening the App Store page spends no review-sheet quota, so the automatic
         // post-cleanup prompt must not inherit a cooldown from it. Settings holds no
@@ -63,11 +63,11 @@ import Core
         await viewModel.loadCleanupReminderState(isPremiumUnlocked: true)
 
         #expect(viewModel.cleanupReminderState == CleanupReminderState(
-                isEnabled: false,
-                authorizationStatus: .denied,
-                schedule: .defaultWeekly,
-                isScheduleCustomizationLocked: false
-            ))
+            isEnabled: false,
+            authorizationStatus: .denied,
+            schedule: .defaultWeekly,
+            isScheduleCustomizationLocked: false
+        ))
     }
 
     @Test func testSetCleanupReminderEnabledTurnsReminderOn() async {
@@ -82,10 +82,10 @@ import Core
         )
         await reminderManager.setSetEnabledResultState(
             CleanupReminderState(
-            isEnabled: true,
-            authorizationStatus: .authorized,
-            schedule: .defaultWeekly,
-            isScheduleCustomizationLocked: false
+                isEnabled: true,
+                authorizationStatus: .authorized,
+                schedule: .defaultWeekly,
+                isScheduleCustomizationLocked: false
             )
         )
         let viewModel = SettingsViewModel(
@@ -111,10 +111,10 @@ import Core
         )
         await reminderManager.setSetEnabledResultState(
             CleanupReminderState(
-            isEnabled: false,
-            authorizationStatus: .denied,
-            schedule: .defaultWeekly,
-            isScheduleCustomizationLocked: false
+                isEnabled: false,
+                authorizationStatus: .denied,
+                schedule: .defaultWeekly,
+                isScheduleCustomizationLocked: false
             )
         )
         let viewModel = SettingsViewModel(
@@ -140,10 +140,10 @@ import Core
         )
         await reminderManager.setSetEnabledResultState(
             CleanupReminderState(
-            isEnabled: false,
-            authorizationStatus: .authorized,
-            schedule: .defaultWeekly,
-            isScheduleCustomizationLocked: false
+                isEnabled: false,
+                authorizationStatus: .authorized,
+                schedule: .defaultWeekly,
+                isScheduleCustomizationLocked: false
             )
         )
         let viewModel = SettingsViewModel(
@@ -277,20 +277,20 @@ private actor SuspendedFirstScheduleReminderManager: CleanupReminderManaging {
         isScheduleCustomizationLocked: false
     )
 
-    func loadState(isPremiumUnlocked: Bool) async -> CleanupReminderState {
+    func loadState(isPremiumUnlocked _: Bool) async -> CleanupReminderState {
         state
     }
 
     func setEnabled(
-        _ isEnabled: Bool,
-        isPremiumUnlocked: Bool
+        _: Bool,
+        isPremiumUnlocked _: Bool
     ) async throws -> CleanupReminderState {
         state
     }
 
     func setSchedule(
         _ schedule: CleanupReminderSchedule,
-        isPremiumUnlocked: Bool
+        isPremiumUnlocked _: Bool
     ) async throws -> CleanupReminderState {
         scheduleCallCount += 1
         if scheduleCallCount == 1 {
@@ -311,7 +311,7 @@ private actor SuspendedFirstScheduleReminderManager: CleanupReminderManaging {
         return updatedState
     }
 
-    func resync(isPremiumUnlocked: Bool) async throws {}
+    func resync(isPremiumUnlocked _: Bool) async throws {}
 
     func waitUntilFirstScheduleMutationStarts() async {
         guard firstScheduleContinuation == nil else { return }

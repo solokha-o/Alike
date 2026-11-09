@@ -1,5 +1,5 @@
-import Foundation
 import Core
+import Foundation
 
 public protocol LocalAppDataDeleting: Sendable {
     func deleteAllData() async throws
@@ -19,11 +19,11 @@ public actor LocalAppDataDeletionService: LocalAppDataDeleting {
         userDefaultsSuiteName: String? = nil,
         applicationSupportDirectoryURL: URL? = nil
     ) {
-        self.deletePersistentData = {
+        deletePersistentData = {
             try await persistence.deleteAllData()
         }
         self.fileManager = fileManager
-        self.userDefaults = userDefaultsSuiteName
+        userDefaults = userDefaultsSuiteName
             .flatMap(UserDefaults.init(suiteName:))
             ?? .standard
         self.applicationSupportDirectoryURL = applicationSupportDirectoryURL
@@ -39,7 +39,7 @@ public actor LocalAppDataDeletionService: LocalAppDataDeleting {
     ) {
         self.deletePersistentData = deletePersistentData
         self.fileManager = fileManager
-        self.userDefaults = UserDefaults(suiteName: userDefaultsSuiteName) ?? .standard
+        userDefaults = UserDefaults(suiteName: userDefaultsSuiteName) ?? .standard
         self.applicationSupportDirectoryURL = applicationSupportDirectoryURL
     }
 

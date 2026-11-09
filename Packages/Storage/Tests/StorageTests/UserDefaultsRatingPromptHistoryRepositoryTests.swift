@@ -1,12 +1,12 @@
+import Core
 import Foundation
 import Testing
-import Core
 @testable import Storage
 
 /// A `final class` suite: each test gets its own `UserDefaults` suite, and `deinit`
 /// removes it. The repository is an actor and `UserDefaults` is not `Sendable`, so
 /// each repository gets its own `UserDefaults` instance of that suite.
-@Suite final class UserDefaultsRatingPromptHistoryRepositoryTests {
+final class UserDefaultsRatingPromptHistoryRepositoryTests {
     private let suiteName = UUID().uuidString
     private let defaults: UserDefaults
     private let key = "rating.promptHistory.test.\(UUID().uuidString)"
@@ -63,10 +63,10 @@ import Core
     /// A payload written by a shipped build, including a prompt recorded from the old
     /// Settings rate button, must still decode field for field: the policy change only moves
     /// a default and never rewrites stored history.
-    @Test func testShippedPayloadDecodesUnchanged() async throws {
+    @Test func testShippedPayloadDecodesUnchanged() async {
         // Foundation's default JSONEncoder stores dates as seconds since 2001-01-01.
         let shipped = #"{"firstLaunchDate":800000000,"lastPromptedDate":801000000,"lastPromptedAppVersion":"1.6.1","promptCount":1}"#
-        defaults.set(try #require(shipped.data(using: .utf8)), forKey: key)
+        defaults.set(Data(shipped.utf8), forKey: key)
 
         let history = await makeRepository().loadHistory(now: referenceDate)
 

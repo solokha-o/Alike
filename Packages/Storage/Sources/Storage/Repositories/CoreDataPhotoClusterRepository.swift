@@ -1,5 +1,5 @@
-import CoreData
 import Core
+import CoreData
 import Foundation
 import Photos
 
@@ -35,7 +35,7 @@ public final class CoreDataPhotoClusterRepository: PhotoClusterRepository {
         self.persistence = persistence
         self.changeDetector = changeDetector
     }
-    
+
     /// Resolves stored clusters to `PHAsset`s off the main thread.
     ///
     /// `PHAsset.fetchAssets` is a synchronous round trip to the photo library
@@ -161,12 +161,12 @@ public final class CoreDataPhotoClusterRepository: PhotoClusterRepository {
             )
         }
     }
-    
+
     @MainActor
     public func saveClusters(_ clusters: [PhotoCluster]) async throws {
         try await saveClusterData(makeClusterData(from: clusters))
     }
-    
+
     public func deleteAllClusters() async throws {
         try await persistence.performBackgroundTask { context in
             let request = ClusterEntity.fetchRequest()
@@ -181,7 +181,7 @@ public final class CoreDataPhotoClusterRepository: PhotoClusterRepository {
             try context.save()
         }
     }
-    
+
     public func getLastScanDate() async -> Date? {
         await loadScanMetadata()?.lastScanDate
     }
@@ -213,7 +213,7 @@ public final class CoreDataPhotoClusterRepository: PhotoClusterRepository {
         try await persistence.performBackgroundTask { context in
             let request = ScanMetadataEntity.fetchRequest()
             request.sortDescriptors = [
-                NSSortDescriptor(keyPath: \ScanMetadataEntity.lastScanDate, ascending: false)
+                NSSortDescriptor(keyPath: \ScanMetadataEntity.lastScanDate, ascending: false),
             ]
             let existing = try context.fetch(request)
 
@@ -284,7 +284,7 @@ public final class CoreDataPhotoClusterRepository: PhotoClusterRepository {
     private static func newestMetadata(in context: NSManagedObjectContext) -> ScanMetadataEntity? {
         let request = ScanMetadataEntity.fetchRequest()
         request.sortDescriptors = [
-            NSSortDescriptor(keyPath: \ScanMetadataEntity.lastScanDate, ascending: false)
+            NSSortDescriptor(keyPath: \ScanMetadataEntity.lastScanDate, ascending: false),
         ]
         request.fetchLimit = 1
         return try? context.fetch(request).first
@@ -295,7 +295,7 @@ public final class CoreDataPhotoClusterRepository: PhotoClusterRepository {
         try await persistence.performBackgroundTask { context in
             let start = ContinuousClock().now
             context.mergePolicy = NSMergePolicy.mergeByPropertyObjectTrump
-            
+
             let existingClusters = try context.fetch(ClusterEntity.fetchRequest())
             for cluster in existingClusters {
                 let photos = cluster.photos as? Set<PhotoEntity> ?? []
@@ -307,7 +307,7 @@ public final class CoreDataPhotoClusterRepository: PhotoClusterRepository {
 
             let photoIdentifiers = Array(Set(clusterData.flatMap { $0.assets.map(\.localIdentifier) }))
             var existingPhotosByIdentifier: [String: PhotoEntity] = [:]
-            
+
             if !photoIdentifiers.isEmpty {
                 for batch in photoIdentifiers.chunked(into: Constants.maxInPredicateBatchSize) {
                     let request = PhotoEntity.fetchRequest()
@@ -402,20 +402,20 @@ public final class CoreDataPhotoClusterRepository: PhotoClusterRepository {
 extension CoreDataPhotoClusterRepository: PhotoFeaturePrintRepository {
     public func loadFeaturePrints(for localIdentifiers: [String]) async throws -> [String: PhotoFeaturePrintCacheEntry] {
         guard !localIdentifiers.isEmpty else { return [:] }
-        
+
         let context = persistence.viewContext
         return try await context.perform {
             let start = ContinuousClock().now
             let identifiers = Array(Set(localIdentifiers))
             var result: [String: PhotoFeaturePrintCacheEntry] = [:]
-            
+
             for batch in identifiers.chunked(into: Constants.maxInPredicateBatchSize) {
                 let request = PhotoEntity.fetchRequest()
                 request.predicate = NSPredicate(
                     format: "localIdentifier IN %@ AND featurePrintData != nil",
                     batch
                 )
-                
+
                 let entities = try context.fetch(request)
                 for entity in entities {
                     guard let data = entity.featurePrintData else { continue }
@@ -432,15 +432,15 @@ extension CoreDataPhotoClusterRepository: PhotoFeaturePrintRepository {
             return result
         }
     }
-    
+
     public func upsertFeaturePrints(_ entries: [PhotoFeaturePrintCacheEntry]) async throws {
         guard !entries.isEmpty else { return }
-        
+
         let identifiers = Array(Set(entries.map(\.localIdentifier)))
         try await persistence.performBackgroundTask { context in
             let start = ContinuousClock().now
             context.mergePolicy = NSMergePolicy.mergeByPropertyObjectTrump
-            
+
             var entitiesByIdentifier: [String: PhotoEntity] = [:]
             for batch in identifiers.chunked(into: Constants.maxInPredicateBatchSize) {
                 let request = PhotoEntity.fetchRequest()
@@ -450,7 +450,7 @@ extension CoreDataPhotoClusterRepository: PhotoFeaturePrintRepository {
                     entitiesByIdentifier[entity.localIdentifier] = entity
                 }
             }
-            
+
             for entry in entries {
                 let entity = entitiesByIdentifier[entry.localIdentifier] ?? {
                     let created = PhotoEntity(context: context)
@@ -458,11 +458,11 @@ extension CoreDataPhotoClusterRepository: PhotoFeaturePrintRepository {
                     entitiesByIdentifier[entry.localIdentifier] = created
                     return created
                 }()
-                
+
                 entity.featurePrintData = entry.featurePrintData
                 entity.modificationDate = entry.modificationDate
             }
-            
+
             try context.save()
             AppLog.storage.debug(
                 "\(AppLog.tag(.storage, "Upsert feature prints count=\(entries.count) duration=\(start.duration(to: ContinuousClock().now))"))"
@@ -471,22 +471,22 @@ extension CoreDataPhotoClusterRepository: PhotoFeaturePrintRepository {
     }
 }
 
-// Shared by every repository that batches an `IN` predicate.
+/// Shared by every repository that batches an `IN` predicate.
 extension Array {
     func chunked(into size: Int) -> [[Element]] {
         guard size > 0 else { return [self] }
         guard !isEmpty else { return [] }
-        
+
         var result: [[Element]] = []
         result.reserveCapacity((count + size - 1) / size)
-        
+
         var index = startIndex
         while index < endIndex {
             let end = self.index(index, offsetBy: size, limitedBy: endIndex) ?? endIndex
             result.append(Array(self[index..<end]))
             index = end
         }
-        
+
         return result
     }
 }

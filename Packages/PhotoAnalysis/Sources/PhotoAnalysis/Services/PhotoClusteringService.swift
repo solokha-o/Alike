@@ -1,7 +1,7 @@
-@preconcurrency import Vision
-import Photos
 import Core
 import CoreLocation
+import Photos
+@preconcurrency import Vision
 
 /// Service that performs clustering of photos based on similarity
 public struct PhotoClusteringService: Sendable {
@@ -10,13 +10,13 @@ public struct PhotoClusteringService: Sendable {
         let observation: VNFeaturePrintObservation?
 
         init(observation: VNFeaturePrintObservation) {
-            self.id = UUID()
+            id = UUID()
             self.observation = observation
         }
 
         init(id: UUID = UUID()) {
             self.id = id
-            self.observation = nil
+            observation = nil
         }
     }
 
@@ -25,29 +25,30 @@ public struct PhotoClusteringService: Sendable {
         let creationDate: Date?
         let location: CLLocation?
     }
-    
+
     struct ClusterResult {
         let indices: [Int]
         let averageSimilarity: Float
     }
-    
+
     private let distanceProvider: @Sendable (FeaturePrint, FeaturePrint) throws -> Float
     private let maxTimeInterval: TimeInterval
     private let maxLocationDistance: CLLocationDistance
     private let isPreFilterEnabled: Bool
-    
+
     public init(enablePreFilter: Bool = true) {
         let visionService = VisionFeaturePrintService()
-        self.distanceProvider = { featurePrint1, featurePrint2 in
+        distanceProvider = { featurePrint1, featurePrint2 in
             guard let observation1 = featurePrint1.observation,
-                  let observation2 = featurePrint2.observation else {
+                  let observation2 = featurePrint2.observation
+            else {
                 throw PhotoAnalysisError.visionProcessingFailed
             }
             return try visionService.computeDistance(between: observation1, and: observation2)
         }
-        self.maxTimeInterval = 24 * 60 * 60
-        self.maxLocationDistance = 1_000
-        self.isPreFilterEnabled = enablePreFilter
+        maxTimeInterval = 24 * 60 * 60
+        maxLocationDistance = 1_000
+        isPreFilterEnabled = enablePreFilter
     }
 
     init(
@@ -59,9 +60,9 @@ public struct PhotoClusteringService: Sendable {
         self.distanceProvider = distanceProvider
         self.maxTimeInterval = maxTimeInterval
         self.maxLocationDistance = maxLocationDistance
-        self.isPreFilterEnabled = enablePreFilter
+        isPreFilterEnabled = enablePreFilter
     }
-    
+
     /// Cluster photos based on similarity threshold
     public func clusterPhotos(
         _ photos: [(asset: PHAsset, featurePrint: VNFeaturePrintObservation?)],
@@ -78,9 +79,9 @@ public struct PhotoClusteringService: Sendable {
                 )
             )
         }
-        
+
         guard !candidates.isEmpty else { return [] }
-        
+
         let results = try clusterCandidates(
             candidates.map { $0.candidate },
             threshold: threshold
@@ -88,7 +89,7 @@ public struct PhotoClusteringService: Sendable {
         AppLog.clustering.debug(
             "\(AppLog.tag(.clustering, "Clustered candidates: \(candidates.count) clusters: \(results.count)"))"
         )
-        
+
         return results.map { result in
             let assets = result.indices.map { candidates[$0].asset }
             return PhotoCluster(
@@ -97,7 +98,7 @@ public struct PhotoClusteringService: Sendable {
             )
         }
     }
-    
+
     func clusterCandidates(
         _ candidates: [Candidate],
         threshold: Float
@@ -109,7 +110,7 @@ public struct PhotoClusteringService: Sendable {
 
         var results: [ClusterResult] = []
         var assigned: Set<Int> = []
-        
+
         // Complete-link clustering: a photo can join a cluster only if it is
         // similar to every photo already in that cluster.
         for i in 0..<candidates.count {
@@ -118,13 +119,13 @@ public struct PhotoClusteringService: Sendable {
             }
 
             guard !assigned.contains(i) else { continue }
-            
+
             var cluster = [i]
             assigned.insert(i)
             var totalDistance: Float = 0.0
             var comparisonCount = 0
             let clusterStartCreationDate = candidates[i].creationDate
-            
+
             for j in (i + 1)..<candidates.count {
                 guard !assigned.contains(j) else { continue }
 
@@ -133,10 +134,11 @@ public struct PhotoClusteringService: Sendable {
                    allHaveCreationDateFromIndex[j],
                    let date1 = clusterStartCreationDate,
                    let date2 = candidates[j].creationDate,
-                   date1.timeIntervalSince(date2) > maxTimeInterval {
+                   date1.timeIntervalSince(date2) > maxTimeInterval
+                {
                     break
                 }
-                
+
                 var candidateDistances: [Float] = []
                 candidateDistances.reserveCapacity(cluster.count)
                 var isSimilarToAll = true
@@ -148,7 +150,7 @@ public struct PhotoClusteringService: Sendable {
                         isSimilarToAll = false
                         break
                     }
-                    
+
                     do {
                         let distance = try distanceProvider(
                             candidates[memberIndex].featurePrint,
@@ -164,7 +166,7 @@ public struct PhotoClusteringService: Sendable {
                         break
                     }
                 }
-                
+
                 if isSimilarToAll {
                     cluster.append(j)
                     assigned.insert(j)
@@ -175,12 +177,12 @@ public struct PhotoClusteringService: Sendable {
                     comparisonCount += candidateDistances.count
                 }
             }
-            
+
             if cluster.count > 1 {
                 let averageSimilarity = comparisonCount > 0
                     ? 1.0 - (totalDistance / Float(comparisonCount) / 100.0) // Normalize to 0-1
                     : 0.0
-                
+
                 results.append(
                     ClusterResult(
                         indices: cluster,
@@ -192,7 +194,7 @@ public struct PhotoClusteringService: Sendable {
 
         return results
     }
-    
+
     private func passesPreFilter(candidate1: Candidate, candidate2: Candidate) -> Bool {
         guard isPreFilterEnabled else { return true }
         if let date1 = candidate1.creationDate, let date2 = candidate2.creationDate {
@@ -200,19 +202,19 @@ public struct PhotoClusteringService: Sendable {
                 return false
             }
         }
-        
+
         if let location1 = candidate1.location, let location2 = candidate2.location {
             if location1.distance(from: location2) > maxLocationDistance {
                 return false
             }
         }
-        
+
         return true
     }
 }
 
-private extension PhotoClusteringService {
-    func makeAllHaveCreationDateFromIndex(_ candidates: [Candidate]) -> [Bool] {
+extension PhotoClusteringService {
+    private func makeAllHaveCreationDateFromIndex(_ candidates: [Candidate]) -> [Bool] {
         guard !candidates.isEmpty else { return [true] }
 
         var result = Array(repeating: false, count: candidates.count + 1)
@@ -225,7 +227,7 @@ private extension PhotoClusteringService {
         return result
     }
 
-    func isSortedDescendingByCreationDate(_ candidates: [Candidate]) -> Bool {
+    private func isSortedDescendingByCreationDate(_ candidates: [Candidate]) -> Bool {
         var previous: Date?
 
         for candidate in candidates {

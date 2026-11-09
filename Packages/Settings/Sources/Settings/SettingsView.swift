@@ -1,10 +1,10 @@
-import SwiftUI
 import Core
 import DesignSystem
 import Diagnostics
 import NavigationKit
 import Purchases
 import PurchasesUI
+import SwiftUI
 import UserGuide
 #if canImport(UIKit)
 import UIKit
@@ -79,7 +79,7 @@ public struct SettingsView: View {
     @AppStorage(PremiumFeature.cleanupReminderCustomization.debugOverrideDefaultsKey)
     private var debugUnlockCleanupReminders = false
 #endif
-    
+
     public init(
         sensitivity: Binding<SensitivityLevel>,
         needsRescan: Binding<Bool>,
@@ -89,19 +89,19 @@ public struct SettingsView: View {
         onResetBestShotPersonalization: @escaping @MainActor @Sendable () async throws -> Void = {},
         viewModel: SettingsViewModel
     ) {
-        self._sensitivity = sensitivity
-        self._needsRescan = needsRescan
+        _sensitivity = sensitivity
+        _needsRescan = needsRescan
         self.premiumAccess = premiumAccess
         self.subscriptionStore = subscriptionStore
-        self._viewModel = State(initialValue: viewModel)
-        self._deleteAllDataModel = State(
+        _viewModel = State(initialValue: viewModel)
+        _deleteAllDataModel = State(
             initialValue: DeleteAllDataModel(operation: onDeleteAllData)
         )
-        self._resetBestShotPersonalizationModel = State(
+        _resetBestShotPersonalizationModel = State(
             initialValue: ResetBestShotPersonalizationModel(operation: onResetBestShotPersonalization)
         )
     }
-    
+
     public var body: some View {
         RoutedNavigationStack { router in
             formContent(router: router)
@@ -173,7 +173,6 @@ public struct SettingsView: View {
         }
     }
 
-    @ViewBuilder
     private func premiumFeatureSheet(for feature: PremiumFeature) -> some View {
         SubscriptionPaywallView(
             context: .feature(feature),
@@ -362,8 +361,9 @@ public struct SettingsView: View {
             Text(cleanupReminderFooterText)
         }
     }
-    
+
     // MARK: - Analysis Section
+
     private var analysisSection: some View {
         Section {
             Picker(selection: $sensitivity) {
@@ -515,8 +515,9 @@ public struct SettingsView: View {
         }
     }
 #endif
-    
+
     // MARK: - Support Section
+
     private func supportSection(router: StackRouter<SettingsRoute>) -> some View {
         Section {
             Button {
@@ -529,7 +530,7 @@ public struct SettingsView: View {
                 }
             }
             .accessibilityHint(Text(SettingsL10n.Main.openUsageInstructionsCleanupWorkflow))
-            
+
             ShareLink(item: AppStoreLinks.product) {
                 Label {
                     Text(SettingsL10n.Main.shareApp)
@@ -538,7 +539,7 @@ public struct SettingsView: View {
                 }
             }
             .accessibilityHint(Text(SettingsL10n.Main.shareAppUsingAvailableSharing))
-            
+
             Button {
                 viewModel.handleRateTapped(openURL: openURL)
             } label: {
@@ -550,7 +551,7 @@ public struct SettingsView: View {
             }
             .accessibilityHint(Text(SettingsL10n.Main.openAppStoreReviewPage))
             .sensoryFeedback(.selection, trigger: viewModel.reviewTrigger)
-            
+
             // The subject is percent-encoded in the literal rather than left to
             // URL(string:), which only accepts the raw space because it defaults to
             // encodingInvalidCharacters: true. Encoding it here keeps the force
@@ -569,6 +570,7 @@ public struct SettingsView: View {
     }
 
     // MARK: - Data & Privacy Section
+
     private func dataPrivacySection(router: StackRouter<SettingsRoute>) -> some View {
         Section {
             Button {
@@ -592,6 +594,7 @@ public struct SettingsView: View {
     }
 
     // MARK: - Legal Section
+
     private var legalSection: some View {
         Section {
             if let privacyPolicy = legalLinks.privacyPolicy {
@@ -619,8 +622,9 @@ public struct SettingsView: View {
             Text(SettingsL10n.Main.legal)
         }
     }
-    
+
     // MARK: - About Section
+
     private var aboutSection: some View {
         Section {
             HStack {
@@ -633,6 +637,7 @@ public struct SettingsView: View {
     }
 
     // MARK: - Language Section
+
     private var languageSection: some View {
         Section {
             Button {
@@ -772,9 +777,9 @@ private struct DeleteAllDataView: View {
                                 .controlSize(.small)
                         }
                         Text(
-                            (model.isDeleting
-                                    ? SettingsL10n.Main.deleting
-                                    : SettingsL10n.Main.deleteAlikeData)
+                            model.isDeleting
+                                ? SettingsL10n.Main.deleting
+                                : SettingsL10n.Main.deleteAlikeData
                         )
                         .frame(maxWidth: .infinity)
                     }
@@ -842,6 +847,7 @@ private struct DeleteAllDataView: View {
 }
 
 // MARK: - Preview
+
 #if DEBUG
 #Preview {
     SettingsView(

@@ -1,11 +1,11 @@
 #if DEBUG
+import Core
 import Foundation
 import Testing
-import Core
 @testable import Settings
 
 @MainActor
-@Suite struct BestShotCalibrationLabelingViewModelTests {
+struct BestShotCalibrationLabelingViewModelTests {
     private func makeViewModel(defaults: UserDefaults) -> BestShotCalibrationLabelingViewModel {
         BestShotCalibrationLabelingViewModel(
             clusterRepository: MockPhotoClusterRepository(),
@@ -30,8 +30,8 @@ import Core
                     signals: PhotoQualitySignals(globalSharpness: 42),
                     creationDate: Date(timeIntervalSince1970: 1_700_000_000),
                     modificationDate: Date(timeIntervalSince1970: 1_700_000_100),
-                    pixelWidth: 3024,
-                    pixelHeight: 4032,
+                    pixelWidth: 3_024,
+                    pixelHeight: 4_032,
                     isFavorite: false
                 )
             }
@@ -289,7 +289,7 @@ import Core
     /// `nil` before ever reaching `qualityAnalyzer` — there is no way to hold
     /// `remeasureCorpus()` open at a real suspension point using only the
     /// existing seams. The hook is `nil` (a no-op) in production.
-    @Test func testRecordLabelDuringRemeasureIsRejectedRatherThanLostAtCompletion() async throws {
+    @Test func testRecordLabelDuringRemeasureIsRejectedRatherThanLostAtCompletion() async {
         let defaults = makeEphemeralDefaults()
         let viewModel = makeViewModel(defaults: defaults)
         let firstClusterID = UUID()
@@ -351,8 +351,8 @@ private actor SuspensionGate {
     }
 }
 
-private extension JSONDecoder {
-    static var calibration: JSONDecoder {
+extension JSONDecoder {
+    fileprivate static var calibration: JSONDecoder {
         let decoder = JSONDecoder()
         decoder.dateDecodingStrategy = .iso8601
         return decoder

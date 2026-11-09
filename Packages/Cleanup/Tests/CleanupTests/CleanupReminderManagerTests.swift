@@ -1,10 +1,10 @@
 import Core
-import UserNotifications
 import Foundation
 import Testing
+import UserNotifications
 @testable import Cleanup
 
-@Suite struct CleanupReminderManagerTests {
+struct CleanupReminderManagerTests {
     @Test func testAuthorizedEnableSchedulesWeeklyReminder() async throws {
         let repository = MockCleanupReminderPreferenceRepository()
         let notificationCenter = MockUserNotificationCenter(
@@ -421,7 +421,7 @@ private actor MockUserNotificationCenter: UserNotificationCenterControlling {
         authorizationStatus
     }
 
-    func requestAuthorization(options: UNAuthorizationOptions) async -> Bool {
+    func requestAuthorization(options _: UNAuthorizationOptions) async -> Bool {
         didCallRequestAuthorization = true
         authorizationStatus = postRequestAuthorizationStatus
         return requestAuthorizationResult

@@ -13,20 +13,29 @@ public enum AppLog {
     public static let diagnostics = Logger(subsystem: subsystem, category: "diagnostics")
 
     public enum Event {
-        case start, finish, progress, cache, photokit, vision, clustering, storage, ui, error
+        case start
+        case finish
+        case progress
+        case cache
+        case photokit
+        case vision
+        case clustering
+        case storage
+        case ui
+        case error
 
         var emoji: String {
             switch self {
-            case .start: return "🚀"
-            case .finish: return "✅"
-            case .progress: return "📈"
-            case .cache: return "🗃️"
-            case .photokit: return "🖼️"
-            case .vision: return "🧠"
-            case .clustering: return "🧩"
-            case .storage: return "💾"
-            case .ui: return "🧭"
-            case .error: return "⚠️"
+            case .start: "🚀"
+            case .finish: "✅"
+            case .progress: "📈"
+            case .cache: "🗃️"
+            case .photokit: "🖼️"
+            case .vision: "🧠"
+            case .clustering: "🧩"
+            case .storage: "💾"
+            case .ui: "🧭"
+            case .error: "⚠️"
             }
         }
     }

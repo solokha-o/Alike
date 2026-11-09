@@ -6,12 +6,12 @@ import Testing
 /// promise in prose. It is a rejection surface under App Review guideline 3.1.2 — the renewal
 /// terms, the trial duration and how to cancel all have to be shown before purchase — so at five
 /// new languages a drift between the two is worth failing a build over.
-@Suite struct SubscriptionDisclosureTests {
+struct SubscriptionDisclosureTests {
     private static let disclosureKeys = [
         "purchases.subscriptionPaywall.subscriptionsRenewAutomaticallyUnlessCancelled",
         "purchases.subscriptionPaywall.yearlyPlanIncludes7Day",
         "purchases.subscriptionPaywall.privacyPolicy",
-        "purchases.subscriptionPaywall.termsOfUse"
+        "purchases.subscriptionPaywall.termsOfUse",
     ]
 
     /// Trial eligibility is decided by StoreKit per subscription group: a customer who already
@@ -30,7 +30,7 @@ import Testing
         "pl": "uprawnionych nowych subskrybentów",
         "tr": "uygun yeni aboneler",
         "zh-Hant": "符合資格的新訂閱者",
-        "ar": "الجدد المؤهلين"
+        "ar": "الجدد المؤهلين",
     ]
 
     /// Compares each catalog value against the value parsed from *that locale's* documented
@@ -55,7 +55,7 @@ import Testing
             "purchases.subscriptionPaywall.subscriptionsRenewAutomaticallyUnlessCancelled": renewalParagraph,
             "purchases.subscriptionPaywall.yearlyPlanIncludes7Day": trialParagraph,
             "purchases.subscriptionPaywall.privacyPolicy": linkRow.mapValues(\.privacyPolicy),
-            "purchases.subscriptionPaywall.termsOfUse": linkRow.mapValues(\.termsOfUse)
+            "purchases.subscriptionPaywall.termsOfUse": linkRow.mapValues(\.termsOfUse),
         ]
 
         var mismatches: [String] = []
@@ -116,7 +116,7 @@ import Testing
         for (key, number) in [
             ("purchases.subscriptionPaywall.subscriptionsRenewAutomaticallyUnlessCancelled", "24"),
             ("purchases.subscriptionPaywall.yearlyPlanIncludes7Day", "24"),
-            ("purchases.subscriptionPaywall.yearlyPlanIncludes7Day", "7")
+            ("purchases.subscriptionPaywall.yearlyPlanIncludes7Day", "7"),
         ] {
             for language in LocalizationCatalog.shippedLanguages {
                 let localization = try #require(catalog.localizations(of: key)[language])
@@ -133,8 +133,8 @@ import Testing
 
     private func legalDocument(file: StaticString = #filePath) throws -> String {
         let url = LocalizationCatalog.packageRoot(file: file)
-            .deletingLastPathComponent()  // Packages
-            .deletingLastPathComponent()  // repository root
+            .deletingLastPathComponent() // Packages
+            .deletingLastPathComponent() // repository root
             .appendingPathComponent("Docs/legal/subscription-disclosure.md")
         return try String(contentsOf: url, encoding: .utf8)
     }

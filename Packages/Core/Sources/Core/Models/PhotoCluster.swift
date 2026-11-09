@@ -7,7 +7,7 @@ public struct PhotoCluster: Identifiable, Hashable, Equatable, @unchecked Sendab
     public let assets: [PHAsset]
     public let createdAt: Date
     public let averageSimilarity: Float
-    
+
     public init(
         id: UUID = UUID(),
         assets: [PHAsset],
@@ -19,12 +19,12 @@ public struct PhotoCluster: Identifiable, Hashable, Equatable, @unchecked Sendab
         self.createdAt = createdAt
         self.averageSimilarity = averageSimilarity
     }
-    
+
     /// Returns the count of photos in this cluster
     public var count: Int {
         assets.count
     }
-    
+
     /// Returns the first asset to use as a thumbnail
     public var thumbnail: PHAsset? {
         assets.first
@@ -37,7 +37,8 @@ public struct PhotoCluster: Identifiable, Hashable, Equatable, @unchecked Sendab
     ///   It wins over the computed pick so a user's own choice is what shows.
     public func bestShotAsset(preferring localIdentifier: String? = nil) -> PHAsset? {
         if let localIdentifier,
-           let preferred = assets.first(where: { $0.localIdentifier == localIdentifier }) {
+           let preferred = assets.first(where: { $0.localIdentifier == localIdentifier })
+        {
             return preferred
         }
 
@@ -50,33 +51,35 @@ public struct PhotoCluster: Identifiable, Hashable, Equatable, @unchecked Sendab
 
 // MARK: - Content Identity
 
-public extension PhotoCluster {
+extension PhotoCluster {
     /// Identity derived from the cluster's contents rather than its per-scan
     /// ``id``, which is regenerated every time the library is reanalyzed.
     ///
     /// Matches the key ``PhotoClusterSnapshot/assetIdentifiers`` is compared on
     /// when review state is migrated across a rescan, so view identity and
     /// review-state identity stay in agreement.
-    var contentKey: String {
+    public var contentKey: String {
         assets.map(\.localIdentifier).sorted().joined(separator: "\u{1F}")
     }
 }
 
 // MARK: - Manual Equatable & Hashable
-// PHAsset is not Equatable/Hashable, so synthesize these conformances manually
-public extension PhotoCluster {
-    static func == (lhs: PhotoCluster, rhs: PhotoCluster) -> Bool {
+
+/// PHAsset is not Equatable/Hashable, so synthesize these conformances manually
+extension PhotoCluster {
+    public static func == (lhs: PhotoCluster, rhs: PhotoCluster) -> Bool {
         lhs.id == rhs.id
     }
 }
 
-public extension PhotoCluster {
-    func hash(into hasher: inout Hasher) {
+extension PhotoCluster {
+    public func hash(into hasher: inout Hasher) {
         hasher.combine(id)
     }
 }
 
 // MARK: - Preview Helpers
+
 #if DEBUG
 extension PhotoCluster {
     public static var mock: PhotoCluster {
@@ -85,7 +88,7 @@ extension PhotoCluster {
             averageSimilarity: 0.85
         )
     }
-    
+
     public static var mockMultiple: [PhotoCluster] {
         (0..<5).map { _ in
             PhotoCluster(

@@ -3,7 +3,7 @@ import Testing
 @testable import Storage
 
 @MainActor
-@Suite struct CoreDataPhotoClusterRepositoryDataTests {
+struct CoreDataPhotoClusterRepositoryDataTests {
     private let repository: CoreDataPhotoClusterRepository
     private let controller: PersistenceController
 
@@ -25,7 +25,7 @@ import Testing
                     pixelWidth: 100,
                     pixelHeight: 200,
                     isFavorite: false
-                )
+                ),
             ]
         )
         let clusterB = CoreDataPhotoClusterRepository.ClusterData(
@@ -40,7 +40,7 @@ import Testing
                     pixelWidth: 300,
                     pixelHeight: 400,
                     isFavorite: true
-                )
+                ),
             ]
         )
 
@@ -88,7 +88,7 @@ import Testing
                     localIdentifier: "asset-a",
                     creationDate: createdAt,
                     modificationDate: modifiedAt,
-                    pixelWidth: 1200,
+                    pixelWidth: 1_200,
                     pixelHeight: 800,
                     isFavorite: true
                 ),
@@ -99,7 +99,7 @@ import Testing
                     pixelWidth: 600,
                     pixelHeight: 400,
                     isFavorite: false
-                )
+                ),
             ]
         )
 

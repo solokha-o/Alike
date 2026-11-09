@@ -1,10 +1,10 @@
-import SwiftUI
-import Foundation
-import Testing
 import DesignSystem
+import Foundation
+import SwiftUI
+import Testing
 @testable import Details
 
-@Suite struct AlikeComparisonReviewLifecycleTests {
+struct AlikeComparisonReviewLifecycleTests {
     @Test func testVisibleActivePresentationLoopsOverlayWithContinuousBreathing() {
         let presentation = AlikeComparisonReviewPresentation.resolve(
             isVisible: true,

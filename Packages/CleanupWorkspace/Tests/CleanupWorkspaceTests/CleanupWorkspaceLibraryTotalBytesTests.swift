@@ -6,7 +6,7 @@ import Testing
 /// The widget ring's denominator: unknown until a scan summed the library, then
 /// the scan's figure, across cold launches, until local data is deleted.
 @MainActor
-@Suite struct CleanupWorkspaceLibraryTotalBytesTests {
+struct CleanupWorkspaceLibraryTotalBytesTests {
     @Test func testIsNilBeforeTheFirstScan() async {
         let byteSizes = MockAssetByteSizeRepository()
         // A leftover total without a scan baseline must not surface.
@@ -148,7 +148,7 @@ private actor GatedLibraryTotalRepository: AssetByteSizeRepository {
     private var release: CheckedContinuation<Void, Never>?
 
     func loadAll() async -> [AssetByteSizeRecord] { [] }
-    func replaceAll(_ records: [AssetByteSizeRecord]) async throws {}
+    func replaceAll(_: [AssetByteSizeRecord]) async throws {}
 
     func gateNextLoad() { isGated = true }
 
@@ -185,7 +185,7 @@ private actor FailOnceLibraryTotalRepository: AssetByteSizeRepository {
     private var hasFailed = false
 
     func loadAll() async -> [AssetByteSizeRecord] { [] }
-    func replaceAll(_ records: [AssetByteSizeRecord]) async throws {}
+    func replaceAll(_: [AssetByteSizeRecord]) async throws {}
 
     func loadLibraryTotalBytes() async -> Int64? { storedLibraryTotalBytes }
 

@@ -90,32 +90,32 @@ public enum BestShotRanker {
         let reachesAbsoluteFloor = ranked.contains { snapshot in
             (signals[snapshot.localIdentifier]?.globalSharpness ?? 0) >= config.absoluteSharpnessFloor
         }
-        let confidence: BestShotConfidence
-        if !reachesAbsoluteFloor {
-            confidence = .unresolved
-        } else if topScore >= config.automaticSelectionMinimumScore, margin >= config.automaticSelectionMinimumMargin {
-            confidence = hasCompleteCoverage ? .automatic : .lowConfidence
-        } else if margin >= config.lowConfidenceMinimumMargin {
-            confidence = .lowConfidence
-        } else {
-            confidence = .unresolved
-        }
+        let confidence: BestShotConfidence =
+            if !reachesAbsoluteFloor {
+                .unresolved
+            } else if topScore >= config.automaticSelectionMinimumScore, margin >= config.automaticSelectionMinimumMargin {
+                hasCompleteCoverage ? .automatic : .lowConfidence
+            } else if margin >= config.lowConfidenceMinimumMargin {
+                .lowConfidence
+            } else {
+                .unresolved
+            }
 
-        let reasonCodes: [BestShotReasonCode]
-        if confidence == .unresolved {
-            reasonCodes = []
-        } else if order.count == 1, !excluded.isEmpty {
-            // The only rivals were dropped for critical blur, which is exactly
-            // what the badge should say.
-            reasonCodes = [.sharper]
-        } else {
-            reasonCodes = self.reasonCodes(
-                winner: components[winner.localIdentifier],
-                runnerUp: order.dropFirst().first.flatMap { components[$0.localIdentifier] },
-                weights: weights,
-                config: config
-            )
-        }
+        let reasonCodes: [BestShotReasonCode] =
+            if confidence == .unresolved {
+                []
+            } else if order.count == 1, !excluded.isEmpty {
+                // The only rivals were dropped for critical blur, which is exactly
+                // what the badge should say.
+                [.sharper]
+            } else {
+                self.reasonCodes(
+                    winner: components[winner.localIdentifier],
+                    runnerUp: order.dropFirst().first.flatMap { components[$0.localIdentifier] },
+                    weights: weights,
+                    config: config
+                )
+            }
 
         return BestShotDecision(
             localIdentifier: confidence == .unresolved ? nil : winner.localIdentifier,
@@ -239,12 +239,13 @@ public enum BestShotRanker {
                 config: config
             )
         }
-        let sharpnessRatios = self.sharpnessRatios(snapshots: usable, scores: scores, config: config)
+        let sharpnessRatios = sharpnessRatios(snapshots: usable, scores: scores, config: config)
         let hasSharpReference = sharpnessRatios.values.contains { $0 >= config.referenceSharpnessRatio }
         var excluded = Set<String>()
         if hasSharpReference {
             for snapshot in usable
-            where (sharpnessRatios[snapshot.localIdentifier] ?? 1) < config.criticalSharpnessRatio {
+                where (sharpnessRatios[snapshot.localIdentifier] ?? 1) < config.criticalSharpnessRatio
+            {
                 excluded.insert(snapshot.localIdentifier)
             }
         }
@@ -521,7 +522,7 @@ public enum BestShotRanker {
                 + (runnerUp.facePenalty - winner.facePenalty)),
             (.lessNoise, weights.noiseArtifacts * (winner.noise - runnerUp.noise)),
             (.higherResolution, min(weights.resolution, config.resolutionWeightCap)
-                * (winner.resolution - runnerUp.resolution))
+                * (winner.resolution - runnerUp.resolution)),
         ]
         if !winner.hasClosedEyes, runnerUp.hasClosedEyes {
             weighted.append((.openEyes, runnerUp.closedEyesPenalty - winner.closedEyesPenalty))

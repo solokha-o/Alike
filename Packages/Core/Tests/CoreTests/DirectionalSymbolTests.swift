@@ -14,7 +14,7 @@ import Testing
 /// whole symbol names rather than prefixes — a prefix list built from `arrow.right.square` never
 /// saw `arrow.up.right.square`, and a prefix list wide enough to catch it would have condemned
 /// the resize glyph.
-@Suite struct DirectionalSymbolTests {
+struct DirectionalSymbolTests {
     private static let bannedSymbols: Set<String> = [
         "chevron.left", "chevron.right",
         "chevron.left.circle", "chevron.right.circle",
@@ -32,7 +32,7 @@ import Testing
         "arrow.up.left.circle", "arrow.up.right.circle",
         "arrow.up.left.circle.fill", "arrow.up.right.circle.fill",
         "arrow.uturn.left", "arrow.uturn.right",
-        "arrow.turn.up.left", "arrow.turn.up.right"
+        "arrow.turn.up.left", "arrow.turn.up.right",
     ]
 
     private static let symbolLiteral = try! NSRegularExpression(pattern: "\"([a-z0-9.]+)\"")
@@ -76,10 +76,10 @@ import Testing
 
     private static func packageDirectories() throws -> [URL] {
         let packagesRoot = URL(fileURLWithPath: "\(#filePath)")
-            .deletingLastPathComponent()  // Tests/CoreTests
-            .deletingLastPathComponent()  // Tests
-            .deletingLastPathComponent()  // Core
-            .deletingLastPathComponent()  // Packages
+            .deletingLastPathComponent() // Tests/CoreTests
+            .deletingLastPathComponent() // Tests
+            .deletingLastPathComponent() // Core
+            .deletingLastPathComponent() // Packages
         return try FileManager.default.contentsOfDirectory(
             at: packagesRoot,
             includingPropertiesForKeys: [.isDirectoryKey]

@@ -6,7 +6,10 @@ import Photos
 /// The analysis services only read an asset's identity and geometry before
 /// handing it to an injected image provider, so overriding those properties is
 /// enough to exercise them without a photo library.
-final class TestPHAsset: PHAsset {
+///
+/// `PHAsset` is `@unchecked Sendable`; this subclass keeps that promise because
+/// every stored property is an immutable `let` set once in `init`.
+final class TestPHAsset: PHAsset, @unchecked Sendable {
     private let identifier: String
     private let modified: Date?
     private let width: Int
@@ -19,9 +22,9 @@ final class TestPHAsset: PHAsset {
         pixelHeight: Int = 3_000
     ) {
         self.identifier = identifier
-        self.modified = modificationDate
-        self.width = pixelWidth
-        self.height = pixelHeight
+        modified = modificationDate
+        width = pixelWidth
+        height = pixelHeight
         super.init()
     }
 

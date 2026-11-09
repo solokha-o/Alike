@@ -1,6 +1,6 @@
-import SwiftUI
 import Core
 import DesignSystem
+import SwiftUI
 
 struct ClusterReviewSummaryCard: View {
     static let summaryContentMinimumHeight: CGFloat = 88
@@ -145,7 +145,6 @@ struct ClusterReviewSummaryCard: View {
 
     /// Three states in one place: a confident pick, a hedged one, and the
     /// honest "nothing stands out here, you choose".
-    @ViewBuilder
     private var bestShotSummaryContent: some View {
         Group {
             if isChoosingBestShot {
@@ -378,10 +377,10 @@ struct ClusterReviewSummaryCard: View {
                         onBestShotCelebrationDismissed(bestShotCelebrationCue.id)
                     }
                 )
-                    .frame(width: width)
-                    .onDisappear {
-                        onBestShotCelebrationDismissed(bestShotCelebrationCue.id)
-                    }
+                .frame(width: width)
+                .onDisappear {
+                    onBestShotCelebrationDismissed(bestShotCelebrationCue.id)
+                }
             }
         case .cleanupProgress:
             AlikeCleanupProgressHero(
@@ -419,7 +418,8 @@ struct ClusterReviewSummaryCard: View {
         }
         if let alikeReactionCue {
             if AlikeComparisonReviewPresentation.isEligible(assetCount: assetCount),
-               case .cleanupReady = alikeReactionCue.state {
+               case .cleanupReady = alikeReactionCue.state
+            {
                 return .cleanupProgress(alikeReactionCue.id)
             }
             return .reaction(alikeReactionCue.id)
@@ -455,7 +455,7 @@ struct ClusterReviewSummaryCard: View {
         .notReviewed,
         .needsReReview,
         .inReview,
-        .reviewed
+        .reviewed,
     ]
 
     private func reservedStatusSlot(_ status: ClusterReviewStatus) -> some View {
@@ -523,5 +523,4 @@ struct ClusterReviewSummaryCard: View {
             .statusReviewed
         }
     }
-
 }

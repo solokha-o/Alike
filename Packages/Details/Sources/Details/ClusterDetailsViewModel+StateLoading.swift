@@ -1,8 +1,8 @@
+import DesignSystem
 import Foundation
 import Photos
-import SwiftUI
-import DesignSystem
 import Storage
+import SwiftUI
 
 extension ClusterDetailsViewModel {
     /// Re-applies the loaded state once the measured scores arrive, unless the
@@ -41,11 +41,11 @@ extension ClusterDetailsViewModel {
     }
 }
 
-private extension ClusterDetailsViewModel {
+extension ClusterDetailsViewModel {
     /// Counts one recommendation per cluster — the repository dedupes revisits —
     /// and only when the ranking recommended something the user had not already
     /// chosen for themselves.
-    func recordBestShotRecommendation() async {
+    private func recordBestShotRecommendation() async {
         guard let overrideMetrics, !isBestShotUserSelected, !bestShotAssetID.isEmpty else { return }
         await overrideMetrics.recordRecommendation(
             confidence: bestShotConfidence,
@@ -53,7 +53,7 @@ private extension ClusterDetailsViewModel {
         )
     }
 
-    func loadQualityScores() async -> [String: PhotoQualityScore] {
+    private func loadQualityScores() async -> [String: PhotoQualityScore] {
         do {
             let scores = try await qualityAnalyzer.scores(for: cluster.assets)
             return Dictionary(scores.map { ($0.localIdentifier, $0) }, uniquingKeysWith: { _, latest in latest })
@@ -141,7 +141,7 @@ extension ClusterDetailsViewModel {
         enhancedAssetIDs = Set(
             qualityScores.values.filter(\.isAlikeEnhanced).map(\.localIdentifier)
         )
-        self.rankedConfig = config
+        rankedConfig = config
         let decision = BestShotRanker.decide(
             snapshots: assetSnapshots.map(\.photoClusterAssetSnapshot),
             scores: qualityScores,
@@ -192,8 +192,8 @@ extension ClusterDetailsViewModel {
         let filteredSelection = persistedBestShotID.isEmpty
             ? []
             : savedState.selectedLocalIdentifiers
-                .intersection(validIDs)
-                .subtracting([persistedBestShotID])
+            .intersection(validIDs)
+            .subtracting([persistedBestShotID])
 
         applyState(
             bestShotAssetID: persistedBestShotID,

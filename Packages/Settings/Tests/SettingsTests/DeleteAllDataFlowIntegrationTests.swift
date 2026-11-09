@@ -7,7 +7,7 @@ import Testing
 /// it in production — a multi-stage deletion followed by a data-deleted
 /// callback that routes the app to onboarding replay.
 @MainActor
-@Suite struct DeleteAllDataFlowIntegrationTests {
+struct DeleteAllDataFlowIntegrationTests {
     @Test func testSuccessfulDeletionInvokesDataDeletedCallbackAndRoutesToOnboardingReplay() async {
         let coordinator = StagedDataDeletionCoordinator()
         let router = OnboardingReplayRouterDouble()

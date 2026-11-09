@@ -47,7 +47,8 @@ actor ScanProgressRelay {
 
     private func flushPending(force: Bool) async {
         guard latestProgress > lastDeliveredProgress,
-              force || latestProgress - lastDeliveredProgress >= 0.005 else {
+              force || latestProgress - lastDeliveredProgress >= 0.005
+        else {
             return
         }
         lastDeliveredProgress = latestProgress

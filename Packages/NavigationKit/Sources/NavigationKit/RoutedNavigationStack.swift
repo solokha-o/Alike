@@ -14,7 +14,7 @@ public struct RoutedNavigationStack<Route: Hashable, Root: View, Destination: Vi
         @ViewBuilder root: @escaping (StackRouter<Route>) -> Root,
         @ViewBuilder destination: @escaping (Route, StackRouter<Route>) -> Destination
     ) {
-        self._router = State(wrappedValue: StackRouter(path: initialPath))
+        _router = State(wrappedValue: StackRouter(path: initialPath))
         self.onPathChange = onPathChange
         self.root = root
         self.destination = destination
@@ -33,8 +33,8 @@ public struct RoutedNavigationStack<Route: Hashable, Root: View, Destination: Vi
     }
 }
 
-public extension RoutedNavigationStack where Route == Never, Destination == EmptyView {
-    init(
+extension RoutedNavigationStack where Route == Never, Destination == EmptyView {
+    public init(
         initialPath: [Never] = [],
         onPathChange: @escaping ([Never]) -> Void = { _ in },
         @ViewBuilder root: @escaping () -> Root
@@ -43,10 +43,13 @@ public extension RoutedNavigationStack where Route == Never, Destination == Empt
             initialPath: initialPath,
             onPathChange: onPathChange,
             root: { _ in root() },
-            destination: { _, _ in
-                assertionFailure("RoutedNavigationStack with Route == Never cannot produce a destination")
-                return EmptyView()
-            }
+            destination: Self.noDestination
         )
+    }
+
+    /// A `Never` route has no value, so this cannot be called; returning the
+    /// uninhabited route satisfies the result type without dead code.
+    private static func noDestination(_ route: Never, _: StackRouter<Never>) -> EmptyView {
+        route
     }
 }

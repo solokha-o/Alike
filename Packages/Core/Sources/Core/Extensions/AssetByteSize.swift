@@ -42,7 +42,8 @@ public enum AssetByteSize {
         let identifier = asset.localIdentifier
         let modificationDate = asset.modificationDate
         if let cached = cache.withLock({ $0.entries[identifier] }),
-           isSameModificationDate(cached.modificationDate, modificationDate) {
+           isSameModificationDate(cached.modificationDate, modificationDate)
+        {
             return cached.bytes
         }
 
@@ -142,11 +143,11 @@ public enum AssetByteSize {
     private static func isSameModificationDate(_ cached: Date?, _ current: Date?) -> Bool {
         switch (cached, current) {
         case (nil, nil):
-            return true
-        case let (cached?, current?):
-            return abs(cached.timeIntervalSince(current)) < 1
+            true
+        case (let cached?, let current?):
+            abs(cached.timeIntervalSince(current)) < 1
         default:
-            return false
+            false
         }
     }
 

@@ -88,7 +88,8 @@ public actor UserDefaultsBestShotOverrideMetricsRepository: BestShotOverrideMetr
 
     private func storedMetrics() -> BestShotOverrideMetrics {
         guard let data = defaults.data(forKey: key),
-              let metrics = try? JSONDecoder().decode(BestShotOverrideMetrics.self, from: data) else {
+              let metrics = try? JSONDecoder().decode(BestShotOverrideMetrics.self, from: data)
+        else {
             return .empty
         }
         return metrics

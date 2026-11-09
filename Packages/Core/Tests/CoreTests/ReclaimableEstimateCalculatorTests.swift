@@ -3,7 +3,7 @@ import Testing
 @testable import Core
 
 /// The reclaimable figure counts every asset once and never counts a keeper.
-@Suite struct ReclaimableEstimateCalculatorTests {
+struct ReclaimableEstimateCalculatorTests {
     @Test func testEmptyInputIsZero() {
         #expect(ReclaimableEstimateCalculator.estimate(clusters: [], categories: []) == .zero)
     }
@@ -54,7 +54,7 @@ import Testing
         let estimate = ReclaimableEstimateCalculator.estimate(
             clusters: [
                 cluster(["k1": 1, "dup": 30], keeper: "k1"),
-                cluster(["k2": 1, "dup": 30, "c": 5], keeper: "k2")
+                cluster(["k2": 1, "dup": 30, "c": 5], keeper: "k2"),
             ],
             categories: []
         )

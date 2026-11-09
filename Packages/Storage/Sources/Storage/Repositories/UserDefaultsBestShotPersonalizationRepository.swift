@@ -49,7 +49,8 @@ public actor UserDefaultsBestShotPersonalizationRepository: BestShotPersonalizat
     public func loadWeights() -> BestShotPersonalWeights? {
         Self.writeLock.withLockUnchecked {
             guard let weights = storedWeights(),
-                  weights.scoringModelVersion == PhotoQualityScoringConfig.current.scoringModelVersion else {
+                  weights.scoringModelVersion == PhotoQualityScoringConfig.current.scoringModelVersion
+            else {
                 return nil
             }
             return weights
@@ -72,7 +73,8 @@ public actor UserDefaultsBestShotPersonalizationRepository: BestShotPersonalizat
 
     private func storedExamples() -> [BestShotOverrideExample] {
         guard let data = defaults.data(forKey: examplesKey),
-              let examples = try? JSONDecoder().decode([BestShotOverrideExample].self, from: data) else {
+              let examples = try? JSONDecoder().decode([BestShotOverrideExample].self, from: data)
+        else {
             return []
         }
         return examples
@@ -80,7 +82,8 @@ public actor UserDefaultsBestShotPersonalizationRepository: BestShotPersonalizat
 
     private func storedWeights() -> BestShotPersonalWeights? {
         guard let data = defaults.data(forKey: weightsKey),
-              let weights = try? JSONDecoder().decode(BestShotPersonalWeights.self, from: data) else {
+              let weights = try? JSONDecoder().decode(BestShotPersonalWeights.self, from: data)
+        else {
             return nil
         }
         return weights

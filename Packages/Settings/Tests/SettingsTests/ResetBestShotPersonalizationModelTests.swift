@@ -3,7 +3,7 @@ import Testing
 @testable import Settings
 
 @MainActor
-@Suite struct ResetBestShotPersonalizationModelTests {
+struct ResetBestShotPersonalizationModelTests {
     @Test func testResetReturnsToIdleAfterSuccess() async {
         let callCount = ResetCallCounter()
         let model = ResetBestShotPersonalizationModel {

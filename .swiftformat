@@ -1,0 +1,156 @@
+# SwiftFormat configuration for Alike ("Alike Swift Style").
+# Spec: Docs/adr/0001-alike-swift-style.md (rules and options).
+# Change process: Docs/adr/0003-format-change-process.md.
+# Do not edit this list without an ADR-0003 format change.
+# Pinned version: tools/lint-versions. Run: tools/lint (report) or tools/lint --fix.
+
+# Pinned options (ADR-0001 "Pinned options").
+--min-version 0.63.1
+--swift-version 6.0
+--indent 4
+--header ignore
+--extension-acl on-declarations
+--pattern-let inline
+--some-any false
+--redundant-throws tests-only
+--redundant-async tests-only
+--ranges preserve
+--self remove
+--decimal-grouping 3,4
+--trailing-commas collections-only
+--import-grouping testable-last,alpha
+--ifdef preserve
+--indent-case false
+
+# Generated, vendored, and non-app code.
+--exclude **/.build,build,vendor,Skills,site,fastlane
+
+# CORE rules (87), explicit list. LATER rules are added one per pull request.
+--rules andOperator
+--rules anyObjectProtocol
+--rules applicationMain
+--rules assertionFailures
+--rules blankLineAfterImports
+--rules blankLinesBetweenChainedFunctions
+--rules blankLinesBetweenImports
+--rules blockComments
+--rules braces
+--rules consecutiveBlankLines
+--rules docCommentsBeforeModifiers
+--rules duplicateImports
+--rules emptyBraces
+--rules emptyExtensions
+--rules enumNamespaces
+--rules fileHeader
+--rules fileMacro
+--rules genericExtensions
+--rules headerFileName
+--rules initCoderUnavailable
+--rules isEmpty
+--rules leadingDelimiters
+--rules linebreakAtEndOfFile
+--rules linebreaks
+--rules modifierOrder
+--rules modifiersOnSameLine
+--rules preferContains
+--rules preferFinalClasses
+--rules preferFirstWhere
+--rules preferFlatMap
+--rules preferForLoop
+--rules preferMinOverSorted
+--rules preferSwiftTesting
+--rules privateStateVariables
+--rules redundantBackticks
+--rules redundantBreak
+--rules redundantClosure
+--rules redundantEmptyView
+--rules redundantEquatable
+--rules redundantExtendedLifetime
+--rules redundantExtensionACL
+--rules redundantFileprivate
+--rules redundantGet
+--rules redundantInit
+--rules redundantInternal
+--rules redundantLet
+--rules redundantLetError
+--rules redundantMemberwiseInit
+--rules redundantNilInit
+--rules redundantObjc
+--rules redundantOptionalBinding
+--rules redundantParens
+--rules redundantPattern
+--rules redundantPublic
+--rules redundantRawValues
+--rules redundantStaticSelf
+--rules redundantSwiftUIGroup
+--rules redundantType
+--rules redundantTypedThrows
+--rules redundantVariable
+--rules redundantViewBuilder
+--rules redundantVoidReturnType
+--rules semicolons
+--rules simplifyGenericConstraints
+--rules singlePropertyPerLine
+--rules sortDeclarations
+--rules sortTypealiases
+--rules spaceAroundBraces
+--rules spaceAroundBrackets
+--rules spaceAroundComments
+--rules spaceAroundGenerics
+--rules spaceAroundParens
+--rules spaceInsideBraces
+--rules spaceInsideBrackets
+--rules spaceInsideComments
+--rules spaceInsideGenerics
+--rules spaceInsideParens
+--rules strongifiedSelf
+--rules strongOutlets
+--rules todos
+--rules trailingClosures
+--rules typeSugar
+--rules validateTestCases
+--rules void
+--rules wrapArguments
+--rules wrapAttributes
+--rules yodaConditions
+
+# LATER rules (ADR-0001), one per pull request, in table order.
+--rules noForceTryInTests
+--rules acronyms
+--rules noGuardInTests
+--rules redundantAsync
+--rules wrapEnumCases
+--rules preferSwiftStringAPI
+--lint-only unusedPrivateDeclarations
+--rules opaqueGenericParameters
+--rules preferCountWhere
+--rules docComments
+--rules wrapMultilineConditionalAssignment
+# environmentEntry (ADR row 10) added after row 12 by owner decision
+--rules environmentEntry
+--rules redundantThrows
+--rules consistentSwitchCaseSpacing
+--rules conditionalAssignment
+--rules blankLinesAroundMark
+--rules noForceUnwrapInTests
+--rules elseOnSameLine
+--rules consecutiveSpaces
+--rules unusedArguments
+--rules redundantReturn
+--rules wrapMultilineStatementBraces
+--rules hoistPatternLet
+--rules spaceAroundOperators
+--rules redundantSwiftTestingSuite
+# extensionAccessControl (ADR row 20) added after row 27 by owner decision
+--rules extensionAccessControl
+--rules redundantSelf
+--rules blankLinesAtStartOfScope
+--rules blankLinesAtEndOfScope
+# numberFormatting (ADR row 30) added after row 31 by owner decision
+--rules numberFormatting
+# trailingCommas (ADR row 32) added after row 31 by owner decision
+--rules trailingCommas
+--rules trailingSpace
+--rules sortImports
+--rules blankLinesBetweenScopes
+--rules indent

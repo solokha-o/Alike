@@ -14,7 +14,7 @@ struct LocalizationCatalog {
     /// carries it — which is the point.
     static let shippedLanguages = [
         "en", "uk", "es-419", "es", "pt-BR", "de", "fr", "it", "nl", "pl", "tr", "zh-Hant",
-        "ar"
+        "ar",
     ]
 
     let strings: [String: [String: Any]]
@@ -34,8 +34,8 @@ struct LocalizationCatalog {
 
     static func appRoot(file: StaticString = #filePath) -> URL {
         URL(fileURLWithPath: "\(file)")
-            .deletingLastPathComponent()  // AlikeTests
-            .deletingLastPathComponent()  // Alike (project folder)
+            .deletingLastPathComponent() // AlikeTests
+            .deletingLastPathComponent() // Alike (project folder)
     }
 
     static func load(file: StaticString = #filePath) throws -> LocalizationCatalog {
@@ -66,7 +66,7 @@ struct LocalizationCatalog {
     }
 }
 
-@Suite struct LocalizationCatalogTests {
+struct LocalizationCatalogTests {
     @Test func testEveryWrapperKeyExistsInTheCatalog() throws {
         let catalog = try LocalizationCatalog.load()
         let missing = try LocalizationCatalog.wrapperKeys().subtracting(catalog.strings.keys)

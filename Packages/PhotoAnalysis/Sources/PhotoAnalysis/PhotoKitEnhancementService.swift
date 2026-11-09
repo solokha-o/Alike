@@ -361,7 +361,8 @@ public actor PhotoKitEnhancementService: PhotoEnhancementService {
     private func allowsSharpening(localIdentifier: String) async -> Bool {
         guard let qualityScoreRepository else { return false }
         guard let score = try? await qualityScoreRepository
-            .loadScores(localIdentifiers: [localIdentifier])[localIdentifier] else {
+            .loadScores(localIdentifiers: [localIdentifier])[localIdentifier]
+        else {
             return false
         }
         guard score.signals.isUsable else { return false }
@@ -403,7 +404,7 @@ public actor PhotoKitEnhancementService: PhotoEnhancementService {
                     scoringModelVersion: config.scoringModelVersion,
                     thumbnailConfigVersion: config.thumbnailConfigVersion,
                     signals: signals
-                )
+                ),
             ])
         } catch {
             AppLog.storage.error(
@@ -436,7 +437,7 @@ public actor PhotoKitEnhancementService: PhotoEnhancementService {
                     signals: score.signals,
                     scoredAt: score.scoredAt,
                     isAlikeEnhanced: isEnhanced
-                )
+                ),
             ])
         } catch {
             AppLog.storage.error(
@@ -448,15 +449,15 @@ public actor PhotoKitEnhancementService: PhotoEnhancementService {
 
 // MARK: - PhotoKit wiring
 
-private extension PhotoKitEnhancementService {
-    static func defaultAuthorizationStatusProvider() -> PHAuthorizationStatus {
+extension PhotoKitEnhancementService {
+    fileprivate static func defaultAuthorizationStatusProvider() -> PHAuthorizationStatus {
         PHPhotoLibrary.authorizationStatus(for: .readWrite)
     }
 
     /// Resolves one asset into the closures the service works with. Requesting
     /// the content editing input is also how the existing adjustment data — and
     /// therefore "who edited this photo" — becomes known.
-    static func defaultRequestBuilder(
+    fileprivate static func defaultRequestBuilder(
         localIdentifier: String,
         purpose: PhotoEnhancementRequestPurpose
     ) async -> ResolvedPhotoEnhancementRequest? {
@@ -543,7 +544,8 @@ private extension PhotoKitEnhancementService {
             loadOriginal: {
                 let input = editingInput.value
                 guard let url = input.fullSizeImageURL,
-                      let image = CIImage(contentsOf: url) else {
+                      let image = CIImage(contentsOf: url)
+                else {
                     throw PhotoEnhancementError.originalUnavailable
                 }
                 // Returned unrotated on purpose. Photos stores the rendered
@@ -598,7 +600,7 @@ private extension PhotoKitEnhancementService {
     /// Applies the recipe to the still and to every video frame, then writes
     /// the pair into `output` — the only way to keep a Live Photo alive through
     /// an edit, and still revertible.
-    static func saveLivePhoto(
+    fileprivate static func saveLivePhoto(
         input: PHContentEditingInput,
         output: PHContentEditingOutput,
         recipe: AutoEnhancementRenderer.AppliedRecipe,
@@ -629,7 +631,7 @@ private extension PhotoKitEnhancementService {
         }
     }
 
-    static func requestContentEditingInput(
+    fileprivate static func requestContentEditingInput(
         for asset: PHAsset,
         options: PHContentEditingInputRequestOptions
     ) async -> (input: UncheckedSendableBox<PHContentEditingInput>?, isInCloud: Bool) {
@@ -643,7 +645,7 @@ private extension PhotoKitEnhancementService {
         }
     }
 
-    static func performChanges(_ changes: @escaping @Sendable () -> Void) async throws {
+    fileprivate static func performChanges(_ changes: @escaping @Sendable () -> Void) async throws {
         try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<Void, Error>) in
             PHPhotoLibrary.shared().performChanges(changes) { success, error in
                 if let error {

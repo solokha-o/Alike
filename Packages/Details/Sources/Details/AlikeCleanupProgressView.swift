@@ -1,6 +1,6 @@
-import SwiftUI
 import Core
 import DesignSystem
+import SwiftUI
 
 struct AlikeCleanupProgressPresentation: Equatable {
     let animationURL: URL?
@@ -116,7 +116,6 @@ struct AlikeCleanupProgressView: View {
         .frame(maxWidth: .infinity, alignment: .top)
         .accessibilityElement(children: .combine)
     }
-
 }
 
 struct AlikeCleanupProgressHero: View {

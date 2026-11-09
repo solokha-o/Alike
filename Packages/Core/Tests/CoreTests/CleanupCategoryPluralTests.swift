@@ -6,7 +6,7 @@ import Testing
 /// in Swift, which covered `one`/`other` only and produced wrong Ukrainian grammar for `few` and
 /// `many`. It now resolves through catalog plural variations, so these tests assert the category
 /// Foundation actually selects for a count — against a bundle compiled from the shipped catalog.
-@Suite struct CleanupCategoryPluralTests {
+struct CleanupCategoryPluralTests {
     @Test func testUkrainianCopySelectsThePluralFormForEachCount() throws {
         let bundle = try CompiledCatalogFixture.bundle(language: "uk")
         let uk = Locale(identifier: "uk")
@@ -177,7 +177,7 @@ import Testing
             "core.cleanupCategory.summaryBlurredPhotos",
             "core.cleanupCategory.selectionSummary",
             "core.cleanupCategory.alertTitleScreenshots",
-            "core.cleanupCategory.alertTitleBlurredPhotos"
+            "core.cleanupCategory.alertTitleBlurredPhotos",
         ] {
             #expect(
                 try catalog.pluralCategories(of: key, language: "en") == ["one", "other"],
@@ -208,7 +208,7 @@ import Testing
             "core.cleanupCategory.selectedScreenshotWillBeRemoved",
             "core.cleanupCategory.selectedScreenshotsWillBeRemoved",
             "core.cleanupCategory.selectedPhotoWillBeRemoved",
-            "core.cleanupCategory.selectedPhotosWillBeRemoved"
+            "core.cleanupCategory.selectedPhotosWillBeRemoved",
         ] {
             for (language, localization) in try catalog.localizations(of: key) {
                 let unit = try #require(

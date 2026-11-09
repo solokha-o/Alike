@@ -1,11 +1,11 @@
 import Core
-import SwiftUI
-import UIKit
 import Foundation
+import SwiftUI
 import Testing
+import UIKit
 @testable import Details
 
-@Suite struct ClusterReviewSummaryCardLayoutTests {
+struct ClusterReviewSummaryCardLayoutTests {
     @MainActor
     @Test func testReservedSelectionCountsCoverEverySummaryVariant() {
         #expect(ClusterReviewSummaryCard.reservedSelectionCounts(assetCount: 1) == [0])

@@ -74,7 +74,8 @@ struct ScannerHomeHero: View {
     @ViewBuilder
     private var actions: some View {
         if let action = presentation.primaryAction,
-           let title = presentation.primaryActionTitle {
+           let title = presentation.primaryActionTitle
+        {
             Button {
                 onAction(action)
             } label: {
@@ -87,7 +88,8 @@ struct ScannerHomeHero: View {
         }
 
         if let action = presentation.secondaryAction,
-           let title = presentation.secondaryActionTitle {
+           let title = presentation.secondaryActionTitle
+        {
             Button(title) { onAction(action) }
                 .buttonStyle(.bordered)
                 .controlSize(.large)
@@ -157,8 +159,8 @@ struct ScannerLibraryStatusCard: View {
         .alikeGlassSurface(cornerRadius: CornerRadius.large)
     }
 
-    private func metricLayout<Content: View>(
-        @ViewBuilder content: () -> Content
+    private func metricLayout(
+        @ViewBuilder content: () -> some View
     ) -> some View {
         let layout = dynamicTypeSize.isAccessibilitySize
             ? AnyLayout(VStackLayout(alignment: .leading, spacing: Spacing.small))

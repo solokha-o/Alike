@@ -1,7 +1,7 @@
-import SwiftUI
-import Photos
 import Core
 import DesignSystem
+import Photos
+import SwiftUI
 
 #if os(iOS)
 
@@ -13,7 +13,7 @@ struct FullscreenPhotoPagerView: View {
 
     init(assets: [PHAsset], selectedIndex: Int) {
         self.assets = assets
-        self._currentIndex = State(initialValue: selectedIndex)
+        _currentIndex = State(initialValue: selectedIndex)
     }
 
     var body: some View {

@@ -1,12 +1,12 @@
-import SwiftUI
 import DesignSystem
 import NavigationKit
+import SwiftUI
 
 public struct UserGuideTopicView: View {
     private let topic: GuideTopic
 
     public init(topicID: GuideTopicID) {
-        self.topic = GuideContent.topic(topicID)
+        topic = GuideContent.topic(topicID)
     }
 
     public var body: some View {

@@ -1,6 +1,6 @@
+import Core
 import Foundation
 @preconcurrency import Photos
-import Core
 
 /// PhotoKit-backed cleanup service that deletes selected assets from the photo library.
 public actor PhotoKitCleanupService: PhotoCleanupService {
@@ -78,8 +78,8 @@ public actor PhotoKitCleanupService: PhotoCleanupService {
     }
 }
 
-private extension PhotoKitCleanupService {
-    static func isAuthorized(_ status: PHAuthorizationStatus) -> Bool {
+extension PhotoKitCleanupService {
+    fileprivate static func isAuthorized(_ status: PHAuthorizationStatus) -> Bool {
         switch status {
         case .authorized, .limited:
             true
@@ -89,7 +89,7 @@ private extension PhotoKitCleanupService {
     }
 
     @MainActor
-    static func defaultAuthorizationStatusProvider() -> PHAuthorizationStatus {
+    fileprivate static func defaultAuthorizationStatusProvider() -> PHAuthorizationStatus {
         if #available(iOS 14, *) {
             PHPhotoLibrary.authorizationStatus(for: .readWrite)
         } else {
@@ -98,7 +98,7 @@ private extension PhotoKitCleanupService {
     }
 
     @MainActor
-    static func defaultCleanupRequestBuilder(
+    fileprivate static func defaultCleanupRequestBuilder(
         localIdentifiers: Set<String>
     ) -> ResolvedPhotoCleanupRequest {
         let identifiers = localIdentifiers.sorted()
@@ -119,13 +119,13 @@ private extension PhotoKitCleanupService {
     }
 
     @MainActor
-    static func fetchAssetsCount(for identifiers: [String]) -> Int {
+    fileprivate static func fetchAssetsCount(for identifiers: [String]) -> Int {
         let fetchResult = PHAsset.fetchAssets(withLocalIdentifiers: identifiers, options: nil)
         return fetchResult.count
     }
 
     @MainActor
-    static func fetchAssets(for identifiers: [String]) -> [PHAsset] {
+    fileprivate static func fetchAssets(for identifiers: [String]) -> [PHAsset] {
         let fetchResult = PHAsset.fetchAssets(withLocalIdentifiers: identifiers, options: nil)
         var assets: [PHAsset] = []
         fetchResult.enumerateObjects { asset, _, _ in
@@ -134,11 +134,11 @@ private extension PhotoKitCleanupService {
         return assets
     }
 
-    static func performDeletion(of assets: [PHAsset]) async throws {
+    fileprivate static func performDeletion(of assets: [PHAsset]) async throws {
         try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<Void, Error>) in
-            PHPhotoLibrary.shared().performChanges({
+            PHPhotoLibrary.shared().performChanges {
                 PHAssetChangeRequest.deleteAssets(assets as NSArray)
-            }, completionHandler: { success, error in
+            } completionHandler: { success, error in
                 if let error {
                     continuation.resume(throwing: error)
                 } else if success {
@@ -146,7 +146,7 @@ private extension PhotoKitCleanupService {
                 } else {
                     continuation.resume(throwing: PhotoCleanupError.deleteFailed)
                 }
-            })
+            }
         }
     }
 }

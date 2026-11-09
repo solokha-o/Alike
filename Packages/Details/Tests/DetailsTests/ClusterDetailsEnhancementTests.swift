@@ -1,12 +1,12 @@
 import Core
 import CoreGraphics
-import Photos
 import Foundation
+import Photos
 import Testing
 @testable import Details
 
 @MainActor
-@Suite struct ClusterDetailsEnhancementTests {
+struct ClusterDetailsEnhancementTests {
     private let clusterID = UUID(uuidString: "00000000-0000-0000-0000-000000000042")!
 
     // MARK: - Availability
@@ -256,7 +256,7 @@ import Testing
                 scoringModelVersion: config.scoringModelVersion,
                 thumbnailConfigVersion: config.thumbnailConfigVersion,
                 signals: PhotoQualitySignals(globalSharpness: 90, subjectLumaStdDev: 0.25, pixelArea: 1_000)
-            )
+            ),
         ])
         await loading.value
 
@@ -294,7 +294,7 @@ import Testing
                 scoringModelVersion: config.scoringModelVersion,
                 thumbnailConfigVersion: config.thumbnailConfigVersion,
                 signals: PhotoQualitySignals(globalSharpness: 90, subjectLumaStdDev: 0.25, pixelArea: 1_000)
-            )
+            ),
         ])
         await loading.value
         await viewModel.enhance(previewSize: CGSize(width: 100, height: 100), for: requestedID)
@@ -444,7 +444,7 @@ import Testing
                     pixelWidth: 100,
                     pixelHeight: 100,
                     creationDate: Date(timeIntervalSince1970: 10)
-                )
+                ),
             ],
             completionDelay: {},
             // A test has no photo library to re-read from; recording the ask is
@@ -524,10 +524,10 @@ private actor FakeEnhancementService: PhotoEnhancementService {
         revertDelay: Bool = false,
         previewDelay: Bool = false
     ) {
-        self.canEnhanceAsset = canEnhance
+        canEnhanceAsset = canEnhance
         self.isEditedElsewhere = isEditedElsewhere
         // Enhancement belongs to a photo, so the double tracks it per photo.
-        self.enhancedIdentifiers = isEnhanced ? ["best"] : []
+        enhancedIdentifiers = isEnhanced ? ["best"] : []
         self.applyDelay = applyDelay
         self.revertDelay = revertDelay
         self.previewDelay = previewDelay

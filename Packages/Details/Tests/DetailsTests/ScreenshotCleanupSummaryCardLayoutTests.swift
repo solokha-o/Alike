@@ -1,9 +1,9 @@
-import SwiftUI
 import Foundation
+import SwiftUI
 import Testing
 @testable import Details
 
-@Suite struct ScreenshotCleanupSummaryCardLayoutTests {
+struct ScreenshotCleanupSummaryCardLayoutTests {
     @MainActor
     @Test func testReservedSelectionCountsCoverZeroOneAndMaximumVariants() {
         #expect(ScreenshotCleanupSummaryCard.reservedSelectionCounts(assetCount: 0) == [0])

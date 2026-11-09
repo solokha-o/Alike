@@ -1,11 +1,11 @@
-import Foundation
-import Testing
 import Core
+import Foundation
 import Photos
+import Testing
 @testable import Details
 
 @MainActor
-@Suite struct ClusterDetailsViewModelHapticsTests: ClusterDetailsViewModelFixture {
+struct ClusterDetailsViewModelHapticsTests: ClusterDetailsViewModelFixture {
     let repository = MockClusterReviewStateRepository()
     let cleanupService = MockPhotoCleanupService()
     let cleanupHistoryRepository = MockCleanupHistoryRepository()
@@ -20,7 +20,7 @@ import Photos
         let viewModel = makeViewModel(
             snapshots: [
                 snapshot(id: "blurred-favorite", isFavorite: true, area: 4_000, createdAt: Date(timeIntervalSince1970: 20)),
-                snapshot(id: "sharp", isFavorite: false, area: 1_000, createdAt: Date(timeIntervalSince1970: 10))
+                snapshot(id: "sharp", isFavorite: false, area: 1_000, createdAt: Date(timeIntervalSince1970: 10)),
             ],
             qualityScores: [("blurred-favorite", 12), ("sharp", 60)]
         )
@@ -45,7 +45,7 @@ import Photos
         let viewModel = makeViewModel(
             snapshots: [
                 snapshot(id: "reviewed-pick", isFavorite: false, area: 1_000, createdAt: Date(timeIntervalSince1970: 10)),
-                snapshot(id: "sharper", isFavorite: false, area: 1_000, createdAt: Date(timeIntervalSince1970: 20))
+                snapshot(id: "sharper", isFavorite: false, area: 1_000, createdAt: Date(timeIntervalSince1970: 20)),
             ],
             qualityScores: [("reviewed-pick", 12), ("sharper", 70)]
         )
@@ -62,7 +62,7 @@ import Photos
         let viewModel = makeViewModel(
             snapshots: [
                 snapshot(id: "a", isFavorite: true, area: 1_000, createdAt: Date(timeIntervalSince1970: 10)),
-                snapshot(id: "b", isFavorite: false, area: 1_000, createdAt: Date(timeIntervalSince1970: 20))
+                snapshot(id: "b", isFavorite: false, area: 1_000, createdAt: Date(timeIntervalSince1970: 20)),
             ]
         )
         await viewModel.load()
@@ -81,7 +81,7 @@ import Photos
         let viewModel = makeViewModel(
             snapshots: [
                 snapshot(id: "best", isFavorite: true, area: 1_000, createdAt: Date(timeIntervalSince1970: 10)),
-                snapshot(id: "other", isFavorite: false, area: 1_000, createdAt: Date(timeIntervalSince1970: 20))
+                snapshot(id: "other", isFavorite: false, area: 1_000, createdAt: Date(timeIntervalSince1970: 20)),
             ]
         )
         await viewModel.load()
@@ -100,7 +100,7 @@ import Photos
         let viewModel = makeViewModel(
             snapshots: [
                 snapshot(id: "best", isFavorite: true, area: 1_000, createdAt: Date(timeIntervalSince1970: 10)),
-                snapshot(id: "other", isFavorite: false, area: 1_000, createdAt: Date(timeIntervalSince1970: 20))
+                snapshot(id: "other", isFavorite: false, area: 1_000, createdAt: Date(timeIntervalSince1970: 20)),
             ]
         )
         await viewModel.load()

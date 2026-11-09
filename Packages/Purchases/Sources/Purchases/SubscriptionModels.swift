@@ -36,7 +36,7 @@ public struct SubscriptionCatalog: Equatable, Sendable {
     public init(monthlyID: String, yearlyID: String) {
         precondition(!monthlyID.isEmpty && !yearlyID.isEmpty, "Subscription product IDs must not be empty.")
         precondition(monthlyID != yearlyID, "Subscription product IDs must be unique.")
-        self.productIDs = [.monthly: monthlyID, .yearly: yearlyID]
+        productIDs = [.monthly: monthlyID, .yearly: yearlyID]
     }
 
     private init(productIDs: [SubscriptionPlan: String]) {
@@ -75,14 +75,6 @@ public struct SubscriptionProduct: Equatable, Sendable, Identifiable {
     public let displayName: String
     public let displayPrice: String
     public let price: Decimal
-
-    init(id: String, plan: SubscriptionPlan, displayName: String, displayPrice: String, price: Decimal) {
-        self.id = id
-        self.plan = plan
-        self.displayName = displayName
-        self.displayPrice = displayPrice
-        self.price = price
-    }
 }
 
 public enum ProductLoadState: Equatable, Sendable {

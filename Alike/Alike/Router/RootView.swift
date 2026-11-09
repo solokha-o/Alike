@@ -5,28 +5,28 @@
 //  Created by Oleksand S on 27.01.2026.
 //
 
-import os
-import SwiftUI
-import Launch
-import Welcome
-import Scanner
-import Settings
-import Core
 import Cleanup
 import CleanupWorkspace
-import Storage
-import Photos
+import Core
+import Details
+import Diagnostics
+import Launch
+import os
 import PhotoAnalysis
+import Photos
 import Purchases
 import PurchasesUI
+import Scanner
+import Settings
+import Storage
+import SwiftUI
+import Welcome
 import WidgetSupport
-import Diagnostics
-import Details
 
 /// Root view that manages app navigation flow
 struct RootView: View {
     @State private var router = AppRouter(permissionManager: PhotoPermissionManagerImpl())
-    
+
     var body: some View {
         ZStack {
             switch router.currentRoute {
@@ -55,6 +55,7 @@ struct RootView: View {
 }
 
 // MARK: - Main Tab View
+
 struct MainTabView: View {
     @Environment(\.scenePhase) private var scenePhase
     private let tabs = TabManager.Tab.allCases
@@ -79,8 +80,12 @@ struct MainTabView: View {
     private var debugUnlockAdvancedFilters = false
     @AppStorage(PremiumFeature.batchCleanup.debugOverrideDefaultsKey)
     private var debugUnlockBatchCleanup = false
+    // Read by no code: this @AppStorage redraws the view when the debug toggle changes,
+    // so cleanupReminderTaskID picks up the override.
+    // swiftformat:disable unusedPrivateDeclarations
     @AppStorage(PremiumFeature.cleanupReminderCustomization.debugOverrideDefaultsKey)
     private var debugUnlockCleanupReminders = false
+    // swiftformat:enable unusedPrivateDeclarations
 #endif
     private let cleanupReminderManager: any CleanupReminderManaging = CleanupReminderManager(
         preferenceRepository: UserDefaultsCleanupReminderPreferenceRepository()
@@ -93,7 +98,7 @@ struct MainTabView: View {
     init(onDataDeleted: @escaping @MainActor @Sendable () -> Void) {
         self.onDataDeleted = onDataDeleted
     }
-    
+
     private var sensitivity: Binding<SensitivityLevel> {
         Binding(
             get: { SensitivityLevel(rawValue: sensitivityRaw) ?? .medium },
@@ -119,76 +124,76 @@ struct MainTabView: View {
             isPremiumUnlocked: hasCleanupReminderCustomizationAccess
         )
     }
-    
+
     var body: some View {
         // Reading the observable state keeps all injected feature views in sync
         // when StoreKit confirms, restores, or revokes an entitlement.
         let _ = subscriptionStore.entitlementState
 
         adaptiveTabView
-        .tint(.accent)
-        .subscriptionLegalLinks(SubscriptionConfiguration.legalLinks)
-        .task {
-            await subscriptionStore.start()
-        }
-        .task {
-            // Seed the rating prompt's install-age clock now, not on whatever cleanup
-            // happens to be the first eligible one — see
-            // `RatingPromptCoordinator.seedInstallAgeOnLaunch`.
-            await ratingPrompt.seedInstallAgeOnLaunch()
-        }
-        .task(id: scenePhase) {
-            guard scenePhase == .active else { return }
-            await subscriptionStore.refreshEntitlements()
-        }
-        .task(id: cleanupReminderTaskID) {
-            guard scenePhase == .active else { return }
-            await resyncCleanupReminder()
-        }
-        .onDisappear {
-            subscriptionStore.stop()
-        }
-        // One observer for four of the five publish points: a saved scan, a review
-        // that moved the session on, and a finished cleanup all show up in the
-        // workspace's observable state. Photo access does not — `PhotoPermissionManager`
-        // is not observable and the change happens in Settings, outside the app — so it
-        // is caught by `scenePhase` in the signature instead, on the return trip. The
-        // fifth point, deleting local data, is an explicit call in `onDeleteAllData`
-        // below, because by then there is no state left to observe.
-        .task(id: widgetSnapshotSignature) {
-            widgetSnapshotPublisher.publish(
-                workspace: cleanupWorkspace,
-                authorization: photoPermissionManager.authorizationStatus,
-                isPremium: subscriptionStore.entitlementState.isPremium
-            )
-        }
-        .onChange(of: pendingWidgetDestination.destination, initial: true) {
-            followPendingWidgetDestination()
-        }
-        .task {
-            await crashPrompt.observeStore()
-        }
-        .task(id: crashPromptSignature) {
-            // Let the launch settle first; the delay and the repeated `isBusy` reads
-            // follow the rating prompt in `CleanupView`.
-            guard !isCrashPromptBlocked else { return }
-            try? await Task.sleep(for: Self.crashPromptDelay)
-            guard !Task.isCancelled else { return }
-            await crashPrompt.evaluate(isBusy: { isCrashPromptBlocked })
-        }
-        .sheet(item: Bindable(crashPrompt).presented) { prompt in
-            CrashReportPromptSheet(prompt: prompt, coordinator: crashPrompt)
-        }
-        .alert(AlikeL10n.Rescan.title, isPresented: Bindable(tabManager).needsRescan) {
-            Button(AlikeL10n.Rescan.later, role: .cancel) {
-                tabManager.dismissRescan()
+            .tint(.accent)
+            .subscriptionLegalLinks(SubscriptionConfiguration.legalLinks)
+            .task {
+                await subscriptionStore.start()
             }
-            Button(AlikeL10n.Rescan.now) {
-                tabManager.triggerRescan()
+            .task {
+                // Seed the rating prompt's install-age clock now, not on whatever cleanup
+                // happens to be the first eligible one — see
+                // `RatingPromptCoordinator.seedInstallAgeOnLaunch`.
+                await ratingPrompt.seedInstallAgeOnLaunch()
             }
-        } message: {
-            Text(AlikeL10n.Rescan.message)
-        }
+            .task(id: scenePhase) {
+                guard scenePhase == .active else { return }
+                await subscriptionStore.refreshEntitlements()
+            }
+            .task(id: cleanupReminderTaskID) {
+                guard scenePhase == .active else { return }
+                await resyncCleanupReminder()
+            }
+            .onDisappear {
+                subscriptionStore.stop()
+            }
+            // One observer for four of the five publish points: a saved scan, a review
+            // that moved the session on, and a finished cleanup all show up in the
+            // workspace's observable state. Photo access does not — `PhotoPermissionManager`
+            // is not observable and the change happens in Settings, outside the app — so it
+            // is caught by `scenePhase` in the signature instead, on the return trip. The
+            // fifth point, deleting local data, is an explicit call in `onDeleteAllData`
+            // below, because by then there is no state left to observe.
+            .task(id: widgetSnapshotSignature) {
+                widgetSnapshotPublisher.publish(
+                    workspace: cleanupWorkspace,
+                    authorization: photoPermissionManager.authorizationStatus,
+                    isPremium: subscriptionStore.entitlementState.isPremium
+                )
+            }
+            .onChange(of: pendingWidgetDestination.destination, initial: true) {
+                followPendingWidgetDestination()
+            }
+            .task {
+                await crashPrompt.observeStore()
+            }
+            .task(id: crashPromptSignature) {
+                // Let the launch settle first; the delay and the repeated `isBusy` reads
+                // follow the rating prompt in `CleanupView`.
+                guard !isCrashPromptBlocked else { return }
+                try? await Task.sleep(for: Self.crashPromptDelay)
+                guard !Task.isCancelled else { return }
+                await crashPrompt.evaluate(isBusy: { isCrashPromptBlocked })
+            }
+            .sheet(item: Bindable(crashPrompt).presented) { prompt in
+                CrashReportPromptSheet(prompt: prompt, coordinator: crashPrompt)
+            }
+            .alert(AlikeL10n.Rescan.title, isPresented: Bindable(tabManager).needsRescan) {
+                Button(AlikeL10n.Rescan.later, role: .cancel) {
+                    tabManager.dismissRescan()
+                }
+                Button(AlikeL10n.Rescan.now) {
+                    tabManager.triggerRescan()
+                }
+            } message: {
+                Text(AlikeL10n.Rescan.message)
+            }
     }
 
     // MARK: - Crash report prompt
@@ -236,7 +241,7 @@ struct MainTabView: View {
             }
         }
     }
-    
+
     @ViewBuilder
     private func tabView(for tab: TabManager.Tab) -> some View {
         switch tab {

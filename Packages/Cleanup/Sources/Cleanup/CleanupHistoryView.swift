@@ -143,8 +143,8 @@ struct CleanupHistoryView: View {
             .listRowBackground(Color.clear)
     }
 
-    private func unavailableRow<Content: View>(
-        @ViewBuilder content: () -> Content
+    private func unavailableRow(
+        @ViewBuilder content: () -> some View
     ) -> some View {
         content()
             .frame(maxWidth: .infinity, minHeight: 360)
@@ -304,8 +304,8 @@ private func byteCount(_ bytes: Int64) -> String {
     String.alikeByteCount(bytes)
 }
 
-private extension CleanupInsights {
-    static let placeholder = CleanupInsights(
+extension CleanupInsights {
+    fileprivate static let placeholder = CleanupInsights(
         totalDeletedItems: 42,
         totalSavedBytes: 42_000_000,
         cleanupSessionCount: 4,
@@ -313,8 +313,8 @@ private extension CleanupInsights {
     )
 }
 
-private extension CleanupCompletionRecord {
-    static func placeholder(index: Int) -> CleanupCompletionRecord {
+extension CleanupCompletionRecord {
+    fileprivate static func placeholder(index: Int) -> CleanupCompletionRecord {
         CleanupCompletionRecord(
             id: UUID(uuidString: "00000000-0000-0000-0000-00000000000\(index)") ?? UUID(),
             sourceClusterID: UUID(),

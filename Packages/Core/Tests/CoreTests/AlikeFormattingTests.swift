@@ -9,7 +9,7 @@ import Testing
 /// values back to Western digits and the Gregorian calendar, and these tests hold both halves
 /// of that promise — that the pin actually changes what `ar_SA` renders, and that no user-facing
 /// call site formats a number or a date around it.
-@Suite struct AlikeFormattingTests {
+struct AlikeFormattingTests {
     private let arabic = Locale(identifier: "ar_SA")
 
     private var pinnedArabic: Locale { .alikeFormatting(basedOn: Locale(identifier: "ar_SA")) }
@@ -24,17 +24,17 @@ import Testing
 
     /// The paywall's scan-reset date (`PremiumPresentation`) and the cleanup history month
     /// header (`CleanupHistoryView`) both build their own field list and pin it.
-    @Test func testSpelledOutDatesUseLatinDigitsAndTheGregorianCalendar() {
+    @Test func testSpelledOutDatesUseLatinDigitsAndTheGregorianCalendar() throws {
         // 2026-03-04 12:00 UTC. Under Umm al-Qura this month is Ramadan 1447.
         let date = Date(timeIntervalSince1970: 1_772_625_600)
         var style = Date.FormatStyle(date: .abbreviated, time: .omitted)
             .locale(pinnedArabic)
         style.calendar = .alikeFormattingCalendar(basedOn: arabic)
-        style.timeZone = TimeZone(identifier: "UTC")!
+        style.timeZone = try #require(TimeZone(identifier: "UTC"))
 
         let rendered = date.formatted(style)
         #expect(rendered.contains("2026"), "expected a Gregorian year in \(rendered)")
-        #expect(!(containsArabicIndicDigits(rendered)), "Arabic-Indic digits in \(rendered)")
+        #expect(!containsArabicIndicDigits(rendered), "Arabic-Indic digits in \(rendered)")
     }
 
     /// The scanner progress readout (`ScannerHomeComponents`, label and accessibility value).
@@ -43,7 +43,7 @@ import Testing
             .percent.precision(.fractionLength(0)).locale(pinnedArabic)
         )
         #expect(rendered.contains("36"), "expected Latin 36 in \(rendered)")
-        #expect(!(containsArabicIndicDigits(rendered)), "Arabic-Indic digits in \(rendered)")
+        #expect(!containsArabicIndicDigits(rendered), "Arabic-Indic digits in \(rendered)")
     }
 
     /// Cluster badges (`CleanupView`), the grid column picker (`PhotoGridColumnPreference`)
@@ -60,7 +60,7 @@ import Testing
                 .locale(pinnedArabic)
         )
         #expect(rendered.contains("51"), "expected Latin 51 in \(rendered)")
-        #expect(!(containsArabicIndicDigits(rendered)), "Arabic-Indic digits in \(rendered)")
+        #expect(!containsArabicIndicDigits(rendered), "Arabic-Indic digits in \(rendered)")
         #expect(!(rendered.contains("٫")), "Arabic decimal separator in \(rendered)")
     }
 
@@ -91,7 +91,7 @@ import Testing
     /// asserting Western digits and a Gregorian calendar under `ar_SA`.
     static let pinDefiningFiles: Set<String> = [
         "Locale+AlikeFormatting.swift",
-        "WidgetFormatting.swift"
+        "WidgetFormatting.swift",
     ]
 
     @Test func testNoPackageSourceFormatsAValueOutsideThePinnedLocale() throws {
@@ -150,7 +150,7 @@ import Testing
             } else {
                 buffer += " " + trimmed
             }
-            depth += trimmed.filter { $0 == "(" }.count - trimmed.filter { $0 == ")" }.count
+            depth += trimmed.count(where: { $0 == "(" }) - trimmed.count(where: { $0 == ")" })
             if depth <= 0 {
                 statements.append((line: startLine, text: buffer))
                 buffer = ""
@@ -165,10 +165,10 @@ import Testing
 
     private func packageDirectories() throws -> [URL] {
         let packagesRoot = URL(fileURLWithPath: "\(#filePath)")
-            .deletingLastPathComponent()  // Tests/CoreTests
-            .deletingLastPathComponent()  // Tests
-            .deletingLastPathComponent()  // Core
-            .deletingLastPathComponent()  // Packages
+            .deletingLastPathComponent() // Tests/CoreTests
+            .deletingLastPathComponent() // Tests
+            .deletingLastPathComponent() // Core
+            .deletingLastPathComponent() // Packages
         return try FileManager.default.contentsOfDirectory(
             at: packagesRoot,
             includingPropertiesForKeys: [.isDirectoryKey]

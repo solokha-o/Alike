@@ -1,15 +1,15 @@
+import Core
 import Foundation
 import Testing
-import Core
 @testable import Cleanup
 
 /// The cleanup grid card previews `bestShotAsset(preferring:)`, so clustering
 /// order no longer decides which photo represents a cluster.
-@Suite struct PhotoClusterPreviewAssetTests {
+struct PhotoClusterPreviewAssetTests {
     @Test func testPrefersReviewedBestShotOverClusteringOrder() {
         let cluster = PhotoCluster(assets: [
             FakePhotoAsset(localIdentifier: "first"),
-            FakePhotoAsset(localIdentifier: "chosen")
+            FakePhotoAsset(localIdentifier: "chosen"),
         ])
 
         #expect(cluster.bestShotAsset(preferring: "chosen")?.localIdentifier == "chosen")
@@ -18,7 +18,7 @@ import Core
     @Test func testFallsBackToComputedBestShotWithoutReviewState() {
         let cluster = PhotoCluster(assets: [
             FakePhotoAsset(localIdentifier: "first"),
-            FakePhotoAsset(localIdentifier: "favorite", isFavorite: true)
+            FakePhotoAsset(localIdentifier: "favorite", isFavorite: true),
         ])
 
         #expect(cluster.bestShotAsset()?.localIdentifier == "favorite")
@@ -27,7 +27,7 @@ import Core
     @Test func testFallsBackToComputedBestShotWhenPreferredAssetIsMissing() {
         let cluster = PhotoCluster(assets: [
             FakePhotoAsset(localIdentifier: "first"),
-            FakePhotoAsset(localIdentifier: "favorite", isFavorite: true)
+            FakePhotoAsset(localIdentifier: "favorite", isFavorite: true),
         ])
 
         #expect(cluster.bestShotAsset(preferring: "deleted")?.localIdentifier == "favorite")

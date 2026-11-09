@@ -1,10 +1,10 @@
+import CoreLocation
 import Foundation
 import Testing
-import CoreLocation
 @testable import PhotoAnalysis
 
 @MainActor
-@Suite struct PhotoClusteringServiceTests {
+struct PhotoClusteringServiceTests {
     // MARK: - Clustering Algorithm Tests
 
     @Test func testClusterEmptyArray() throws {
@@ -19,7 +19,7 @@ import CoreLocation
     @Test func testClusterSinglePhoto() throws {
         let service = makeService()
         let candidates = [
-            makeCandidate(id: 1)
+            makeCandidate(id: 1),
         ]
 
         let clusters = try service.clusterCandidates(candidates, threshold: 0.9)
@@ -32,12 +32,12 @@ import CoreLocation
         let id2 = UUID.uuid(for: 2)
         let service = makeService(distances: [
             id1: [id2: 0.1],
-            id2: [id1: 0.1]
+            id2: [id1: 0.1],
         ])
 
         let candidates = [
             makeCandidate(id: 1),
-            makeCandidate(id: 2)
+            makeCandidate(id: 2),
         ]
 
         let clusters = try service.clusterCandidates(candidates, threshold: 0.2)
@@ -51,12 +51,12 @@ import CoreLocation
         let id2 = UUID.uuid(for: 2)
         let service = makeService(distances: [
             id1: [id2: 0.9],
-            id2: [id1: 0.9]
+            id2: [id1: 0.9],
         ])
 
         let candidates = [
             makeCandidate(id: 1),
-            makeCandidate(id: 2)
+            makeCandidate(id: 2),
         ]
 
         let clusters = try service.clusterCandidates(candidates, threshold: 0.5)
@@ -71,13 +71,13 @@ import CoreLocation
         let service = makeService(distances: [
             id1: [id2: 0.1, id3: 0.9],
             id2: [id1: 0.1, id3: 0.1],
-            id3: [id1: 0.9, id2: 0.1]
+            id3: [id1: 0.9, id2: 0.1],
         ])
 
         let candidates = [
             makeCandidate(id: 1),
             makeCandidate(id: 2),
-            makeCandidate(id: 3)
+            makeCandidate(id: 3),
         ]
 
         let clusters = try service.clusterCandidates(candidates, threshold: 0.2)
@@ -93,13 +93,13 @@ import CoreLocation
         let service = makeService(distances: [
             id1: [id2: 0.1, id3: 0.8],
             id2: [id1: 0.1, id3: 0.8],
-            id3: [id1: 0.8, id2: 0.8]
+            id3: [id1: 0.8, id2: 0.8],
         ])
 
         let candidates = [
             makeCandidate(id: 1),
             makeCandidate(id: 2),
-            makeCandidate(id: 3)
+            makeCandidate(id: 3),
         ]
 
         let strictClusters = try service.clusterCandidates(candidates, threshold: 0.2)
@@ -118,13 +118,13 @@ import CoreLocation
         let service = makeService(distances: [
             id1: [id2: 0.05, id3: 0.05],
             id2: [id1: 0.05, id3: 0.05],
-            id3: [id1: 0.05, id2: 0.05]
+            id3: [id1: 0.05, id2: 0.05],
         ])
 
         let candidates = [
             makeCandidate(id: 1),
             makeCandidate(id: 2),
-            makeCandidate(id: 3)
+            makeCandidate(id: 3),
         ]
 
         let clusters = try service.clusterCandidates(candidates, threshold: 0.1)
@@ -142,7 +142,7 @@ import CoreLocation
 
         let candidates = [
             makeCandidate(id: 1, creationDate: baseDate, location: nil),
-            makeCandidate(id: 2, creationDate: farDate, location: nil)
+            makeCandidate(id: 2, creationDate: farDate, location: nil),
         ]
 
         let clusters = try service.clusterCandidates(candidates, threshold: 0.1)
@@ -157,7 +157,7 @@ import CoreLocation
 
         let candidates = [
             makeCandidate(id: 1, creationDate: nil, location: location1),
-            makeCandidate(id: 2, creationDate: nil, location: location2)
+            makeCandidate(id: 2, creationDate: nil, location: location2),
         ]
 
         let clusters = try service.clusterCandidates(candidates, threshold: 0.1)
@@ -171,7 +171,7 @@ import CoreLocation
         let service = makeService(
             distances: [
                 id1: [id2: 0.05],
-                id2: [id1: 0.05]
+                id2: [id1: 0.05],
             ],
             enablePreFilter: false
         )
@@ -180,7 +180,7 @@ import CoreLocation
 
         let candidates = [
             makeCandidate(id: 1, creationDate: Date(), location: location1),
-            makeCandidate(id: 2, creationDate: Date().addingTimeInterval(60 * 60 * 30), location: location2)
+            makeCandidate(id: 2, creationDate: Date().addingTimeInterval(60 * 60 * 30), location: location2),
         ]
 
         let clusters = try service.clusterCandidates(candidates, threshold: 0.1)
@@ -191,7 +191,7 @@ import CoreLocation
     @Test func testMinimumClusterSize() throws {
         let service = makeService()
         let candidates = [
-            makeCandidate(id: 1)
+            makeCandidate(id: 1),
         ]
 
         let clusters = try service.clusterCandidates(candidates, threshold: 0.9)
@@ -226,8 +226,8 @@ import CoreLocation
     }
 }
 
-private extension UUID {
-    static func uuid(for value: Int) -> UUID {
+extension UUID {
+    fileprivate static func uuid(for value: Int) -> UUID {
         let clamped = max(0, min(value, 999_999_999_999))
         let uuidString = String(format: "00000000-0000-0000-0000-%012d", clamped)
         return UUID(uuidString: uuidString) ?? UUID()

@@ -1,13 +1,13 @@
-import Testing
-import Photos
-import Vision
-import os
 import Core
+import os
+import Photos
+import Testing
+import Vision
 @testable import PhotoAnalysis
 
 @MainActor
-@Suite struct PhotoAnalysisServiceImplTests {
-    @Test func testAnalyzePhotoLibraryNoPhotosThrows() async {
+struct PhotoAnalysisServiceImplTests {
+    @Test func testAnalyzePhotoLibraryNoPhotosThrows() async throws {
         let didCallAssetsProvider = ThreadSafeFlag()
         let service = PhotoAnalysisServiceImpl(
             visionService: MockVisionService(),
@@ -22,10 +22,7 @@ import Core
             _ = try await service.analyzePhotoLibrary(sensitivity: 0.9) { _ in }
             Issue.record("Expected noPhotosFound error")
         } catch {
-            guard let analysisError = error as? PhotoAnalysisError else {
-                Issue.record("Expected PhotoAnalysisError")
-                return
-            }
+            let analysisError = try #require(error as? PhotoAnalysisError, "Expected PhotoAnalysisError")
             if case .noPhotosFound = analysisError {
                 #expect(true)
             } else {
@@ -50,7 +47,7 @@ import Core
                 localIdentifiers: ["blur-1"],
                 assetCount: 1,
                 estimatedSavingsBytes: 200
-            )
+            ),
         ])
         let service = PhotoAnalysisServiceImpl(
             visionService: MockVisionService(),
@@ -72,7 +69,7 @@ import Core
                 localIdentifiers: ["stale"],
                 assetCount: 1,
                 estimatedSavingsBytes: 100
-            )
+            ),
         ])
         let service = PhotoAnalysisServiceImpl(
             visionService: MockVisionService(),
@@ -172,20 +169,20 @@ private final class ProgressRecorder: @unchecked Sendable {
 }
 
 private struct MockVisionService: VisionFeaturePrintServicing {
-    func generateFeaturePrint(for asset: PHAsset) async throws -> VNFeaturePrintObservation? {
+    func generateFeaturePrint(for _: PHAsset) async throws -> VNFeaturePrintObservation? {
         nil
     }
 
     func generateFeaturePrints(
-        for assets: [PHAsset],
-        progress: @Sendable @escaping (Double) -> Void
+        for _: [PHAsset],
+        progress _: @Sendable @escaping (Double) -> Void
     ) async throws -> [(asset: PHAsset, featurePrint: VNFeaturePrintObservation?)] {
         []
     }
 
     func computeDistance(
-        between observation1: VNFeaturePrintObservation,
-        and observation2: VNFeaturePrintObservation
+        between _: VNFeaturePrintObservation,
+        and _: VNFeaturePrintObservation
     ) throws -> Float {
         0
     }
@@ -193,8 +190,8 @@ private struct MockVisionService: VisionFeaturePrintServicing {
 
 private struct MockClusteringService: PhotoClusteringServicing {
     func clusterPhotos(
-        _ photos: [(asset: PHAsset, featurePrint: VNFeaturePrintObservation?)],
-        threshold: Float
+        _: [(asset: PHAsset, featurePrint: VNFeaturePrintObservation?)],
+        threshold _: Float
     ) throws -> [PhotoCluster] {
         []
     }

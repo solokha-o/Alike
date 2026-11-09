@@ -1,5 +1,5 @@
-import SwiftUI
 import Lottie
+import SwiftUI
 
 public enum OverlayAnimationPlayback: Sendable, Equatable {
     case once
@@ -117,7 +117,7 @@ public struct AnimatedImageOverlay<StaticContent: View>: View {
             animationURL: animationURL,
             reduceMotion: reduceMotion
         ), let animationURL,
-           let animation = LottieAnimation.filepath(animationURL.path) {
+        let animation = LottieAnimation.filepath(animationURL.path) {
             LottieView(animation: animation)
                 .playing(.fromProgress(0, toProgress: 1, loopMode: loopMode))
                 .configure { animationView in

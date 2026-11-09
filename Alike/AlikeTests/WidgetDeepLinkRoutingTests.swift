@@ -1,7 +1,7 @@
 import Cleanup
 import Foundation
-import WidgetSupport
 import Testing
+import WidgetSupport
 @testable import Alike
 
 /// Pins the full path from the URL a widget hands the app to the entry `CleanupView`
@@ -12,7 +12,7 @@ import Testing
 /// `MainTabSelectionTests` covers each `WidgetDestination` case; these start from the
 /// URL string itself, the value home-screen widgets already hold.
 @MainActor
-@Suite struct WidgetDeepLinkRoutingTests {
+struct WidgetDeepLinkRoutingTests {
     @Test func testSimilarLinkLandsOnCleanupWithSimilarPhotosEntry() throws {
         let manager = try follow("alike://similar")
 

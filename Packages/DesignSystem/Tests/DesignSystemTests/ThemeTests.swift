@@ -1,82 +1,80 @@
-import Testing
 import SwiftUI
+import Testing
 @testable import DesignSystem
 
-@Suite struct ThemeTests {
-    
+struct ThemeTests {
     // MARK: - Color Tests
-    
-    @Test func testAccentColorExists() {
-        // Given & When: Accent color
-        let accent = Color.accent
-        
-        // Then: Should exist in the design palette
-        #expect(accent != nil, "Accent color should exist")
+
+    private static let tolerance: Float = 0.01
+
+    private static func resolved(_ color: Color) -> Color.Resolved {
+        color.resolve(in: EnvironmentValues())
     }
-    
-    @Test func testSecondaryAccentColorExists() {
-        // Given & When: Secondary accent color
-        let secondaryAccent = Color.secondaryAccent
-        
-        // Then: Should exist
-        #expect(secondaryAccent != nil, "Secondary accent color should exist")
+
+    private static func expectComponents(
+        _ color: Color,
+        red: Float,
+        green: Float,
+        blue: Float,
+        sourceLocation: SourceLocation = #_sourceLocation
+    ) {
+        let value = resolved(color)
+        #expect(abs(value.red - red) <= tolerance, sourceLocation: sourceLocation)
+        #expect(abs(value.green - green) <= tolerance, sourceLocation: sourceLocation)
+        #expect(abs(value.blue - blue) <= tolerance, sourceLocation: sourceLocation)
+        #expect(value.opacity == 1, sourceLocation: sourceLocation)
     }
-    
-    @Test func testCardBackgroundColorExists() {
-        // Given & When: Card background color
-        let cardBackground = Color.cardBackground
-        
-        // Then: Should exist
-        #expect(cardBackground != nil, "Card background should exist")
+
+    @Test func testAccentColorValue() {
+        Self.expectComponents(.accent, red: 0.12, green: 0.62, blue: 0.72)
     }
-    
-    @Test func testSecondaryBackgroundColorExists() {
-        // Given & When: Secondary background color
-        let secondaryBackground = Color.secondaryBackground
-        
-        // Then: Should exist
-        #expect(secondaryBackground != nil, "Secondary background should exist")
+
+    @Test func testSecondaryAccentColorValue() {
+        Self.expectComponents(.secondaryAccent, red: 0.18, green: 0.76, blue: 0.86)
     }
-    
+
+    @Test func testAccentColorsAreDistinct() {
+        #expect(Self.resolved(.accent) != Self.resolved(.secondaryAccent))
+    }
+
+    @Test func testBackgroundColorsAreOpaqueAndDistinct() {
+        let card = Self.resolved(.cardBackground)
+        let secondary = Self.resolved(.secondaryBackground)
+
+        #expect(card.opacity == 1)
+        #expect(secondary.opacity == 1)
+        #expect(card != secondary, "Cards must stand out from the secondary background")
+    }
+
     // MARK: - Typography Tests
-    
-    @Test func testAppLargeTitleFontExists() {
-        // Given & When: Large title font
-        let font = Font.appLargeTitle
-        
-        // Then: Should exist
-        #expect(font != nil, "App large title font should exist")
+
+    @Test func testAppLargeTitleFontValue() {
+        #expect(Font.appLargeTitle == .system(size: 34, weight: .bold, design: .rounded))
     }
-    
-    @Test func testAppTitleFontExists() {
-        // Given & When: Title font
-        let font = Font.appTitle
-        
-        // Then: Should exist
-        #expect(font != nil, "App title font should exist")
+
+    @Test func testAppTitleFontValue() {
+        #expect(Font.appTitle == .system(size: 28, weight: .bold, design: .rounded))
     }
-    
-    @Test func testAllTypographyStylesExist() {
-        // Given & When: All typography styles
-        let fonts = [
-            Font.appLargeTitle,
-            Font.appTitle,
-            Font.appTitle2,
-            Font.appTitle3,
-            Font.appHeadline,
-            Font.appBody,
-            Font.appCallout,
-            Font.appSubheadline,
-            Font.appFootnote,
-            Font.appCaption
+
+    @Test func testAllTypographyStylesAreDistinct() {
+        let fonts: [Font] = [
+            .appLargeTitle,
+            .appTitle,
+            .appTitle2,
+            .appTitle3,
+            .appHeadline,
+            .appBody,
+            .appCallout,
+            .appSubheadline,
+            .appFootnote,
+            .appCaption,
         ]
-        
-        // Then: All should exist
-        #expect(fonts.count == 10, "Should have 10 typography styles")
+
+        #expect(Set(fonts).count == fonts.count, "Every typography style must be unique")
     }
-    
+
     // MARK: - Spacing Tests
-    
+
     @Test func testSpacingValues() {
         // Given & When: Spacing values
         let xxxSmall = Spacing.xxxSmall
@@ -88,7 +86,7 @@ import SwiftUI
         let xLarge = Spacing.xLarge
         let xxLarge = Spacing.xxLarge
         let xxxLarge = Spacing.xxxLarge
-        
+
         // Then: Should have correct values
         #expect(xxxSmall == 2)
         #expect(xxSmall == 4)
@@ -100,7 +98,7 @@ import SwiftUI
         #expect(xxLarge == 48)
         #expect(xxxLarge == 64)
     }
-    
+
     @Test func testSpacingIsProgressive() {
         // Given: All spacing values
         let spacings = [
@@ -112,60 +110,60 @@ import SwiftUI
             Spacing.large,
             Spacing.xLarge,
             Spacing.xxLarge,
-            Spacing.xxxLarge
+            Spacing.xxxLarge,
         ]
-        
+
         // Then: Should be in ascending order
         for i in 0..<(spacings.count - 1) {
             #expect(spacings[i] < spacings[i + 1], "Spacing should be progressive")
         }
     }
-    
+
     // MARK: - Corner Radius Tests
-    
+
     @Test func testCornerRadiusValues() {
         // Given & When: Corner radius values
         let small = CornerRadius.small
         let medium = CornerRadius.medium
         let large = CornerRadius.large
         let xLarge = CornerRadius.xLarge
-        
+
         // Then: Should have correct values
         #expect(small == 8)
         #expect(medium == 12)
         #expect(large == 16)
         #expect(xLarge == 24)
     }
-    
+
     @Test func testCornerRadiusIsProgressive() {
         // Given: All corner radius values
         let radii = [
             CornerRadius.small,
             CornerRadius.medium,
             CornerRadius.large,
-            CornerRadius.xLarge
+            CornerRadius.xLarge,
         ]
-        
+
         // Then: Should be in ascending order
         for i in 0..<(radii.count - 1) {
             #expect(radii[i] < radii[i + 1], "Corner radius should be progressive")
         }
     }
-    
+
     // MARK: - Consistency Tests
-    
+
     @Test func testSpacingConsistencyWithDesign() {
         // Given: Medium spacing
         let medium = Spacing.medium
-        
+
         // Then: Should be 16 (standard iOS spacing)
         #expect(medium == 16, "Medium spacing should align with iOS standards")
     }
-    
+
     @Test func testCornerRadiusConsistencyWithDesign() {
         // Given: Medium corner radius
         let medium = CornerRadius.medium
-        
+
         // Then: Should be 12 (standard iOS corner radius)
         #expect(medium == 12, "Medium corner radius should align with iOS standards")
     }

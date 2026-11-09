@@ -1,0 +1,120 @@
+# Commits that `git blame` skips.
+#
+# Each entry is the full hash of a format-only commit: a SwiftFormat or
+# SwiftLint configuration change and the reformatted code, with no behaviour
+# change. Add an entry in a separate commit after the format commit, with a
+# comment that names the rule. The process is in
+# Docs/adr/0003-format-change-process.md.
+#
+# Enable it locally once:
+#   git config blame.ignoreRevsFile .git-blame-ignore-revs
+#
+# GitHub reads this file automatically.
+
+# CORE rules (ADR-0001): 16 CORE SwiftFormat rules applied, format only.
+ee0451e7e5eccaab610396100be1f695f8e5a372
+
+# LATER rule 1 (ADR-0001): noForceTryInTests, format only.
+c92ba716970998a8c9446976f8a9e6128ecd8e02
+
+# LATER rule 2 (ADR-0001): acronyms, format only.
+86d4786ee502dfec7ca4efced2e2f3042a009209
+
+# LATER rule 3 (ADR-0001): noGuardInTests, format only.
+071c574970d68ff4cd190297569010589cd37068
+
+# LATER rule 4 (ADR-0001): redundantAsync, format only.
+0b60cf5435f882f34ce3decc147c5a587a00adfa
+
+# LATER rule 5 (ADR-0001): wrapEnumCases, format only.
+007b13acf6ac490eebe4b6fc6d803432dd5ec13a
+
+# LATER rule 6 (ADR-0001): preferSwiftStringAPI, format only.
+e227c7519da17c4ac58de42a1724fdd5a74df560
+
+# LATER rule 7 (ADR-0001): unusedPrivateDeclarations, lint only, format only.
+0c8fe4925b60eaf4eb4b80eb296615765e4549bf
+
+# LATER rule 8 (ADR-0001): opaqueGenericParameters, format only.
+f181d44c602777704b690523cb26674169b96058
+
+# LATER rule 9 (ADR-0001): preferCountWhere, format only.
+b4f2a262309443c7e7df79415d9d22ae5d458aed
+
+# LATER rule 11 (ADR-0001): docComments, format only.
+5c124e9e890e7436bd16ef3b0943193d0fdfc9c7
+
+# LATER rule 12 (ADR-0001): wrapMultilineConditionalAssignment, format only.
+3e095b4d09d0a7265d2b0ef161257a7344838705
+
+# LATER rule 10 (ADR-0001): environmentEntry, format only.
+f19b35ebdba7bad4b00dda02dc8386dada5ff754
+
+# LATER rule 13 (ADR-0001): redundantThrows (tests-only), format only.
+edfeb3dd6eab37ff55ef342fca4fd168eaa88866
+
+# LATER rule 14 (ADR-0001): consistentSwitchCaseSpacing, config only (no code change).
+4b4f3b25148e3a49b1d2a6582f015bd8d7e57273
+
+# LATER rule 16 (ADR-0001): conditionalAssignment, format only.
+462754e7f5d5bca129f6239748ff5fe24a8e4f1a
+
+# LATER rule 17 (ADR-0001): blankLinesAroundMark, format only.
+f0bda420d70d298bf48b4af2bfb6261ad8193032
+
+# LATER rule 18 (ADR-0001): noForceUnwrapInTests, format only.
+a8c28d9e9d80cb10bcacbc248fe2efd95f88eadd
+
+# LATER rule 19 (ADR-0001): elseOnSameLine, config only (no code change).
+c51486d93a8143c704f5719e4093f0cb1bfd3dfd
+
+# LATER rule 21 (ADR-0001): consecutiveSpaces, format only.
+7ca7c667e121f316a9c0eb844a211016e10135ef
+
+# LATER rule 22 (ADR-0001): unusedArguments, format only.
+f78cc4928ad36793bd1eebaae6df80afe823cf31
+
+# LATER rule 23 (ADR-0001): redundantReturn, format only.
+106ca244949da2b60084f38794b73c79179dd51d
+
+# LATER rule 24 (ADR-0001): wrapMultilineStatementBraces, format only.
+036682252a5033b045cc38ce4caf0c8c825b922a
+
+# LATER rule 25 (ADR-0001): hoistPatternLet, format only.
+abdc8566b869dd59a8de65d6a421ccfe4e069f27
+
+# LATER rule 26 (ADR-0001): spaceAroundOperators (--ranges preserve), config only (no code change).
+3241e3704e336225ae1434e77f95ebbdfdd6b4d1
+
+# LATER rule 27 (ADR-0001): redundantSwiftTestingSuite, format only.
+f4b7a529cc5062c66e2d6bea7247e2de941f4282
+
+# LATER rule 20 (ADR-0001): extensionAccessControl (--extension-acl on-declarations), format only.
+f9c8a208934d104bcb106f85ef498d5791b3ffef
+
+# LATER rule 28 (ADR-0001): redundantSelf (--self remove), format only.
+2cc5480c2449bd64ecbc9a2434f0c2a7b67b831d
+
+# LATER rule 29 (ADR-0001): blankLinesAtStartOfScope, format only.
+6120fb38c57d1ea1d64a824ea3461fff03ebc52f
+
+# LATER rule 31 (ADR-0001): blankLinesAtEndOfScope, format only.
+a4141ad52c1fbd0df098bc174e298dcc1df5167e
+
+# LATER rule 30 (ADR-0001): numberFormatting, format only.
+80f317c9e76ec17ef88c29393d308fd3b2eb4d74
+
+# LATER rule 32 (ADR-0001): trailingCommas, format only.
+cae7cdbdec6e88734b55abdf71c8d401f1307f1e
+
+# LATER rule 33 (ADR-0001): trailingSpace, format only.
+5f65aa9d64c5849a73c7b157fa4aad4648b07b50
+
+# LATER rule 34 (ADR-0001): sortImports, format only.
+94808184cc06188588e7a090f5f35ac29b5a6324
+
+# LATER rule 35 (ADR-0001): blankLinesBetweenScopes, format only.
+ce6fdee2f4bb0ad34f357d51bd0d889855de436a
+
+# LATER rule 36 (ADR-0001): indent, format only.
+bd1b706a040eac6f5231ba4f7e753f227b621faa

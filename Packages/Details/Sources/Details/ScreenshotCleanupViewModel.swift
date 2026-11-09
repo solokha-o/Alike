@@ -1,9 +1,9 @@
-import Foundation
-import Photos
-import SwiftUI
 import Core
 import DesignSystem
+import Foundation
+import Photos
 import Storage
+import SwiftUI
 
 @MainActor
 @Observable
@@ -43,8 +43,8 @@ final class ScreenshotCleanupViewModel {
         self.completionDelay = completionDelay
         self.assetSnapshots = assetSnapshots ?? assets.map(ReviewAssetSnapshot.init)
         self.sourceCategory = sourceCategory
-        self.selectedAssetIDs = []
-        self.estimatedSavingsBytes = 0
+        selectedAssetIDs = []
+        estimatedSavingsBytes = 0
     }
 
     var assetCount: Int {
@@ -115,8 +115,8 @@ final class ScreenshotCleanupViewModel {
     func continueWithSingleFreeSelection() {
         guard
             let retainedID = assetSnapshots
-                .map(\.localIdentifier)
-                .first(where: selectedAssetIDs.contains)
+            .map(\.localIdentifier)
+            .first(where: selectedAssetIDs.contains)
         else { return }
 
         withAnimation(.appInteractive) {
@@ -198,8 +198,8 @@ final class ScreenshotCleanupViewModel {
     }
 }
 
-private extension ScreenshotCleanupViewModel {
-    func refreshDerivedState() {
+extension ScreenshotCleanupViewModel {
+    private func refreshDerivedState() {
         estimatedSavingsBytes = assetSnapshots
             .filter { selectedAssetIDs.contains($0.localIdentifier) }
             .reduce(into: Int64(0)) { partialResult, snapshot in
@@ -207,7 +207,7 @@ private extension ScreenshotCleanupViewModel {
             }
     }
 
-    func handleDeleteError(_ error: PhotoCleanupError) {
+    private func handleDeleteError(_ error: PhotoCleanupError) {
         switch error {
         case .nothingSelected:
             applyDeleteFailure(
@@ -232,7 +232,7 @@ private extension ScreenshotCleanupViewModel {
         }
     }
 
-    func applyDeleteFailure(message: String, offersOpenSettings: Bool) {
+    private func applyDeleteFailure(message: String, offersOpenSettings: Bool) {
         deleteErrorMessage = message
         shouldOfferOpenSettings = offersOpenSettings
         pendingCompletionRecord = nil

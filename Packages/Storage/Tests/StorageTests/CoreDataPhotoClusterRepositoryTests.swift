@@ -1,137 +1,137 @@
-import Foundation
-import Testing
-import CoreData
-import Photos
 import Core
+import CoreData
+import Foundation
+import Photos
+import Testing
 @testable import Storage
 
 @MainActor
-@Suite struct CoreDataPhotoClusterRepositoryTests {
+struct CoreDataPhotoClusterRepositoryTests {
     let repository: CoreDataPhotoClusterRepository
     let inMemoryController: PersistenceController
-    
+
     init() {
         // Create in-memory store for testing
         inMemoryController = PersistenceController.preview()
         repository = CoreDataPhotoClusterRepository(persistence: inMemoryController)
     }
-    
+
     // MARK: - Save and Load Tests
-    
+
     @Test(.enabled(if: photoLibraryHasImages(atLeast: 5), "Test requires at least 5 photos in the library"))
     func testSaveAndLoadClusters() async throws {
         // Given: Sample clusters
         let cluster1 = try createMockPhotoCluster(photoCount: 3)
         let cluster2 = try createMockPhotoCluster(photoCount: 5)
         let clusters = [cluster1, cluster2]
-        
+
         // When: Saving clusters
         try await repository.saveClusters(clusters)
-        
+
         // Then: Loading should return same clusters
         let loadedClusters = try await repository.loadClusters()
-        
+
         #expect(loadedClusters.count == 2, "Should load 2 clusters")
         #expect(loadedClusters[0].assets.count == 3, "First cluster should have 3 photos")
         #expect(loadedClusters[1].assets.count == 5, "Second cluster should have 5 photos")
     }
-    
+
     @Test(.enabled(if: photoLibraryHasImages(atLeast: 4), "Test requires at least 4 photos in the library"))
     func testSaveOverwritesExistingClusters() async throws {
         // Given: Initial clusters
         let initialCluster = try createMockPhotoCluster(photoCount: 2)
         try await repository.saveClusters([initialCluster])
-        
+
         // When: Saving new clusters (should overwrite)
         let newCluster = try createMockPhotoCluster(photoCount: 4)
         try await repository.saveClusters([newCluster])
-        
+
         // Then: Should only have new cluster
         let loadedClusters = try await repository.loadClusters()
-        
+
         #expect(loadedClusters.count == 1, "Should only have new cluster")
         #expect(loadedClusters.first?.assets.count == 4, "Should have 4 photos")
     }
-    
+
     @Test func testLoadEmptyClusters() async throws {
         // Given: Empty database
-        
+
         // When: Loading clusters
         let clusters = try await repository.loadClusters()
-        
+
         // Then: Should return empty array
         #expect(clusters.isEmpty, "Should return empty array when no clusters saved")
     }
-    
+
     // MARK: - Delete Tests
-    
+
     @Test(.enabled(if: photoLibraryHasImages(atLeast: 3), "Test requires at least 3 photos in the library"))
     func testDeleteAllClusters() async throws {
         // Given: Saved clusters
         let cluster = try createMockPhotoCluster(photoCount: 3)
         try await repository.saveClusters([cluster])
-        
+
         // Verify clusters exist
         var loadedClusters = try await repository.loadClusters()
         #expect(loadedClusters.count == 1)
-        
+
         // When: Deleting all clusters
         try await repository.deleteAllClusters()
-        
+
         // Then: Should have no clusters
         loadedClusters = try await repository.loadClusters()
         #expect(loadedClusters.isEmpty, "All clusters should be deleted")
     }
-    
+
     // MARK: - Scan Metadata Tests
-    
+
     @Test func testUpdateAndGetLastScanDate() async throws {
         // Given: A scan date
         let scanDate = Date()
-        
+
         // When: Updating last scan date
         try await repository.updateLastScanDate(scanDate)
-        
+
         // Then: Should retrieve same date
         let retrievedDate = await repository.getLastScanDate()
-        
+
         #expect(retrievedDate != nil, "Scan date should not be nil")
         let eps = 1.0
         #expect(
-            abs(scanDate.timeIntervalSince1970 - (retrievedDate!.timeIntervalSince1970)) <= eps,
+            abs(scanDate.timeIntervalSince1970 - (try #require(retrievedDate?.timeIntervalSince1970))) <= eps,
             "Retrieved date should match saved date"
         )
     }
-    
-    @Test func testGetLastScanDateWhenNoneExists() async throws {
+
+    @Test func testGetLastScanDateWhenNoneExists() async {
         // Given: No scan metadata
-        
+
         // When: Getting last scan date
         let scanDate = await repository.getLastScanDate()
-        
+
         // Then: Should return nil
         #expect(scanDate == nil, "Should return nil when no scan has been performed")
     }
-    
+
     @Test func testUpdateLastScanDateMultipleTimes() async throws {
         // Given: First scan date
         let firstDate = Date()
         try await repository.updateLastScanDate(firstDate)
-        
+
         // When: Updating with new date
-        let secondDate = Date().addingTimeInterval(3600) // 1 hour later
+        let secondDate = Date().addingTimeInterval(3_600) // 1 hour later
         try await repository.updateLastScanDate(secondDate)
-        
+
         // Then: Should return latest date
         let retrievedDate = await repository.getLastScanDate()
-        
+
         let eps = 1.0
         #expect(
-            abs(secondDate.timeIntervalSince1970 - (retrievedDate!.timeIntervalSince1970)) <= eps,
+            abs(secondDate.timeIntervalSince1970 - (try #require(retrievedDate?.timeIntervalSince1970))) <= eps,
             "Should return most recent scan date"
         )
     }
-    
+
     @Test func testUpdateScanMetadataCollapsesDuplicateRows() async throws {
         // Given: Two metadata rows, as an interrupted write could leave behind
         let context = inMemoryController.viewContext
@@ -186,7 +186,7 @@ import Core
 
     // MARK: - Gallery Change Detection Tests
 
-    @Test func testHasGalleryChangedWhenNoScanExists() async throws {
+    @Test func testHasGalleryChangedWhenNoScanExists() async {
         // Given: No previous scan
 
         // When: Checking for changes
@@ -202,7 +202,7 @@ import Core
         let detector = FakeChangeDetector(
             token: Data([0xAA]),
             imageAssetCount: 120,
-            summary: .none
+            summary: PhotoLibraryChangeSummary.none
         )
         let repository = CoreDataPhotoClusterRepository(
             persistence: inMemoryController,
@@ -286,7 +286,7 @@ import Core
         let detector = FakeChangeDetector(
             token: Data([0xBB]),
             imageAssetCount: 30,
-            summary: .none
+            summary: PhotoLibraryChangeSummary.none
         )
         let repository = CoreDataPhotoClusterRepository(
             persistence: inMemoryController,
@@ -315,7 +315,7 @@ import Core
     }
 
     // MARK: - Cluster Property Tests
-    
+
     @Test(.enabled(if: photoLibraryHasImages(atLeast: 3), "Test requires at least 3 photos in the library"))
     func testClusterAverageSimilarity() async throws {
         // Given: Cluster with specific average similarity
@@ -323,11 +323,11 @@ import Core
             photoCount: 3,
             averageSimilarity: 0.92
         )
-        
+
         // When: Saving and loading
         try await repository.saveClusters([cluster])
         let loadedClusters = try await repository.loadClusters()
-        
+
         // Then: Average similarity should be preserved
         let eps: Float = 0.01
         #expect(
@@ -335,7 +335,7 @@ import Core
             "Average similarity should be preserved"
         )
     }
-    
+
     @Test(.enabled(if: photoLibraryHasImages(atLeast: 2), "Test requires at least 2 photos in the library"))
     func testClusterCreatedDate() async throws {
         // Given: Cluster with specific creation date
@@ -344,11 +344,11 @@ import Core
             photoCount: 2,
             createdAt: createdDate
         )
-        
+
         // When: Saving and loading
         try await repository.saveClusters([cluster])
         let loadedClusters = try await repository.loadClusters()
-        
+
         // Then: Creation date should be preserved
         let eps = 1.0
         #expect(
@@ -356,9 +356,9 @@ import Core
             "Creation date should be preserved"
         )
     }
-    
+
     // MARK: - Helper Methods
-    
+
     private func createMockPhotoCluster(
         photoCount: Int,
         averageSimilarity: Float = 0.95,
@@ -368,7 +368,7 @@ import Core
         let fetchOptions = PHFetchOptions()
         fetchOptions.fetchLimit = photoCount
         let fetchResult = PHAsset.fetchAssets(with: .image, options: fetchOptions)
-        
+
         var assets: [PHAsset] = []
         fetchResult.enumerateObjects { asset, _, _ in
             assets.append(asset)
@@ -377,7 +377,7 @@ import Core
             assets.count == photoCount,
             "Test requires at least \(photoCount) photos in the library; found \(assets.count)."
         )
-        
+
         return PhotoCluster(
             assets: assets,
             createdAt: createdAt,
@@ -402,7 +402,7 @@ private final class FakeChangeDetector: PhotoLibraryChangeDetecting, @unchecked 
 
     init(token: Data?, imageAssetCount: Int, summary: PhotoLibraryChangeSummary?) {
         self.token = token
-        self.currentImageAssetCount = imageAssetCount
+        currentImageAssetCount = imageAssetCount
         self.summary = summary
     }
 
@@ -410,14 +410,14 @@ private final class FakeChangeDetector: PhotoLibraryChangeDetecting, @unchecked 
 
     func imageAssetCount() -> Int { currentImageAssetCount }
 
-    func changes(since token: Data) -> PhotoLibraryChangeSummary? { summary }
+    func changes(since _: Data) -> PhotoLibraryChangeSummary? { summary }
 }
 
 /// `loadClusters()` resolves every stored identifier in batches off the main
 /// thread and then regroups the assets. These cases pin that without a photo
 /// library: `String` stands in for `PHAsset`.
 @MainActor
-@Suite struct ClusterAssemblyTests {
+struct ClusterAssemblyTests {
     private typealias Repository = CoreDataPhotoClusterRepository
 
     private func clusterData(
@@ -545,7 +545,7 @@ private final class FakeChangeDetector: PhotoLibraryChangeDetecting, @unchecked 
         let repository = CoreDataPhotoClusterRepository(persistence: .preview())
         try await repository.saveClusterData([
             clusterData(["a"], createdAt: Date(timeIntervalSince1970: 200)),
-            clusterData(["b"], createdAt: Date(timeIntervalSince1970: 100))
+            clusterData(["b"], createdAt: Date(timeIntervalSince1970: 100)),
         ])
         let recorder = FetchRecorder()
         let handle = TaskHandle()
@@ -598,13 +598,26 @@ private final class FakeChangeDetector: PhotoLibraryChangeDetecting, @unchecked 
 }
 
 /// Lets a fetch closure cancel the outer task, which reaches the detached
-/// work only through `withTaskCancellationHandler`.
+/// work only through `withTaskCancellationHandler`. `cancel()` waits until
+/// `set(_:)` has stored the task, so a fetch that runs first cannot miss it.
 private final class TaskHandle: @unchecked Sendable {
-    private let lock = NSLock()
+    private let condition = NSCondition()
     private var task: Task<[[String]], any Error>?
 
-    func set(_ task: Task<[[String]], any Error>) { lock.withLock { self.task = task } }
-    func cancel() { lock.withLock { task }?.cancel() }
+    func set(_ task: Task<[[String]], any Error>) {
+        condition.withLock {
+            self.task = task
+            condition.broadcast()
+        }
+    }
+
+    func cancel() {
+        let task = condition.withLock {
+            while self.task == nil { condition.wait() }
+            return self.task
+        }
+        task?.cancel()
+    }
 }
 
 private final class FetchRecorder: @unchecked Sendable {

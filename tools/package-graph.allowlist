@@ -1,0 +1,18 @@
+# Exceptions for tools/check-package-graph.
+#
+# Decision record: Docs/adr/0004-package-dependencies.md
+#
+# Format, one entry for each line, with the reason in a `#` comment:
+#   sdk <Package> <URL>      # a remote dependency that an ADR names for the package
+#   edge <From> <To>         # a local edge outside the matrix that an ADR accepts
+#   import <File> <Module>   # recorded debt: one file imports a local module that
+#                            # its Package.swift does not declare
+# <File> is relative to the repository root.
+#
+# A new `sdk` or `edge` line needs a new ADR. An `import` line records debt: it
+# needs a linked task card, and the list must only shrink. Do not add one for new
+# code; declare the dependency instead.
+# The check fails on a line without a reason, on a duplicate line, and on a line
+# that no current dependency uses.
+
+sdk DesignSystem https://github.com/airbnb/lottie-spm.git  # ADR-0004 SDK rule: only DesignSystem plays Lottie animations.

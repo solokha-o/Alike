@@ -2,7 +2,7 @@ import Foundation
 import Testing
 @testable import Core
 
-@Suite struct RatingPromptPolicyTests {
+struct RatingPromptPolicyTests {
     private let policy = RatingPromptPolicy()
     private let appVersion = "1.4.0"
     private let now = Date(timeIntervalSince1970: 1_800_000_000)

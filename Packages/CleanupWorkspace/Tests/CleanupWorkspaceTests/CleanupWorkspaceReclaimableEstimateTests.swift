@@ -1,14 +1,14 @@
 import CleanupWorkspace
 import Core
-import Photos
 import Foundation
+import Photos
 import Testing
 
 /// `ScanSummary.estimatedSavingsBytes`, the cold-launch estimate and the
 /// content's own estimate are one figure, computed once: every asset counted
 /// once across clusters and categories, and the keeper never counted.
-// `AssetByteSize.generation` is one process-wide counter in production code, so a test cannot own one.
-// A test here advances it, and another test asserts that nothing was measured during its scan.
+/// `AssetByteSize.generation` is one process-wide counter in production code, so a test cannot own one.
+/// A test here advances it, and another test asserts that nothing was measured during its scan.
 @MainActor
 @Suite(.serialized) struct CleanupWorkspaceReclaimableEstimateTests {
     @Test func testScanSummaryCountsAScreenshotInsideAClusterOnce() async throws {
@@ -64,7 +64,7 @@ import Testing
                 selectedLocalIdentifiers: [],
                 status: .inReview,
                 estimatedSavingsBytes: 0
-            )
+            ),
         ])
         let categoryRepository = MockCleanupCategorySnapshotRepository()
         await categoryRepository.setStoredSnapshots([
@@ -73,7 +73,7 @@ import Testing
                 localIdentifiers: ["third", "blurred-only"],
                 assetCount: 2,
                 estimatedSavingsBytes: 500_000 + 100_000
-            )
+            ),
         ])
         let workspace = makeWorkspace(
             repository: repository,
@@ -116,7 +116,7 @@ import Testing
                 selectedLocalIdentifiers: [],
                 status: .inReview,
                 estimatedSavingsBytes: 0
-            )
+            ),
         ])
         await workspace.reloadReviewState()
 
@@ -149,7 +149,7 @@ import Testing
     @Test func testResetClearsTheEstimate() async {
         let cluster = PhotoCluster(assets: [
             FakePhotoAsset(localIdentifier: "keep", pixelWidth: 2_000, pixelHeight: 1_000),
-            FakePhotoAsset(localIdentifier: "other", pixelWidth: 2_000, pixelHeight: 1_000)
+            FakePhotoAsset(localIdentifier: "other", pixelWidth: 2_000, pixelHeight: 1_000),
         ])
         let repository = MockPhotoClusterRepository()
         await repository.setGetLastScanDateResult(Date(timeIntervalSince1970: 1))
@@ -177,7 +177,7 @@ import Testing
                 assetCount: 2,
                 estimatedSavingsBytes: 9_999_999,
                 byteSizeVersion: nil
-            )
+            ),
         ])
         let workspace = makeWorkspace(
             repository: repository,
@@ -213,11 +213,11 @@ import Testing
                 estimatedSavingsBytes: 9_999_999,
                 refreshedAt: Date(timeIntervalSince1970: 1),
                 byteSizeVersion: nil
-            )
+            ),
         ])
         let analysisService = MockPhotoAnalysisService()
         await analysisService.setRefreshCleanupCategoriesResult(.success([
-            CleanupCategorySummary(kind: .screenshots, assetCount: 1, estimatedSavingsBytes: 7)
+            CleanupCategorySummary(kind: .screenshots, assetCount: 1, estimatedSavingsBytes: 7),
         ]))
         let workspace = makeWorkspace(
             analysisService: analysisService,
@@ -254,7 +254,7 @@ import Testing
     /// The first launch on a library with categories but no clusters measures
     /// only during the legacy migration; those sizes still reach the store, so
     /// opening a category later does not ask PhotoKit again.
-    @Test func testFirstLegacyLoadWithoutClustersPersistsTheMeasuredSizes() async throws {
+    @Test func testFirstLegacyLoadWithoutClustersPersistsTheMeasuredSizes() async {
         let repository = MockPhotoClusterRepository()
         await repository.setGetLastScanDateResult(Date(timeIntervalSince1970: 1))
         await repository.setLoadClustersResult(.success([]))
@@ -267,7 +267,7 @@ import Testing
                 assetCount: 1,
                 estimatedSavingsBytes: 9_999_999,
                 byteSizeVersion: nil
-            )
+            ),
         ])
         let byteSizeRepository = MockAssetByteSizeRepository()
         let measured = AssetByteSizeRecord(localIdentifier: identifier, modificationDate: nil, bytes: 4_321)
@@ -306,7 +306,7 @@ import Testing
                 status: .reviewed,
                 estimatedSavingsBytes: 1,
                 byteSizeVersion: nil
-            )
+            ),
         ])
         let workspace = makeWorkspace(repository: repository, reviewRepository: reviewRepository)
 
@@ -326,7 +326,7 @@ import Testing
     @Test func testLegacyMigrationDoesNotOverwriteReviewStatesStoredByAConcurrentScan() async throws {
         let oldCluster = PhotoCluster(assets: [
             FakePhotoAsset(localIdentifier: "old-keeper", pixelWidth: 4_000, pixelHeight: 1_000),
-            FakePhotoAsset(localIdentifier: "old-selected", pixelWidth: 2_000, pixelHeight: 1_000)
+            FakePhotoAsset(localIdentifier: "old-selected", pixelWidth: 2_000, pixelHeight: 1_000),
         ])
         let repository = MockPhotoClusterRepository()
         await repository.setGetLastScanDateResult(Date(timeIntervalSince1970: 1))
@@ -340,11 +340,11 @@ import Testing
                 status: .reviewed,
                 estimatedSavingsBytes: 1,
                 byteSizeVersion: nil
-            )
+            ),
         ])
         let newCluster = PhotoCluster(assets: [
             FakePhotoAsset(localIdentifier: "new-a", pixelWidth: 2_000, pixelHeight: 1_000),
-            FakePhotoAsset(localIdentifier: "new-b", pixelWidth: 2_000, pixelHeight: 1_000)
+            FakePhotoAsset(localIdentifier: "new-b", pixelWidth: 2_000, pixelHeight: 1_000),
         ])
         let analysisService = MockPhotoAnalysisService()
         await analysisService.setAnalyzePhotoLibraryResult(.success([newCluster]))
@@ -380,7 +380,7 @@ import Testing
         let repository = MockPhotoClusterRepository()
         await repository.setGetLastScanDateResult(Date(timeIntervalSince1970: 1))
         await repository.setLoadClustersResult(.success([
-            PhotoCluster(assets: [FakePhotoAsset(localIdentifier: "a"), FakePhotoAsset(localIdentifier: "b")])
+            PhotoCluster(assets: [FakePhotoAsset(localIdentifier: "a"), FakePhotoAsset(localIdentifier: "b")]),
         ]))
         let byteSizeRepository = MockAssetByteSizeRepository()
         let workspace = makeWorkspace(repository: repository, byteSizeRepository: byteSizeRepository)

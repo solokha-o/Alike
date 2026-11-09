@@ -73,6 +73,6 @@ public enum AppPreferenceKey {
         DebugPremium.blurredPhotoCleanup,
         DebugPremium.advancedFilters,
         DebugPremium.batchCleanup,
-        DebugPremium.cleanupReminders
+        DebugPremium.cleanupReminders,
     ]
 }

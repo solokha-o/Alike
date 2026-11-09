@@ -6,7 +6,7 @@ public final class FileCleanupSessionRepository: CleanupSessionRepository, Senda
     private let store: CleanupSessionStore
 
     public init(fileURL: URL? = nil, fileManager: FileManager = .default) {
-        self.store = CleanupSessionStore(
+        store = CleanupSessionStore(
             fileURL: fileURL ?? Self.defaultFileURL(fileManager: fileManager)
         )
     }
@@ -24,8 +24,8 @@ public final class FileCleanupSessionRepository: CleanupSessionRepository, Senda
     }
 }
 
-private extension FileCleanupSessionRepository {
-    static func defaultFileURL(fileManager: FileManager) -> URL {
+extension FileCleanupSessionRepository {
+    fileprivate static func defaultFileURL(fileManager: FileManager) -> URL {
         let baseDirectory = fileManager.urls(for: .applicationSupportDirectory, in: .userDomainMask).first
             ?? fileManager.temporaryDirectory
         return baseDirectory

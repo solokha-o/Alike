@@ -20,14 +20,14 @@ public actor MockPhotoAnalysisService: PhotoAnalysisService {
     public var lastLoadedCategory: CleanupCategoryKind?
     public var lastProgressCallback: ((Double) -> Void)?
     public var lastCleanupCategoryProgressCallback: ((Double) -> Void)?
-    
+
     public init() {}
-    
-    // Setters for test configuration
+
+    /// Setters for test configuration
     public func setAnalyzePhotoLibraryResult(_ result: Result<[PhotoCluster], Error>) {
         analyzePhotoLibraryResult = result
     }
-    
+
     public func setLibraryTotalBytesResult(_ bytes: Int64?) {
         libraryTotalBytesResult = bytes
     }
@@ -51,7 +51,7 @@ public actor MockPhotoAnalysisService: PhotoAnalysisService {
     public func setRefreshCleanupCategoriesResult(_ result: Result<[CleanupCategorySummary], Error>) {
         refreshCleanupCategoriesResult = result
     }
-    
+
     public func analyzePhotoLibrary(
         sensitivity: Float,
         progress: @escaping @Sendable (Double) -> Void
@@ -59,7 +59,7 @@ public actor MockPhotoAnalysisService: PhotoAnalysisService {
         didCallAnalyzePhotoLibrary = true
         lastSensitivity = sensitivity
         lastProgressCallback = progress
-        
+
         // Simulate progress
         await MainActor.run {
             progress(0.5)
@@ -67,7 +67,7 @@ public actor MockPhotoAnalysisService: PhotoAnalysisService {
         await MainActor.run {
             progress(1.0)
         }
-        
+
         switch analyzePhotoLibraryResult {
         case .success(let clusters):
             return clusters
@@ -75,10 +75,10 @@ public actor MockPhotoAnalysisService: PhotoAnalysisService {
             throw error
         }
     }
-    
-    public func calculateSimilarity(asset1: PHAsset, asset2: PHAsset) async throws -> Float {
+
+    public func calculateSimilarity(asset1 _: PHAsset, asset2 _: PHAsset) async throws -> Float {
         didCallCalculateSimilarity = true
-        
+
         switch calculateSimilarityResult {
         case .success(let similarity):
             return similarity

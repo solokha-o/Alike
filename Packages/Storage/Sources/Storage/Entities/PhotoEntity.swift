@@ -22,8 +22,8 @@ public final class PhotoEntity: NSManagedObject {
     /// `true` once Alike applied its own auto-enhancement, so the cached
     /// signals stay the ones measured before that edit.
     @NSManaged public var isAlikeEnhanced: Bool
-    
+
     @nonobjc public class func fetchRequest() -> NSFetchRequest<PhotoEntity> {
-        return NSFetchRequest<PhotoEntity>(entityName: "PhotoEntity")
+        NSFetchRequest<PhotoEntity>(entityName: "PhotoEntity")
     }
 }

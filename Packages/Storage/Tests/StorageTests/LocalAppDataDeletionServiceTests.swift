@@ -1,5 +1,5 @@
-import CoreData
 import Core
+import CoreData
 import Foundation
 import Testing
 @testable import Storage
@@ -7,7 +7,7 @@ import Testing
 /// A `final class` suite: each test gets its own `UUID` directory and `UserDefaults` suite, and `deinit` removes both.
 /// `@MainActor`: the tests seed and read `viewContext`, a main-queue context.
 @MainActor
-@Suite final class LocalAppDataDeletionServiceTests {
+final class LocalAppDataDeletionServiceTests {
     private let directoryURL: URL
     private let defaults: UserDefaults
     private let suiteName: String

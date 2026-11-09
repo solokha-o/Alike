@@ -50,10 +50,12 @@ enum CompiledCatalogFixture {
                     continue
                 }
                 if let unit = localization["stringUnit"] as? [String: Any],
-                   let value = unit["value"] as? String {
+                   let value = unit["value"] as? String
+                {
                     plain[key] = value
                 } else if let variations = localization["variations"] as? [String: Any],
-                          let plural = variations["plural"] as? [String: Any] {
+                          let plural = variations["plural"] as? [String: Any]
+                {
                     plurals[key] = pluralEntry(plural)
                 }
             }
@@ -68,11 +70,12 @@ enum CompiledCatalogFixture {
     private static func pluralEntry(_ plural: [String: Any]) -> [String: Any] {
         var substitution: [String: Any] = [
             specTypeKey: "NSStringPluralRuleType",
-            valueTypeKey: "lld"
+            valueTypeKey: "lld",
         ]
         for (category, unit) in plural {
             if let value = (unit as? [String: Any])?["stringUnit"] as? [String: Any],
-               let string = value["value"] as? String {
+               let string = value["value"] as? String
+            {
                 substitution[category] = string
             }
         }
@@ -95,7 +98,7 @@ enum CompiledCatalogFixture {
                 "CFBundleIdentifier": "com.alike.tests.details.localization",
                 "CFBundleDevelopmentRegion": "en",
                 "CFBundleInfoDictionaryVersion": "6.0",
-                "CFBundlePackageType": "BNDL"
+                "CFBundlePackageType": "BNDL",
             ],
             format: .xml,
             options: 0

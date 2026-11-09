@@ -1,10 +1,10 @@
-import Foundation
-import Testing
-import Photos
 import Core
+import Foundation
+import Photos
+import Testing
 @testable import Cleanup
 
-@Suite struct CleanupClusterControlsTests {
+struct CleanupClusterControlsTests {
     private let allStatuses: [ClusterReviewStatus] = [.notReviewed, .needsReReview, .inReview, .reviewed]
 
     // MARK: - CleanupReviewFilter

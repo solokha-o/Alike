@@ -5,7 +5,7 @@ let package = Package(
     name: "Storage",
     platforms: [
         .iOS(.v17),
-        .macOS(.v14)
+        .macOS(.v14),
     ],
     products: [
         .library(
@@ -14,24 +14,24 @@ let package = Package(
         ),
     ],
     dependencies: [
-        .package(path: "../Core")
+        .package(path: "../Core"),
     ],
     targets: [
         .target(
             name: "Storage",
             dependencies: ["Core"],
             resources: [
-                .process("Resources")
+                .process("Resources"),
             ],
             swiftSettings: [
-                .enableExperimentalFeature("StrictConcurrency")
+                .enableExperimentalFeature("StrictConcurrency"),
             ]
         ),
         .testTarget(
             name: "StorageTests",
             dependencies: ["Storage"],
             resources: [
-                .process("Fixtures")
+                .process("Fixtures"),
             ]
         ),
     ]

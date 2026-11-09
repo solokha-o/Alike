@@ -133,12 +133,24 @@ Use after narrow code, docs, or script changes.
 Runs:
 
 - whitespace validation
-- `swift test` for:
+- a check that no test imports XCTest
+- `tools/check-package-graph`: the package edges, SDKs, and local imports follow ADR-0004
+- the lint step (see [Lint](#lint)): the lint script tests, then `ALIKE_LINT_STRICT=1 tools/lint` on the Swift files changed against `origin/develop`
+- the TODO check (see [Hygiene checks](#hygiene-checks)): its script tests, then `tools/check-todos` on the changed files
+- `xcodebuild test` on an iOS Simulator for:
   - `Packages/Cleanup`
+  - `Packages/CleanupWorkspace`
   - `Packages/Scanner`
   - `Packages/Settings`
+  - `Packages/Storage`
   - `Packages/UserGuide`
+  - `Packages/WidgetSupport`
 - App Store upload bundle validation
+
+`tools/local_ci.sh` routes each package. A package that reaches DesignSystem (Lottie),
+or a package in `SWIFTPM_UNSUPPORTED_PACKAGES` (Storage, WidgetSupport, Diagnostics,
+CleanupWorkspace), uses `xcodebuild`. Only `BestShotCalibration`, `Core`,
+`NavigationKit`, and `PhotoAnalysis` use `swift test`.
 
 Does not:
 
@@ -153,18 +165,22 @@ Use before PR handoff or after broader app changes.
 Runs:
 
 - whitespace validation
-- `swift test` for every package under `Packages/` that has tests
-- `swift build` for packages without tests
+- a check that no test imports XCTest
+- `tools/check-package-graph`: the package edges, SDKs, and local imports follow ADR-0004
+- the lint step, as in `tools/quick`
+- the TODO check, as in `tools/quick`
+- the resource hygiene report (report only, see [Hygiene checks](#hygiene-checks))
+- the tests of every package under `Packages/`, on the routes that `tools/quick`
+  uses: `xcodebuild test` for the DesignSystem closure and for
+  `SWIFTPM_UNSUPPORTED_PACKAGES`, `swift test` for the other packages
+- `xcodebuild build` or `swift build` for a package without tests
 - App Store upload bundle validation
 - the full app compile gate with `xcodebuild -scheme Alike`
 - the `AlikeTests` target of the app, with parallel testing off
 
-`Packages/Storage` is explicitly skipped. SwiftPM does not compile the package's
-`.xcdatamodeld`, so `PersistenceController` traps with "Failed to load Core Data
-model" before any test runs. Its code is still compiled by the app compile gate,
-and its tests run normally in Xcode. The skip is recorded in the run report, and
-the exclusion list lives in `SWIFTPM_UNSUPPORTED_PACKAGES` in
-`tools/local_ci.sh`.
+`Packages/Storage` is in `SWIFTPM_UNSUPPORTED_PACKAGES`: SwiftPM does not compile
+its `.xcdatamodeld`, so its tests run through `xcodebuild test` on an iOS
+Simulator, not through `swift test`.
 
 Does not:
 
@@ -179,6 +195,123 @@ xcodebuild -project Alike/Alike.xcodeproj -scheme Alike -destination 'generic/pl
 ```
 
 Tests need a concrete device; `tools/local_ci.sh` picks one, and `ALIKE_BUILD_DESTINATION='id=<udid>'` overrides it.
+
+### Warnings as errors
+
+A Swift warning fails `tools/quick` and `tools/full`.
+
+- The package steps, the app build, and `AlikeTests` set
+  `SWIFT_TREAT_WARNINGS_AS_ERRORS` on the `xcodebuild` command line.
+- A command-line setting reaches every target, also remote packages. Xcode
+  builds a remote package with `SWIFT_SUPPRESS_WARNINGS=YES`, and `swiftc`
+  stops on `-suppress-warnings` together with `-warnings-as-errors`. So the
+  value is `YES` only in targets that do not suppress warnings: the Alike
+  targets. A warning in `lottie-spm` (DesignSystem) cannot fail the gate.
+- The `swift test` and `swift build` steps pass `-Xswiftc -warnings-as-errors`.
+  These packages have no remote dependency, so the flag reaches only Alike code.
+- The setting is not in `project.pbxproj` or `Package.swift`. A build in Xcode
+  and the release archive and export in `tools/release-check` do not change.
+- `ALIKE_ALLOW_WARNINGS=1` drops the setting and records the step
+  `Swift warnings as errors` as `skipped` in the report. Use it for an emergency
+  hotfix only, and fix the warning in the next change.
+
+### Lint
+
+`tools/lint` runs SwiftFormat (`--lint`, `.swiftformat`) and SwiftLint
+(`.swiftlint.yml` with `.swiftlint-baseline.json`). It does not build and does
+not use the heavy-job queue.
+
+```sh
+tools/lint          # Swift files changed against origin/develop, plus local changes
+tools/lint --all    # all Swift files in Alike/ and Packages/
+tools/lint --fix    # format the changed files with SwiftFormat, then lint them
+tools/lint --staged # the staged version of the staged Swift files (the pre-commit hook)
+```
+
+The lint is mandatory for new changes only. The baseline hides the existing
+SwiftLint findings, and only changed or staged files are linted.
+
+- `tools/quick` and `tools/full` run the lint step after the package graph check
+  and before the package tests and builds: `python3 tools/lint_test.py`,
+  `python3 tools/install_hooks_test.py`, then `ALIKE_LINT_STRICT=1 tools/lint`.
+  The base branch is `ALIKE_LINT_BASE`, then `ALIKE_CI_BASE_REF`, then `origin/develop`.
+- `ALIKE_SKIP_LINT=1` records the three lint steps as `skipped` in the report.
+  Use it for an emergency hotfix only, and run the lint step in the next change.
+- The pre-commit hook stops a commit when a staged Swift file has a finding. Install it once in each clone with `tools/install-hooks`.
+  The hook runs `ALIKE_LINT_STRICT=1 tools/lint --staged` and never changes a file.
+  To fix a finding, run `tools/lint --fix`, fix the SwiftLint findings that remain,
+  then `git add` the files.
+- `tools/lint --staged` writes the staged files from the index to a temporary tree
+  under `build/lint-staged/`, with the staged lint configs and baseline, and lints
+  that tree. A partly staged file is linted as it will be committed.
+- `tools/install-hooks` writes a small shim script to `<git common dir>/hooks/pre-commit`.
+  All linked worktrees share it. In each commit, the shim runs `tools/hooks/pre-commit`
+  of the worktree that commits, so a removed worktree does not turn the hook off.
+  A branch without that file commits with a one-line note. A second run is safe and
+  upgrades an old Alike hook, also a broken symbolic link. `--force` replaces a
+  different hook, `--uninstall` removes the Alike hook. It never sets `core.hooksPath`: with a
+  global `core.hooksPath` (the git-workflow dispatch), the dispatch runs its checks
+  and then runs this hook. A local `core.hooksPath` turns the hook off.
+
+- Report mode prints the violations and a summary, and exits 0.
+- `ALIKE_LINT_STRICT=1` exits 1 on a violation, a tool problem, a version mismatch, or a missing merge-base with the base branch (missing ref or shallow clone). Stage 3 of the clean-code epic uses it as the gate. A CI checkout needs the base branch and enough history for `git merge-base`.
+- `ALIKE_LINT_BASE=<ref>` changes the base branch.
+- `tools/lint-versions` pins the tool versions. On a mismatch, `tools/lint` prints the install command.
+- `--all --fix` is refused: a whole-project format is a format change ([ADR-0003](adr/0003-format-change-process.md)).
+- `--fix` writes nothing when the installed SwiftFormat is not the version in `tools/lint-versions`. Another version can format differently, and a version change is a format change.
+- Test files (`Packages/*/Tests/`, `Alike/AlikeTests/`) get `--config .swiftlint.yml --config .swiftlint-tests.yml`, which disables `force_unwrapping` and `force_try`. Other files get `--config .swiftlint.yml`.
+- Run SwiftLint from the repository root. The baseline stores repository-relative paths.
+- SwiftLint 0.65.1 ignores the baseline when the checkout path starts with `/private`. Keep checkouts under `/Users`.
+- Tests: `python3 tools/lint_test.py` and `python3 tools/install_hooks_test.py`.
+
+### Hygiene checks
+
+These checks keep unused or untracked material out of the project. Only the TODO
+check blocks. The other checks report and exit 0. Nothing deletes a finding:
+each deletion is a separate pull request.
+
+`tools/check-todos` (blocking, in `tools/quick` and `tools/full`):
+
+- Checks the files changed against the merge-base with `origin/develop`, plus
+  staged, unstaged, and untracked files (the same set as `tools/lint`).
+  `ALIKE_CI_BASE_REF` changes the base. `tools/check-todos --all` checks every file.
+- Fails on `TODO`, `FIXME`, or `HACK` without a card link in a shell, Python, or
+  Ruby comment (`.sh`, `.py`, `.rb`, the Fastlane files, and extensionless
+  scripts with a shebang), and on `XXX` in those comments and in Swift comments.
+- The link format is the one in ADR-0001 written rule 13: `TODO(#123): …` or
+  `TODO(https://…): …`. SwiftLint (`todo_without_link`) checks `TODO`, `FIXME`,
+  and `HACK` in Swift, so this check does not repeat it.
+- It reads only comments: `#` comments in shell, Python, and Ruby files, and
+  `//` and `/* */` comments in Swift (for `XXX` only). A `#` in Ruby `#{…}`
+  interpolation or in shell `$#` and `${#…}` does not start a comment.
+- It does not read:
+  - Markdown: skills and docs show markers as examples;
+  - YAML, including `.swiftlint.yml` and GitHub workflows;
+  - Python docstrings and other string literals;
+  - `TODO`, `FIXME`, and `HACK` in Swift: SwiftLint covers them;
+  - `Skills/External/`, `.build/`, and `build/`.
+- The check reads lines, not code: a `#` or `//` inside a string literal starts a
+  comment for the check.
+- Tests: `python3 tools/check_todos_test.py`.
+
+`tools/report_resource_hygiene.py` (report only, in `tools/full`):
+
+- Writes `resource-hygiene.md` and `resource-hygiene.json` into the run's report
+  folder and prints a one-line summary.
+- Reports `.xcstrings` keys that are `stale`, keys that no production source
+  names as a string literal, keys without a translated value for a locale of the
+  same catalog, and `.xcassets` entries that no code, project setting, or plist names.
+- Puts a finding under "needs manual check", not "unused", when the name can be
+  in use without a literal: an `InfoPlist.xcstrings` key, a format key (`%@`,
+  `%lld`), a name that an interpolated or concatenated literal can build, a key
+  in a widget or App Intents catalog, or a name that only a test uses.
+- Run it by hand: `python3 tools/report_resource_hygiene.py` (prints the report).
+- Tests: `python3 tools/report_resource_hygiene_test.py`.
+
+Dead code: `.periphery.yml` configures [Periphery](https://github.com/peripheryapp/periphery)
+for the `Alike` scheme. It is not part of `tools/full` and Periphery is not
+installed by the project. The release checklist (step 2) runs `periphery scan`
+by hand and files a card for each finding.
 
 ### `tools/release-check [version] [build]`
 

@@ -42,9 +42,9 @@ struct PhotoQualityAnalysisService: PhotoQualityAnalyzing {
         }
         guard !workItems.isEmpty else { return [] }
 
-        let config = self.config
-        let imageProvider = self.imageProvider
-        let faceDetector = self.faceDetector
+        let config = config
+        let imageProvider = imageProvider
+        let faceDetector = faceDetector
         let analyze = makeAnalyzer()
 
         return try await ImageAnalysisTaskPool.compactMap(
@@ -116,9 +116,9 @@ struct PhotoQualityAnalysisService: PhotoQualityAnalyzing {
     }
 
     private func makeAnalyzer() -> @Sendable (CGImage, CGImage?, FaceProbe, Int64) -> PhotoQualitySignals {
-        let config = self.config
-        let scorer = self.scorer
-        let faceDetector = self.faceDetector
+        let config = config
+        let scorer = scorer
+        let faceDetector = faceDetector
 
         return { image, faceSource, probe, pixelArea in
             guard Self.isLargeEnoughToAnalyze(image, config: config) else {
@@ -358,7 +358,8 @@ struct PhotoQualityAnalysisService: PhotoQualityAnalyzing {
                 continue
             }
             guard let crop = image.cropping(to: rect),
-                  let pixels = GrayscaleImageSampler.sample(crop, dimension: config.faceCropSide) else {
+                  let pixels = GrayscaleImageSampler.sample(crop, dimension: config.faceCropSide)
+            else {
                 cropFailed += 1
                 continue
             }
@@ -416,7 +417,8 @@ struct PhotoQualityAnalysisService: PhotoQualityAnalyzing {
         guard Double(observation.confidence) >= config.blinkConfidenceFloor,
               let landmarks = observation.landmarks,
               let leftEye = landmarks.leftEye,
-              let rightEye = landmarks.rightEye else {
+              let rightEye = landmarks.rightEye
+        else {
             return nil
         }
         guard let left = eyeAspectRatio(leftEye), let right = eyeAspectRatio(rightEye) else {
@@ -431,7 +433,8 @@ struct PhotoQualityAnalysisService: PhotoQualityAnalyzing {
         let xs = points.map { Double($0.x) }
         let ys = points.map { Double($0.y) }
         guard let minX = xs.min(), let maxX = xs.max(),
-              let minY = ys.min(), let maxY = ys.max() else {
+              let minY = ys.min(), let maxY = ys.max()
+        else {
             return nil
         }
         let width = maxX - minX
@@ -458,10 +461,10 @@ struct PhotoQualityAnalysisService: PhotoQualityAnalyzing {
                     for x in blockX..<(blockX + blockSide) {
                         let laplacian = abs(
                             4 * Double(pixels[x, y])
-                            - Double(pixels[x - 1, y])
-                            - Double(pixels[x + 1, y])
-                            - Double(pixels[x, y - 1])
-                            - Double(pixels[x, y + 1])
+                                - Double(pixels[x - 1, y])
+                                - Double(pixels[x + 1, y])
+                                - Double(pixels[x, y - 1])
+                                - Double(pixels[x, y + 1])
                         )
                         total += laplacian
                         count += 1
@@ -541,6 +544,7 @@ struct FaceProbe: @unchecked Sendable {
     /// Distinct from "it ran and saw nothing", which reports no decisions.
     var hasDetections: Bool { !accepted.isEmpty || !rejections.isEmpty }
 }
+
 // `VNFaceObservation` is an immutable Vision result object that is never
 // mutated after detection, which is why the probe crosses the concurrency
 // boundary unchecked — the same reason `QualityWorkItem` carries a `PHAsset`.

@@ -18,7 +18,7 @@ struct LocalizationCatalog {
     /// catalog carries it — which is the point.
     static let shippedLanguages = [
         "en", "uk", "es-419", "es", "pt-BR", "de", "fr", "it", "nl", "pl", "tr", "zh-Hant",
-        "ar"
+        "ar",
     ]
 
     /// The CLDR plural categories each shipped language actually uses. `ar` needs all six —
@@ -53,9 +53,9 @@ struct LocalizationCatalog {
 
     static func packageRoot(file: StaticString = #filePath) -> URL {
         URL(fileURLWithPath: "\(file)")
-            .deletingLastPathComponent()  // Tests/<target>Tests
-            .deletingLastPathComponent()  // Tests
-            .deletingLastPathComponent()  // package root
+            .deletingLastPathComponent() // Tests/<target>Tests
+            .deletingLastPathComponent() // Tests
+            .deletingLastPathComponent() // package root
     }
 
     static func load(file: StaticString = #filePath) throws -> LocalizationCatalog {
@@ -164,7 +164,7 @@ struct LocalizationCatalog {
     static func formatShape(_ value: String) -> (specifiers: [String], literalPercents: Int) {
         var specifiers: [String] = []
         var literalPercents = 0
-        var characters = Array(value)
+        let characters = Array(value)
         var index = 0
 
         while index < characters.count {
@@ -197,7 +197,7 @@ struct LocalizationCatalog {
     /// A `%` that never resolves into a specifier or a literal — `String(format:)` reads
     /// whatever follows it as a conversion and prints garbage or drops the tail.
     static func hasDanglingPercent(_ value: String) -> Bool {
-        var characters = Array(value)
+        let characters = Array(value)
         var index = 0
 
         while index < characters.count {
@@ -226,7 +226,7 @@ struct LocalizationCatalog {
     }
 }
 
-@Suite struct LocalizationCatalogTests {
+struct LocalizationCatalogTests {
     @Test func testEveryWrapperKeyExistsInTheCatalog() throws {
         let catalog = try LocalizationCatalog.load()
         let missing = try LocalizationCatalog.wrapperKeys().subtracting(catalog.strings.keys)
@@ -292,13 +292,15 @@ struct LocalizationCatalog {
             let localizations = try catalog.localizations(of: key)
             guard localizations["en"]?["variations"] != nil else { continue }
             for language in LocalizationCatalog.shippedLanguages
-            where localizations[language]?["variations"] == nil {
+                where localizations[language]?["variations"] == nil
+            {
                 flat.append("\(key) [\(language)]")
             }
         }
 
         #expect(flat.isEmpty, "plural in en but not in: \(flat)")
     }
+
     /// Format specifiers have to survive translation, but their *order* does not.
     ///
     /// Turkish writes a percentage as `%50`, so `tr` legitimately carries

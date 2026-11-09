@@ -1,15 +1,15 @@
 import Cleanup
 import Core
 import Foundation
-import WidgetSupport
 import Testing
+import WidgetSupport
 @testable import Alike
 
 /// `MainTabView` binds `TabManager.selectedTab` and tags each tab with its `TabManager.Tab`
 /// value, so navigation and widget deep links land through `TabManager` alone. These tests
 /// lock that routing; the views themselves are not rendered.
 @MainActor
-@Suite struct MainTabSelectionTests {
+struct MainTabSelectionTests {
     @Test func testTabValuesKeepTheirOrder() {
         #expect(TabManager.Tab.allCases == [.scanner, .cleanup, .settings])
         #expect(TabManager().selectedTab == .scanner)
@@ -51,7 +51,7 @@ import Testing
             .resumeReview: .resumeReview,
             .similarPhotos: .similarPhotos,
             .screenshots: .category(.screenshots),
-            .blurredPhotos: .category(.blurredPhotos)
+            .blurredPhotos: .category(.blurredPhotos),
         ]
         #expect(Set(expected.keys) == Set(WidgetDestination.allCases))
 

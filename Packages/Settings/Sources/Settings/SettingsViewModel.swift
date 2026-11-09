@@ -1,5 +1,5 @@
-import SwiftUI
 import Core
+import SwiftUI
 
 @MainActor
 @Observable
@@ -103,8 +103,8 @@ public final class SettingsViewModel {
     }
 }
 
-private extension SettingsViewModel {
-    func startCleanupReminderMutation(
+extension SettingsViewModel {
+    private func startCleanupReminderMutation(
         isPremiumUnlocked: Bool,
         operation: @escaping @Sendable (any CleanupReminderManaging) async throws -> CleanupReminderState
     ) {
@@ -129,14 +129,14 @@ private extension SettingsViewModel {
                 guard
                     !Task.isCancelled,
                     let self,
-                    self.cleanupReminderMutationGeneration == generation
+                    cleanupReminderMutationGeneration == generation
                 else { return }
-                self.cleanupReminderState = state
+                cleanupReminderState = state
             } catch {
                 guard
                     !Task.isCancelled,
                     let self,
-                    self.cleanupReminderMutationGeneration == generation
+                    cleanupReminderMutationGeneration == generation
                 else { return }
 
                 AppLog.storage.error(
@@ -146,10 +146,10 @@ private extension SettingsViewModel {
 
                 guard
                     !Task.isCancelled,
-                    self.cleanupReminderMutationGeneration == generation
+                    cleanupReminderMutationGeneration == generation
                 else { return }
-                self.cleanupReminderState = state
-                self.cleanupReminderErrorMessage = SettingsL10n.Main.cleanupReminderCouldntBeUpdated
+                cleanupReminderState = state
+                cleanupReminderErrorMessage = SettingsL10n.Main.cleanupReminderCouldntBeUpdated
             }
         }
     }
