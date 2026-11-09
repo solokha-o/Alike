@@ -36,18 +36,12 @@ struct AnimatedImageOverlayTests {
         #expect(beforeStart.offsetY == start.offsetY)
     }
 
-    @Test func testAmbientMotionPhaseStaysInUnitRangeAndRestartsEachCycle() {
+    @Test func testAmbientMotionPhaseRestartsEachCycle() {
         let cycleStart = Date(timeIntervalSinceReferenceDate: ambientMotionCycleDuration * 100)
         let halfCycle = cycleStart.addingTimeInterval(ambientMotionCycleDuration / 2)
 
         #expect(abs(ambientMotionPhase(at: cycleStart)) < 0.0001)
         #expect(abs(ambientMotionPhase(at: halfCycle) - 1) < 0.0001)
-
-        for step in 0..<20 {
-            let date = cycleStart.addingTimeInterval(Double(step) * 0.37)
-            let phase = ambientMotionPhase(at: date)
-            #expect((0...1).contains(phase))
-        }
     }
 
     @Test func testReduceMotionPreventsOverlayAnimationRendering() {

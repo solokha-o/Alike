@@ -17,7 +17,8 @@ struct ButtonTests {
         #expect(PrimaryButton("Test", icon: nil) {}.icon == nil)
     }
 
-    @Test func testPrimaryButtonActionTriggered() {
+    /// Checks that init stores the action. A tap needs a UI test; a package unit test cannot press the button.
+    @Test func testPrimaryButtonStoresAction() {
         var triggerCount = 0
         let button = PrimaryButton("Test") { triggerCount += 1 }
         #expect(triggerCount == 0, "Action should not be called on creation")
@@ -40,7 +41,8 @@ struct ButtonTests {
         #expect(SecondaryButton("Test", icon: nil) {}.icon == nil)
     }
 
-    @Test func testSecondaryButtonActionTriggered() {
+    /// Checks that init stores the action. A tap needs a UI test; a package unit test cannot press the button.
+    @Test func testSecondaryButtonStoresAction() {
         var triggerCount = 0
         let button = SecondaryButton("Test") { triggerCount += 1 }
         #expect(triggerCount == 0, "Action should not be called on creation")
