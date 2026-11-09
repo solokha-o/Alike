@@ -6,6 +6,7 @@ Run:
 """
 from __future__ import annotations
 
+import re
 import sys
 import unittest
 from pathlib import Path
@@ -132,8 +133,9 @@ class SearchFieldTests(unittest.TestCase):
         # Release notes live only in the base METADATA dict, so one edit
         # reaches every locale.
         source = Path(bundle.__file__).read_text(encoding="utf-8")
-        overrides = source[source.index("\nMETADATA['"):]
-        self.assertNotIn("'release_notes'", overrides)
+        start = re.search(r"\nMETADATA\[[\"']", source).start()
+        overrides = source[start:source.index("\ndef ", start)]
+        self.assertIsNone(re.search(r"[\"']release_notes[\"']", overrides))
 
     def test_shipped_metadata_passes(self) -> None:
         self.assertEqual(bundle.validate_source_search_fields(), [])
