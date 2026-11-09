@@ -2,59 +2,75 @@ import SwiftUI
 import Testing
 @testable import DesignSystem
 
-/// TODO(https://app.notion.com/p/41104d81c94381e4b33acee36f316cc3): these tests only build the value; add real checks or delete them.
 struct ThemeTests {
     // MARK: - Color Tests
 
-    @Test func testAccentColorExists() {
-        // Given & When: Accent color
-        _ = Color.accent
+    private static let tolerance: Float = 0.01
+
+    private static func resolved(_ color: Color) -> Color.Resolved {
+        color.resolve(in: EnvironmentValues())
     }
 
-    @Test func testSecondaryAccentColorExists() {
-        // Given & When: Secondary accent color
-        _ = Color.secondaryAccent
+    private static func expectComponents(
+        _ color: Color,
+        red: Float,
+        green: Float,
+        blue: Float,
+        sourceLocation: SourceLocation = #_sourceLocation
+    ) {
+        let value = resolved(color)
+        #expect(abs(value.red - red) <= tolerance, sourceLocation: sourceLocation)
+        #expect(abs(value.green - green) <= tolerance, sourceLocation: sourceLocation)
+        #expect(abs(value.blue - blue) <= tolerance, sourceLocation: sourceLocation)
+        #expect(value.opacity == 1, sourceLocation: sourceLocation)
     }
 
-    @Test func testCardBackgroundColorExists() {
-        // Given & When: Card background color
-        _ = Color.cardBackground
+    @Test func testAccentColorValue() {
+        Self.expectComponents(.accent, red: 0.12, green: 0.62, blue: 0.72)
     }
 
-    @Test func testSecondaryBackgroundColorExists() {
-        // Given & When: Secondary background color
-        _ = Color.secondaryBackground
+    @Test func testSecondaryAccentColorValue() {
+        Self.expectComponents(.secondaryAccent, red: 0.18, green: 0.76, blue: 0.86)
+    }
+
+    @Test func testAccentColorsAreDistinct() {
+        #expect(Self.resolved(.accent) != Self.resolved(.secondaryAccent))
+    }
+
+    @Test func testBackgroundColorsAreOpaqueAndDistinct() {
+        let card = Self.resolved(.cardBackground)
+        let secondary = Self.resolved(.secondaryBackground)
+
+        #expect(card.opacity == 1)
+        #expect(secondary.opacity == 1)
+        #expect(card != secondary, "Cards must stand out from the secondary background")
     }
 
     // MARK: - Typography Tests
 
-    @Test func testAppLargeTitleFontExists() {
-        // Given & When: Large title font
-        _ = Font.appLargeTitle
+    @Test func testAppLargeTitleFontValue() {
+        #expect(Font.appLargeTitle == .system(size: 34, weight: .bold, design: .rounded))
     }
 
-    @Test func testAppTitleFontExists() {
-        // Given & When: Title font
-        _ = Font.appTitle
+    @Test func testAppTitleFontValue() {
+        #expect(Font.appTitle == .system(size: 28, weight: .bold, design: .rounded))
     }
 
-    @Test func testAllTypographyStylesExist() {
-        // Given & When: All typography styles
-        let fonts = [
-            Font.appLargeTitle,
-            Font.appTitle,
-            Font.appTitle2,
-            Font.appTitle3,
-            Font.appHeadline,
-            Font.appBody,
-            Font.appCallout,
-            Font.appSubheadline,
-            Font.appFootnote,
-            Font.appCaption,
+    @Test func testAllTypographyStylesAreDistinct() {
+        let fonts: [Font] = [
+            .appLargeTitle,
+            .appTitle,
+            .appTitle2,
+            .appTitle3,
+            .appHeadline,
+            .appBody,
+            .appCallout,
+            .appSubheadline,
+            .appFootnote,
+            .appCaption,
         ]
 
-        // Then: All should exist
-        #expect(fonts.count == 10, "Should have 10 typography styles")
+        #expect(Set(fonts).count == fonts.count, "Every typography style must be unique")
     }
 
     // MARK: - Spacing Tests
