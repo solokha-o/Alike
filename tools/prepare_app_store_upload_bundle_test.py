@@ -6,6 +6,7 @@ Run:
 """
 from __future__ import annotations
 
+import re
 import sys
 import unittest
 from pathlib import Path
@@ -114,6 +115,27 @@ class SearchFieldTests(unittest.TestCase):
                     text = bundle.METADATA[locale][field]
                     for american, _ in bundle.BRITISH_SPELLING:
                         self.assertNotIn(american, text)
+
+    def test_regional_listings_ship_their_source_release_notes(self) -> None:
+        # A late METADATA[...].update() with its own release_notes once kept
+        # en-CA and fr-CA on the previous version's text.
+        for locale, source in (("en-CA", "en-US"), ("fr-CA", "fr-FR")):
+            with self.subTest(locale=locale):
+                self.assertEqual(bundle.METADATA[locale]["release_notes"], bundle.METADATA[source]["release_notes"])
+        for locale in ("en-GB", "en-AU"):
+            with self.subTest(locale=locale):
+                self.assertEqual(
+                    bundle.METADATA[locale]["release_notes"],
+                    bundle.british_spelling(bundle.METADATA["en-US"]["release_notes"]),
+                )
+
+    def test_reviewed_overrides_leave_release_notes_alone(self) -> None:
+        # Release notes live only in the base METADATA dict, so one edit
+        # reaches every locale.
+        source = Path(bundle.__file__).read_text(encoding="utf-8")
+        start = re.search(r"\nMETADATA\[[\"']", source).start()
+        overrides = source[start:source.index("\ndef ", start)]
+        self.assertIsNone(re.search(r"[\"']release_notes[\"']", overrides))
 
     def test_shipped_metadata_passes(self) -> None:
         self.assertEqual(bundle.validate_source_search_fields(), [])
