@@ -20,6 +20,7 @@ Usage:
   tools/text
   tools/upload-build [X.Y.Z] [N]
   tools/upload-screenshots
+  tools/upload-creative-assets [X.Y.Z]
   tools/dsyms [X.Y.Z] [N]
   tools/symbolicate <payload.json> [--dsym-root DIR]
 
@@ -196,6 +197,15 @@ run_upload_screenshots() {
   exec "$ROOT_DIR/tools/local_cd.sh" upload-screenshots
 }
 
+run_upload_creative_assets() {
+  load_env_if_present
+  resolve_version_build "${1:-}" ""
+  "$ROOT_DIR/tools/local_cd.sh" plan-creative-assets --version "$RESOLVED_VERSION"
+  confirm_upload "Upload and place creative assets on $RESOLVED_VERSION."
+  export ALIKE_CONFIRM_UPLOAD=creative-assets
+  exec "$ROOT_DIR/tools/local_cd.sh" upload-creative-assets --version "$RESOLVED_VERSION"
+}
+
 main() {
   cd "$ROOT_DIR"
   ensure_utf8_locale
@@ -226,6 +236,10 @@ main() {
       ;;
     upload-screenshots)
       run_upload_screenshots
+      ;;
+    upload-creative-assets)
+      shift
+      run_upload_creative_assets "${1:-}"
       ;;
     dsyms)
       shift

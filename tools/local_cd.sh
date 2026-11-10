@@ -17,18 +17,24 @@ Usage:
   ALIKE_CONFIRM_UPLOAD=metadata tools/local_cd.sh upload-text-metadata
   ALIKE_CONFIRM_UPLOAD=metadata tools/local_cd.sh upload-screenshots
   ALIKE_CONFIRM_UPLOAD=testflight tools/local_cd.sh upload-testflight --version X.Y.Z --build N
+  tools/local_cd.sh plan-creative-assets --version X.Y.Z
+  ALIKE_CONFIRM_UPLOAD=creative-assets tools/local_cd.sh upload-creative-assets --version X.Y.Z
 
 Shortcuts:
   tools/upload
   tools/text
   tools/upload-screenshots
   tools/upload-build [X.Y.Z] [N]
+  tools/upload-creative-assets [X.Y.Z]
 
 Modes:
   upload-metadata      Upload localized App Store metadata and screenshots via Fastlane deliver.
   upload-text-metadata Upload localized App Store text metadata and App Review info only.
   upload-screenshots   Upload localized App Store screenshots only.
   upload-testflight    Archive Alike Release and upload the binary to TestFlight via Fastlane pilot.
+  plan-creative-assets   Read-only: show which Header/Search Results creative assets would be uploaded and placed.
+  upload-creative-assets Upload creative assets to the Asset Library and place them on the version's
+                         localizations. Skips occupied slots; never deletes, submits or publishes.
 
 Required App Store Connect environment:
   APP_STORE_CONNECT_KEY_ID
@@ -42,7 +48,7 @@ Required for metadata upload modes and upload-testflight, whose release-check is
   The per-locale URLs and App Review values in Docs/release-checklist.md step 0
 
 Safety:
-  Uploads require ALIKE_CONFIRM_UPLOAD=metadata or ALIKE_CONFIRM_UPLOAD=testflight.
+  Uploads require ALIKE_CONFIRM_UPLOAD=metadata, testflight or creative-assets.
   TestFlight upload also requires --version X.Y.Z --build N, runs release-check first,
   and uploads the IPA exported by that release-check.
   This script does not bump versions or commit changes.
@@ -101,6 +107,17 @@ require_confirmation() {
 require_no_args() {
   if [[ "$#" -ne 0 ]]; then
     printf "Unexpected arguments for %s: %s\n" "$MODE" "$*" >&2
+    fail_usage
+  fi
+}
+
+require_version_arg() {
+  CREATIVE_VERSION=""
+  if [[ "$#" -eq 2 && "$1" == "--version" ]]; then
+    CREATIVE_VERSION="$2"
+  fi
+  if [[ ! "$CREATIVE_VERSION" =~ ^[0-9]+[.][0-9]+[.][0-9]+$ ]]; then
+    printf "%s requires --version X.Y.Z\n" "$MODE" >&2
     fail_usage
   fi
 }
@@ -209,6 +226,17 @@ main() {
       require_public_https_url ALIKE_PRIVACY_URL
       require_public_https_url ALIKE_SUPPORT_URL
       run_logged "screenshots_upload" bundle exec fastlane ios screenshots_upload
+      ;;
+    plan-creative-assets|upload-creative-assets)
+      require_version_arg "$@"
+      require_app_store_connect_env
+      apply=false
+      if [[ "$MODE" == "upload-creative-assets" ]]; then
+        require_confirmation creative-assets
+        apply=true
+      fi
+      run_logged "creative_assets_generate" "$ROOT_DIR/build/tools-venv/bin/python" tools/generate_app_store_creative_assets.py
+      run_logged "creative_assets_upload" bundle exec fastlane ios creative_assets_upload version:"$CREATIVE_VERSION" apply:"$apply"
       ;;
     upload-testflight)
       require_testflight_args "$@"
