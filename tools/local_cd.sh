@@ -235,6 +235,10 @@ main() {
         require_confirmation creative-assets
         apply=true
       fi
+      if [[ ! -x "$ROOT_DIR/build/tools-venv/bin/python" ]]; then
+        printf "Missing build/tools-venv. Create it:\n  python3 -m venv build/tools-venv && build/tools-venv/bin/pip install --upgrade pip Pillow arabic-reshaper python-bidi\n" >&2
+        exit 65
+      fi
       run_logged "creative_assets_generate" "$ROOT_DIR/build/tools-venv/bin/python" tools/generate_app_store_creative_assets.py
       run_logged "creative_assets_upload" bundle exec fastlane ios creative_assets_upload version:"$CREATIVE_VERSION" apply:"$apply"
       ;;

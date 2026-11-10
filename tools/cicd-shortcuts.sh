@@ -199,11 +199,12 @@ run_upload_screenshots() {
 
 run_upload_creative_assets() {
   load_env_if_present
-  resolve_version_build "${1:-}" ""
-  "$ROOT_DIR/tools/local_cd.sh" plan-creative-assets --version "$RESOLVED_VERSION"
-  confirm_upload "Upload and place creative assets on $RESOLVED_VERSION."
+  local version="${1:-}"
+  [[ -n "$version" ]] || version="$(project_value MARKETING_VERSION)"
+  "$ROOT_DIR/tools/local_cd.sh" plan-creative-assets --version "$version"
+  confirm_upload "Upload and place creative assets on $version."
   export ALIKE_CONFIRM_UPLOAD=creative-assets
-  exec "$ROOT_DIR/tools/local_cd.sh" upload-creative-assets --version "$RESOLVED_VERSION"
+  exec "$ROOT_DIR/tools/local_cd.sh" upload-creative-assets --version "$version"
 }
 
 main() {

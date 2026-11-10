@@ -12,9 +12,12 @@ require_relative "app_store_creative_assets"
 class StubApi
   attr_reader :calls
 
-  def initialize(occupied: [], library_images: {})
+  def initialize(occupied: [], library_images: {}, version_state: "WAITING_FOR_REVIEW", image_states: [], operations: nil)
     @occupied = occupied
     @library_images = library_images
+    @version_state = version_state
+    @image_states = image_states.dup
+    @operations = operations || [{ "method" => "PUT", "url" => "https://upload.example/part", "offset" => 0, "length" => 3 }]
     @calls = []
     @next_id = 0
   end
@@ -23,7 +26,7 @@ class StubApi
     @calls << [:get, path, query]
     case path
     when %r{/appStoreVersions\z}
-      { "data" => [{ "id" => "v1", "attributes" => { "appStoreState" => "WAITING_FOR_REVIEW" } }] }
+      { "data" => [{ "id" => "v1", "attributes" => { "appStoreState" => @version_state } }] }
     when %r{/appStoreVersionLocalizations\z}
       { "data" => [{ "id" => "loc-en", "attributes" => { "locale" => "en-US" } },
                    { "id" => "loc-uk", "attributes" => { "locale" => "uk" } }] }
@@ -37,7 +40,7 @@ class StubApi
     when %r{/images\z}
       { "data" => Array(@library_images[query["filter[referenceName]"]]) }
     when %r{/appAssetLibraryImages/}
-      { "data" => { "attributes" => { "state" => "PREPARE_FOR_SUBMISSION" } } }
+      { "data" => { "attributes" => { "state" => @image_states.shift || "PREPARE_FOR_SUBMISSION" } } }
     else
       raise "unexpected GET #{path}"
     end
@@ -46,9 +49,7 @@ class StubApi
   def post(path, body)
     @calls << [:post, path, body]
     @next_id += 1
-    { "data" => { "id" => "new-#{@next_id}", "attributes" => { "uploadOperations" => [
-      { "method" => "PUT", "url" => "https://upload.example/part", "offset" => 0, "length" => 3 }
-    ] } } }
+    { "data" => { "id" => "new-#{@next_id}", "attributes" => { "uploadOperations" => @operations } } }
   end
 
   def patch(path, body)
@@ -57,7 +58,7 @@ class StubApi
   end
 
   def put_part(operation, bytes)
-    @calls << [:put, operation["url"], bytes.bytesize]
+    @calls << [:put, operation["url"], bytes]
   end
 
   def writes
@@ -72,11 +73,8 @@ class AppStoreCreativeAssetsTest < Minitest::Test
     %w[en uk].each do |key|
       %w[header search].each { |placement| File.binwrite(File.join(@root, "out", "#{placement}-#{key}.png"), "png") }
     end
-    @manifest = {
-      "en-US" => entry("en"), "en-GB" => entry("en"), "uk" => entry("uk")
-    }
     @manifest_path = File.join(@root, "manifest.json")
-    File.write(@manifest_path, JSON.generate(@manifest))
+    write_manifest
   end
 
   def teardown
@@ -84,10 +82,15 @@ class AppStoreCreativeAssetsTest < Minitest::Test
   end
 
   def entry(key)
-    {
-      "header" => { "path" => "out/header-#{key}.png", "sha256" => "a" * 64, "copy" => key },
-      "search" => { "path" => "out/search-#{key}.png", "sha256" => "b" * 64, "copy" => key }
-    }
+    %w[header search].each_with_object({}) do |placement, map|
+      path = "out/#{placement}-#{key}.png"
+      map[placement] = { "path" => path, "sha256" => Digest::SHA256.file(File.join(@root, path)).hexdigest, "copy" => key }
+    end
+  end
+
+  def write_manifest
+    @manifest = { "en-US" => entry("en"), "en-GB" => entry("en"), "uk" => entry("uk") }
+    File.write(@manifest_path, JSON.generate(@manifest))
   end
 
   def runner(api)
@@ -144,5 +147,65 @@ class AppStoreCreativeAssetsTest < Minitest::Test
         call[2]["data"]["relationships"]["appStoreVersionLocalization"]["data"]["id"] == "loc-en"
     end
     assert_equal "img-existing", header_placement[2]["data"]["relationships"]["image"]["data"]["id"]
+  end
+
+  def test_apply_refuses_a_live_version
+    api = StubApi.new(version_state: "READY_FOR_SALE")
+    assert_raises(AppStoreCreativeAssets::Error) do
+      runner(api).run(app_id: "app", version: "1.7.1", manifest_path: @manifest_path, apply: true)
+    end
+    assert_empty api.writes
+  end
+
+  def test_dry_run_still_reads_a_live_version
+    api = StubApi.new(version_state: "READY_FOR_SALE")
+    rows = runner(api).run(app_id: "app", version: "1.7.1", manifest_path: @manifest_path)
+    refute_empty rows
+    assert_empty api.writes
+  end
+
+  def test_a_stale_reservation_is_not_reused
+    reference = AppStoreCreativeAssets.reference_name("header", @manifest["en-US"]["header"])
+    api = StubApi.new(library_images: { reference => [{ "id" => "img-stale", "attributes" => { "state" => "AWAITING_UPLOAD" } }] })
+    runner(api).run(app_id: "app", version: "1.7.2", manifest_path: @manifest_path, apply: true)
+    placed = api.writes.select { |call| call[1] == "/v1/appAssetLibraryPlacements" }
+                .map { |call| call[2]["data"]["relationships"]["image"]["data"]["id"] }
+    refute_includes placed, "img-stale"
+  end
+
+  def test_multi_part_upload_sends_each_slice
+    File.binwrite(File.join(@root, "out", "header-en.png"), "abcdef")
+    write_manifest
+    operations = [
+      { "method" => "PUT", "url" => "https://upload.example/1", "offset" => 0, "length" => 4 },
+      { "method" => "PUT", "url" => "https://upload.example/2", "offset" => 4, "length" => 2 }
+    ]
+    api = StubApi.new(operations: operations)
+    runner(api).run(app_id: "app", version: "1.7.2", manifest_path: @manifest_path, apply: true)
+    parts = api.calls.select { |call| call.first == :put }.first(2).map(&:last)
+    assert_equal %w[abcd ef], parts
+  end
+
+  def test_waits_through_processing_and_unknown_states
+    api = StubApi.new(image_states: %w[UPLOAD_COMPLETE SOMETHING_NEW PREPARE_FOR_SUBMISSION])
+    rows = runner(api).run(app_id: "app", version: "1.7.2", manifest_path: @manifest_path, apply: true)
+    assert(rows.any? { |row| row[:action] == :created })
+  end
+
+  def test_failed_processing_raises
+    api = StubApi.new(image_states: %w[FAILED])
+    assert_raises(AppStoreCreativeAssets::Error) do
+      runner(api).run(app_id: "app", version: "1.7.2", manifest_path: @manifest_path, apply: true)
+    end
+    refute(api.writes.any? { |call| call[1] == "/v1/appAssetLibraryPlacements" })
+  end
+
+  def test_a_stale_manifest_stops_before_any_write
+    File.binwrite(File.join(@root, "out", "search-uk.png"), "changed")
+    api = StubApi.new
+    assert_raises(AppStoreCreativeAssets::Error) do
+      runner(api).run(app_id: "app", version: "1.7.2", manifest_path: @manifest_path, apply: true)
+    end
+    assert_empty api.writes
   end
 end

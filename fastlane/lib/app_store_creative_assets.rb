@@ -27,7 +27,18 @@ module AppStoreCreativeAssets
   }.freeze
   PLACEMENT_GROUP = "DEFAULT_PROFILE".freeze
   CATEGORY = "CREATIVE_ASSETS".freeze
-  UNUSABLE_STATES = %w[FAILED ARCHIVED].freeze
+  # An image in one of these states cannot be reused. AWAITING_UPLOAD is a
+  # reservation whose bytes never arrived (a killed or failed run); reusing it
+  # would wait forever, so a fresh reservation is made instead.
+  UNUSABLE_STATES = %w[FAILED ARCHIVED AWAITING_UPLOAD].freeze
+  # States in which an image is processed and can be placed.
+  READY_STATES = %w[PREPARE_FOR_SUBMISSION READY_FOR_REVIEW WAITING_FOR_REVIEW IN_REVIEW ACCEPTED APPROVED].freeze
+  # Version states that still take changes before release. Placements on a live
+  # (READY_FOR_SALE) version would need Publish, which this tool never does.
+  PLACEABLE_VERSION_STATES = %w[
+    PREPARE_FOR_SUBMISSION READY_FOR_REVIEW WAITING_FOR_REVIEW
+    DEVELOPER_REJECTED REJECTED METADATA_REJECTED
+  ].freeze
 
   module_function
 
@@ -52,6 +63,7 @@ module AppStoreCreativeAssets
         end
         row[:reference_name] = reference_name(placement, entry)
         row[:path] = entry.fetch("path")
+        row[:sha256] = entry.fetch("sha256")
         row[:action] =
           if localizations[locale].nil?
             :no_localization
@@ -104,7 +116,12 @@ module AppStoreCreativeAssets
         request.body = JSON.generate(body)
       end
       response = Net::HTTP.start(uri.host, uri.port, use_ssl: true) { |http| http.request(request) }
-      parsed = response.body.to_s.empty? ? {} : JSON.parse(response.body)
+      parsed =
+        begin
+          response.body.to_s.empty? ? {} : JSON.parse(response.body)
+        rescue JSON::ParserError
+          raise Error, "#{klass::METHOD} #{path} -> HTTP #{response.code} (non-JSON body)"
+        end
       unless response.code.to_i.between?(200, 299)
         detail = Array(parsed["errors"]).map { |e| [e["code"], e["detail"]].compact.join(": ") }.join("; ")
         raise Error, "#{klass::METHOD} #{path} -> HTTP #{response.code} #{detail}"
@@ -124,7 +141,11 @@ module AppStoreCreativeAssets
 
     def run(app_id:, version:, manifest_path:, apply: false)
       manifest = JSON.parse(File.read(manifest_path))
-      version_id = find_version(app_id, version)
+      version_id, state = find_version(app_id, version)
+      if apply && !PLACEABLE_VERSION_STATES.include?(state)
+        raise Error, "#{version} is #{state}; placements are only made on a version that is not live yet " \
+                     "(#{PLACEABLE_VERSION_STATES.join(', ')})"
+      end
       localizations = localizations_of(version_id)
       library_id = @api.get("/v1/apps/#{app_id}/assetLibrary").dig("data", "id") || raise(Error, "app has no asset library")
       existing = existing_placements(localizations)
@@ -132,6 +153,7 @@ module AppStoreCreativeAssets
       print_plan(version, rows)
       return rows unless apply
 
+      verify_files!(rows.select { |row| row[:action] == :create })
       image_ids = {}
       rows.select { |row| row[:action] == :create }.each do |row|
         image_ids[row[:reference_name]] ||= find_or_upload_image(library_id, row)
@@ -151,7 +173,7 @@ module AppStoreCreativeAssets
 
       state = data.first.dig("attributes", "appVersionState") || data.first.dig("attributes", "appStoreState")
       @out.puts("Version #{version}: #{state}")
-      data.first["id"]
+      [data.first["id"], state]
     end
 
     def localizations_of(version_id)
@@ -166,6 +188,21 @@ module AppStoreCreativeAssets
                           "filter[placementType]" => type)["data"]
           map[[locale, placement]] = data&.first&.dig("relationships", "image", "data", "id") || data&.first&.dig("id")
         end
+      end
+    end
+
+    # A manifest from an earlier render must not name different bytes: the
+    # referenceName carries the hash, so a mismatch would upload or reuse the
+    # wrong image under it. Checked before the first write.
+    def verify_files!(rows)
+      rows.uniq { |row| row[:path] }.each do |row|
+        path = File.join(@root, row[:path])
+        raise Error, "missing #{row[:path]}; re-run the generator" unless File.file?(path)
+
+        actual = Digest::SHA256.file(path).hexdigest
+        next if actual == row[:sha256]
+
+        raise Error, "#{row[:path]} does not match manifest.json (#{actual[0, 12]} != #{row[:sha256][0, 12]}); re-run the generator"
       end
     end
 
@@ -208,8 +245,9 @@ module AppStoreCreativeAssets
         attributes = @api.get("/v1/appAssetLibraryImages/#{image_id}")["data"]["attributes"]
         state = attributes["state"]
         raise Error, "image #{image_id} failed: #{attributes['stateDetails'].inspect}" if state == "FAILED"
-        return image_id unless %w[AWAITING_UPLOAD UPLOAD_COMPLETE].include?(state)
+        return image_id if READY_STATES.include?(state)
 
+        @out.puts("  image #{image_id}: unknown state #{state}, still waiting") unless %w[AWAITING_UPLOAD UPLOAD_COMPLETE].include?(state)
         sleep(@poll_seconds)
       end
       raise Error, "image #{image_id} still processing after #{@poll_limit * @poll_seconds}s"
