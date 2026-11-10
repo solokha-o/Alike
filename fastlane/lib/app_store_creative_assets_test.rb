@@ -12,7 +12,7 @@ require_relative "app_store_creative_assets"
 class StubApi
   attr_reader :calls
 
-  def initialize(occupied: [], library_images: {}, version_state: "WAITING_FOR_REVIEW", image_states: [], operations: nil)
+  def initialize(occupied: [], library_images: {}, version_state: "PREPARE_FOR_SUBMISSION", image_states: [], operations: nil)
     @occupied = occupied
     @library_images = library_images
     @version_state = version_state
@@ -149,12 +149,23 @@ class AppStoreCreativeAssetsTest < Minitest::Test
     assert_equal "img-existing", header_placement[2]["data"]["relationships"]["image"]["data"]["id"]
   end
 
-  def test_apply_refuses_a_live_version
-    api = StubApi.new(version_state: "READY_FOR_SALE")
-    assert_raises(AppStoreCreativeAssets::Error) do
-      runner(api).run(app_id: "app", version: "1.7.1", manifest_path: @manifest_path, apply: true)
+  def test_apply_on_a_version_in_review_or_live_uploads_but_does_not_place
+    %w[WAITING_FOR_REVIEW READY_FOR_SALE].each do |state|
+      api = StubApi.new(version_state: state)
+      rows = runner(api).run(app_id: "app", version: "1.7.2", manifest_path: @manifest_path, apply: true)
+      refute(api.writes.any? { |call| call[1] == "/v1/appAssetLibraryPlacements" }, state)
+      assert_equal 4, api.writes.count { |call| call[1] == "/v1/appAssetLibraryImages" }, state
+      assert(rows.select { |row| row[:localization_id] && row[:path] }.all? { |row| row[:action] == :uploaded_only }, state)
     end
-    assert_empty api.writes
+  end
+
+  def test_all_images_upload_before_the_first_placement
+    api = StubApi.new(version_state: "PREPARE_FOR_SUBMISSION")
+    runner(api).run(app_id: "app", version: "1.8.0", manifest_path: @manifest_path, apply: true)
+    paths = api.writes.map { |call| call[1] }
+    last_upload = paths.rindex("/v1/appAssetLibraryImages")
+    first_place = paths.index("/v1/appAssetLibraryPlacements")
+    assert_operator last_upload, :<, first_place
   end
 
   def test_dry_run_still_reads_a_live_version

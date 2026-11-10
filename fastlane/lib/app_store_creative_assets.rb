@@ -33,11 +33,12 @@ module AppStoreCreativeAssets
   UNUSABLE_STATES = %w[FAILED ARCHIVED AWAITING_UPLOAD].freeze
   # States in which an image is processed and can be placed.
   READY_STATES = %w[PREPARE_FOR_SUBMISSION READY_FOR_REVIEW WAITING_FOR_REVIEW IN_REVIEW ACCEPTED APPROVED].freeze
-  # Version states that still take changes before release. Placements on a live
-  # (READY_FOR_SALE) version would need Publish, which this tool never does.
+  # Version states that take new placements. ASC refuses them on a version in
+  # review (WAITING_FOR_REVIEW returned 409 STATE_ERROR.INVALID_STATE on
+  # 2026-11-10), and on a live version they would need Publish, which this tool
+  # never does. In any other state the images still go to the library.
   PLACEABLE_VERSION_STATES = %w[
-    PREPARE_FOR_SUBMISSION READY_FOR_REVIEW WAITING_FOR_REVIEW
-    DEVELOPER_REJECTED REJECTED METADATA_REJECTED
+    PREPARE_FOR_SUBMISSION DEVELOPER_REJECTED REJECTED METADATA_REJECTED
   ].freeze
 
   module_function
@@ -142,10 +143,7 @@ module AppStoreCreativeAssets
     def run(app_id:, version:, manifest_path:, apply: false)
       manifest = JSON.parse(File.read(manifest_path))
       version_id, state = find_version(app_id, version)
-      if apply && !PLACEABLE_VERSION_STATES.include?(state)
-        raise Error, "#{version} is #{state}; placements are only made on a version that is not live yet " \
-                     "(#{PLACEABLE_VERSION_STATES.join(', ')})"
-      end
+      placeable = PLACEABLE_VERSION_STATES.include?(state)
       localizations = localizations_of(version_id)
       library_id = @api.get("/v1/apps/#{app_id}/assetLibrary").dig("data", "id") || raise(Error, "app has no asset library")
       existing = existing_placements(localizations)
@@ -154,11 +152,23 @@ module AppStoreCreativeAssets
       return rows unless apply
 
       verify_files!(rows.select { |row| row[:action] == :create })
+      # Upload every image first, so a refused placement never leaves the
+      # library half filled; then place, only where the version allows it.
       image_ids = {}
       rows.select { |row| row[:action] == :create }.each do |row|
         image_ids[row[:reference_name]] ||= find_or_upload_image(library_id, row)
-        place(row, image_ids.fetch(row[:reference_name]))
-        row[:action] = :created
+      end
+      rows.select { |row| row[:action] == :create }.each do |row|
+        if placeable
+          place(row, image_ids.fetch(row[:reference_name]))
+          row[:action] = :created
+        else
+          row[:action] = :uploaded_only
+        end
+      end
+      unless placeable
+        @out.puts("#{version} is #{state}: images are in the Asset Library, no placements made. " \
+                  "Re-run on a version in #{PLACEABLE_VERSION_STATES.join(', ')}.")
       end
       print_plan(version, rows)
       rows

@@ -48,9 +48,12 @@ tools/upload-creative-assets [X.Y.Z]                         # plan, confirm, up
 - The uploader never deletes or archives, never replaces an occupied slot, and
   never submits or publishes. To swap an asset already placed, remove the old
   placement in ASC by hand first, then re-run.
-- `apply` refuses a live (`READY_FOR_SALE`) version: a placement there needs
-  Publish, which is the user's step, never the tool's. A dry run reads any
-  version.
-- If ASC refuses a placement, the run stops with the API error; uploaded
+- `apply` uploads every image first, then places. It places only on a version
+  in `PREPARE_FOR_SUBMISSION` or a rejected state. ASC refuses placements on a
+  version in review (`409 STATE_ERROR.INVALID_STATE`, seen on 1.7.2 in
+  `WAITING_FOR_REVIEW`), and a live version would need Publish, the user's
+  step. In those states the run uploads to the library only (`uploaded_only`);
+  re-run on the next prepared version to place the same images.
+- If ASC refuses a placement anyway, the run stops with the API error; uploaded
   images stay in the library for the next run. A reservation left in
   `AWAITING_UPLOAD` by a killed run is not reused; a fresh one is made.
