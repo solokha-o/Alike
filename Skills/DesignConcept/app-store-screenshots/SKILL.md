@@ -1,6 +1,6 @@
 ---
 name: app-store-screenshots
-description: Create or revise Alike App Store product screenshots, marketing screenshot copy, background variants, phone-mockup renders, or the screenshot export workflow that feeds the upload bundle.
+description: Create or revise Alike App Store product screenshots, marketing screenshot copy, background variants, phone-mockup renders, the screenshot export workflow that feeds the upload bundle, and the creative assets (Product Page Header, Search Results) in the Asset Library.
 ---
 
 # App Store Screenshots
@@ -120,6 +120,12 @@ Ask what the slide moves, not whether there is a free slot.
 - Thumbnail test at ~160px wide: the headline still reads.
 - The captures are a real photo library — re-check every frame for faces,
   location clues, and legible personal data before an upload.
+
+## Creative Assets
+
+Product Page Header and Search Results images are a separate pipeline with
+their own generator and Asset Library uploader. Read
+`references/creative-assets.md` before changing them.
 
 ## Related Skills
 
