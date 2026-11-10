@@ -5,6 +5,7 @@ require "shellwords"
 require_relative "lib/altool_upload_false_failure"
 require_relative "lib/app_store_api_credentials"
 require_relative "lib/app_store_version_guard"
+require_relative "lib/app_store_creative_assets"
 
 APP_IDENTIFIER = "com.alike.app"
 REPO_ROOT = File.expand_path("..", __dir__)
@@ -17,6 +18,7 @@ GENERATED_STORE_UPLOAD_ROOT = ENV["ALIKE_GENERATED_STORE_UPLOAD_ROOT"] || File.j
 METADATA_PATH = File.join(GENERATED_STORE_UPLOAD_ROOT, "metadata")
 SCREENSHOTS_PATH = File.join(GENERATED_STORE_UPLOAD_ROOT, "screenshots")
 PREPARE_STORE_UPLOAD_BUNDLE = File.join(REPO_ROOT, "tools", "prepare_app_store_upload_bundle.py")
+CREATIVE_ASSETS_MANIFEST = File.join(REPO_ROOT, "build", "generated", "creative_assets", "manifest.json")
 
 def python_executable
   ENV["PYTHON"] || "python3"
@@ -252,6 +254,26 @@ platform :ios do
   desc "Upload only App Store screenshots without text metadata, binary, or review submission."
   lane :screenshots_upload do
     deliver_store_bundle(skip_metadata: true, skip_screenshots: false)
+  end
+
+  desc "Upload creative assets (Product Page Header, Search Results) to the Asset Library and place them on one version. Dry run unless apply:true. Never deletes, submits or publishes."
+  lane :creative_assets_upload do |options|
+    version = options[:version].to_s
+    UI.user_error!("version is required, e.g. fastlane creative_assets_upload version:1.7.2") if version.empty?
+    UI.user_error!("Missing #{CREATIVE_ASSETS_MANIFEST}; run tools/generate_app_store_creative_assets.py") unless File.exist?(CREATIVE_ASSETS_MANIFEST)
+
+    auth = app_store_api_credentials.spaceship_auth_options
+    token = nil
+    token_provider = lambda do
+      token = Spaceship::ConnectAPI::Token.create(**auth) if token.nil? || token.expired?
+      token.text
+    end
+    connect_api_login!
+    app = Spaceship::ConnectAPI::App.find(APP_IDENTIFIER) || UI.user_error!("No App Store Connect app for #{APP_IDENTIFIER}")
+    AppStoreCreativeAssets::Runner.new(
+      api: AppStoreCreativeAssets::Api.new(token_provider),
+      root: REPO_ROOT
+    ).run(app_id: app.id, version: version, manifest_path: CREATIVE_ASSETS_MANIFEST, apply: options[:apply].to_s == "true")
   end
 
   desc "Download the dSYMs for a released version so Xcode Organizer can symbolicate its crash reports."
