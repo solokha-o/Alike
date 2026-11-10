@@ -148,27 +148,29 @@ module AppStoreCreativeAssets
       library_id = @api.get("/v1/apps/#{app_id}/assetLibrary").dig("data", "id") || raise(Error, "app has no asset library")
       existing = existing_placements(localizations)
       rows = AppStoreCreativeAssets.plan(manifest: manifest, localizations: localizations, existing: existing)
+      unless placeable
+        # Say it in the plan, before anyone confirms: this version takes no
+        # placements, so the run can only fill the library.
+        rows.each { |row| row[:action] = :upload_only if row[:action] == :create }
+        @out.puts("#{version} is #{state}: no placements possible; apply uploads to the Asset Library only. " \
+                  "Placements need a version in #{PLACEABLE_VERSION_STATES.join(', ')}.")
+      end
       print_plan(version, rows)
       return rows unless apply
 
-      verify_files!(rows.select { |row| row[:action] == :create })
+      pending = rows.select { |row| %i[create upload_only].include?(row[:action]) }
+      verify_files!(pending)
       # Upload every image first, so a refused placement never leaves the
       # library half filled; then place, only where the version allows it.
       image_ids = {}
-      rows.select { |row| row[:action] == :create }.each do |row|
-        image_ids[row[:reference_name]] ||= find_or_upload_image(library_id, row)
-      end
-      rows.select { |row| row[:action] == :create }.each do |row|
-        if placeable
+      pending.each { |row| image_ids[row[:reference_name]] ||= find_or_upload_image(library_id, row) }
+      pending.each do |row|
+        if row[:action] == :create
           place(row, image_ids.fetch(row[:reference_name]))
           row[:action] = :created
         else
           row[:action] = :uploaded_only
         end
-      end
-      unless placeable
-        @out.puts("#{version} is #{state}: images are in the Asset Library, no placements made. " \
-                  "Re-run on a version in #{PLACEABLE_VERSION_STATES.join(', ')}.")
       end
       print_plan(version, rows)
       rows

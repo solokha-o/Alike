@@ -202,7 +202,7 @@ run_upload_creative_assets() {
   local version="${1:-}"
   [[ -n "$version" ]] || version="$(project_value MARKETING_VERSION)"
   "$ROOT_DIR/tools/local_cd.sh" plan-creative-assets --version "$version"
-  confirm_upload "Upload and place creative assets on $version."
+  confirm_upload "Upload creative assets for $version and make the placements the plan above lists."
   export ALIKE_CONFIRM_UPLOAD=creative-assets
   exec "$ROOT_DIR/tools/local_cd.sh" upload-creative-assets --version "$version"
 }

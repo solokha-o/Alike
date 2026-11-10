@@ -52,8 +52,9 @@ tools/upload-creative-assets [X.Y.Z]                         # plan, confirm, up
   in `PREPARE_FOR_SUBMISSION` or a rejected state. ASC refuses placements on a
   version in review (`409 STATE_ERROR.INVALID_STATE`, seen on 1.7.2 in
   `WAITING_FOR_REVIEW`), and a live version would need Publish, the user's
-  step. In those states the run uploads to the library only (`uploaded_only`);
-  re-run on the next prepared version to place the same images.
+  step. In those states the plan shows `upload_only` and the run fills the
+  library only; re-run on the next prepared version to place the same images
+  (they are reused by `referenceName`, nothing uploads twice).
 - If ASC refuses a placement anyway, the run stops with the API error; uploaded
   images stay in the library for the next run. A reservation left in
   `AWAITING_UPLOAD` by a killed run is not reused; a fresh one is made.

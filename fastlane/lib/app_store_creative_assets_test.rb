@@ -173,6 +173,8 @@ class AppStoreCreativeAssetsTest < Minitest::Test
     rows = runner(api).run(app_id: "app", version: "1.7.1", manifest_path: @manifest_path)
     refute_empty rows
     assert_empty api.writes
+    assert(rows.none? { |row| row[:action] == :create }, "plan must not promise placements")
+    assert(rows.any? { |row| row[:action] == :upload_only })
   end
 
   def test_a_stale_reservation_is_not_reused
