@@ -160,12 +160,15 @@ module AppStoreCreativeAssets
         @out.puts("#{version} is #{state}: no placements possible; apply uploads to the Asset Library only. " \
                   "Placements need a version in #{(PLACEABLE_VERSION_STATES + LIVE_VERSION_STATES).join(', ')}.")
       elsif live
+        # The placed image is the APPROVED one found here, never another
+        # image that shares its referenceName.
         approved = {}
         rows.each do |row|
           next unless row[:action] == :create
 
-          approved[row[:reference_name]] = approved_image?(library_id, row[:reference_name]) unless approved.key?(row[:reference_name])
-          row[:action] = :upload_only unless approved[row[:reference_name]]
+          ref = row[:reference_name]
+          approved[ref] = approved_image_id(library_id, ref) unless approved.key?(ref)
+          approved[ref] ? row[:image_id] = approved[ref] : row[:action] = :upload_only
         end
         @out.puts("#{version} is #{state} (live): `create` rows go on the App Store at once. " \
                   "Only images already APPROVED are placed; the rest upload only and wait for review.")
@@ -178,7 +181,7 @@ module AppStoreCreativeAssets
       # Upload every image first, so a refused placement never leaves the
       # library half filled; then place, only where the version allows it.
       image_ids = {}
-      pending.each { |row| image_ids[row[:reference_name]] ||= find_or_upload_image(library_id, row) }
+      pending.each { |row| image_ids[row[:reference_name]] ||= row[:image_id] || find_or_upload_image(library_id, row) }
       pending.each do |row|
         if row[:action] == :create
           place(row, image_ids.fetch(row[:reference_name]))
@@ -233,10 +236,10 @@ module AppStoreCreativeAssets
       end
     end
 
-    def approved_image?(library_id, reference_name)
+    def approved_image_id(library_id, reference_name)
       @api.get("/v1/appAssetLibraries/#{library_id}/images",
                "filter[referenceName]" => reference_name)["data"].to_a
-          .any? { |item| item.dig("attributes", "state") == "APPROVED" }
+          .find { |item| item.dig("attributes", "state") == "APPROVED" }&.fetch("id")
     end
 
     def find_or_upload_image(library_id, row)

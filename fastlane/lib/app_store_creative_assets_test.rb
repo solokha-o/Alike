@@ -181,6 +181,20 @@ class AppStoreCreativeAssetsTest < Minitest::Test
     assert_includes rows.map { |row| [row[:locale], row[:placement], row[:action]] }, ["en-US", "search", :uploaded_only]
   end
 
+  def test_a_live_version_places_the_approved_image_not_a_sibling
+    reference = AppStoreCreativeAssets.reference_name("header", @manifest["en-US"]["header"])
+    api = StubApi.new(version_state: "READY_FOR_DISTRIBUTION", library_images: {
+      reference => [{ "id" => "img-in-review", "attributes" => { "state" => "WAITING_FOR_REVIEW" } },
+                    { "id" => "img-approved", "attributes" => { "state" => "APPROVED" } }]
+    })
+    runner(api).run(app_id: "app", version: "1.7.2", manifest_path: @manifest_path, apply: true)
+    placed = api.writes.select { |call| call[1] == "/v1/appAssetLibraryPlacements" }
+                .map { |call| call[2]["data"]["relationships"]["image"]["data"]["id"] }
+    assert_equal ["img-approved"], placed
+    lookups = api.calls.count { |call| call[0] == :get && call[2]["filter[referenceName]"] == reference }
+    assert_equal 1, lookups
+  end
+
   def test_all_images_upload_before_the_first_placement
     api = StubApi.new(version_state: "PREPARE_FOR_SUBMISSION")
     runner(api).run(app_id: "app", version: "1.8.0", manifest_path: @manifest_path, apply: true)
