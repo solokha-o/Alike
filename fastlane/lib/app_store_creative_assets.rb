@@ -16,6 +16,7 @@ require "uri"
 # - An image whose referenceName (placement, copy key, content hash) is already
 #   in the library is reused, so a re-run uploads nothing new.
 # - Without `apply: true` the run only reads and prints the plan.
+# - With `library_only: true` nothing is placed, occupied slots included.
 # - Nothing submits for review or publishes.
 module AppStoreCreativeAssets
   Error = Class.new(StandardError)
@@ -145,7 +146,10 @@ module AppStoreCreativeAssets
       @poll_limit = poll_limit
     end
 
-    def run(app_id:, version:, manifest_path:, apply: false)
+    # `library_only` uploads every manifest image to the Asset Library, also
+    # for occupied slots, and places nothing. Use it to get new renders into
+    # Apple review while the old ones stay placed.
+    def run(app_id:, version:, manifest_path:, apply: false, library_only: false)
       manifest = JSON.parse(File.read(manifest_path))
       version_id, state = find_version(app_id, version)
       live = LIVE_VERSION_STATES.include?(state)
@@ -155,7 +159,10 @@ module AppStoreCreativeAssets
       existing = existing_placements(localizations)
       rows = AppStoreCreativeAssets.plan(manifest: manifest, localizations: localizations, existing: existing)
       # Say it in the plan, before anyone confirms.
-      if !placeable
+      if library_only
+        rows.each { |row| row[:action] = :upload_only if %i[create occupied].include?(row[:action]) }
+        @out.puts("library_only: apply uploads to the Asset Library only; nothing is placed.")
+      elsif !placeable
         rows.each { |row| row[:action] = :upload_only if row[:action] == :create }
         @out.puts("#{version} is #{state}: no placements possible; apply uploads to the Asset Library only. " \
                   "Placements need a version in #{(PLACEABLE_VERSION_STATES + LIVE_VERSION_STATES).join(', ')}.")

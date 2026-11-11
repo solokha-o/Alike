@@ -53,8 +53,15 @@ tools/upload-creative-assets [X.Y.Z]                         # plan, confirm, up
 - The uploader never deletes or archives, never replaces an occupied slot, and
   never submits or publishes. The API has no PATCH for
   `appAssetLibraryPlacements` (GET, POST, DELETE only), so a placement cannot
-  swap its image. To swap one, wait until the new image is `APPROVED`, remove
-  the old placement in ASC by hand, then re-run.
+  swap its image. To swap one:
+  1. Upload the new renders with `library_only:true` (below) and send them to
+     review in ASC.
+  2. When an image is `APPROVED`, remove its old placement in ASC by hand.
+  3. Re-run the upload; it places the approved image in the free slot.
+- `bundle exec fastlane ios creative_assets_upload version:X.Y.Z apply:true
+  library_only:true` uploads every manifest image to the Asset Library, also
+  for occupied slots, and places nothing. A normal run skips occupied slots
+  completely, so new renders for them never reach the library.
 - `apply` uploads every image first, then places. Where it places depends on
   the version state:
   - `PREPARE_FOR_SUBMISSION` or a rejected state: every image; the placements
