@@ -136,6 +136,23 @@ class AppStoreCreativeAssetsTest < Minitest::Test
     refute(api.calls.any? { |call| call.first == :delete })
   end
 
+  def test_library_only_uploads_occupied_slots_and_places_nothing
+    occupied = [["loc-en", "PRODUCT_PAGE_HEADER_ASSET"], ["loc-uk", "PRODUCT_PAGE_HEADER_ASSET"]]
+    approved = AppStoreCreativeAssets.reference_name("search", @manifest["en-US"]["search"])
+    api = StubApi.new(version_state: "READY_FOR_DISTRIBUTION", occupied: occupied,
+                      library_images: { approved => [{ "id" => "img-approved", "attributes" => { "state" => "APPROVED" } }] },
+                      image_states: %w[APPROVED])
+    rows = runner(api).run(app_id: "app", version: "1.7.2", manifest_path: @manifest_path, apply: true, library_only: true)
+
+    refute(api.writes.any? { |call| call[1] == "/v1/appAssetLibraryPlacements" })
+    refute(api.calls.any? { |call| call.first == :delete })
+    reserved = api.writes.select { |call| call[0] == :post && call[1] == "/v1/appAssetLibraryImages" }
+                  .map { |call| call[2]["data"]["attributes"]["referenceName"] }
+    assert_equal 3, reserved.size, "en header, uk header, uk search; en search is reused"
+    refute_includes reserved, approved
+    assert(rows.select { |row| row[:localization_id] && row[:path] }.all? { |row| row[:action] == :uploaded_only })
+  end
+
   def test_apply_reuses_an_image_already_in_the_library
     reference = AppStoreCreativeAssets.reference_name("header", @manifest["en-US"]["header"])
     api = StubApi.new(library_images: { reference => [{ "id" => "img-existing", "attributes" => { "state" => "PREPARE_FOR_SUBMISSION" } }] })

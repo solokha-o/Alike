@@ -273,7 +273,8 @@ platform :ios do
     AppStoreCreativeAssets::Runner.new(
       api: AppStoreCreativeAssets::Api.new(token_provider),
       root: REPO_ROOT
-    ).run(app_id: app.id, version: version, manifest_path: CREATIVE_ASSETS_MANIFEST, apply: options[:apply].to_s == "true")
+    ).run(app_id: app.id, version: version, manifest_path: CREATIVE_ASSETS_MANIFEST,
+          apply: options[:apply].to_s == "true", library_only: options[:library_only].to_s == "true")
   end
 
   desc "Download the dSYMs for a released version so Xcode Organizer can symbolicate its crash reports."
