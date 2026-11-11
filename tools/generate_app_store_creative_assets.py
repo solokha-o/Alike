@@ -73,7 +73,7 @@ RTL_COPY = frozenset({"ar"})
 # the canvas instead. Both crops keep the exact aspect ratio of the target.
 #
 # iPhone scales the header to the banner height and shows only the centre,
-# about x 372…3470 of 3840 (measured on 1.7.2, 2026-11-11); iPad and Mac show
+# about x 372…3468 of 3840 (measured on 1.7.2, 2026-11-11); iPad and Mac show
 # the full width. All text and the hero stay inside `safe`; the paper frame is
 # decoration and may run past it. The header crop is 1:1, which puts the frame
 # as far right as the plate allows.
@@ -193,6 +193,16 @@ def contrast(foreground, background) -> float:
     return (relative_luminance(foreground) + 0.05) / (relative_luminance(background) + 0.05)
 
 
+def safe_area_problems(boxes: dict, safe: tuple[int, int]) -> list[str]:
+    """Boxes (left, top, right, bottom) that leave the column range `safe`."""
+    safe_left, safe_right = safe
+    return [
+        f"{name} {box} outside the iPhone safe area x {safe_left}…{safe_right}"
+        for name, box in boxes.items()
+        if box[0] < safe_left or box[2] > safe_right
+    ]
+
+
 def render(placement: str, key: str) -> tuple[Path, dict]:
     spec = PLACEMENTS[placement]
     width, height = spec["size"]
@@ -228,12 +238,9 @@ def render(placement: str, key: str) -> tuple[Path, dict]:
     if left < 150 or top < 60 or right > width - 150 or bottom > height - 60:
         problems.append(f"text box {report['bbox']} too close to the edge")
     if "safe" in spec:
-        safe_left, safe_right = spec["safe"]
         hero_box = hero.getchannel("A").getbbox()
         report["hero_bbox"] = (hero_x + hero_box[0], hero_y + hero_box[1], hero_x + hero_box[2], hero_y + hero_box[3])
-        for name, box in (("text box", report["bbox"]), ("hero", report["hero_bbox"])):
-            if box[0] < safe_left or box[2] > safe_right:
-                problems.append(f"{name} {box} outside the iPhone safe area x {safe_left}…{safe_right}")
+        problems += safe_area_problems({"text box": report["bbox"], "hero": report["hero_bbox"]}, spec["safe"])
     if problems:
         raise SystemExit(f"{placement}/{key}: " + "; ".join(problems))
 

@@ -43,7 +43,7 @@ tools/upload-creative-assets [X.Y.Z]                         # plan, confirm, up
   numbers, prices or deletion claims (the test rejects them).
 - The generator fails on missing glyphs, contrast below 12:1, text near an
   edge, or a headline that only fits below the minimum size. Rebreak by hand.
-- iPhone scales the Header to the banner height and shows only x ≈ 372…3470
+- iPhone scales the Header to the banner height and shows only x ≈ 372…3468
   (measured on live 1.7.2, 2026-11-11); iPad and Mac show all of it. All
   Header text and the hero stay inside `safe` x 560…3280, and the generator
   fails otherwise. The paper frame is decoration and may bleed off. Check
