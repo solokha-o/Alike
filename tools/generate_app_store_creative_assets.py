@@ -58,7 +58,7 @@ COPY = {
     "es": ("Encuentra fotos\nparecidas y elige\ncuáles conservar.", "Encuentra fotos parecidas"),
     "es-MX": ("Encuentra fotos\nsimilares y elige\ncuáles conservar.", "Encuentra fotos similares"),
     "pt-BR": ("Encontre fotos\nparecidas e escolha\nquais manter.", "Encontre fotos parecidas"),
-    "pt-PT": ("Encontra fotos\nsemelhantes e escolhe\nquais manter.", "Encontra fotos semelhantes"),
+    "pt-PT": ("Encontra fotos\nparecidas e escolhe\nquais manter.", "Encontra fotos semelhantes"),
     "it": ("Trova le foto simili\ne scegli quali\ntenere.", "Trova le foto simili"),
     "nl": ("Vind foto's die\nop elkaar lijken en\nkies welke je houdt.", "Vind vergelijkbare foto's"),
     "pl": ("Znajdź podobne\nzdjęcia i wybierz,\nktóre zostawić.", "Znajdź podobne zdjęcia"),
@@ -71,11 +71,18 @@ RTL_COPY = frozenset({"ar"})
 # Geometry, in plate pixels. The plates' paper arcs end in a hard vertical cut a
 # little before the right edge; the crop ends inside the arcs so they bleed off
 # the canvas instead. Both crops keep the exact aspect ratio of the target.
+#
+# iPhone scales the header to the banner height and shows only the centre,
+# about x 372…3470 of 3840 (measured on 1.7.2, 2026-11-11); iPad and Mac show
+# the full width. All text and the hero stay inside `safe`; the paper frame is
+# decoration and may run past it. The header crop is 1:1, which puts the frame
+# as far right as the plate allows.
+HEADER_IPHONE_CROP = (372, 3468)
 PLACEMENTS = {
     "header": {
-        "plate": "v7-header-plate.png", "crop": (0, 22, 3980, 1728), "size": (3840, 1646),
-        "frame_left": 2698, "frame_base": 1586, "hero_height": 1020,
-        "text": {"x": 200, "cy": 823, "start": 150, "min": 120, "max_lines": 3, "gap": 90},
+        "plate": "v7-header-plate.png", "crop": (0, 41, 3840, 1687), "size": (3840, 1646),
+        "frame_left": 2698, "frame_base": 1586, "hero_height": 900, "safe": (560, 3280),
+        "text": {"x": 560, "cy": 823, "start": 150, "min": 120, "max_lines": 3, "gap": 70},
     },
     "search": {
         "plate": "v7-search-plate.png", "crop": (0, 96, 3696, 2560), "size": (3600, 2400),
@@ -195,7 +202,8 @@ def render(placement: str, key: str) -> tuple[Path, dict]:
     frame_left = round(spec["frame_left"] * scale)
     frame_base = round((spec["frame_base"] - spec["crop"][1]) * scale)
     hero_x = frame_left + 40 - hero.width
-    canvas.alpha_composite(hero, (hero_x, frame_base - hero.height))
+    hero_y = frame_base - hero.height
+    canvas.alpha_composite(hero, (hero_x, hero_y))
 
     text = spec["text"]
     headline = COPY[key][0 if placement == "header" else 1]
@@ -219,6 +227,13 @@ def render(placement: str, key: str) -> tuple[Path, dict]:
         problems.append(f"contrast {report['contrast']}")
     if left < 150 or top < 60 or right > width - 150 or bottom > height - 60:
         problems.append(f"text box {report['bbox']} too close to the edge")
+    if "safe" in spec:
+        safe_left, safe_right = spec["safe"]
+        hero_box = hero.getchannel("A").getbbox()
+        report["hero_bbox"] = (hero_x + hero_box[0], hero_y + hero_box[1], hero_x + hero_box[2], hero_y + hero_box[3])
+        for name, box in (("text box", report["bbox"]), ("hero", report["hero_bbox"])):
+            if box[0] < safe_left or box[2] > safe_right:
+                problems.append(f"{name} {box} outside the iPhone safe area x {safe_left}…{safe_right}")
     if problems:
         raise SystemExit(f"{placement}/{key}: " + "; ".join(problems))
 
@@ -228,10 +243,13 @@ def render(placement: str, key: str) -> tuple[Path, dict]:
     return path, report
 
 
-def sheet(placement: str, paths: list[Path], tile_width: int, name: str, labels: bool) -> None:
+def sheet(placement: str, paths: list[Path], tile_width: int, name: str, labels: bool, crop_x: tuple[int, int] | None = None) -> None:
+    """Contact sheet. `crop_x` shows only that column range, as iPhone does."""
     from PIL import Image, ImageDraw
 
     width, height = PLACEMENTS[placement]["size"]
+    if crop_x:
+        width = crop_x[1] - crop_x[0]
     tile_height = round(tile_width * height / width)
     columns = 3 if placement == "header" else 4
     rows = (len(paths) + columns - 1) // columns
@@ -243,7 +261,10 @@ def sheet(placement: str, paths: list[Path], tile_width: int, name: str, labels:
         y = 20 + (index // columns) * (tile_height + label + 20)
         if labels:
             draw.text((x, y + 10), path.stem, fill=(0, 0, 0))
-        canvas.paste(Image.open(path).resize((tile_width, tile_height), Image.LANCZOS), (x, y + label))
+        image = Image.open(path)
+        if crop_x:
+            image = image.crop((crop_x[0], 0, crop_x[1], image.height))
+        canvas.paste(image.resize((tile_width, tile_height), Image.LANCZOS), (x, y + label))
     canvas.save(OUTPUT_ROOT / name)
 
 
@@ -263,6 +284,8 @@ def main() -> None:
         paths = [files[key][placement] for key in COPY]
         sheet(placement, paths, 900 if placement == "header" else 600, f"preview-{placement}.png", True)
         sheet(placement, paths, 600 if placement == "header" else 320, f"thumb-{placement}.png", False)
+        if placement == "header":
+            sheet(placement, paths, 900, "preview-header-iphone.png", True, HEADER_IPHONE_CROP)
 
     manifest = {
         locale: {

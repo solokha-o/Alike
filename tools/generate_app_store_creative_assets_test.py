@@ -45,6 +45,17 @@ class CreativeAssetCopyTest(unittest.TestCase):
         self.assertEqual(width * 2, height * 3)
         self.assertTrue(1920 <= width <= 3840)
 
+    def test_header_text_and_hero_stay_inside_the_iphone_crop(self) -> None:
+        spec = creative.PLACEMENTS["header"]
+        crop_left, crop_right = creative.HEADER_IPHONE_CROP
+        safe_left, safe_right = spec["safe"]
+        self.assertGreaterEqual(safe_left - crop_left, 150)
+        self.assertGreaterEqual(crop_right - safe_right, 150)
+        self.assertGreaterEqual(spec["text"]["x"], safe_left)
+        scale = spec["size"][0] / (spec["crop"][2] - spec["crop"][0])
+        hero_right = round(spec["frame_left"] * scale) + 40
+        self.assertLessEqual(hero_right, safe_right)
+
     def test_crops_keep_the_ratio_and_only_downscale(self) -> None:
         for name, spec in creative.PLACEMENTS.items():
             left, top, right, bottom = spec["crop"]

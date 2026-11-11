@@ -43,11 +43,18 @@ tools/upload-creative-assets [X.Y.Z]                         # plan, confirm, up
   numbers, prices or deletion claims (the test rejects them).
 - The generator fails on missing glyphs, contrast below 12:1, text near an
   edge, or a headline that only fits below the minimum size. Rebreak by hand.
+- iPhone scales the Header to the banner height and shows only x ≈ 372…3470
+  (measured on live 1.7.2, 2026-11-11); iPad and Mac show all of it. All
+  Header text and the hero stay inside `safe` x 560…3280, and the generator
+  fails otherwise. The paper frame is decoration and may bleed off. Check
+  `preview-header-iphone.png`, which shows that crop for every copy key.
 - `referenceName` is `alike-<placement>-<copy>-<sha12>`: identical renders are
   reused, changed renders upload as new assets.
 - The uploader never deletes or archives, never replaces an occupied slot, and
-  never submits or publishes. To swap an asset already placed, remove the old
-  placement in ASC by hand first, then re-run.
+  never submits or publishes. The API has no PATCH for
+  `appAssetLibraryPlacements` (GET, POST, DELETE only), so a placement cannot
+  swap its image. To swap one, wait until the new image is `APPROVED`, remove
+  the old placement in ASC by hand, then re-run.
 - `apply` uploads every image first, then places. Where it places depends on
   the version state:
   - `PREPARE_FOR_SUBMISSION` or a rejected state: every image; the placements
