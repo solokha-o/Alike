@@ -136,6 +136,23 @@ class AppStoreCreativeAssetsTest < Minitest::Test
     refute(api.calls.any? { |call| call.first == :delete })
   end
 
+  def test_library_only_uploads_occupied_slots_and_places_nothing
+    occupied = [["loc-en", "PRODUCT_PAGE_HEADER_ASSET"], ["loc-uk", "PRODUCT_PAGE_HEADER_ASSET"]]
+    approved = AppStoreCreativeAssets.reference_name("search", @manifest["en-US"]["search"])
+    api = StubApi.new(version_state: "READY_FOR_DISTRIBUTION", occupied: occupied,
+                      library_images: { approved => [{ "id" => "img-approved", "attributes" => { "state" => "APPROVED" } }] },
+                      image_states: %w[APPROVED])
+    rows = runner(api).run(app_id: "app", version: "1.7.2", manifest_path: @manifest_path, apply: true, library_only: true)
+
+    refute(api.writes.any? { |call| call[1] == "/v1/appAssetLibraryPlacements" })
+    refute(api.calls.any? { |call| call.first == :delete })
+    reserved = api.writes.select { |call| call[0] == :post && call[1] == "/v1/appAssetLibraryImages" }
+                  .map { |call| call[2]["data"]["attributes"]["referenceName"] }
+    assert_equal 3, reserved.size, "en header, uk header, uk search; en search is reused"
+    refute_includes reserved, approved
+    assert(rows.select { |row| row[:localization_id] && row[:path] }.all? { |row| row[:action] == :uploaded_only })
+  end
+
   def test_apply_reuses_an_image_already_in_the_library
     reference = AppStoreCreativeAssets.reference_name("header", @manifest["en-US"]["header"])
     api = StubApi.new(library_images: { reference => [{ "id" => "img-existing", "attributes" => { "state" => "PREPARE_FOR_SUBMISSION" } }] })
@@ -149,14 +166,50 @@ class AppStoreCreativeAssetsTest < Minitest::Test
     assert_equal "img-existing", header_placement[2]["data"]["relationships"]["image"]["data"]["id"]
   end
 
-  def test_apply_on_a_version_in_review_or_live_uploads_but_does_not_place
-    %w[WAITING_FOR_REVIEW READY_FOR_SALE].each do |state|
+  def test_apply_on_a_version_in_review_uploads_but_does_not_place
+    api = StubApi.new(version_state: "WAITING_FOR_REVIEW")
+    rows = runner(api).run(app_id: "app", version: "1.7.2", manifest_path: @manifest_path, apply: true)
+    refute(api.writes.any? { |call| call[1] == "/v1/appAssetLibraryPlacements" })
+    assert_equal 4, api.writes.count { |call| call[1] == "/v1/appAssetLibraryImages" }
+    assert(rows.select { |row| row[:localization_id] && row[:path] }.all? { |row| row[:action] == :uploaded_only })
+  end
+
+  def test_apply_on_a_live_version_without_approved_images_uploads_only
+    %w[READY_FOR_DISTRIBUTION READY_FOR_SALE].each do |state|
       api = StubApi.new(version_state: state)
       rows = runner(api).run(app_id: "app", version: "1.7.2", manifest_path: @manifest_path, apply: true)
       refute(api.writes.any? { |call| call[1] == "/v1/appAssetLibraryPlacements" }, state)
       assert_equal 4, api.writes.count { |call| call[1] == "/v1/appAssetLibraryImages" }, state
       assert(rows.select { |row| row[:localization_id] && row[:path] }.all? { |row| row[:action] == :uploaded_only }, state)
     end
+  end
+
+  def test_apply_on_a_live_version_places_only_approved_images
+    approved = AppStoreCreativeAssets.reference_name("header", @manifest["en-US"]["header"])
+    pending = AppStoreCreativeAssets.reference_name("search", @manifest["en-US"]["search"])
+    api = StubApi.new(version_state: "READY_FOR_DISTRIBUTION", library_images: {
+      approved => [{ "id" => "img-approved", "attributes" => { "state" => "APPROVED" } }],
+      pending => [{ "id" => "img-pending", "attributes" => { "state" => "WAITING_FOR_REVIEW" } }]
+    }, image_states: %w[APPROVED])
+    rows = runner(api).run(app_id: "app", version: "1.7.2", manifest_path: @manifest_path, apply: true)
+    placed = api.writes.select { |call| call[1] == "/v1/appAssetLibraryPlacements" }
+                .map { |call| call[2]["data"]["relationships"]["image"]["data"]["id"] }
+    assert_equal ["img-approved"], placed
+    assert_includes rows.map { |row| [row[:locale], row[:placement], row[:action]] }, ["en-US", "search", :uploaded_only]
+  end
+
+  def test_a_live_version_places_the_approved_image_not_a_sibling
+    reference = AppStoreCreativeAssets.reference_name("header", @manifest["en-US"]["header"])
+    api = StubApi.new(version_state: "READY_FOR_DISTRIBUTION", library_images: {
+      reference => [{ "id" => "img-in-review", "attributes" => { "state" => "WAITING_FOR_REVIEW" } },
+                    { "id" => "img-approved", "attributes" => { "state" => "APPROVED" } }]
+    })
+    runner(api).run(app_id: "app", version: "1.7.2", manifest_path: @manifest_path, apply: true)
+    placed = api.writes.select { |call| call[1] == "/v1/appAssetLibraryPlacements" }
+                .map { |call| call[2]["data"]["relationships"]["image"]["data"]["id"] }
+    assert_equal ["img-approved"], placed
+    lookups = api.calls.count { |call| call[0] == :get && call[2]["filter[referenceName]"] == reference }
+    assert_equal 1, lookups
   end
 
   def test_all_images_upload_before_the_first_placement
@@ -168,8 +221,8 @@ class AppStoreCreativeAssetsTest < Minitest::Test
     assert_operator last_upload, :<, first_place
   end
 
-  def test_dry_run_still_reads_a_live_version
-    api = StubApi.new(version_state: "READY_FOR_SALE")
+  def test_dry_run_on_a_live_version_without_approved_images_promises_nothing
+    api = StubApi.new(version_state: "READY_FOR_DISTRIBUTION")
     rows = runner(api).run(app_id: "app", version: "1.7.1", manifest_path: @manifest_path)
     refute_empty rows
     assert_empty api.writes
