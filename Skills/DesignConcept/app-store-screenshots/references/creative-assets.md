@@ -48,13 +48,18 @@ tools/upload-creative-assets [X.Y.Z]                         # plan, confirm, up
 - The uploader never deletes or archives, never replaces an occupied slot, and
   never submits or publishes. To swap an asset already placed, remove the old
   placement in ASC by hand first, then re-run.
-- `apply` uploads every image first, then places. It places only on a version
-  in `PREPARE_FOR_SUBMISSION` or a rejected state. ASC refuses placements on a
-  version in review (`409 STATE_ERROR.INVALID_STATE`, seen on 1.7.2 in
-  `WAITING_FOR_REVIEW`), and a live version would need Publish, the user's
-  step. In those states the plan shows `upload_only` and the run fills the
-  library only; re-run on the next prepared version to place the same images
-  (they are reused by `referenceName`, nothing uploads twice).
+- `apply` uploads every image first, then places. Where it places depends on
+  the version state:
+  - `PREPARE_FOR_SUBMISSION` or a rejected state: every image; the placements
+    ship with the next submission.
+  - Live (`READY_FOR_DISTRIBUTION`, legacy `READY_FOR_SALE`): only images
+    already `APPROVED`. Each placement is `ACTIVE` at once, no Publish step
+    (36 placements on 1.7.2, 2026-11-11). A new image uploads only; after Apple
+    approves it in the library, re-run to place it.
+  - In review: none. ASC returns `409 STATE_ERROR.INVALID_STATE` (seen on 1.7.2
+    in `WAITING_FOR_REVIEW`). The run fills the library only.
+  Rows that cannot be placed show `upload_only` in the plan, before the
+  confirmation. Re-runs reuse images by `referenceName`; nothing uploads twice.
 - If ASC refuses a placement anyway, the run stops with the API error; uploaded
   images stay in the library for the next run. A reservation left in
   `AWAITING_UPLOAD` by a killed run is not reused; a fresh one is made.
