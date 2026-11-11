@@ -35,11 +35,16 @@ module AppStoreCreativeAssets
   READY_STATES = %w[PREPARE_FOR_SUBMISSION READY_FOR_REVIEW WAITING_FOR_REVIEW IN_REVIEW ACCEPTED APPROVED].freeze
   # Version states that take new placements. ASC refuses them on a version in
   # review (WAITING_FOR_REVIEW returned 409 STATE_ERROR.INVALID_STATE on
-  # 2026-11-10), and on a live version they would need Publish, which this tool
-  # never does. In any other state the images still go to the library.
+  # 2026-11-10). In any other state the images still go to the library.
   PLACEABLE_VERSION_STATES = %w[
     PREPARE_FOR_SUBMISSION DEVELOPER_REJECTED REJECTED METADATA_REJECTED
   ].freeze
+  # A live version takes placements too: on 2026-11-11 ASC accepted 36 of them
+  # on 1.7.2 in READY_FOR_DISTRIBUTION, each ACTIVE at once, no Publish step.
+  # Only APPROVED images were placed then, so on a live version only an image
+  # already APPROVED is placed; a new or unreviewed one is uploaded only.
+  # READY_FOR_SALE is the older appStoreState name for the same state.
+  LIVE_VERSION_STATES = %w[READY_FOR_DISTRIBUTION READY_FOR_SALE].freeze
 
   module_function
 
@@ -143,17 +148,30 @@ module AppStoreCreativeAssets
     def run(app_id:, version:, manifest_path:, apply: false)
       manifest = JSON.parse(File.read(manifest_path))
       version_id, state = find_version(app_id, version)
-      placeable = PLACEABLE_VERSION_STATES.include?(state)
+      live = LIVE_VERSION_STATES.include?(state)
+      placeable = live || PLACEABLE_VERSION_STATES.include?(state)
       localizations = localizations_of(version_id)
       library_id = @api.get("/v1/apps/#{app_id}/assetLibrary").dig("data", "id") || raise(Error, "app has no asset library")
       existing = existing_placements(localizations)
       rows = AppStoreCreativeAssets.plan(manifest: manifest, localizations: localizations, existing: existing)
-      unless placeable
-        # Say it in the plan, before anyone confirms: this version takes no
-        # placements, so the run can only fill the library.
+      # Say it in the plan, before anyone confirms.
+      if !placeable
         rows.each { |row| row[:action] = :upload_only if row[:action] == :create }
         @out.puts("#{version} is #{state}: no placements possible; apply uploads to the Asset Library only. " \
-                  "Placements need a version in #{PLACEABLE_VERSION_STATES.join(', ')}.")
+                  "Placements need a version in #{(PLACEABLE_VERSION_STATES + LIVE_VERSION_STATES).join(', ')}.")
+      elsif live
+        # The placed image is the APPROVED one found here, never another
+        # image that shares its referenceName.
+        approved = {}
+        rows.each do |row|
+          next unless row[:action] == :create
+
+          ref = row[:reference_name]
+          approved[ref] = approved_image_id(library_id, ref) unless approved.key?(ref)
+          approved[ref] ? row[:image_id] = approved[ref] : row[:action] = :upload_only
+        end
+        @out.puts("#{version} is #{state} (live): `create` rows go on the App Store at once. " \
+                  "Only images already APPROVED are placed; the rest upload only and wait for review.")
       end
       print_plan(version, rows)
       return rows unless apply
@@ -163,7 +181,7 @@ module AppStoreCreativeAssets
       # Upload every image first, so a refused placement never leaves the
       # library half filled; then place, only where the version allows it.
       image_ids = {}
-      pending.each { |row| image_ids[row[:reference_name]] ||= find_or_upload_image(library_id, row) }
+      pending.each { |row| image_ids[row[:reference_name]] ||= row[:image_id] || find_or_upload_image(library_id, row) }
       pending.each do |row|
         if row[:action] == :create
           place(row, image_ids.fetch(row[:reference_name]))
@@ -216,6 +234,12 @@ module AppStoreCreativeAssets
 
         raise Error, "#{row[:path]} does not match manifest.json (#{actual[0, 12]} != #{row[:sha256][0, 12]}); re-run the generator"
       end
+    end
+
+    def approved_image_id(library_id, reference_name)
+      @api.get("/v1/appAssetLibraries/#{library_id}/images",
+               "filter[referenceName]" => reference_name)["data"].to_a
+          .find { |item| item.dig("attributes", "state") == "APPROVED" }&.fetch("id")
     end
 
     def find_or_upload_image(library_id, row)
