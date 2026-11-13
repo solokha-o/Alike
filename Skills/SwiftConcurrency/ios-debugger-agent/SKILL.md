@@ -47,6 +47,10 @@ Use this section when the user wants easier access to premium, paywalled, entitl
 4. Keep the production default unchanged.
 5. Validate by building the app and, when needed, running the simulator flow that exercises the gated feature.
 
+### Fake library
+- To show screens with data on a simulator, launch with `-AlikeFakeLibrary <scenario>`.
+  Scenarios, the premium flag and the capture tests: `references/fake-library.md`.
+
 ### Premium feature guidance
 - For premium or entitlement work, prefer:
   - debug-only storage key in shared/core models only when it improves consistency
