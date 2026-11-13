@@ -16,9 +16,10 @@ class StubClient
   attr_reader :writes
 
   # prices: [[territory, currency, point_id, price, start_date_or_nil, preserved]]
-  def initialize(prices:, win_back_offers: [])
+  def initialize(prices:, win_back_offers: [], win_back_prices: {})
     @prices = prices
     @win_back_offers = win_back_offers
+    @win_back_prices = win_back_prices
     @writes = []
     @next_id = 0
   end
@@ -57,6 +58,11 @@ class StubClient
       POINTS.fetch(territory, []).map { |price| { "id" => "#{territory}-#{price}", "attributes" => { "customerPrice" => price } } }
     when %r{/winBackOffers\?}
       @win_back_offers
+    when %r{/winBackOffers/([^/]+)/prices}
+      @win_back_prices.fetch(Regexp.last_match(1), {}).map do |territory, point|
+        { "relationships" => { "territory" => { "data" => { "id" => territory } },
+                               "subscriptionPricePoint" => { "data" => { "id" => point } } } }
+      end
     else
       raise "unexpected paged #{path}"
     end
@@ -170,12 +176,14 @@ class SchedulePriceTest < Minitest::Test
     assert_empty client.writes
   end
 
-  def test_a_scheduled_change_without_preserve_is_a_conflict
+  def test_a_scheduled_row_with_another_preserved_value_is_unchanged_with_a_warning
     scheduled = LIVE_PRICES + [["USA", "USD", "USA-8.99", "8.99", D_DAY, false]]
     client = StubClient.new(prices: scheduled)
+    plan, output = run_schedule(client, apply: true)
 
-    assert_raises(RuntimeError) { run_schedule(client, apply: true) }
-    assert_empty client.writes
+    assert_equal "unchanged", plan.find { |entry| entry[:territory] == "USA" }[:action]
+    assert_includes output, "live preserved=false, check the preserve choice"
+    assert_equal 2, client.writes.length
   end
 
   def test_a_missing_price_point_names_the_nearest_ones
@@ -273,6 +281,8 @@ class WinBackOfferTest < Minitest::Test
     attributes = body.dig(:data, :attributes)
     assert_equal "alike.winback.monthly.1", attributes[:offerId]
     assert_equal({ minimum: 1 }, attributes[:customerEligibilityTimeSinceLastSubscribedInMonths])
+    refute attributes.key?(:endDate)
+    refute attributes.key?(:customerEligibilityWaitBetweenOffersInMonths)
     assert_equal 3, body[:included].length
     usa = body[:included].find { |price| price.dig(:relationships, :territory, :data, :id) == "USA" }
     assert_equal "USA-1.99", usa.dig(:relationships, :subscriptionPricePoint, :data, :id)
@@ -286,12 +296,27 @@ class WinBackOfferTest < Minitest::Test
       "customerEligibilityTimeSinceLastSubscribedInMonths" => { "minimum" => 1, "maximum" => nil },
       "startDate" => D_DAY, "priority" => "NORMAL", "promotionIntent" => "NOT_PROMOTED"
     }
-    client = StubClient.new(prices: LIVE_PRICES, win_back_offers: [{ "id" => "wb1", "attributes" => live_attributes }])
-    action, output = run_upload(client, apply: true)
+    live_prices = { "wb1" => { "USA" => "USA-1.99", "DEU" => "DEU-1.99", "UKR" => "UKR-2.49" } }
+    client = StubClient.new(prices: LIVE_PRICES, win_back_offers: [{ "id" => "wb1", "attributes" => live_attributes }],
+                            win_back_prices: live_prices)
+    action, = run_upload(client, apply: true)
 
     assert_equal "unchanged", action
     assert_empty client.writes
-    assert_includes output, "does not compare them"
+
+    error = assert_raises(RuntimeError) { run_upload(client, apply: true, base_price: "9.99") }
+    assert_match(/price DEU: "DEU-1.99" -> "DEU-9.99"/, error.message)
+
+    error = assert_raises(RuntimeError) { run_upload(client, apply: true, wait_months: 6) }
+    assert_match(/customerEligibilityWaitBetweenOffersInMonths: nil -> 6/, error.message)
+    assert_empty client.writes
+  end
+
+  def test_an_override_for_a_territory_that_is_not_sold_fails
+    client = StubClient.new(prices: LIVE_PRICES.reject { |row| row[0] == "UKR" })
+    error = assert_raises(RuntimeError) { run_upload(client, apply: true, overrides: [["UKR", BigDecimal("2.49")]]) }
+    assert_match(/not sold.*UKR/, error.message)
+    assert_empty client.writes
   end
 
   def test_same_offer_id_with_other_values_is_a_conflict

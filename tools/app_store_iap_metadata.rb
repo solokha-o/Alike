@@ -884,17 +884,21 @@ def plan_subscription_price_change(price_rows:, desired:, start_date:, preserve_
       next entry.merge(action: "conflict", reason: "no desired price point for this territory")
     end
 
-    matching = scheduled.find do |row|
-      row[:start_date] == start_date && row[:point_id] == target.fetch(:id) &&
-        (row[:preserved].nil? || row[:preserved] == preserve_current_price)
-    end
+    # Apple does not document whether `preserved` echoes preserveCurrentPrice,
+    # so a row with the same date and price point matches; a different
+    # `preserved` value is printed for a human to check, never rewritten.
+    matching = scheduled.find { |row| row[:start_date] == start_date && row[:point_id] == target.fetch(:id) }
     others = scheduled - [matching]
 
     if !others.empty?
       found = others.map { |row| "#{format_price(row[:price])} from #{row[:start_date]} preserved=#{row[:preserved].inspect}" }.join("; ")
       entry.merge(action: "conflict", reason: "another price change is already scheduled: #{found}")
     elsif matching
-      entry.merge(action: "unchanged", reason: "already scheduled")
+      reason = "already scheduled"
+      if !matching[:preserved].nil? && matching[:preserved] != preserve_current_price
+        reason += "; live preserved=#{matching[:preserved]}, check the preserve choice in App Store Connect"
+      end
+      entry.merge(action: "unchanged", reason: reason)
     elsif current && current[:point_id] == target.fetch(:id)
       entry.merge(action: "unchanged", reason: "already the current price")
     else
@@ -1082,7 +1086,8 @@ def win_back_attributes(options, today)
     priority: options[:priority],
     promotionIntent: options[:promotion_intent]
   }
-  attributes[:customerEligibilityWaitBetweenOffersInMonths] = options[:wait_months] if options[:wait_months]
+  attributes[:customerEligibilityWaitBetweenOffersInMonths] = options[:wait_months]
+  attributes[:endDate] = nil
   if options[:end_date]
     end_date = parse_iso_date(options[:end_date], "--end-date")
     raise "--end-date must be at least 3 days after --start-date" if end_date < start_date + 3
@@ -1094,11 +1099,28 @@ end
 
 # Pure: compare a live win-back offer with the desired attributes. Returns the
 # differing keys as "key: live -> desired".
+# A nil desired value means "not set" and must be nil (or absent) live too.
 def win_back_differences(live_attributes, desired_attributes)
   desired_attributes.each_with_object([]) do |(key, value), differences|
     live_value = live_attributes[key.to_s]
     live_value = live_value.transform_keys(&:to_sym).reject { |_, v| v.nil? } if live_value.is_a?(Hash)
     differences << "#{key}: #{live_value.inspect} -> #{value.inspect}" unless live_value == value
+  end
+end
+
+# Live price point per territory of one offer. GET /v1/winBackOffers/{id}/prices.
+def live_win_back_prices(client, offer_id)
+  client.paged("/v1/winBackOffers/#{offer_id}/prices?limit=200").to_h do |price|
+    [price.dig("relationships", "territory", "data", "id"), price.dig("relationships", "subscriptionPricePoint", "data", "id")]
+  end
+end
+
+# Pure: territories whose live offer price point differs from the desired one.
+def win_back_price_differences(live_prices, desired_prices)
+  (live_prices.keys | desired_prices.keys).sort.each_with_object([]) do |territory_id, differences|
+    live_point = live_prices[territory_id]
+    desired_point = desired_prices.dig(territory_id, :id)
+    differences << "price #{territory_id}: #{live_point.inspect} -> #{desired_point.inspect}" unless live_point == desired_point
   end
 end
 
@@ -1119,7 +1141,7 @@ def win_back_offer_payload(subscription_id:, attributes:, prices:)
   {
     data: {
       type: "winBackOffers",
-      attributes: attributes,
+      attributes: attributes.reject { |_, value| value.nil? },
       relationships: {
         subscription: { data: { type: "subscriptions", id: subscription_id } },
         prices: { data: included.map { |price| { type: "winBackOfferPrices", id: price[:id] } } }
@@ -1137,6 +1159,9 @@ def upload_win_back_offer(client, options, today: Date.today, io: $stdout)
   subscription_id = find_subscription(client, app_id, product_id).fetch("id")
   price_rows = subscription_price_rows(client, subscription_id)
   sold_territories = price_rows.keys.sort
+
+  unsold = options.fetch(:overrides).map(&:first) - sold_territories
+  raise "Territories not sold for #{product_id}: #{unsold.sort.join(", ")}; check the codes (alpha-3, such as USA)" unless unsold.empty?
 
   prices = if attributes[:offerMode] == "FREE_TRIAL"
              {}
@@ -1166,17 +1191,19 @@ def upload_win_back_offer(client, options, today: Date.today, io: $stdout)
 
   live = client.paged("/v1/subscriptions/#{subscription_id}/winBackOffers?limit=200")
   existing = live.find { |offer| offer.dig("attributes", "offerId") == attributes[:offerId] }
+  differences = []
+  if existing
+    differences = win_back_differences(existing.fetch("attributes"), attributes) +
+                  win_back_price_differences(live_win_back_prices(client, existing.fetch("id")), prices)
+  end
   action = if existing.nil?
              "create"
-           elsif (differences = win_back_differences(existing.fetch("attributes"), attributes)).empty?
+           elsif differences.empty?
              "unchanged"
            else
              "conflict"
            end
   io.puts "summary territories=#{prices.length} live_offers=#{live.length} action=#{action}"
-  if action == "unchanged"
-    io.puts "note: only the attributes match; check the live offer prices in App Store Connect, the command does not compare them"
-  end
 
   if action == "conflict"
     raise "win-back offer #{attributes[:offerId]} exists with different values; nothing written. " \

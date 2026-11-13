@@ -260,8 +260,10 @@ summary territories=175 create=175 unchanged=0 conflict=0
 Actions:
 
 - `create`: `--apply` creates this price row.
-- `unchanged`: the same price point is already scheduled for the same date
-  with the same preserve choice, or it is already the current price.
+- `unchanged`: the same price point is already scheduled for the same date,
+  or it is already the current price. Apple does not document whether the
+  live `preserved` field echoes `preserveCurrentPrice`. If it differs, the
+  line says so: check the preserve choice in App Store Connect.
 - `conflict`: another price change is already scheduled for this territory.
 
 `--snapshot PATH` writes the current price point of every territory to a JSON
@@ -327,8 +329,10 @@ bundle exec ruby tools/app_store_iap_metadata.rb upload-win-back-offer \
 ```
 
 The plan prints the offer, one `offer_price` line per territory and
-`action=create`, `unchanged` (an offer with this offer id and the same values
-exists) or `conflict` (the offer id exists with other values).
+`action=create`, `unchanged` (an offer with this offer id, the same values and
+the same price in every territory exists) or `conflict` (the offer id exists
+with other values or other prices). An option you leave out, such as
+`--end-date`, must be empty on the live offer too.
 
 ### Rollback of a win-back offer
 
