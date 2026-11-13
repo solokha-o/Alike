@@ -61,12 +61,9 @@ enum AppComposition {
     /// answers from its scenario instead. Release uses StoreKit alone.
     static func makePremiumAccess(base: SubscriptionStore) -> any PremiumAccessControlling {
 #if DEBUG
-        if let fake = FakeLibraryEnvironment.current {
-            return fake.premiumAccess
-        }
-        return DebugPremiumAccessController(base: base)
+        makePremiumAccess(base: base, fake: FakeLibraryEnvironment.current)
 #else
-        return base
+        base
 #endif
     }
 
@@ -76,13 +73,13 @@ enum AppComposition {
         premiumAccess: any PremiumAccessControlling
     ) -> ScannerViewModel {
 #if DEBUG
-        if let fake = FakeLibraryEnvironment.current {
+        if let stores = scannerStores(fake: FakeLibraryEnvironment.current) {
             return ScannerViewModel(
                 workspace: workspace,
                 sensitivity: sensitivity,
                 premiumAccess: premiumAccess,
-                scanUsageRepository: fake.scanUsageRepository,
-                premiumPromptHistoryRepository: fake.premiumPromptRepository
+                scanUsageRepository: stores.scanUsage,
+                premiumPromptHistoryRepository: stores.premiumPrompt
             )
         }
 #endif
@@ -93,12 +90,41 @@ enum AppComposition {
     /// file store `ClusterDetailsView` used before this parameter existed.
     static func makeDetailsReviewRepository() -> any ClusterReviewStateRepository {
 #if DEBUG
-        if let fake = FakeLibraryEnvironment.current {
+        makeDetailsReviewRepository(fake: FakeLibraryEnvironment.current)
+#else
+        FileClusterReviewStateRepository()
+#endif
+    }
+
+#if DEBUG
+    // The forms below take the environment as a parameter, so tests can pass one;
+    // the app passes `FakeLibraryEnvironment.current`.
+
+    static func makePremiumAccess(
+        base: SubscriptionStore,
+        fake: FakeLibraryEnvironment?
+    ) -> any PremiumAccessControlling {
+        if let fake {
+            return fake.premiumAccess
+        }
+        return DebugPremiumAccessController(base: base)
+    }
+
+    /// The Scanner's scan counts and prompt history, or `nil` for the real ones.
+    static func scannerStores(
+        fake: FakeLibraryEnvironment?
+    ) -> (scanUsage: any ScanUsageRepository, premiumPrompt: any PremiumPromptHistoryRepository)? {
+        guard let fake else { return nil }
+        return (fake.scanUsageRepository, fake.premiumPromptRepository)
+    }
+
+    static func makeDetailsReviewRepository(fake: FakeLibraryEnvironment?) -> any ClusterReviewStateRepository {
+        if let fake {
             return fake.reviewRepository
         }
-#endif
         return FileClusterReviewStateRepository()
     }
+#endif
 
     /// `nil` keeps `WelcomeView`'s own default view model.
     static func makeWelcomeViewModel() -> WelcomeViewModel? {

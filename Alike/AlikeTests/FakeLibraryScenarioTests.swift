@@ -1,6 +1,7 @@
 import Core
 import Foundation
 import Photos
+import Purchases
 import Storage
 import Testing
 @testable import Alike
@@ -87,17 +88,40 @@ struct FakeLibraryScenarioTests {
 
     /// A fake rescan must not use the real free scans.
     @Test func testScanCountsStayOutOfTheRealDefaults() async {
+        let suiteName = "FakeLibraryScenarioTests.scanUsage.\(UUID().uuidString)"
+        defer { UserDefaults.standard.removePersistentDomain(forName: suiteName) }
         let date = Date()
         let realBefore = await UserDefaultsScanUsageRepository().loadMonthlyUsage(at: date)
-        let environment = FakeLibraryEnvironment(scenario: .oneCluster, isPremium: false)
+        let environment = FakeLibraryEnvironment(scenario: .oneCluster, isPremium: false, scanUsageSuiteName: suiteName)
         _ = await environment.scanUsageRepository.recordCompletedScan(at: date)
 
         #expect(await environment.scanUsageRepository.loadMonthlyUsage(at: date)?.completedScanCount == 1)
         #expect(await UserDefaultsScanUsageRepository().loadMonthlyUsage(at: date) == realBefore)
 
         // A new fake session starts with no scans counted.
-        let next = FakeLibraryEnvironment(scenario: .oneCluster, isPremium: false)
+        let next = FakeLibraryEnvironment(scenario: .oneCluster, isPremium: false, scanUsageSuiteName: suiteName)
         #expect(await next.scanUsageRepository.loadMonthlyUsage(at: date) == nil)
+    }
+
+    /// What `RootView` gets from `AppComposition`: the fake stores in fake mode, the
+    /// shipped ones otherwise.
+    @Test func testCompositionHandsTheFakeStoresToTheScreens() {
+        let environment = FakeLibraryEnvironment(scenario: .oneCluster, isPremium: false)
+        let store = SubscriptionStore(catalog: .production)
+
+        let fakeAccess = AppComposition.makePremiumAccess(base: store, fake: environment)
+        #expect(fakeAccess is MockPremiumAccessController)
+        #expect(!fakeAccess.entitlementState.isPremium)
+        #expect(AppComposition.makePremiumAccess(base: store, fake: nil) is DebugPremiumAccessController)
+
+        let stores = AppComposition.scannerStores(fake: environment)
+        #expect((stores?.scanUsage as? UserDefaultsScanUsageRepository) === environment.scanUsageRepository)
+        #expect((stores?.premiumPrompt as? MockPremiumPromptHistoryRepository) === environment.premiumPromptRepository)
+        #expect(AppComposition.scannerStores(fake: nil) == nil)
+
+        let review = AppComposition.makeDetailsReviewRepository(fake: environment)
+        #expect((review as? MockClusterReviewStateRepository) === environment.reviewRepository)
+        #expect(AppComposition.makeDetailsReviewRepository(fake: nil) is FileClusterReviewStateRepository)
     }
 
     @Test func testDrawnPhotosAreJPEGs() {

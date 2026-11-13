@@ -59,21 +59,30 @@ final class FakeLibraryEnvironment {
     private(set) var categoryAssets: [PHAsset] = []
     private var preparation: Task<Void, Never>?
 
-    init(scenario: FakeLibraryScenario, isPremium: Bool, requestsPhotoAccess: Bool = true) {
+    /// - Parameter scanUsageSuiteName: Tests pass their own, so parallel tests do not
+    ///   empty each other's counts.
+    init(
+        scenario: FakeLibraryScenario,
+        isPremium: Bool,
+        requestsPhotoAccess: Bool = true,
+        scanUsageSuiteName: String = FakeLibraryEnvironment.scanUsageSuiteName
+    ) {
         self.scenario = scenario
         self.isPremium = isPremium
         self.requestsPhotoAccess = requestsPhotoAccess
         permissionManager = MockPhotoPermissionManager(
             authorizationStatus: scenario.hasPhotoAccess ? .authorized : .denied
         )
-        scanUsageRepository = Self.makeEmptyScanUsageRepository()
+        scanUsageRepository = Self.makeEmptyScanUsageRepository(suiteName: scanUsageSuiteName)
     }
 
     nonisolated static let scanUsageSuiteName = "com.alike.fake-library.scan-usage"
 
-    private nonisolated static func makeEmptyScanUsageRepository() -> UserDefaultsScanUsageRepository {
-        let defaults = UserDefaults(suiteName: scanUsageSuiteName) ?? .standard
-        defaults.removePersistentDomain(forName: scanUsageSuiteName)
+    private nonisolated static func makeEmptyScanUsageRepository(
+        suiteName: String
+    ) -> UserDefaultsScanUsageRepository {
+        let defaults = UserDefaults(suiteName: suiteName) ?? .standard
+        defaults.removePersistentDomain(forName: suiteName)
         return UserDefaultsScanUsageRepository(defaults: defaults)
     }
 
