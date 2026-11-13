@@ -29,15 +29,39 @@ passes it, and the iPad orientations, as `xcodebuild` arguments only:
   build-for-testing
 ```
 
-Then run `-only-testing:AlikeTests/FakeLibraryScreenCaptureTests test-without-building`
-with the same arguments and these variables exported in the shell:
+Then, for each simulator:
+
+1. Boot it through the queue, then grant photo access (the grant needs a
+   booted device):
+
+   ```bash
+   ~/.agent-skills/local/dev-machine-load/scripts/heavy_slot.sh --label "Alike: boot audit iPad" -- \
+     xcrun simctl bootstatus <udid> -b
+   xcrun simctl privacy <udid> grant photos com.alike.app
+   ```
+
+2. For landscape, rotate the booted simulator with the simulator tool. iPadOS
+   ignores the app's own rotation request; the test fails if the orientation is
+   wrong.
+3. Export the variables below in the shell, then run the tests on that device
+   with the same build arguments:
+
+   ```bash
+   ~/.agent-skills/local/dev-machine-load/scripts/heavy_slot.sh --label "Alike: iPad native captures" -- \
+     xcodebuild -project Alike/Alike.xcodeproj -scheme Alike -destination 'id=<udid>' \
+     -derivedDataPath /Volumes/KINGSTON/DeveloperData/Xcode/ProjectBuilds/Alike/ipad-native -jobs 6 \
+     -parallel-testing-enabled NO TARGETED_DEVICE_FAMILY=1,2 \
+     "INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad=UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight" \
+     -only-testing:AlikeTests/FakeLibraryScreenCaptureTests test-without-building
+   ```
+
+4. Shut the simulator down: `xcrun simctl shutdown <udid>`.
+
+Variables:
 
 - `TEST_RUNNER_ALIKE_SCREENSHOT_DIR`: output folder.
 - `TEST_RUNNER_ALIKE_SCREENSHOT_ORIENTATION`: `portrait` or `landscape`.
 - `TEST_RUNNER_ALIKE_SCREENSHOT_STYLE`: `light` or `dark`.
-
-For landscape, rotate the booted simulator first. iPadOS ignores the app's own
-rotation request.
 
 Use a simulator that never ran the iPhone-only build, or erase it first. Otherwise
 iPadOS can reopen the app in the iPhone-shaped window it remembered.
