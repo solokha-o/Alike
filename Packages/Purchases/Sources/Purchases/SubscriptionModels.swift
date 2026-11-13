@@ -15,8 +15,9 @@ public enum SubscriptionPlan: String, CaseIterable, Codable, Hashable, Identifia
 
     public var advertisedPriceUSD: Decimal {
         switch self {
-        case .monthly: Decimal(string: "8.99")!
-        case .yearly: Decimal(string: "34.99")!
+        // Exact cents: 899 × 10⁻² = 8.99, 3499 × 10⁻² = 34.99.
+        case .monthly: Decimal(sign: .plus, exponent: -2, significand: 899)
+        case .yearly: Decimal(sign: .plus, exponent: -2, significand: 3_499)
         }
     }
 
