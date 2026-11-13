@@ -117,7 +117,7 @@ struct SubscriptionCatalogLifetimeTests {
 
     @Test func testLifetimePurchaseNeedsACatalogWithLifetime() async {
         let client = MockStoreKitClient(products: storefrontProducts())
-        let store = makeStore(client: client)
+        let store = makeStore(client: client, catalog: releaseCatalog)
         await store.loadProducts()
 
         await #expect(throws: SubscriptionStoreError.catalogNotConfigured) { try await store.purchaseLifetime() }
