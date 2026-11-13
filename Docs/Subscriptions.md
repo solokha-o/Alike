@@ -18,6 +18,37 @@ Product IDs are permanent. App Store Connect, application code, this document,
 and the StoreKit configuration must match exactly. Never rename or reuse an ID
 for a different product.
 
+### Lifetime (non-consumable)
+
+| Product ID | Type | Intended US price | Status |
+| --- | --- | ---: | --- |
+| `com.alike.app.pro.lifetime` | Non-consumable | Not decided (StoreKit file: $39.99 placeholder) | Not in App Store Connect; paywall does not offer it |
+
+`SubscriptionCatalog.production` knows this ID as `lifetimeProductID`. It is
+not a `SubscriptionPlan`: it has no duration, no trial and no subscription
+group. Owning it grants Premium with no expiration date, and it outranks any
+active subscription. A refund (revocation) removes Premium on the next
+entitlement refresh. `SubscriptionStore.loadProducts` asks StoreKit for it with
+the plans but does not need it: until App Store Connect sells it, StoreKit
+omits it, `lifetimeProduct` stays `nil` and the plans load as before.
+`purchaseLifetime()` sells it once it has loaded. The price, Family Sharing and
+the paywall option belong to Experiment B. Its 18 StoreKit localizations are a
+draft for that card to review before the product is created in App Store
+Connect: `upload-localizations` pushes them once the product exists there.
+
+### A product ID never leaves the catalog
+
+`SubscriptionStore` grants Premium only for IDs in `SubscriptionCatalog`. Once a
+product has been sold, its ID stays in the catalog for good — after an
+experiment ends, after a price moves to a new product, always. Removing it
+takes Premium away from everyone who bought it.
+
+- A plan's sold product is `productID(for:)`. To sell a plan under a new ID,
+  move the old one to `additionalProductIDs` for that plan: its owners keep
+  Premium, and the paywall stops offering it.
+- The lifetime ID stays in `lifetimeProductID`.
+- A changed price on an existing product needs no catalog change.
+
 Customer-facing paywalls must use StoreKit's localized `displayName` and
 `displayPrice`. The prices above describe the intended App Store Connect setup;
 they are not a currency-formatting source for UI.
@@ -202,6 +233,7 @@ controls only for the scenario under test and restore their defaults afterward.
 | Expiration | Disable renewal or expire the transaction and confirm entitlement refresh removes premium. |
 | Revocation/refund | Revoke or refund the transaction and confirm entitlement refresh removes premium. |
 | Upgrade | Buy monthly, then yearly; yearly becomes the active higher-level entitlement. |
+| Lifetime | Not on the paywall yet; exercise `purchaseLifetime()` from a test build. Premium has no expiration date, outranks an active subscription, and a refund removes it. |
 | Trial eligibility | Use a clean transaction history to test the trial, then repurchase in the same group and verify the trial is no longer offered. |
 
 Before release, repeat purchase and restore checks with sandbox products from
