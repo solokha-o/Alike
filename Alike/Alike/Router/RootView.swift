@@ -63,7 +63,7 @@ struct MainTabView: View {
     @State private var tabManager = TabManager()
     @State private var subscriptionStore = SubscriptionStore(catalog: .production)
     @State private var cleanupWorkspace = AppComposition.makeCleanupWorkspace()
-    private let localAppDataDeleter: any LocalAppDataDeleting = LocalAppDataDeletionService()
+    private let localAppDataDeleter: any LocalAppDataDeleting = AppComposition.makeLocalAppDataDeleter()
     private let widgetSnapshotPublisher = WidgetSnapshotPublisher()
     private let photoPermissionManager: any PhotoPermissionManager = AppComposition.makePhotoPermissionManager()
     @Environment(PendingWidgetDestination.self) private var pendingWidgetDestination

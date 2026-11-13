@@ -118,6 +118,10 @@ enum AppComposition {
         return (fake.scanUsageRepository, fake.premiumPromptRepository)
     }
 
+    static func makeLocalAppDataDeleter(fake: FakeLibraryEnvironment?) -> any LocalAppDataDeleting {
+        fake == nil ? LocalAppDataDeletionService() : FakeLibraryDataDeleter()
+    }
+
     static func makeDetailsReviewRepository(fake: FakeLibraryEnvironment?) -> any ClusterReviewStateRepository {
         if let fake {
             return fake.reviewRepository
@@ -125,6 +129,15 @@ enum AppComposition {
         return FileClusterReviewStateRepository()
     }
 #endif
+
+    /// A fake session gets a deleter that opens no store; see `FakeLibraryDataDeleter`.
+    static func makeLocalAppDataDeleter() -> any LocalAppDataDeleting {
+#if DEBUG
+        makeLocalAppDataDeleter(fake: FakeLibraryEnvironment.current)
+#else
+        LocalAppDataDeletionService()
+#endif
+    }
 
     /// `nil` keeps `WelcomeView`'s own default view model.
     static func makeWelcomeViewModel() -> WelcomeViewModel? {

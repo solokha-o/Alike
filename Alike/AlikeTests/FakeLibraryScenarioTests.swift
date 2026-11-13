@@ -122,6 +122,22 @@ struct FakeLibraryScenarioTests {
         let review = AppComposition.makeDetailsReviewRepository(fake: environment)
         #expect((review as? MockClusterReviewStateRepository) === environment.reviewRepository)
         #expect(AppComposition.makeDetailsReviewRepository(fake: nil) is FileClusterReviewStateRepository)
+
+        // The real deleter opens the Core Data store when it is made.
+        #expect(AppComposition.makeLocalAppDataDeleter(fake: environment) is FakeLibraryDataDeleter)
+    }
+
+    /// Each category card counts the photos its screen shows: the mock returns 1
+    /// list for any category.
+    @Test func testCategoryCountsMatchTheirScreens() async throws {
+        let environment = FakeLibraryEnvironment(scenario: .manyClusters, isPremium: true, requestsPhotoAccess: false)
+        await environment.prepare()
+        let snapshots = try await environment.categoryRepository.loadAllSnapshots()
+        let shown = try await environment.analysisService.loadAssets(for: .screenshots)
+        for snapshot in snapshots.values {
+            #expect(snapshot.assetCount == shown.count)
+            #expect(snapshot.localIdentifiers == shown.map(\.localIdentifier))
+        }
     }
 
     @Test func testDrawnPhotosAreJPEGs() {

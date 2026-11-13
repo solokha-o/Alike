@@ -190,13 +190,12 @@ final class FakeLibraryEnvironment {
 
     private func makeCategorySnapshots() -> [CleanupCategoryKind: CleanupCategorySnapshot] {
         guard !categoryAssets.isEmpty else { return [:] }
-        let half = categoryAssets.count / 2
-        let groups: [(CleanupCategoryKind, ArraySlice<PHAsset>)] = [
-            (.screenshots, categoryAssets[..<half]),
-            (.blurredPhotos, categoryAssets[half...]),
-        ]
+        // `MockPhotoAnalysisService.loadAssets(for:)` returns 1 list for every
+        // category, so both categories hold the same photos: each card's count
+        // then matches what its screen shows.
         var snapshots: [CleanupCategoryKind: CleanupCategorySnapshot] = [:]
-        for (kind, assets) in groups {
+        for kind in CleanupCategoryKind.allCases {
+            let assets = categoryAssets
             snapshots[kind] = CleanupCategorySnapshot(
                 kind: kind,
                 localIdentifiers: assets.map(\.localIdentifier),
