@@ -18,21 +18,32 @@ drawn as shipped.
 
 ## Regenerate
 
-1. Run the preflight: `machine_load.sh`. Keep at most 1 booted simulator.
-2. Grant photo access to the app on the iPad simulator:
+Do steps 1-6 for 1 iPad, then repeat them for the other. Keep at most 1 booted
+simulator.
+
+1. Run the preflight: `machine_load.sh`. Shut down any simulator you booted before.
+2. Boot the iPad through the shared queue. A boot outside the queue counts as a
+   user device and stops all heavy work.
+
+   ```bash
+   ~/.agent-skills/local/dev-machine-load/scripts/heavy_slot.sh --label "Alike: boot iPad" -- \
+     xcrun simctl bootstatus <udid> -b
+   ```
+
+3. Grant photo access to the app. The grant needs a booted device.
 
    ```bash
    xcrun simctl privacy <udid> grant photos com.alike.app
    ```
 
-3. Export the output folder in the shell. An `xcodebuild` argument does not reach
+4. Export the output folder in the shell. An `xcodebuild` argument does not reach
    the test.
 
    ```bash
    export TEST_RUNNER_ALIKE_SCREENSHOT_DIR=/path/to/output
    ```
 
-4. Run the suite through the shared queue:
+5. Run the suite through the shared queue:
 
    ```bash
    ~/.agent-skills/local/dev-machine-load/scripts/heavy_slot.sh --label "Alike: iPad captures" -- \
@@ -41,8 +52,9 @@ drawn as shipped.
      -only-testing:AlikeTests/FakeLibraryScreenCaptureTests test
    ```
 
-5. Copy `<output>/ipad-11` and `<output>/ipad-13` here. Images with identical file
-   sizes are blank draws: run again.
+6. Shut down the iPad: `xcrun simctl shutdown <udid>`.
+7. After both iPads, copy `<output>/ipad-11` and `<output>/ipad-13` here. Look at
+   each image: a photo cell that loaded late is not caught by the test.
 
 Without `TEST_RUNNER_ALIKE_SCREENSHOT_DIR` the suite is skipped, so a normal test
 run does not draw screens.
