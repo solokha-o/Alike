@@ -201,6 +201,146 @@ paywall, hedged per `Docs/legal/subscription-disclosure.md`.
 reappears in any of the seventeen locales, Arabic included:
 `IAP_TRIAL_CLAIM_TOKENS` carries the مجان and تجرب stems.
 
+## Price changes and win-back offers
+
+`tools/app_store_iap_metadata.rb` has 3 commands that change prices and
+offers through the App Store Connect API:
+
+- `schedule-subscription-price` schedules a new price for one subscription.
+- `cancel-subscription-price` deletes a scheduled price before its start date.
+- `upload-win-back-offer` creates one win-back offer for one subscription.
+
+All 3 follow the same rules:
+
+- Without `--apply` the command only reads and prints the plan. It writes
+  nothing.
+- Use `--apply` against the real App Store Connect only after the owner says
+  "yes" in chat for that change.
+- A re-run is safe. What already matches shows as `unchanged`.
+- A conflict shows by territory or by offer id. With any conflict, `--apply`
+  writes nothing. Resolve the conflict in App Store Connect by hand.
+- Territories are App Store Connect alpha-3 codes: `USA`, `DEU`, `UKR`.
+- The tests are offline: `ruby tools/app_store_iap_metadata_test.rb`.
+  `tools/local_ci.sh` runs them.
+
+The credentials come from `.env`, as for the other commands. The JWT gem lives
+in the main checkout's bundle. From a worktree, run with
+`BUNDLE_GEMFILE=<main checkout>/Gemfile BUNDLE_PATH=<main checkout>/vendor/bundle`.
+
+### `schedule-subscription-price`
+
+The command finds the price point of `--base-price` in `--base-territory`,
+then takes Apple's equivalent price in every other territory (the same values
+as the App Store Connect dialog "Price by Country or Region"). Each
+`--override TERRITORY=PRICE` replaces one territory. The command then creates
+one price row per territory that sells the subscription, with `--start-date`
+and the preserve choice. `--preserve-current-price` keeps the current price
+for existing subscribers; `--no-preserve-current-price` moves them. You must
+pass one of the two.
+
+Experiment A, the owner decision of 13.11.2026 (dry-run):
+
+```sh
+bundle exec ruby tools/app_store_iap_metadata.rb schedule-subscription-price \
+  --product com.alike.app.pro.monthly \
+  --base-territory USA --base-price 9.99 --override USA=8.99 \
+  --start-date 2026-11-26 --preserve-current-price \
+  --snapshot Docs/price-snapshots/com.alike.app.pro.monthly-<date>.json
+```
+
+Each territory prints one line, then a summary:
+
+```text
+DEU EUR current=6.99 new=9.99 start=2026-11-26 preserveCurrentPrice=true action=create
+UKR USD current=6.99 new=11.99 start=2026-11-26 preserveCurrentPrice=true action=create
+USA USD current=5.99 new=8.99 (override) start=2026-11-26 preserveCurrentPrice=true action=create
+summary territories=175 create=175 unchanged=0 conflict=0
+```
+
+Actions:
+
+- `create`: `--apply` creates this price row.
+- `unchanged`: the same price point is already scheduled for the same date,
+  or it is already the current price. Apple does not document whether the
+  live `preserved` field echoes `preserveCurrentPrice`. If it differs, the
+  line says so: check the preserve choice in App Store Connect.
+- `conflict`: another price change is already scheduled for this territory.
+
+`--snapshot PATH` writes the current price point of every territory to a JSON
+file. Keep the snapshot of the day before the change in
+`Docs/price-snapshots/`: the rollback after the start date needs it.
+`Docs/price-snapshots/com.alike.app.pro.monthly-2026-11-13.json` holds the
+monthly prices of 13.11.2026.
+
+### Rollback of a price change
+
+Before the start date, delete the scheduled rows. Rows already in effect are
+never touched:
+
+```sh
+bundle exec ruby tools/app_store_iap_metadata.rb cancel-subscription-price \
+  --product com.alike.app.pro.monthly --start-date 2026-11-26
+```
+
+After the start date, schedule the old prices from the snapshot. The yearly
+price does not change:
+
+```sh
+bundle exec ruby tools/app_store_iap_metadata.rb schedule-subscription-price \
+  --product com.alike.app.pro.monthly \
+  --prices-file Docs/price-snapshots/com.alike.app.pro.monthly-2026-11-13.json \
+  --start-date <tomorrow or later> --preserve-current-price
+```
+
+Each command first prints the plan. Add `--apply` after the owner says "yes".
+The App Store Connect path by hand is the same as for the change: Alike Pro
+Monthly → Subscription Prices → "+" → "Plan Subscription Price Change".
+
+### `upload-win-back-offer`
+
+The command creates one win-back offer with an offer price in every territory
+that sells the subscription. The offer price comes from `--base-territory`,
+`--base-price` and Apple's equivalents, with `--override` as above. A
+`FREE_TRIAL` offer has no prices.
+
+| Option | API attribute | Values |
+| --- | --- | --- |
+| `--offer-id` | `offerId` | Letters, digits, `.` and `_`, up to 100. Must be new. |
+| `--reference-name` | `referenceName` | Letters, digits, spaces, `.` and `_`, up to 65 |
+| `--offer-mode` | `offerMode` | `PAY_AS_YOU_GO`, `PAY_UP_FRONT`, `FREE_TRIAL` |
+| `--duration` | `duration` | `THREE_DAYS` … `ONE_YEAR` |
+| `--period-count` | `periodCount` | Number of offer periods |
+| `--paid-months` | `customerEligibilityPaidSubscriptionDurationInMonths` | 1–24, 36, 48, 60 |
+| `--since-min`, `--since-max` | `customerEligibilityTimeSinceLastSubscribedInMonths` | Months since the subscription ended |
+| `--wait-months` | `customerEligibilityWaitBetweenOffersInMonths` | 2–24, optional |
+| `--start-date`, `--end-date` | `startDate`, `endDate` | Start after today; end at least 3 days after start, optional |
+| `--priority` | `priority` | `NORMAL` (default), `HIGH` |
+| `--promotion-intent` | `promotionIntent` | `NOT_PROMOTED` (default), `USE_AUTO_GENERATED_ASSETS` |
+
+Example for Experiment C. The values are an example, not a decision:
+
+```sh
+bundle exec ruby tools/app_store_iap_metadata.rb upload-win-back-offer \
+  --product com.alike.app.pro.monthly \
+  --offer-id alike.winback.monthly.1 --reference-name "Win back monthly 1" \
+  --offer-mode PAY_AS_YOU_GO --duration ONE_MONTH --period-count 1 \
+  --base-territory USA --base-price 1.99 \
+  --paid-months 1 --since-min 1 --start-date 2026-11-26
+```
+
+The plan prints the offer, one `offer_price` line per territory and
+`action=create`, `unchanged` (an offer with this offer id, the same values and
+the same price in every territory exists) or `conflict` (the offer id exists
+with other values or other prices). An option you leave out, such as
+`--end-date`, must be empty on the live offer too.
+
+### Rollback of a win-back offer
+
+No command deletes an offer. To stop the offer, open App Store Connect → Alike
+Pro Monthly → Win-Back Offers, then end or delete the offer. The API
+equivalents are `PATCH /v1/winBackOffers/{id}` with an `endDate` and
+`DELETE /v1/winBackOffers/{id}`.
+
 ## App Store Connect setup
 
 1. Create one auto-renewable subscription group named **Alike Pro**.

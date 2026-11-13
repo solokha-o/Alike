@@ -531,6 +531,7 @@ run_metadata_validation() {
   run_step "metadata bundle script tests" python3 tools/prepare_app_store_upload_bundle_test.py
   run_step "altool false failure tests" ruby fastlane/lib/altool_upload_false_failure_test.rb
   run_step "creative assets uploader tests" ruby fastlane/lib/app_store_creative_assets_test.rb
+  run_step "IAP price and win-back tests" ruby tools/app_store_iap_metadata_test.rb
   run_step "creative assets copy tests" python3 tools/generate_app_store_creative_assets_test.py
 }
 
