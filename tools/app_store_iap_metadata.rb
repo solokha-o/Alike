@@ -1108,9 +1108,12 @@ def win_back_differences(live_attributes, desired_attributes)
   end
 end
 
-# Live price point per territory of one offer. GET /v1/winBackOffers/{id}/prices.
+# Live price point per territory of one offer. GET /v1/winBackOffers/{id}/prices,
+# include=territory,subscriptionPricePoint: without `include` the API returns
+# relationship links only, with no ids to compare.
 def live_win_back_prices(client, offer_id)
-  client.paged("/v1/winBackOffers/#{offer_id}/prices?limit=200").to_h do |price|
+  query = URI.encode_www_form("include" => "territory,subscriptionPricePoint", "limit" => 200)
+  client.paged("/v1/winBackOffers/#{offer_id}/prices?#{query}").to_h do |price|
     [price.dig("relationships", "territory", "data", "id"), price.dig("relationships", "subscriptionPricePoint", "data", "id")]
   end
 end

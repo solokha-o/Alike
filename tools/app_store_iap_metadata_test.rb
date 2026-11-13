@@ -58,8 +58,13 @@ class StubClient
       POINTS.fetch(territory, []).map { |price| { "id" => "#{territory}-#{price}", "attributes" => { "customerPrice" => price } } }
     when %r{/winBackOffers\?}
       @win_back_offers
-    when %r{/winBackOffers/([^/]+)/prices}
-      @win_back_prices.fetch(Regexp.last_match(1), {}).map do |territory, point|
+    when %r{/winBackOffers/([^/]+)/prices\?(.*)}
+      offer_id = Regexp.last_match(1)
+      # Like the API: relationship ids only when the request includes them.
+      linked = URI.decode_www_form(Regexp.last_match(2)).to_h.fetch("include", "").split(",").sort == %w[subscriptionPricePoint territory]
+      @win_back_prices.fetch(offer_id, {}).map do |territory, point|
+        next { "relationships" => { "territory" => { "links" => {} }, "subscriptionPricePoint" => { "links" => {} } } } unless linked
+
         { "relationships" => { "territory" => { "data" => { "id" => territory } },
                                "subscriptionPricePoint" => { "data" => { "id" => point } } } }
       end
