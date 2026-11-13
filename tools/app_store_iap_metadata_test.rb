@@ -184,6 +184,15 @@ class SchedulePriceTest < Minitest::Test
     assert_match(/USA has no price point at 8.49; nearest: 8.99/, error.message)
   end
 
+  def test_an_override_for_a_territory_that_is_not_sold_fails_before_any_write
+    client = StubClient.new(prices: LIVE_PRICES)
+    error = assert_raises(RuntimeError) do
+      run_schedule(client, apply: true, overrides: [["USA", BigDecimal("8.99")], ["XYZ", BigDecimal("1.99")]])
+    end
+    assert_match(/not sold.*XYZ/, error.message)
+    assert_empty client.writes
+  end
+
   def test_start_date_must_be_in_the_future_and_preserve_must_be_chosen
     client = StubClient.new(prices: LIVE_PRICES)
     assert_raises(RuntimeError) { run_schedule(client, start_date: TODAY.iso8601) }
@@ -278,10 +287,11 @@ class WinBackOfferTest < Minitest::Test
       "startDate" => D_DAY, "priority" => "NORMAL", "promotionIntent" => "NOT_PROMOTED"
     }
     client = StubClient.new(prices: LIVE_PRICES, win_back_offers: [{ "id" => "wb1", "attributes" => live_attributes }])
-    action, = run_upload(client, apply: true)
+    action, output = run_upload(client, apply: true)
 
     assert_equal "unchanged", action
     assert_empty client.writes
+    assert_includes output, "does not compare them"
   end
 
   def test_same_offer_id_with_other_values_is_a_conflict

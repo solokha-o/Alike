@@ -948,7 +948,11 @@ def price_snapshot(product_id, price_rows, today)
 end
 
 def desired_from_prices_file(path)
-  JSON.parse(File.read(path)).fetch("prices").to_h do |territory_id, entry|
+  prices = JSON.parse(File.read(path)).fetch("prices")
+  empty = prices.select { |_, entry| entry["pricePointId"].nil? }.keys
+  raise "#{path} has no price point for: #{empty.sort.join(", ")}" unless empty.empty?
+
+  prices.to_h do |territory_id, entry|
     [territory_id, { id: entry.fetch("pricePointId"), price: BigDecimal(entry.fetch("customerPrice")), currency: entry["currency"], source: "file" }]
   end
 end
@@ -966,6 +970,9 @@ def schedule_subscription_price(client, options, today: Date.today, io: $stdout)
   price_rows = subscription_price_rows(client, subscription_id)
   raise "#{product_id} has no price rows in App Store Connect" if price_rows.empty?
 
+  unsold = options.fetch(:overrides).map(&:first) - price_rows.keys
+  raise "Territories not sold for #{product_id}: #{unsold.sort.join(", ")}; check the codes (alpha-3, such as USA)" unless unsold.empty?
+
   if options[:snapshot_path]
     File.write(options[:snapshot_path], JSON.pretty_generate(price_snapshot(product_id, price_rows, today)) + "\n")
     io.puts "snapshot written to #{options[:snapshot_path]}"
@@ -979,6 +986,9 @@ def schedule_subscription_price(client, options, today: Date.today, io: $stdout)
               desired_price_points(client, subscription_id: subscription_id, base_territory: base_territory,
                                            base_price: base_price, overrides: options.fetch(:overrides))
             end
+
+  unsold = (options[:prices_file] ? desired.keys : []) - price_rows.keys
+  raise "Territories not sold for #{product_id}: #{unsold.sort.join(", ")}; check the codes (alpha-3, such as USA)" unless unsold.empty?
 
   io.puts "subscription=#{product_id} id=#{subscription_id} mode=#{options[:apply] ? "apply" : "dry-run"}"
   plan = plan_subscription_price_change(price_rows: price_rows, desired: desired, start_date: start_date,
@@ -1164,6 +1174,9 @@ def upload_win_back_offer(client, options, today: Date.today, io: $stdout)
              "conflict"
            end
   io.puts "summary territories=#{prices.length} live_offers=#{live.length} action=#{action}"
+  if action == "unchanged"
+    io.puts "note: only the attributes match; check the live offer prices in App Store Connect, the command does not compare them"
+  end
 
   if action == "conflict"
     raise "win-back offer #{attributes[:offerId]} exists with different values; nothing written. " \
