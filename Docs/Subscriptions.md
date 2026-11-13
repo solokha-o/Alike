@@ -11,7 +11,7 @@ group.
 
 | Presentation | Plan | Product ID | Duration | Intended US price | Introductory offer | Service level |
 | --- | --- | --- | --- | ---: | --- | ---: |
-| Primary | Yearly | `com.alike.app.pro.yearly` | 1 year | $39.99 | 7-day free trial | 1 |
+| Primary | Yearly | `com.alike.app.pro.yearly` | 1 year | $34.99 | 7-day free trial | 1 |
 | Secondary | Monthly | `com.alike.app.pro.monthly` | 1 month | $8.99 | None | 2 |
 
 The table shows the intended price, not the live one. On 13.11.2026 App Store

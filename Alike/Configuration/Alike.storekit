@@ -233,8 +233,8 @@
           "billingPlans" : [
             {
               "billingPlanType" : "BILLED_UPFRONT",
-              "commitmentDisplayPrice" : "39.99",
-              "displayPrice" : "39.99",
+              "commitmentDisplayPrice" : "34.99",
+              "displayPrice" : "34.99",
               "internalID" : "D89CCEE7",
               "isEnabled" : true
             }
@@ -242,7 +242,7 @@
           "codeOffers" : [
 
           ],
-          "displayPrice" : "39.99",
+          "displayPrice" : "34.99",
           "familyShareable" : false,
           "groupNumber" : 1,
           "internalID" : "7C6E12FC",

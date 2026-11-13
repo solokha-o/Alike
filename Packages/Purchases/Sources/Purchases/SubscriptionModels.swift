@@ -16,7 +16,7 @@ public enum SubscriptionPlan: String, CaseIterable, Codable, Hashable, Identifia
     public var advertisedPriceUSD: Decimal {
         switch self {
         case .monthly: Decimal(string: "8.99")!
-        case .yearly: Decimal(string: "39.99")!
+        case .yearly: Decimal(string: "34.99")!
         }
     }
 
