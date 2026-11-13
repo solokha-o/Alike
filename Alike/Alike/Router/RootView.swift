@@ -25,7 +25,7 @@ import WidgetSupport
 
 /// Root view that manages app navigation flow
 struct RootView: View {
-    @State private var router = AppRouter(permissionManager: PhotoPermissionManagerImpl())
+    @State private var router = AppRouter(permissionManager: AppComposition.makePhotoPermissionManager())
 
     var body: some View {
         ZStack {
@@ -35,6 +35,7 @@ struct RootView: View {
                     get: { false },
                     set: { _ in
                         Task {
+                            await AppComposition.prepareLaunch()
                             await router.completeLaunch()
                         }
                     }
@@ -43,7 +44,7 @@ struct RootView: View {
                 WelcomeView(isCompleted: .init(
                     get: { false },
                     set: { _ in router.completeWelcome() }
-                ), mode: mode)
+                ), mode: mode, viewModel: AppComposition.makeWelcomeViewModel())
             case .main:
                 MainTabView {
                     router.restartAfterDataDeletion()
@@ -61,10 +62,10 @@ struct MainTabView: View {
     private let tabs = TabManager.Tab.allCases
     @State private var tabManager = TabManager()
     @State private var subscriptionStore = SubscriptionStore(catalog: .production)
-    @State private var cleanupWorkspace = CleanupWorkspaceModel()
+    @State private var cleanupWorkspace = AppComposition.makeCleanupWorkspace()
     private let localAppDataDeleter: any LocalAppDataDeleting = LocalAppDataDeletionService()
     private let widgetSnapshotPublisher = WidgetSnapshotPublisher()
-    private let photoPermissionManager: any PhotoPermissionManager = PhotoPermissionManagerImpl()
+    private let photoPermissionManager: any PhotoPermissionManager = AppComposition.makePhotoPermissionManager()
     @Environment(PendingWidgetDestination.self) private var pendingWidgetDestination
     private let onDataDeleted: @MainActor @Sendable () -> Void
     @AppStorage(AppPreferenceKey.sensitivity)
@@ -87,12 +88,8 @@ struct MainTabView: View {
     private var debugUnlockCleanupReminders = false
     // swiftformat:enable unusedPrivateDeclarations
 #endif
-    private let cleanupReminderManager: any CleanupReminderManaging = CleanupReminderManager(
-        preferenceRepository: UserDefaultsCleanupReminderPreferenceRepository()
-    )
-    @State private var ratingPrompt = RatingPromptCoordinator(
-        repository: UserDefaultsRatingPromptHistoryRepository()
-    )
+    private let cleanupReminderManager: any CleanupReminderManaging = AppComposition.makeCleanupReminderManager()
+    @State private var ratingPrompt = AppComposition.makeRatingPrompt()
     @State private var crashPrompt = CrashReportPromptCoordinator()
 
     init(onDataDeleted: @escaping @MainActor @Sendable () -> Void) {
@@ -161,6 +158,8 @@ struct MainTabView: View {
             // fifth point, deleting local data, is an explicit call in `onDeleteAllData`
             // below, because by then there is no state left to observe.
             .task(id: widgetSnapshotSignature) {
+                // A fake library must not reach the real widget on the home screen.
+                guard !AppComposition.isFakeLibraryActive else { return }
                 widgetSnapshotPublisher.publish(
                     workspace: cleanupWorkspace,
                     authorization: photoPermissionManager.authorizationStatus,
@@ -290,16 +289,7 @@ struct MainTabView: View {
                 premiumAccess: premiumAccess,
                 subscriptionStore: subscriptionStore,
                 onDeleteAllData: {
-                    await cleanupWorkspace.prepareForDataDeletion()
-                    _ = try await cleanupReminderManager.setEnabled(
-                        false,
-                        isPremiumUnlocked: hasCleanupReminderCustomizationAccess
-                    )
-                    try await localAppDataDeleter.deleteAllData()
-                    // After the wipe, not before: a snapshot published in between would
-                    // put the counts the user just deleted back on their home screen.
-                    widgetSnapshotPublisher.clear()
-                    onDataDeleted()
+                    try await deleteAllLocalData()
                 },
                 onResetBestShotPersonalization: {
                     await cleanupWorkspace.bestShotPersonalizedConfigProvider.reset()
@@ -309,6 +299,25 @@ struct MainTabView: View {
                 )
             )
         }
+    }
+
+    /// Settings' "Delete all data": wipes the stores, then replays onboarding.
+    private func deleteAllLocalData() async throws {
+        // A fake library holds no local data; never wipe the real stores for it.
+        guard !AppComposition.isFakeLibraryActive else {
+            onDataDeleted()
+            return
+        }
+        await cleanupWorkspace.prepareForDataDeletion()
+        _ = try await cleanupReminderManager.setEnabled(
+            false,
+            isPremiumUnlocked: hasCleanupReminderCustomizationAccess
+        )
+        try await localAppDataDeleter.deleteAllData()
+        // After the wipe, not before: a snapshot published in between would
+        // put the counts the user just deleted back on their home screen.
+        widgetSnapshotPublisher.clear()
+        onDataDeleted()
     }
 
     // MARK: - Cleanup destinations
