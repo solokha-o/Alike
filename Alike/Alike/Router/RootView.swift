@@ -104,11 +104,7 @@ struct MainTabView: View {
     }
 
     private var premiumAccess: any PremiumAccessControlling {
-#if DEBUG
-        DebugPremiumAccessController(base: subscriptionStore)
-#else
-        subscriptionStore
-#endif
+        AppComposition.makePremiumAccess(base: subscriptionStore)
     }
 
     private var hasCleanupReminderCustomizationAccess: Bool {
@@ -254,7 +250,7 @@ struct MainTabView: View {
                 onOpenCleanup: {
                     tabManager.navigateToCleanup()
                 },
-                viewModel: ScannerViewModel(
+                viewModel: AppComposition.makeScannerViewModel(
                     workspace: cleanupWorkspace,
                     sensitivity: sensitivity.wrappedValue,
                     premiumAccess: premiumAccess
@@ -338,6 +334,7 @@ struct MainTabView: View {
             enhancementService: cleanupWorkspace.enhancementService,
             overrideMetrics: cleanupWorkspace.bestShotOverrideMetrics,
             personalizedConfigProvider: cleanupWorkspace.bestShotPersonalizedConfigProvider,
+            reviewRepository: AppComposition.makeDetailsReviewRepository(),
             onReviewStateChanged: context.onReviewStateChanged,
             onCleanupCompleted: context.onCleanupCompleted
         )

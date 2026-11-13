@@ -1,6 +1,7 @@
 import Core
 import Foundation
 import Photos
+import Storage
 import Testing
 @testable import Alike
 
@@ -73,17 +74,30 @@ struct FakeLibraryScenarioTests {
         #expect(!environment.permissionManager.isAuthorized)
     }
 
+    /// The fake answer replaces StoreKit's, so `NO` is free even with a sandbox
+    /// subscription, and it matches what `AppComposition` hands to the screens.
     @Test(arguments: [true, false])
-    func testPremiumOverridesStayInTheArgumentDomain(isPremium: Bool) throws {
-        let defaults = try makeDefaults()
+    func testPremiumFlagDecidesEveryFeature(isPremium: Bool) {
         let environment = FakeLibraryEnvironment(scenario: .oneCluster, isPremium: isPremium)
-        environment.applyPremiumOverrides(to: defaults)
-
-        for feature in PremiumFeature.allCases {
-            #expect(defaults.bool(forKey: feature.debugOverrideDefaultsKey) == isPremium)
-            #expect(defaults.persistentDomain(forName: suiteName)?[feature.debugOverrideDefaultsKey] == nil)
-            #expect(environment.premiumAccess.hasAccess(to: feature) == isPremium)
+        #expect(environment.premiumAccess.entitlementState.isPremium == isPremium)
+        for feature in PremiumFeature.allCases where feature != .unlimitedScans {
+            #expect(environment.premiumAccess.hasAccess(to: feature) == isPremium, "\(feature)")
         }
+    }
+
+    /// A fake rescan must not use the real free scans.
+    @Test func testScanCountsStayOutOfTheRealDefaults() async {
+        let date = Date()
+        let realBefore = await UserDefaultsScanUsageRepository().loadMonthlyUsage(at: date)
+        let environment = FakeLibraryEnvironment(scenario: .oneCluster, isPremium: false)
+        _ = await environment.scanUsageRepository.recordCompletedScan(at: date)
+
+        #expect(await environment.scanUsageRepository.loadMonthlyUsage(at: date)?.completedScanCount == 1)
+        #expect(await UserDefaultsScanUsageRepository().loadMonthlyUsage(at: date) == realBefore)
+
+        // A new fake session starts with no scans counted.
+        let next = FakeLibraryEnvironment(scenario: .oneCluster, isPremium: false)
+        #expect(await next.scanUsageRepository.loadMonthlyUsage(at: date) == nil)
     }
 
     @Test func testDrawnPhotosAreJPEGs() {

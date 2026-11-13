@@ -2,6 +2,8 @@ import Cleanup
 import CleanupWorkspace
 import Core
 import PhotoAnalysis
+import Purchases
+import Scanner
 import Storage
 import Welcome
 
@@ -53,6 +55,49 @@ enum AppComposition {
         }
 #endif
         return RatingPromptCoordinator(repository: UserDefaultsRatingPromptHistoryRepository())
+    }
+
+    /// DEBUG keeps the Premium debug toggles on top of StoreKit; a fake library
+    /// answers from its scenario instead. Release uses StoreKit alone.
+    static func makePremiumAccess(base: SubscriptionStore) -> any PremiumAccessControlling {
+#if DEBUG
+        if let fake = FakeLibraryEnvironment.current {
+            return fake.premiumAccess
+        }
+        return DebugPremiumAccessController(base: base)
+#else
+        return base
+#endif
+    }
+
+    static func makeScannerViewModel(
+        workspace: CleanupWorkspaceModel,
+        sensitivity: SensitivityLevel,
+        premiumAccess: any PremiumAccessControlling
+    ) -> ScannerViewModel {
+#if DEBUG
+        if let fake = FakeLibraryEnvironment.current {
+            return ScannerViewModel(
+                workspace: workspace,
+                sensitivity: sensitivity,
+                premiumAccess: premiumAccess,
+                scanUsageRepository: fake.scanUsageRepository,
+                premiumPromptHistoryRepository: fake.premiumPromptRepository
+            )
+        }
+#endif
+        return ScannerViewModel(workspace: workspace, sensitivity: sensitivity, premiumAccess: premiumAccess)
+    }
+
+    /// The store Details reads and writes review state in. Release keeps the
+    /// file store `ClusterDetailsView` used before this parameter existed.
+    static func makeDetailsReviewRepository() -> any ClusterReviewStateRepository {
+#if DEBUG
+        if let fake = FakeLibraryEnvironment.current {
+            return fake.reviewRepository
+        }
+#endif
+        return FileClusterReviewStateRepository()
     }
 
     /// `nil` keeps `WelcomeView`'s own default view model.

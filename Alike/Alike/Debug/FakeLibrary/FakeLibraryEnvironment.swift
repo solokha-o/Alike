@@ -5,11 +5,14 @@ import Foundation
 import os
 import PhotoAnalysis
 import Photos
+import Storage
 
 /// The dependencies of one fake library scenario, built from the public Core mocks.
 ///
 /// Every store is in memory: a fake session never writes Core Data, the JSON files
 /// in Application Support, or the widget snapshot, and it never deletes a photo.
+/// Scan counts go to their own `UserDefaults` suite. Enhancement edits only the
+/// drawn album photos on the simulator and is off on a device.
 final class FakeLibraryEnvironment {
     /// The scenario named by the launch arguments, or `nil` for the real library.
     static let current: FakeLibraryEnvironment? = {
@@ -23,7 +26,6 @@ final class FakeLibraryEnvironment {
             scenario: scenario,
             isPremium: FakeLibraryScenario.isPremiumFromLaunchArguments()
         )
-        environment.applyPremiumOverrides()
         AppLog.ui.info("Fake library: \(scenario.rawValue), premium \(environment.isPremium)")
         return environment
     }()
@@ -48,6 +50,10 @@ final class FakeLibraryEnvironment {
     let assetByteSizeRepository = MockAssetByteSizeRepository()
     let reminderManager = MockCleanupReminderManager()
     let ratingPromptRepository = MockRatingPromptHistoryRepository()
+    let premiumPromptRepository = MockPremiumPromptHistoryRepository()
+    /// Scan counts of the fake session only, so a fake rescan does not use the
+    /// real free scans. Emptied when the environment is made.
+    let scanUsageRepository: UserDefaultsScanUsageRepository
 
     private(set) var clusters: [PhotoCluster] = []
     private(set) var categoryAssets: [PHAsset] = []
@@ -60,22 +66,21 @@ final class FakeLibraryEnvironment {
         permissionManager = MockPhotoPermissionManager(
             authorizationStatus: scenario.hasPhotoAccess ? .authorized : .denied
         )
+        scanUsageRepository = Self.makeEmptyScanUsageRepository()
     }
 
-    /// Forces every Premium debug override on or off for this process only.
-    ///
-    /// The argument domain wins over values a debug toggle saved earlier and is
-    /// never written to disk, so `DebugPremiumAccessController` and the
-    /// `@AppStorage` mirrors in `MainTabView` all read the same answer.
-    func applyPremiumOverrides(to defaults: UserDefaults = .standard) {
-        var domain = defaults.volatileDomain(forName: UserDefaults.argumentDomain)
-        for feature in PremiumFeature.allCases {
-            domain[feature.debugOverrideDefaultsKey] = isPremium
-        }
-        defaults.setVolatileDomain(domain, forName: UserDefaults.argumentDomain)
+    nonisolated static let scanUsageSuiteName = "com.alike.fake-library.scan-usage"
+
+    private nonisolated static func makeEmptyScanUsageRepository() -> UserDefaultsScanUsageRepository {
+        let defaults = UserDefaults(suiteName: scanUsageSuiteName) ?? .standard
+        defaults.removePersistentDomain(forName: scanUsageSuiteName)
+        return UserDefaultsScanUsageRepository(defaults: defaults)
     }
 
-    /// Premium access for a screen built outside `MainTabView`, such as a capture test.
+    /// Premium access for every fake screen. It replaces the StoreKit answer for
+    /// feature gates, so `NO` stays free even with an active sandbox subscription.
+    /// Screens that read `SubscriptionStore` directly (the paywall, the Settings
+    /// plan row) still show the real store.
     var premiumAccess: MockPremiumAccessController {
         MockPremiumAccessController(unlockedFeatures: isPremium ? Set(PremiumFeature.allCases) : [])
     }
@@ -99,9 +104,7 @@ final class FakeLibraryEnvironment {
             cleanupService: cleanupService,
             cleanupHistoryRepository: historyRepository,
             qualityAnalyzer: qualityAnalyzer,
-            enhancementService: PhotoKitEnhancementService(
-                qualityScoreRepository: MockPhotoQualityScoreRepository()
-            ),
+            enhancementService: Self.makeEnhancementService(),
             bestShotOverrideMetrics: MockBestShotOverrideMetricsRepository(),
             bestShotPersonalizedConfigProvider: BestShotPersonalizedScoringConfigProvider(
                 repository: MockBestShotPersonalizationRepository()
@@ -109,6 +112,14 @@ final class FakeLibraryEnvironment {
             assetByteSizeRepository: assetByteSizeRepository,
             now: { FakeLibraryEnvironment.referenceDate }
         )
+    }
+
+    private static func makeEnhancementService() -> any PhotoEnhancementService {
+#if targetEnvironment(simulator)
+        PhotoKitEnhancementService(qualityScoreRepository: MockPhotoQualityScoreRepository())
+#else
+        FakeLibraryEnhancementService()
+#endif
     }
 
     private func load() async {

@@ -59,7 +59,9 @@ struct FakeLibraryScreenCaptureTests {
                 sensitivity: .constant(.medium),
                 viewModel: ScannerViewModel(
                     workspace: workspace,
-                    premiumAccess: environment.premiumAccess
+                    premiumAccess: environment.premiumAccess,
+                    scanUsageRepository: environment.scanUsageRepository,
+                    premiumPromptHistoryRepository: environment.premiumPromptRepository
                 )
             )
         }
@@ -118,7 +120,8 @@ struct FakeLibraryScreenCaptureTests {
                     qualityAnalyzer: workspace.qualityAnalyzer,
                     enhancementService: workspace.enhancementService,
                     overrideMetrics: workspace.bestShotOverrideMetrics,
-                    personalizedConfigProvider: workspace.bestShotPersonalizedConfigProvider
+                    personalizedConfigProvider: workspace.bestShotPersonalizedConfigProvider,
+                    reviewRepository: environment.reviewRepository
                 )
             }
         }

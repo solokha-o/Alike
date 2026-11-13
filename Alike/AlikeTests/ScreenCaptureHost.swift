@@ -8,8 +8,9 @@ import UIKit
 /// `AlikeTests` runs inside `Alike.app`, which has a window scene, so PhotoKit
 /// thumbnails, materials and navigation bars draw as they do for a user.
 ///
-/// Set `TEST_RUNNER_ALIKE_SCREENSHOT_DIR` in the shell before `xcodebuild` to keep
-/// the images. Without it the screens are still drawn and checked, but not saved.
+/// `TEST_RUNNER_ALIKE_SCREENSHOT_DIR`, exported in the shell before `xcodebuild`,
+/// names the output folder. The capture suite runs only when it is set.
+/// The blank check catches an empty window, not a photo that loaded late.
 @MainActor
 final class ScreenCaptureHost {
     private let window: UIWindow
