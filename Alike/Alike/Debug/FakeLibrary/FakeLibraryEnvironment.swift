@@ -189,6 +189,12 @@ final class FakeLibraryEnvironment {
     }
 
     private func makeCategorySnapshots() -> [CleanupCategoryKind: CleanupCategorySnapshot] {
+        Self.makeCategorySnapshots(from: categoryAssets)
+    }
+
+    static func makeCategorySnapshots(
+        from categoryAssets: [PHAsset]
+    ) -> [CleanupCategoryKind: CleanupCategorySnapshot] {
         guard !categoryAssets.isEmpty else { return [:] }
         // `MockPhotoAnalysisService.loadAssets(for:)` returns 1 list for every
         // category, so both categories hold the same photos: each card's count
@@ -201,7 +207,7 @@ final class FakeLibraryEnvironment {
                 localIdentifiers: assets.map(\.localIdentifier),
                 assetCount: assets.count,
                 estimatedSavingsBytes: Int64(assets.count) * 2_400_000,
-                refreshedAt: Self.referenceDate
+                refreshedAt: referenceDate
             )
         }
         return snapshots

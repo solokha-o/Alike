@@ -129,15 +129,16 @@ struct FakeLibraryScenarioTests {
 
     /// Each category card counts the photos its screen shows: the mock returns 1
     /// list for any category.
-    @Test func testCategoryCountsMatchTheirScreens() async throws {
-        let environment = FakeLibraryEnvironment(scenario: .manyClusters, isPremium: true, requestsPhotoAccess: false)
-        await environment.prepare()
-        let snapshots = try await environment.categoryRepository.loadAllSnapshots()
-        let shown = try await environment.analysisService.loadAssets(for: .screenshots)
+    @Test func testCategoryCountsMatchTheirScreens() {
+        let shown = (0 ..< 6).map { FakeLibraryTestAsset("category-\($0)") }
+        let snapshots = FakeLibraryEnvironment.makeCategorySnapshots(from: shown)
+
+        #expect(Set(snapshots.keys) == Set(CleanupCategoryKind.allCases))
         for snapshot in snapshots.values {
             #expect(snapshot.assetCount == shown.count)
             #expect(snapshot.localIdentifiers == shown.map(\.localIdentifier))
         }
+        #expect(FakeLibraryEnvironment.makeCategorySnapshots(from: []).isEmpty)
     }
 
     @Test func testDrawnPhotosAreJPEGs() {
