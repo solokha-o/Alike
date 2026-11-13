@@ -32,6 +32,9 @@ xcrun simctl launch <udid> com.alike.app -AlikeFakeLibrary manyClusters -AlikeFa
   into the album `Alike Fake Library`. On a device nothing is written: the newest
   library photos are used.
 - An unknown scenario name logs an error and keeps the real library.
+- Do not use the DEBUG section of Settings in a fake session. Best Shot
+  Calibration and the Premium toggles there read and write the real stores.
+- Both categories show the same photos: the mock returns 1 list for any category.
 - If photo access is denied, the groups stay empty and only a log line says why.
   Grant access, then launch again.
 
