@@ -12,7 +12,19 @@ group.
 | Presentation | Plan | Product ID | Duration | Intended US price | Introductory offer | Service level |
 | --- | --- | --- | --- | ---: | --- | ---: |
 | Primary | Yearly | `com.alike.app.pro.yearly` | 1 year | $39.99 | 7-day free trial | 1 |
-| Secondary | Monthly | `com.alike.app.pro.monthly` | 1 month | $6.99 | None | 2 |
+| Secondary | Monthly | `com.alike.app.pro.monthly` | 1 month | $8.99 | None | 2 |
+
+The table shows the intended price, not the live one. On 13.11.2026 App Store
+Connect sold the United States at monthly $5.99 and yearly $34.99; Germany at
+€6.99 and €39.99; Ukraine at $6.99 and $39.99. Check the live price in App Store
+Connect before a price decision.
+
+Paywall Experiment A raises only the monthly price, on the release date of the
+ASO R2 texts. App Store Connect calculates every territory from a United States
+base of $9.99 (Germany becomes €9.99), then the United States row is set to
+$8.99 by hand. The option "Preserve current price for existing subscribers"
+keeps the old price for current monthly subscribers. The yearly price does not
+change. The app never states a price: the paywall shows StoreKit `displayPrice`.
 
 Product IDs are permanent. App Store Connect, application code, this document,
 and the StoreKit configuration must match exactly. Never rename or reuse an ID

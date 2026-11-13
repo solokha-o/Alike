@@ -26,7 +26,7 @@ struct SubscriptionStoreTests {
         #expect(SubscriptionPlan.presentationOrder == [.yearly, .monthly])
         #expect(SubscriptionPlan.yearly.isPrimary)
         #expect(!SubscriptionPlan.monthly.isPrimary)
-        #expect(SubscriptionPlan.monthly.advertisedPriceUSD == Decimal(string: "6.99"))
+        #expect(SubscriptionPlan.monthly.advertisedPriceUSD == Decimal(string: "8.99"))
         #expect(SubscriptionPlan.yearly.advertisedPriceUSD == Decimal(string: "39.99"))
         #expect(SubscriptionPlan.monthly.configuredTrialDays == nil)
         #expect(SubscriptionPlan.yearly.configuredTrialDays == 7)
