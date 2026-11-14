@@ -8,6 +8,7 @@
 import Cleanup
 import CleanupWorkspace
 import Core
+import DesignSystem
 import Details
 import Diagnostics
 import Launch
@@ -124,6 +125,8 @@ struct MainTabView: View {
         let _ = subscriptionStore.entitlementState
 
         adaptiveTabView
+            // Photo grids fit their columns to this width on iPad; iPhone ignores it.
+            .dsMeasuresPhotoGridWidth()
             .tint(.accent)
             .subscriptionLegalLinks(SubscriptionConfiguration.legalLinks)
             .task {
@@ -354,6 +357,8 @@ struct MainTabView: View {
             },
             onCleanupCompleted: context.onCleanupCompleted
         )
+        // A sheet can be narrower than the window, so it measures its own width.
+        .dsMeasuresPhotoGridWidth()
     }
 
     /// What has to change before the widget's copy of the aggregates is out of date.
