@@ -14,6 +14,7 @@ or the package graph.
 | [0002](0002-selective-swiftlint.md) | Selective SwiftLint | Accepted |
 | [0003](0003-format-change-process.md) | Format change process | Accepted |
 | [0004](0004-package-dependencies.md) | Package dependencies | Accepted |
+| [0005](0005-ipad-layout.md) | iPad layout: one stack, readable column, width-based grids | Proposed |
 
 ## Status values
 
