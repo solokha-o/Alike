@@ -139,6 +139,7 @@ struct FakeLibraryScreenCaptureTests {
             premiumAccess: environment.premiumAccess,
             qualityAnalyzer: environment.qualityAnalyzer
         )
+        try await ScreenCaptureHost.prepareScene()
         let host = try ScreenCaptureHost {
             NavigationStack {
                 ClusterDetailsView(cluster: cluster, viewModel: viewModel)
@@ -200,6 +201,7 @@ struct FakeLibraryScreenCaptureTests {
         settle: Duration = .seconds(2),
         @ViewBuilder content: () -> some View
     ) async throws {
+        try await ScreenCaptureHost.prepareScene()
         let host = try ScreenCaptureHost(content: content)
         defer { host.close() }
         // The first draw warms PhotoKit; the second, after the wait, is the one kept.

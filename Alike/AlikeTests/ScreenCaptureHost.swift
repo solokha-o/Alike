@@ -24,8 +24,34 @@ final class ScreenCaptureHost {
         // The scene, not the screen: on iPad an iPhone-only app gets an iPhone-shaped window.
         window.frame = scene.coordinateSpace.bounds
         window.windowLevel = .alert + 1
+        // Only an explicit style overrides the simulator's appearance, so the
+        // baseline flow without the variable draws as before.
+        switch ProcessInfo.processInfo.environment["ALIKE_SCREENSHOT_STYLE"] {
+        case "dark": window.overrideUserInterfaceStyle = .dark
+        case "light": window.overrideUserInterfaceStyle = .light
+        default: break
+        }
         window.rootViewController = UIHostingController(rootView: content())
         window.makeKeyAndVisible()
+    }
+
+    /// Checks the scene matches `TEST_RUNNER_ALIKE_SCREENSHOT_ORIENTATION`, so a
+    /// capture never lands in the wrong folder. Call it before `init`, which sizes
+    /// the window from the scene. iPadOS ignores an app's rotation request, so
+    /// rotate the simulator first; the request below only helps on other hosts.
+    static func prepareScene() async throws {
+        guard ProcessInfo.processInfo.environment["ALIKE_SCREENSHOT_ORIENTATION"] != nil,
+              let scene = UIApplication.shared.connectedScenes.compactMap({ $0 as? UIWindowScene }).first
+        else { return }
+        let wantsLandscape = orientation == "landscape"
+        if scene.interfaceOrientation.isLandscape != wantsLandscape {
+            scene.requestGeometryUpdate(.iOS(interfaceOrientations: wantsLandscape ? .landscapeRight : .portrait))
+            try await Task.sleep(for: .seconds(1))
+        }
+        try #require(
+            scene.interfaceOrientation.isLandscape == wantsLandscape,
+            "The simulator is not in \(orientation): rotate it before the run"
+        )
     }
 
     /// Lets `.task` loads, PhotoKit thumbnails and entry animations finish.
@@ -68,11 +94,32 @@ final class ScreenCaptureHost {
         guard let path = ProcessInfo.processInfo.environment["ALIKE_SCREENSHOT_DIR"], !path.isEmpty else {
             return nil
         }
-        return URL(fileURLWithPath: path).appendingPathComponent(deviceSlug, isDirectory: true)
+        return URL(fileURLWithPath: path).appendingPathComponent(folderName, isDirectory: true)
+    }
+
+    /// `ipad-11` for the baseline; `ipad-11-landscape-dark` when an orientation or
+    /// a style is set.
+    nonisolated static var folderName: String {
+        let environment = ProcessInfo.processInfo.environment
+        guard environment["ALIKE_SCREENSHOT_ORIENTATION"] != nil || environment["ALIKE_SCREENSHOT_STYLE"] != nil
+        else { return deviceSlug }
+        return "\(deviceSlug)-\(orientation)-\(style)"
+    }
+
+    /// `portrait` (default) or `landscape`.
+    nonisolated static var orientation: String {
+        ProcessInfo.processInfo.environment["ALIKE_SCREENSHOT_ORIENTATION"] ?? "portrait"
+    }
+
+    /// `light` (default) or `dark`.
+    nonisolated static var style: String {
+        ProcessInfo.processInfo.environment["ALIKE_SCREENSHOT_STYLE"] ?? "light"
     }
 
     nonisolated static var deviceSlug: String {
         let name = ProcessInfo.processInfo.environment["SIMULATOR_DEVICE_NAME"] ?? ""
+        if name.contains("(A16)") { return "ipad-a16" }
+        if name.contains("Air 13-inch") { return "ipad-air-13" }
         if name.contains("13-inch") { return "ipad-13" }
         if name.contains("11-inch") { return "ipad-11" }
         return name.localizedCaseInsensitiveContains("iPad") ? "ipad" : "iphone"
