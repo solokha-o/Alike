@@ -31,10 +31,11 @@ content to the width with 2 shared metrics in `DesignSystem/Layout/`:
   width. In compact width it does nothing, so iPhone layout does not change.
   PR 4 applies it screen by screen.
 - **Width-based grids.** In regular width the column range comes from the
-  container width, so each tile stays between 150 and 320 pt. The default aims at
-  200 pt tiles: 4 columns at 820–834 pt, 5 at 1024 pt, 6 at 1180 pt, 7 at
-  1376 pt. The app measures the width once per window and once per sheet with
-  `dsMeasuresPhotoGridWidth()`. Compact width keeps 1–2 columns.
+  container width, so each tile stays between 150 and 320 pt after the screen's
+  padding (32 pt) and gaps (12 pt). The default aims at 200 pt tiles: 4 columns
+  at 820–834 pt, 5 at 1024 and 1180 pt, 6 at 1376 pt. The app measures the
+  width once per window and once per sheet with `dsMeasuresPhotoGridWidth()`.
+  Compact width keeps 1–2 columns.
 - The user's regular-width column choice (`photoGrid.columns.regular`) keeps its
   meaning, a preferred count, clamped to the range of the current width. No
   shipped build wrote this key: iPhone is portrait-only and iPad ran in an

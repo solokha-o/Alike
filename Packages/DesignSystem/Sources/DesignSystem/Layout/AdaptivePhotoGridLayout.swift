@@ -25,19 +25,34 @@ public struct AdaptivePhotoGridLayoutPolicy: Equatable, Sendable {
         public static let maximum: CGFloat = 320
         /// The width the default column count aims for.
         public static let preferred: CGFloat = 200
+        /// Side padding of a grid screen, both sides together (Cleanup: 16 + 16).
+        public static let containerInset: CGFloat = 32
+        /// The widest gap between 2 tiles in a grid screen (Cleanup: 12 pt).
+        public static let gap: CGFloat = 12
+
+        /// The tile width with `columns` columns in a container of `width` points.
+        public static func tileWidth(columns: Int, containerWidth width: CGFloat) -> CGFloat {
+            (width - containerInset - CGFloat(columns - 1) * gap) / CGFloat(columns)
+        }
     }
 
     /// The regular-width policy for a container of `width` points: as many
     /// columns as keep each tile between ``TileWidth/minimum`` and
-    /// ``TileWidth/maximum``, defaulting to about ``TileWidth/preferred``.
+    /// ``TileWidth/maximum``, after the screen's padding and gaps, defaulting
+    /// to about ``TileWidth/preferred``.
     ///
     /// Falls back to ``regular`` when the width is unknown or too small to hold
     /// 2 minimum tiles.
     public static func regular(containerWidth width: CGFloat?) -> AdaptivePhotoGridLayoutPolicy {
-        guard let width, width.isFinite, width >= TileWidth.minimum * 2 else { return .regular }
-        let most = max(2, Int((width / TileWidth.minimum).rounded(.down)))
-        let fewest = min(most, max(2, Int((width / TileWidth.maximum).rounded(.up))))
-        let preferred = Int((width / TileWidth.preferred).rounded())
+        guard let width, width.isFinite,
+              TileWidth.tileWidth(columns: 2, containerWidth: width) >= TileWidth.minimum
+        else { return .regular }
+        // n tiles and n - 1 gaps fit in the width without the padding:
+        // n * tile + (n - 1) * gap <= width - inset  <=>  n <= (width - inset + gap) / (tile + gap)
+        let usable = width - TileWidth.containerInset + TileWidth.gap
+        let most = max(2, Int((usable / (TileWidth.minimum + TileWidth.gap)).rounded(.down)))
+        let fewest = min(most, max(2, Int((usable / (TileWidth.maximum + TileWidth.gap)).rounded(.up))))
+        let preferred = Int((usable / (TileWidth.preferred + TileWidth.gap)).rounded())
         return AdaptivePhotoGridLayoutPolicy(
             columnCounts: fewest...most,
             defaultColumnCount: min(max(preferred, fewest), most)

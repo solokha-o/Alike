@@ -19,11 +19,11 @@ struct AdaptivePhotoGridLayoutTests {
 struct AdaptivePhotoGridWidthTests {
     @Test(arguments: [
         // width, range, default
-        (CGFloat(820), 3...5, 4), // iPad (A16) portrait
+        (CGFloat(820), 3...4, 4), // iPad (A16) portrait
         (834, 3...5, 4), // iPad Pro 11-inch portrait
         (1_024, 4...6, 5), // iPad Air 13-inch portrait
-        (1_180, 4...7, 6), // iPad (A16) landscape
-        (1_376, 5...9, 7), // iPad Pro 13-inch landscape
+        (1_180, 4...7, 5), // iPad (A16) landscape
+        (1_376, 5...8, 6), // iPad Pro 13-inch landscape
     ])
     func testRangeAndDefaultFollowTheWidth(width: CGFloat, range: ClosedRange<Int>, defaultCount: Int) {
         let policy = AdaptivePhotoGridLayoutPolicy.regular(containerWidth: width)
@@ -35,14 +35,15 @@ struct AdaptivePhotoGridWidthTests {
     func testEveryChoiceKeepsTilesBetweenTheLimits(width: CGFloat) {
         let policy = AdaptivePhotoGridLayoutPolicy.regular(containerWidth: width)
         for columns in policy.columnCounts {
-            let tile = width / CGFloat(columns)
+            // After Cleanup's 2 × 16 pt padding and 12 pt gaps, the widest of the grid screens.
+            let tile = (width - 32 - CGFloat(columns - 1) * 12) / CGFloat(columns)
             #expect(tile >= AdaptivePhotoGridLayoutPolicy.TileWidth.minimum)
             #expect(tile <= AdaptivePhotoGridLayoutPolicy.TileWidth.maximum)
         }
     }
 
     /// Unknown, broken or tiny widths keep today's regular range.
-    @Test(arguments: [nil, CGFloat.nan, CGFloat.infinity, 0, 200])
+    @Test(arguments: [nil, CGFloat.nan, CGFloat.infinity, 0, 200, 340])
     func testUnusableWidthsKeepTheFixedRegularRange(width: CGFloat?) {
         #expect(AdaptivePhotoGridLayoutPolicy.regular(containerWidth: width) == .regular)
     }
