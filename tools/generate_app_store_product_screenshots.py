@@ -269,9 +269,9 @@ SLIDES = (
 COPY = {
     "en-US": [
         (
-            "ON-DEVICE",
-            "Find the photos\nthat look alike",
-            "Alike scans your library with Apple Vision, entirely on your iPhone.",
+            "FREE SPACE",
+            "Get your\nstorage back",
+            "See how much space you could free before anything is deleted.",
         ),
         (
             "ONE QUEUE",
@@ -306,9 +306,9 @@ COPY = {
     ],
     "uk": [
         (
-            "НА ПРИСТРОЇ",
-            "Знайдіть схожі\nфотографії",
-            "Alike сканує фототеку через Apple Vision повністю на вашому iPhone.",
+            "ВІЛЬНЕ МІСЦЕ",
+            "Поверніть\nсобі місце",
+            "Побачте, скільки місця можна звільнити, ще до видалення.",
         ),
         (
             "ЧЕРГА",
@@ -348,9 +348,9 @@ COPY = {
     # as small text rather than as an error.
     "de": [
         (
-            "AUF DEM GERÄT",
-            "Finde die Fotos,\ndie sich ähneln",
-            "Alike durchsucht deine Mediathek mit Apple Vision, ganz auf dem iPhone.",
+            "FREIER PLATZ",
+            "Hol dir deinen\nSpeicher zurück",
+            "Du siehst vor dem Löschen, wie viel Platz frei werden kann.",
         ),
         (
             "EINE LISTE",
@@ -385,9 +385,9 @@ COPY = {
     ],
     "fr": [
         (
-            "SUR L’APPAREIL",
-            "Trouvez les photos\nqui se ressemblent",
-            "Alike analyse votre photothèque avec Apple Vision, sur votre iPhone.",
+            "ESPACE LIBRE",
+            "Récupérez\nde l’espace",
+            "Voyez combien d’espace vous pouvez libérer avant toute suppression.",
         ),
         (
             "UNE SEULE FILE",
@@ -426,9 +426,9 @@ COPY = {
     # for es and es-419 alike.
     "es": [
         (
-            "EN EL DISPOSITIVO",
-            "Encuentra las fotos\nque se parecen",
-            "Alike analiza tu fototeca con Apple Vision, todo en tu iPhone.",
+            "ESPACIO LIBRE",
+            "Recupera\nespacio",
+            "Mira cuánto espacio puedes liberar antes de borrar nada.",
         ),
         (
             "UNA SOLA COLA",
@@ -463,9 +463,9 @@ COPY = {
     ],
     "es-419": [
         (
-            "EN EL DISPOSITIVO",
-            "Encuentra las fotos\nque se parecen",
-            "Alike analiza tu fototeca con Apple Vision, todo en tu iPhone.",
+            "ESPACIO LIBRE",
+            "Recupera\nespacio",
+            "Mira cuánto espacio puedes liberar antes de eliminar nada.",
         ),
         (
             "UNA SOLA COLA",
@@ -500,9 +500,9 @@ COPY = {
     ],
     "pt-BR": [
         (
-            "NO DISPOSITIVO",
-            "Encontre as fotos\nque se parecem",
-            "O Alike analisa sua fototeca com Apple Vision, no seu iPhone.",
+            "ESPAÇO LIVRE",
+            "Recupere\nespaço",
+            "Veja quanto espaço vai liberar antes de apagar qualquer coisa.",
         ),
         (
             "UMA SÓ FILA",
@@ -540,9 +540,9 @@ COPY = {
     # "ecrã", "eliminar", "rever", "poupança".
     "pt-PT": [
         (
-            "NO DISPOSITIVO",
-            "Encontra fotografias\nparecidas",
-            "O Alike analisa a tua fototeca com Apple Vision, no teu iPhone.",
+            "ESPAÇO LIVRE",
+            "Recupera\nespaço",
+            "Vê quanto espaço vais libertar antes de eliminar qualquer coisa.",
         ),
         (
             "UMA SÓ FILA",
@@ -577,9 +577,9 @@ COPY = {
     ],
     "it": [
         (
-            "SUL DISPOSITIVO",
-            "Trova le foto\nche si somigliano",
-            "Alike analizza la libreria con Apple Vision, tutto sul tuo iPhone.",
+            "SPAZIO LIBERO",
+            "Recupera\nspazio",
+            "Vedi quanto spazio liberi prima di eliminare qualcosa.",
         ),
         (
             "UNA SOLA CODA",
@@ -614,9 +614,9 @@ COPY = {
     ],
     "nl": [
         (
-            "OP HET APPARAAT",
-            "Vind de foto's\ndie op elkaar lijken",
-            "Alike scant je bibliotheek met Apple Vision, volledig op je iPhone.",
+            "VRIJE RUIMTE",
+            "Win ruimte\nterug",
+            "Je ziet vóór het verwijderen hoeveel ruimte er vrijkomt.",
         ),
         (
             "ÉÉN WACHTRIJ",
@@ -651,9 +651,9 @@ COPY = {
     ],
     "pl": [
         (
-            "NA URZĄDZENIU",
-            "Znajdź zdjęcia,\nktóre są podobne",
-            "Alike skanuje bibliotekę za pomocą Apple Vision, w całości na iPhonie.",
+            "WOLNE MIEJSCE",
+            "Odzyskaj\nmiejsce",
+            "Zobacz, ile miejsca możesz zwolnić, zanim cokolwiek usuniesz.",
         ),
         (
             "JEDNA KOLEJKA",
@@ -688,9 +688,9 @@ COPY = {
     ],
     "tr": [
         (
-            "CİHAZDA",
-            "Birbirine benzeyen\nfotoğrafları bul",
-            "Alike, fotoğraf arşivini Apple Vision ile tamamen iPhone'unda tarar.",
+            "BOŞ ALAN",
+            "Depolama alanını\ngeri kazan",
+            "Silmeden önce ne kadar alan açılacağını gör.",
         ),
         (
             "TEK KUYRUK",
@@ -728,9 +728,9 @@ COPY = {
     # out. LOCALE_HEADLINE_SIZE starts this deck smaller; see the note there.
     "zh-Hant": [
         (
-            "在裝置上",
-            "找出看起來\n相像的照片",
-            "Alike 以 Apple Vision 掃描你的圖庫，全程在 iPhone 上完成。",
+            "騰出空間",
+            "把儲存空間\n拿回來",
+            "刪除之前，就能看到可以釋出多少空間。",
         ),
         (
             "同一條佇列",
@@ -765,9 +765,9 @@ COPY = {
     ],
     "ar": [
         (
-            "على الجهاز",
-            "اعثر على الصور\nالمتشابهة",
-            "يفحص Alike مكتبتك بتقنية Apple Vision، والعملية كلها على جهاز iPhone.",
+            "مساحة حرة",
+            "استرجع\nمساحة التخزين",
+            "اعرف المساحة التي ستوفرها قبل حذف أي شيء.",
         ),
         (
             "قائمة واحدة",
@@ -851,8 +851,9 @@ DEFAULT_VARIANT = "spotlight"  # the direction shipping on the listing
 # (ASO stage 5). The first three slides are the ones search results show. Each
 # candidate replaces the copy of slide 1 only — same capture, same order, same
 # slides 2 and 3 — so a difference in conversion has one explanation. en-US
-# only until a winner exists; `COPY` stays what ships. No gigabyte figure: the
-# app has no measured one to promise.
+# only. Owner decision 30.09.2026: no store test, A ships as slide 1 of `COPY`
+# in every locale; the entry stays so --lead-variants can still render it. No
+# gigabyte figure: the app has no measured one to promise.
 LEAD_SLIDE_COUNT = 3
 LEAD_VARIANT_LOCALE = "en-US"
 LEAD_VARIANTS = {
