@@ -17,11 +17,46 @@ public struct AdaptivePhotoGridLayoutPolicy: Equatable, Sendable {
         min(max(value, columnCounts.lowerBound), columnCounts.upperBound)
     }
 
+    /// Tile widths, in points, that a regular-width grid keeps between.
+    public enum TileWidth {
+        /// Narrower tiles make the photos too small to judge.
+        public static let minimum: CGFloat = 150
+        /// Wider tiles waste the screen: a 13-inch iPad showed 1 row of 330 pt tiles.
+        public static let maximum: CGFloat = 320
+        /// The width the default column count aims for.
+        public static let preferred: CGFloat = 200
+    }
+
+    /// The regular-width policy for a container of `width` points: as many
+    /// columns as keep each tile between ``TileWidth/minimum`` and
+    /// ``TileWidth/maximum``, defaulting to about ``TileWidth/preferred``.
+    ///
+    /// Falls back to ``regular`` when the width is unknown or too small to hold
+    /// 2 minimum tiles.
+    public static func regular(containerWidth width: CGFloat?) -> AdaptivePhotoGridLayoutPolicy {
+        guard let width, width.isFinite, width >= TileWidth.minimum * 2 else { return .regular }
+        let most = max(2, Int((width / TileWidth.minimum).rounded(.down)))
+        let fewest = min(most, max(2, Int((width / TileWidth.maximum).rounded(.up))))
+        let preferred = Int((width / TileWidth.preferred).rounded())
+        return AdaptivePhotoGridLayoutPolicy(
+            columnCounts: fewest...most,
+            defaultColumnCount: min(max(preferred, fewest), most)
+        )
+    }
+
 #if os(iOS)
     public static func forHorizontalSizeClass(
         _ sizeClass: UserInterfaceSizeClass?
     ) -> AdaptivePhotoGridLayoutPolicy {
         sizeClass == .regular ? .regular : .compact
+    }
+
+    /// Compact width keeps ``compact``; regular width follows the container.
+    public static func forHorizontalSizeClass(
+        _ sizeClass: UserInterfaceSizeClass?,
+        containerWidth: CGFloat?
+    ) -> AdaptivePhotoGridLayoutPolicy {
+        sizeClass == .regular ? .regular(containerWidth: containerWidth) : .compact
     }
 #endif
 }
