@@ -42,11 +42,11 @@ struct CleanupSummaryCards<Progress: View, Categories: View>: View {
     }
 
     /// The narrowest a card may get side by side.
-    static var minimumCardWidth: CGFloat { 420 }
+    nonisolated static var minimumCardWidth: CGFloat { 420 }
 
     /// Side by side when 2 cards of ``minimumCardWidth`` fit with the gap and the
     /// screen padding: from 888 pt, so iPad portrait at 820-834 pt stays stacked.
-    static func placesSideBySide(containerWidth: CGFloat?, isRegularWidth: Bool) -> Bool {
+    nonisolated static func placesSideBySide(containerWidth: CGFloat?, isRegularWidth: Bool) -> Bool {
         guard isRegularWidth, let containerWidth, containerWidth.isFinite else { return false }
         let needed = minimumCardWidth * 2 + Spacing.medium + Spacing.medium * 2
         return containerWidth >= needed
