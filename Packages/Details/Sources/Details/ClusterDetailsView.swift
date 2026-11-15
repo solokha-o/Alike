@@ -66,6 +66,7 @@ public struct ClusterDetailsView: View {
                     onDeleteSelected: requestDeleteConfirmation,
                     isDeleting: viewModel.isDeleting
                 )
+                .dsReadableContentWidth()
                 .padding(Spacing.xSmall)
                 .transition(actionBarTransition)
             }
@@ -216,6 +217,7 @@ public struct ClusterDetailsView: View {
                     estimatedSavingsText: viewModel.estimatedSavingsText,
                     isExecuting: viewModel.isDeleting
                 )
+                .dsReadableContentWidth()
             } else {
                 if viewModel.hasAssets {
                     ClusterReviewSummaryCard(
@@ -234,6 +236,9 @@ public struct ClusterDetailsView: View {
                         bestShotCelebrationCue: viewModel.bestShotCelebrationCue,
                         onBestShotCelebrationDismissed: viewModel.consumeBestShotCelebration
                     )
+                    // A single card above the grid: on iPad it keeps the readable
+                    // column, so its status and artwork stay next to the text.
+                    .dsReadableContentWidth()
                 }
 
                 if viewModel.requiresPremiumForCurrentSelection {
@@ -247,6 +252,7 @@ public struct ClusterDetailsView: View {
                             }
                         }
                     )
+                    .dsReadableContentWidth()
                 }
 
                 if !viewModel.hasAssets {
