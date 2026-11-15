@@ -30,6 +30,7 @@ public struct UserGuideTopicView: View {
         .navigationTitle(Text(UserGuideL10n.string(topic.titleKey)))
 #if os(iOS)
         .navigationBarTitleDisplayMode(.inline)
+        .dsReadableScrollContentMargins()
 #endif
     }
 }
