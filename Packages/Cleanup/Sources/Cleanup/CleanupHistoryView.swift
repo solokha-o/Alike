@@ -21,6 +21,7 @@ struct CleanupHistoryView: View {
         .navigationTitle(Text(CleanupL10n.CleanupHistory.history))
 #if os(iOS)
         .navigationBarTitleDisplayMode(.large)
+        .dsReadableScrollContentMargins()
 #endif
         .task {
             guard state.isLoading else { return }

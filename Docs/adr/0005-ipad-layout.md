@@ -1,6 +1,6 @@
 # 0005. iPad layout: one navigation stack, a readable column, width-based grids
 
-- Status: Proposed
+- Status: Accepted
 - Date: 2026-11-14
 - Supersedes: none
 
@@ -29,7 +29,12 @@ content to the width with 2 shared metrics in `DesignSystem/Layout/`:
 - **Readable column.** `dsReadableContentWidth()` limits a column of cards,
   lists or text to `ReadableContentWidth.maximum` (720 pt), centred, in regular
   width. In compact width it does nothing, so iPhone layout does not change.
-  PR 4 applies it screen by screen.
+  PR 4 applies it screen by screen. A `List` or `ScrollView` uses
+  `dsReadableScrollContentMargins()` instead: the rows keep the same 720 pt
+  column, and the scroll area and its indicator keep the full width.
+- **Cards above a grid.** Cleanup keeps its cards as wide as the grid below
+  them. From 888 pt the progress card and the Smart Cleanup card sit side by
+  side; a narrower window stacks them as on iPhone.
 - **Width-based grids.** In regular width the column range comes from the
   container width, so each tile stays between 150 and 320 pt after the screen's
   padding (32 pt) and gaps (4 pt in Details, 12 pt in Cleanup). The default aims at 200 pt tiles: 4 columns
@@ -70,4 +75,4 @@ content to the width with 2 shared metrics in `DesignSystem/Layout/`:
 
 ## Status
 
-Proposed. Change to `Accepted` when the pull request merges.
+Accepted: [#265](https://github.com/solokha-o/Alike/pull/265) merged on 2026-11-15.
