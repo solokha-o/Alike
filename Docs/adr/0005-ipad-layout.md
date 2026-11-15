@@ -34,7 +34,9 @@ content to the width with 2 shared metrics in `DesignSystem/Layout/`:
   column, and the scroll area and its indicator keep the full width.
 - **Cards above a grid.** Cleanup keeps its cards as wide as the grid below
   them. From 888 pt the progress card and the Smart Cleanup card sit side by
-  side; a narrower window stacks them as on iPhone.
+  side; a narrower window stacks them as on iPhone. Details has 1 summary card
+  above its grid, so that card, the upsell card and the bottom action bar keep
+  the readable column instead.
 - **Width-based grids.** In regular width the column range comes from the
   container width, so each tile stays between 150 and 320 pt after the screen's
   padding (32 pt) and gaps (4 pt in Details, 12 pt in Cleanup). The default aims at 200 pt tiles: 4 columns

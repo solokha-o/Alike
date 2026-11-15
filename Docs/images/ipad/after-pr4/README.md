@@ -1,4 +1,4 @@
-# iPad captures after PR 4 (Cleanup)
+# iPad captures after PR 4 (Cleanup, Details)
 
 iPad (A16), iOS 27.2, native mode, light theme, 1×. Built and captured as in
 `../audit/README.md`.
@@ -10,3 +10,13 @@ iPad (A16), iOS 27.2, native mode, light theme, 1×. Built and captured as in
 
 In portrait (820 pt) the 2 cards stay stacked, as on iPhone. Compare with
 `../audit/`.
+
+Details:
+
+- `ipad-a16-landscape-details-largeCluster.png`,
+  `ipad-a16-portrait-details-largeCluster.png`: the summary card keeps the
+  720 pt column, centred; the grid keeps the full width (5 columns at 1180 pt,
+  4 at 820 pt).
+- `ipad-a16-landscape-details-best-shot-celebration.png`,
+  `ipad-a16-portrait-details-best-shot-celebration.png`: the same card in the
+  reviewed state, with the Best Shot artwork next to the status.
