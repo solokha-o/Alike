@@ -1,4 +1,4 @@
-# iPad captures after PR 4 (Cleanup, Details, Welcome)
+# iPad captures after PR 4 (Cleanup, Details, Welcome, Settings)
 
 iPad (A16), iOS 27.2, native mode, light theme, 1×. Built and captured as in
 `../audit/README.md`.
@@ -29,3 +29,12 @@ Welcome:
   the title is not drawn in captures, here and in `../audit/`.
 
 Launch and Scanner need no change: see the audit table.
+
+Settings and the user guide:
+
+- `ipad-a16-landscape-settings-free.png`, `ipad-a16-portrait-settings-free.png`,
+  `ipad-a16-landscape-user-guide.png`, `ipad-a16-landscape-user-guide-topic.png`:
+  the rows keep a 720 pt column; the list still scrolls at full width. The large
+  title stays at the system margin, as in History.
+
+The paywall is not changed until 12.12.2026 ("Пейвол 0").
