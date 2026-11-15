@@ -1,4 +1,5 @@
 import Foundation
+import SwiftUI
 import Testing
 @testable import DesignSystem
 
@@ -73,6 +74,29 @@ struct ReadableContentWidthTests {
         #expect(ReadableContentWidth.maximum(for: .regular) == ReadableContentWidth.maximum)
         #expect(ReadableContentWidth.maximum(for: .compact) == nil)
         #expect(ReadableContentWidth.maximum(for: nil) == nil)
+    }
+
+    @Test(arguments: [
+        // width, margin
+        (CGFloat(820), CGFloat(50)),
+        (1_024, 152),
+        (1_180, 230),
+        (1_376, 328),
+    ])
+    func testScrollMarginCentresTheColumnInRegularWidth(width: CGFloat, margin: CGFloat) {
+        #expect(ReadableContentWidth.scrollContentMargin(containerWidth: width, sizeClass: .regular) == margin)
+    }
+
+    /// iPhone, unknown widths and narrow iPad windows keep the system margin.
+    @Test(arguments: [
+        (CGFloat?.none, UserInterfaceSizeClass?.some(.regular)),
+        (CGFloat.nan, .regular),
+        (740, .regular),
+        (1_376, .compact),
+        (1_376, nil),
+    ])
+    func testScrollMarginKeepsTheSystemMarginOtherwise(width: CGFloat?, sizeClass: UserInterfaceSizeClass?) {
+        #expect(ReadableContentWidth.scrollContentMargin(containerWidth: width, sizeClass: sizeClass) == nil)
     }
 }
 #endif
