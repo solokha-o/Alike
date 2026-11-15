@@ -32,7 +32,7 @@ content to the width with 2 shared metrics in `DesignSystem/Layout/`:
   PR 4 applies it screen by screen.
 - **Width-based grids.** In regular width the column range comes from the
   container width, so each tile stays between 150 and 320 pt after the screen's
-  padding (32 pt) and gaps (12 pt). The default aims at 200 pt tiles: 4 columns
+  padding (32 pt) and gaps (4 pt in Details, 12 pt in Cleanup). The default aims at 200 pt tiles: 4 columns
   at 820–834 pt, 5 at 1024 and 1180 pt, 6 at 1376 pt. The app measures the
   width once per window and once per sheet with `dsMeasuresPhotoGridWidth()`.
   Compact width keeps 1–2 columns.

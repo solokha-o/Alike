@@ -31,14 +31,16 @@ struct AdaptivePhotoGridWidthTests {
         #expect(policy.defaultColumnCount == defaultCount)
     }
 
-    @Test(arguments: [CGFloat(820), 1_024, 1_180, 1_376, 2_000])
+    @Test(arguments: [CGFloat(820), 834, 1_024, 1_180, 1_376, 2_000, 2_732])
     func testEveryChoiceKeepsTilesBetweenTheLimits(width: CGFloat) {
         let policy = AdaptivePhotoGridLayoutPolicy.regular(containerWidth: width)
         for columns in policy.columnCounts {
-            // After Cleanup's 2 × 16 pt padding and 12 pt gaps, the widest of the grid screens.
-            let tile = (width - 32 - CGFloat(columns - 1) * 12) / CGFloat(columns)
-            #expect(tile >= AdaptivePhotoGridLayoutPolicy.TileWidth.minimum)
-            #expect(tile <= AdaptivePhotoGridLayoutPolicy.TileWidth.maximum)
+            // 2 × 16 pt padding; Cleanup's 12 pt gaps give the narrowest tiles,
+            // Details' 4 pt gaps the widest.
+            let narrowest = (width - 32 - CGFloat(columns - 1) * 12) / CGFloat(columns)
+            let widest = (width - 32 - CGFloat(columns - 1) * 4) / CGFloat(columns)
+            #expect(narrowest >= AdaptivePhotoGridLayoutPolicy.TileWidth.minimum, "\(columns) columns")
+            #expect(widest <= AdaptivePhotoGridLayoutPolicy.TileWidth.maximum, "\(columns) columns")
         }
     }
 
