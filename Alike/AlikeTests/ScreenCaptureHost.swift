@@ -1,3 +1,4 @@
+import DesignSystem
 import SwiftUI
 import Testing
 import UIKit
@@ -31,7 +32,8 @@ final class ScreenCaptureHost {
         case "light": window.overrideUserInterfaceStyle = .light
         default: break
         }
-        window.rootViewController = UIHostingController(rootView: content())
+        // Measured as in the app, so iPad grids get the same column count.
+        window.rootViewController = UIHostingController(rootView: content().dsMeasuresPhotoGridWidth())
         window.makeKeyAndVisible()
     }
 
