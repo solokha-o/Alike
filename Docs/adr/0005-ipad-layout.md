@@ -73,7 +73,9 @@ content to the width with 2 shared metrics in `DesignSystem/Layout/`:
 - A reviewer checks that iPhone (compact) layout does not change: both metrics
   must do nothing in compact width.
 - Split View and Slide Over give the app a compact width, so it gets the iPhone
-  layout there.
+  layout there. PR 5 therefore keeps multitasking on: it sets
+  `TARGETED_DEVICE_FAMILY = 1,2`, allows all 4 iPad orientations, and does not
+  set `UIRequiresFullScreen`. iPhone stays portrait-only.
 
 ## Status
 

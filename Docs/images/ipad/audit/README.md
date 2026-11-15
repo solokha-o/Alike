@@ -17,8 +17,10 @@ the DEBUG fake library. Nothing in the app was changed for these images.
 
 ## How native mode was built
 
-`TARGETED_DEVICE_FAMILY` stays `1` in the project until PR 5. The audit build
-passes it, and the iPad orientations, as `xcodebuild` arguments only:
+Since PR 5 the project builds for iPad natively, so the 2 build arguments below
+are no longer needed: run the same commands without them. Before PR 5,
+`TARGETED_DEVICE_FAMILY` was `1` in the project. The audit build passed it, and
+the iPad orientations, as `xcodebuild` arguments only:
 
 ```bash
 ~/.agent-skills/local/dev-machine-load/scripts/heavy_slot.sh --label "Alike: iPad native build-for-testing" -- \
