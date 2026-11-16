@@ -7,6 +7,9 @@ in the iPad card.
 - `ipad-11/`: iPad Pro 11-inch (M5), iOS 27.2.
 - `ipad-13/`: iPad Pro 13-inch (M5), iOS 27.2.
 
+The dark and landscape "before" cells and every "after" cell of the DoD matrix are
+in `../dod/`.
+
 The data is the DEBUG fake library (`-AlikeFakeLibrary`), not a real scan. The
 photos are drawn landscapes, not real photos. Details:
 `Skills/SwiftConcurrency/ios-debugger-agent/references/fake-library.md`.
