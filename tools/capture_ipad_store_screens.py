@@ -161,7 +161,10 @@ def main() -> None:
         if name not in SCREENS and name not in MANUAL_SCREENS:
             raise SystemExit(f"Unknown screen: {name}")
 
-    prepare_device(args.udid)
+    # A photo access change terminates the running app, so the screen that
+    # --no-launch is about to capture must not see one.
+    if not args.no_launch:
+        prepare_device(args.udid)
     for locale in locales:
         if args.no_launch:
             for name in names:
