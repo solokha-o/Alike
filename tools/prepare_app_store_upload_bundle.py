@@ -2408,9 +2408,20 @@ def generate_review_information() -> None:
     write_text(root / "notes.txt", review_notes_text())
 
 
+APP_BUNDLE_ID_SETTING = "PRODUCT_BUNDLE_IDENTIFIER = com.alike.app;"
+
+
 def app_supports_ipad(project_file: Path = PROJECT_FILE) -> bool:
-    """`True` when every build configuration targets iPad as well as iPhone."""
-    families = re.findall(r'TARGETED_DEVICE_FAMILY = "?([0-9,]+)"?;', project_file.read_text(encoding="utf-8"))
+    """`True` when every build configuration of the app target targets iPad as
+    well as iPhone. Test and widget targets do not decide what the store needs."""
+    blocks = re.findall(r"buildSettings = \{(.*?)\n\t*\};", project_file.read_text(encoding="utf-8"), re.DOTALL)
+    families = [
+        match.group(1)
+        for block in blocks
+        if APP_BUNDLE_ID_SETTING in block
+        for match in [re.search(r'TARGETED_DEVICE_FAMILY = "?([0-9,]+)"?;', block)]
+        if match
+    ]
     return bool(families) and all("2" in family.split(",") for family in families)
 
 

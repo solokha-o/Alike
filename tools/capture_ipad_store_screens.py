@@ -16,7 +16,7 @@ The app's own deep links open each screen, passed at launch as
   05-comparison-review    alike://resume — the next group in review, 2 photos selected
 
 `07-cleanup-progress` needs the delete button and its alert, so tap them by hand
-and then run `--only 07-cleanup-progress --no-launch` for each locale; the `store`
+and then run `--only 07-cleanup-progress --no-launch --locales <code>` for each locale; the `store`
 cleanup never finishes, so the progress screen waits for the capture.
 
     build/tools-venv/bin/python tools/build_fake_photo_library.py
@@ -133,7 +133,7 @@ def wait_for_app(udid: str, timeout: float) -> None:
 def capture(udid: str, path: Path) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     subprocess.run(["xcrun", "simctl", "io", udid, "screenshot", "--type=png", str(path)], check=True, capture_output=True)
-    print(path.relative_to(ROOT))
+    print(path.relative_to(ROOT) if path.is_relative_to(ROOT) else path)
 
 
 def main() -> None:
@@ -156,6 +156,8 @@ def main() -> None:
         raise SystemExit(f"Unknown locales: {', '.join(unknown)}")
     if len(list(args.photos.glob("*.jpg"))) < 54:
         raise SystemExit(f"Run tools/build_fake_photo_library.py first: {args.photos}")
+    if args.no_launch and len(locales) != 1:
+        raise SystemExit("--no-launch captures the screen as it is: pass one locale with --locales")
     names = [args.only] if args.only else list(SCREENS)
     for name in names:
         if name not in SCREENS and name not in MANUAL_SCREENS:
