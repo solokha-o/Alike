@@ -12,19 +12,23 @@ import SwiftUI
 public struct PhotoGridColumnPreference: DynamicProperty {
     @AppStorage(AppPreferenceKey.PhotoGrid.compactColumns)
     private var compactColumns = AdaptivePhotoGridLayoutPolicy.compact.defaultColumnCount
+    /// `nil` until the user picks a count, so the default can follow the width.
+    /// No shipped build wrote this key: the iPhone app is portrait-only and iPad
+    /// ran it in an iPhone-sized window, so the size class was never regular.
     @AppStorage(AppPreferenceKey.PhotoGrid.regularColumns)
-    private var regularColumns = AdaptivePhotoGridLayoutPolicy.regular.defaultColumnCount
+    private var regularColumns: Int?
 #if os(iOS)
     @Environment(\.horizontalSizeClass) private var horizontalSizeClass
 #endif
+    @Environment(\.photoGridContainerWidth) private var containerWidth
 
     public init() {}
 
     public var layoutPolicy: AdaptivePhotoGridLayoutPolicy {
 #if os(iOS)
-        .forHorizontalSizeClass(horizontalSizeClass)
+        .forHorizontalSizeClass(horizontalSizeClass, containerWidth: containerWidth)
 #else
-        .regular
+        .regular(containerWidth: containerWidth)
 #endif
     }
 
@@ -40,9 +44,9 @@ public struct PhotoGridColumnPreference: DynamicProperty {
     private var storedValue: Int {
         get {
 #if os(iOS)
-            horizontalSizeClass == .regular ? regularColumns : compactColumns
+            horizontalSizeClass == .regular ? regularColumns ?? layoutPolicy.defaultColumnCount : compactColumns
 #else
-            regularColumns
+            regularColumns ?? layoutPolicy.defaultColumnCount
 #endif
         }
         nonmutating set {

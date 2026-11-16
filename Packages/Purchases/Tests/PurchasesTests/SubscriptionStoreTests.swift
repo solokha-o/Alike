@@ -26,8 +26,8 @@ struct SubscriptionStoreTests {
         #expect(SubscriptionPlan.presentationOrder == [.yearly, .monthly])
         #expect(SubscriptionPlan.yearly.isPrimary)
         #expect(!SubscriptionPlan.monthly.isPrimary)
-        #expect(SubscriptionPlan.monthly.advertisedPriceUSD == Decimal(string: "6.99"))
-        #expect(SubscriptionPlan.yearly.advertisedPriceUSD == Decimal(string: "39.99"))
+        #expect(SubscriptionPlan.monthly.advertisedPriceUSD == Decimal(string: "8.99"))
+        #expect(SubscriptionPlan.yearly.advertisedPriceUSD == Decimal(string: "34.99"))
         #expect(SubscriptionPlan.monthly.configuredTrialDays == nil)
         #expect(SubscriptionPlan.yearly.configuredTrialDays == 7)
     }
@@ -377,11 +377,12 @@ struct SubscriptionStoreTests {
     }
 }
 
-private final class MockStoreKitClient: StoreKitClient, @unchecked Sendable {
+final class MockStoreKitClient: StoreKitClient, @unchecked Sendable {
     var products: [StorefrontProduct]
     var entitlements: [StoreKitEntitlement]
     var purchaseOutcome: StoreKitPurchaseOutcome
     var purchasedProductID: String?
+    var requestedProductIDs: Set<String>?
     var didSync = false
     var purchaseError: Error?
     var syncError: Error?
@@ -403,7 +404,8 @@ private final class MockStoreKitClient: StoreKitClient, @unchecked Sendable {
         self.productRequests = productRequests
     }
 
-    func loadProducts(ids _: Set<String>) async throws -> [StorefrontProduct] {
+    func loadProducts(ids: Set<String>) async throws -> [StorefrontProduct] {
+        requestedProductIDs = ids
         if let productRequests { return await productRequests.request() }
         return products
     }
@@ -430,11 +432,11 @@ private final class MockStoreKitClient: StoreKitClient, @unchecked Sendable {
     }
 }
 
-private enum TestFailure: Error {
+enum TestFailure: Error {
     case expected
 }
 
-private actor ControlledRequest<Value: Sendable> {
+actor ControlledRequest<Value: Sendable> {
     private var requests: [CheckedContinuation<Value, Never>?] = []
     private var countWaiters: [(count: Int, continuation: CheckedContinuation<Void, Never>)] = []
 

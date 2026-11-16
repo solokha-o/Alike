@@ -1,0 +1,881 @@
+{
+  "productId": "com.alike.app.pro.monthly",
+  "capturedOn": "2026-11-13",
+  "prices": {
+    "AFG": {
+      "pricePointId": "eyJzIjoiNjc5OTAyMDQ5MCIsInQiOiJBRkciLCJwIjoiMTAwNzUifQ",
+      "customerPrice": "5.99",
+      "currency": "USD"
+    },
+    "AGO": {
+      "pricePointId": "eyJzIjoiNjc5OTAyMDQ5MCIsInQiOiJBR08iLCJwIjoiMTAwNzUifQ",
+      "customerPrice": "5.99",
+      "currency": "USD"
+    },
+    "AIA": {
+      "pricePointId": "eyJzIjoiNjc5OTAyMDQ5MCIsInQiOiJBSUEiLCJwIjoiMTAwNzUifQ",
+      "customerPrice": "5.99",
+      "currency": "USD"
+    },
+    "ALB": {
+      "pricePointId": "eyJzIjoiNjc5OTAyMDQ5MCIsInQiOiJBTEIiLCJwIjoiMTAwODgifQ",
+      "customerPrice": "6.99",
+      "currency": "USD"
+    },
+    "ARE": {
+      "pricePointId": "eyJzIjoiNjc5OTAyMDQ5MCIsInQiOiJBUkUiLCJwIjoiMTAwNzYifQ",
+      "customerPrice": "22.99",
+      "currency": "AED"
+    },
+    "ARG": {
+      "pricePointId": "eyJzIjoiNjc5OTAyMDQ5MCIsInQiOiJBUkciLCJwIjoiMTAwNzUifQ",
+      "customerPrice": "5.99",
+      "currency": "USD"
+    },
+    "ARM": {
+      "pricePointId": "eyJzIjoiNjc5OTAyMDQ5MCIsInQiOiJBUk0iLCJwIjoiMTAwODgifQ",
+      "customerPrice": "6.99",
+      "currency": "USD"
+    },
+    "ATG": {
+      "pricePointId": "eyJzIjoiNjc5OTAyMDQ5MCIsInQiOiJBVEciLCJwIjoiMTAwNzUifQ",
+      "customerPrice": "5.99",
+      "currency": "USD"
+    },
+    "AUS": {
+      "pricePointId": "eyJzIjoiNjc5OTAyMDQ5MCIsInQiOiJBVVMiLCJwIjoiMTAxMjYifQ",
+      "customerPrice": "9.99",
+      "currency": "AUD"
+    },
+    "AUT": {
+      "pricePointId": "eyJzIjoiNjc5OTAyMDQ5MCIsInQiOiJBVVQiLCJwIjoiMTAwODgifQ",
+      "customerPrice": "6.99",
+      "currency": "EUR"
+    },
+    "AZE": {
+      "pricePointId": "eyJzIjoiNjc5OTAyMDQ5MCIsInQiOiJBWkUiLCJwIjoiMTAwODgifQ",
+      "customerPrice": "6.99",
+      "currency": "USD"
+    },
+    "BEL": {
+      "pricePointId": "eyJzIjoiNjc5OTAyMDQ5MCIsInQiOiJCRUwiLCJwIjoiMTAwODgifQ",
+      "customerPrice": "6.99",
+      "currency": "EUR"
+    },
+    "BEN": {
+      "pricePointId": "eyJzIjoiNjc5OTAyMDQ5MCIsInQiOiJCRU4iLCJwIjoiMTAwODgifQ",
+      "customerPrice": "6.99",
+      "currency": "USD"
+    },
+    "BFA": {
+      "pricePointId": "eyJzIjoiNjc5OTAyMDQ5MCIsInQiOiJCRkEiLCJwIjoiMTAwNzUifQ",
+      "customerPrice": "5.99",
+      "currency": "USD"
+    },
+    "BGR": {
+      "pricePointId": "eyJzIjoiNjc5OTAyMDQ5MCIsInQiOiJCR1IiLCJwIjoiMTAwODgifQ",
+      "customerPrice": "6.99",
+      "currency": "EUR"
+    },
+    "BHR": {
+      "pricePointId": "eyJzIjoiNjc5OTAyMDQ5MCIsInQiOiJCSFIiLCJwIjoiMTAwNzUifQ",
+      "customerPrice": "5.99",
+      "currency": "USD"
+    },
+    "BHS": {
+      "pricePointId": "eyJzIjoiNjc5OTAyMDQ5MCIsInQiOiJCSFMiLCJwIjoiMTAwNzUifQ",
+      "customerPrice": "5.99",
+      "currency": "USD"
+    },
+    "BIH": {
+      "pricePointId": "eyJzIjoiNjc5OTAyMDQ5MCIsInQiOiJCSUgiLCJwIjoiMTAwODgifQ",
+      "customerPrice": "6.99",
+      "currency": "EUR"
+    },
+    "BLR": {
+      "pricePointId": "eyJzIjoiNjc5OTAyMDQ5MCIsInQiOiJCTFIiLCJwIjoiMTAwODgifQ",
+      "customerPrice": "6.99",
+      "currency": "USD"
+    },
+    "BLZ": {
+      "pricePointId": "eyJzIjoiNjc5OTAyMDQ5MCIsInQiOiJCTFoiLCJwIjoiMTAwNzUifQ",
+      "customerPrice": "5.99",
+      "currency": "USD"
+    },
+    "BMU": {
+      "pricePointId": "eyJzIjoiNjc5OTAyMDQ5MCIsInQiOiJCTVUiLCJwIjoiMTAwNzUifQ",
+      "customerPrice": "5.99",
+      "currency": "USD"
+    },
+    "BOL": {
+      "pricePointId": "eyJzIjoiNjc5OTAyMDQ5MCIsInQiOiJCT0wiLCJwIjoiMTAwNzUifQ",
+      "customerPrice": "5.99",
+      "currency": "USD"
+    },
+    "BRA": {
+      "pricePointId": "eyJzIjoiNjc5OTAyMDQ5MCIsInQiOiJCUkEiLCJwIjoiMTAxNTcifQ",
+      "customerPrice": "39.90",
+      "currency": "BRL"
+    },
+    "BRB": {
+      "pricePointId": "eyJzIjoiNjc5OTAyMDQ5MCIsInQiOiJCUkIiLCJwIjoiMTAwODgifQ",
+      "customerPrice": "6.99",
+      "currency": "USD"
+    },
+    "BRN": {
+      "pricePointId": "eyJzIjoiNjc5OTAyMDQ5MCIsInQiOiJCUk4iLCJwIjoiMTAwNzUifQ",
+      "customerPrice": "5.99",
+      "currency": "USD"
+    },
+    "BTN": {
+      "pricePointId": "eyJzIjoiNjc5OTAyMDQ5MCIsInQiOiJCVE4iLCJwIjoiMTAwNzUifQ",
+      "customerPrice": "5.99",
+      "currency": "USD"
+    },
+    "BWA": {
+      "pricePointId": "eyJzIjoiNjc5OTAyMDQ5MCIsInQiOiJCV0EiLCJwIjoiMTAwNzUifQ",
+      "customerPrice": "5.99",
+      "currency": "USD"
+    },
+    "CAN": {
+      "pricePointId": "eyJzIjoiNjc5OTAyMDQ5MCIsInQiOiJDQU4iLCJwIjoiMTAxMDEifQ",
+      "customerPrice": "7.99",
+      "currency": "CAD"
+    },
+    "CHE": {
+      "pricePointId": "eyJzIjoiNjc5OTAyMDQ5MCIsInQiOiJDSEUiLCJwIjoiMTAwNTMifQ",
+      "customerPrice": "5.00",
+      "currency": "CHF"
+    },
+    "CHL": {
+      "pricePointId": "eyJzIjoiNjc5OTAyMDQ5MCIsInQiOiJDSEwiLCJwIjoiMTAxMzcifQ",
+      "customerPrice": "6990.00",
+      "currency": "CLP"
+    },
+    "CHN": {
+      "pricePointId": "eyJzIjoiNjc5OTAyMDQ5MCIsInQiOiJDSE4iLCJwIjoiMTAwODcifQ",
+      "customerPrice": "38.00",
+      "currency": "CNY"
+    },
+    "CIV": {
+      "pricePointId": "eyJzIjoiNjc5OTAyMDQ5MCIsInQiOiJDSVYiLCJwIjoiMTAwODgifQ",
+      "customerPrice": "6.99",
+      "currency": "USD"
+    },
+    "CMR": {
+      "pricePointId": "eyJzIjoiNjc5OTAyMDQ5MCIsInQiOiJDTVIiLCJwIjoiMTAwODgifQ",
+      "customerPrice": "6.99",
+      "currency": "USD"
+    },
+    "COD": {
+      "pricePointId": "eyJzIjoiNjc5OTAyMDQ5MCIsInQiOiJDT0QiLCJwIjoiMTAwNzUifQ",
+      "customerPrice": "5.99",
+      "currency": "USD"
+    },
+    "COG": {
+      "pricePointId": "eyJzIjoiNjc5OTAyMDQ5MCIsInQiOiJDT0ciLCJwIjoiMTAwNzUifQ",
+      "customerPrice": "5.99",
+      "currency": "USD"
+    },
+    "COL": {
+      "pricePointId": "eyJzIjoiNjc5OTAyMDQ5MCIsInQiOiJDT0wiLCJwIjoiMTAwODgifQ",
+      "customerPrice": "29900.00",
+      "currency": "COP"
+    },
+    "CPV": {
+      "pricePointId": "eyJzIjoiNjc5OTAyMDQ5MCIsInQiOiJDUFYiLCJwIjoiMTAwNzUifQ",
+      "customerPrice": "5.99",
+      "currency": "USD"
+    },
+    "CRI": {
+      "pricePointId": "eyJzIjoiNjc5OTAyMDQ5MCIsInQiOiJDUkkiLCJwIjoiMTAwNzUifQ",
+      "customerPrice": "5.99",
+      "currency": "USD"
+    },
+    "CYM": {
+      "pricePointId": "eyJzIjoiNjc5OTAyMDQ5MCIsInQiOiJDWU0iLCJwIjoiMTAwNzUifQ",
+      "customerPrice": "5.99",
+      "currency": "USD"
+    },
+    "CYP": {
+      "pricePointId": "eyJzIjoiNjc5OTAyMDQ5MCIsInQiOiJDWVAiLCJwIjoiMTAwODgifQ",
+      "customerPrice": "6.99",
+      "currency": "EUR"
+    },
+    "CZE": {
+      "pricePointId": "eyJzIjoiNjc5OTAyMDQ5MCIsInQiOiJDWkUiLCJwIjoiMTAwOTQifQ",
+      "customerPrice": "149.00",
+      "currency": "CZK"
+    },
+    "DEU": {
+      "pricePointId": "eyJzIjoiNjc5OTAyMDQ5MCIsInQiOiJERVUiLCJwIjoiMTAwODgifQ",
+      "customerPrice": "6.99",
+      "currency": "EUR"
+    },
+    "DMA": {
+      "pricePointId": "eyJzIjoiNjc5OTAyMDQ5MCIsInQiOiJETUEiLCJwIjoiMTAwNzUifQ",
+      "customerPrice": "5.99",
+      "currency": "USD"
+    },
+    "DNK": {
+      "pricePointId": "eyJzIjoiNjc5OTAyMDQ5MCIsInQiOiJETksiLCJwIjoiMTAwNDcifQ",
+      "customerPrice": "49.00",
+      "currency": "DKK"
+    },
+    "DOM": {
+      "pricePointId": "eyJzIjoiNjc5OTAyMDQ5MCIsInQiOiJET00iLCJwIjoiMTAwNzUifQ",
+      "customerPrice": "5.99",
+      "currency": "USD"
+    },
+    "DZA": {
+      "pricePointId": "eyJzIjoiNjc5OTAyMDQ5MCIsInQiOiJEWkEiLCJwIjoiMTAwNzUifQ",
+      "customerPrice": "5.99",
+      "currency": "USD"
+    },
+    "ECU": {
+      "pricePointId": "eyJzIjoiNjc5OTAyMDQ5MCIsInQiOiJFQ1UiLCJwIjoiMTAwNzUifQ",
+      "customerPrice": "5.99",
+      "currency": "USD"
+    },
+    "EGY": {
+      "pricePointId": "eyJzIjoiNjc5OTAyMDQ5MCIsInQiOiJFR1kiLCJwIjoiMTAyNDMifQ",
+      "customerPrice": "299.99",
+      "currency": "EGP"
+    },
+    "ESP": {
+      "pricePointId": "eyJzIjoiNjc5OTAyMDQ5MCIsInQiOiJFU1AiLCJwIjoiMTAwODgifQ",
+      "customerPrice": "6.99",
+      "currency": "EUR"
+    },
+    "EST": {
+      "pricePointId": "eyJzIjoiNjc5OTAyMDQ5MCIsInQiOiJFU1QiLCJwIjoiMTAwODgifQ",
+      "customerPrice": "6.99",
+      "currency": "EUR"
+    },
+    "FIN": {
+      "pricePointId": "eyJzIjoiNjc5OTAyMDQ5MCIsInQiOiJGSU4iLCJwIjoiMTAwODgifQ",
+      "customerPrice": "6.99",
+      "currency": "EUR"
+    },
+    "FJI": {
+      "pricePointId": "eyJzIjoiNjc5OTAyMDQ5MCIsInQiOiJGSkkiLCJwIjoiMTAwNzUifQ",
+      "customerPrice": "5.99",
+      "currency": "USD"
+    },
+    "FRA": {
+      "pricePointId": "eyJzIjoiNjc5OTAyMDQ5MCIsInQiOiJGUkEiLCJwIjoiMTAwODgifQ",
+      "customerPrice": "6.99",
+      "currency": "EUR"
+    },
+    "FSM": {
+      "pricePointId": "eyJzIjoiNjc5OTAyMDQ5MCIsInQiOiJGU00iLCJwIjoiMTAwNzUifQ",
+      "customerPrice": "5.99",
+      "currency": "USD"
+    },
+    "GAB": {
+      "pricePointId": "eyJzIjoiNjc5OTAyMDQ5MCIsInQiOiJHQUIiLCJwIjoiMTAwNzUifQ",
+      "customerPrice": "5.99",
+      "currency": "USD"
+    },
+    "GBR": {
+      "pricePointId": "eyJzIjoiNjc5OTAyMDQ5MCIsInQiOiJHQlIiLCJwIjoiMTAwNzUifQ",
+      "customerPrice": "5.99",
+      "currency": "GBP"
+    },
+    "GEO": {
+      "pricePointId": "eyJzIjoiNjc5OTAyMDQ5MCIsInQiOiJHRU8iLCJwIjoiMTAwODgifQ",
+      "customerPrice": "6.99",
+      "currency": "USD"
+    },
+    "GHA": {
+      "pricePointId": "eyJzIjoiNjc5OTAyMDQ5MCIsInQiOiJHSEEiLCJwIjoiMTAwODgifQ",
+      "customerPrice": "6.99",
+      "currency": "USD"
+    },
+    "GMB": {
+      "pricePointId": "eyJzIjoiNjc5OTAyMDQ5MCIsInQiOiJHTUIiLCJwIjoiMTAwNzUifQ",
+      "customerPrice": "5.99",
+      "currency": "USD"
+    },
+    "GNB": {
+      "pricePointId": "eyJzIjoiNjc5OTAyMDQ5MCIsInQiOiJHTkIiLCJwIjoiMTAwNzUifQ",
+      "customerPrice": "5.99",
+      "currency": "USD"
+    },
+    "GRC": {
+      "pricePointId": "eyJzIjoiNjc5OTAyMDQ5MCIsInQiOiJHUkMiLCJwIjoiMTAwODgifQ",
+      "customerPrice": "6.99",
+      "currency": "EUR"
+    },
+    "GRD": {
+      "pricePointId": "eyJzIjoiNjc5OTAyMDQ5MCIsInQiOiJHUkQiLCJwIjoiMTAwNzUifQ",
+      "customerPrice": "5.99",
+      "currency": "USD"
+    },
+    "GTM": {
+      "pricePointId": "eyJzIjoiNjc5OTAyMDQ5MCIsInQiOiJHVE0iLCJwIjoiMTAwNzUifQ",
+      "customerPrice": "5.99",
+      "currency": "USD"
+    },
+    "GUY": {
+      "pricePointId": "eyJzIjoiNjc5OTAyMDQ5MCIsInQiOiJHVVkiLCJwIjoiMTAwNzUifQ",
+      "customerPrice": "5.99",
+      "currency": "USD"
+    },
+    "HKG": {
+      "pricePointId": "eyJzIjoiNjc5OTAyMDQ5MCIsInQiOiJIS0ciLCJwIjoiMTAwNDcifQ",
+      "customerPrice": "48.00",
+      "currency": "HKD"
+    },
+    "HND": {
+      "pricePointId": "eyJzIjoiNjc5OTAyMDQ5MCIsInQiOiJITkQiLCJwIjoiMTAwNzUifQ",
+      "customerPrice": "5.99",
+      "currency": "USD"
+    },
+    "HRV": {
+      "pricePointId": "eyJzIjoiNjc5OTAyMDQ5MCIsInQiOiJIUlYiLCJwIjoiMTAwODgifQ",
+      "customerPrice": "6.99",
+      "currency": "EUR"
+    },
+    "HUN": {
+      "pricePointId": "eyJzIjoiNjc5OTAyMDQ5MCIsInQiOiJIVU4iLCJwIjoiMTAwNzUifQ",
+      "customerPrice": "2490.00",
+      "currency": "HUF"
+    },
+    "IDN": {
+      "pricePointId": "eyJzIjoiNjc5OTAyMDQ5MCIsInQiOiJJRE4iLCJwIjoiMTAxMzUifQ",
+      "customerPrice": "99000.00",
+      "currency": "IDR"
+    },
+    "IND": {
+      "pricePointId": "eyJzIjoiNjc5OTAyMDQ5MCIsInQiOiJJTkQiLCJwIjoiMTAxNjEifQ",
+      "customerPrice": "599.00",
+      "currency": "INR"
+    },
+    "IRL": {
+      "pricePointId": "eyJzIjoiNjc5OTAyMDQ5MCIsInQiOiJJUkwiLCJwIjoiMTAwODgifQ",
+      "customerPrice": "6.99",
+      "currency": "EUR"
+    },
+    "IRQ": {
+      "pricePointId": "eyJzIjoiNjc5OTAyMDQ5MCIsInQiOiJJUlEiLCJwIjoiMTAwNzUifQ",
+      "customerPrice": "5.99",
+      "currency": "USD"
+    },
+    "ISL": {
+      "pricePointId": "eyJzIjoiNjc5OTAyMDQ5MCIsInQiOiJJU0wiLCJwIjoiMTAwODgifQ",
+      "customerPrice": "6.99",
+      "currency": "USD"
+    },
+    "ISR": {
+      "pricePointId": "eyJzIjoiNjc5OTAyMDQ5MCIsInQiOiJJU1IiLCJwIjoiMTAwNTgifQ",
+      "customerPrice": "19.90",
+      "currency": "ILS"
+    },
+    "ITA": {
+      "pricePointId": "eyJzIjoiNjc5OTAyMDQ5MCIsInQiOiJJVEEiLCJwIjoiMTAwODgifQ",
+      "customerPrice": "6.99",
+      "currency": "EUR"
+    },
+    "JAM": {
+      "pricePointId": "eyJzIjoiNjc5OTAyMDQ5MCIsInQiOiJKQU0iLCJwIjoiMTAwNzUifQ",
+      "customerPrice": "5.99",
+      "currency": "USD"
+    },
+    "JOR": {
+      "pricePointId": "eyJzIjoiNjc5OTAyMDQ5MCIsInQiOiJKT1IiLCJwIjoiMTAwNzUifQ",
+      "customerPrice": "5.99",
+      "currency": "USD"
+    },
+    "JPN": {
+      "pricePointId": "eyJzIjoiNjc5OTAyMDQ5MCIsInQiOiJKUE4iLCJwIjoiMTAwOTYifQ",
+      "customerPrice": "1000.00",
+      "currency": "JPY"
+    },
+    "KAZ": {
+      "pricePointId": "eyJzIjoiNjc5OTAyMDQ5MCIsInQiOiJLQVoiLCJwIjoiMTAxODcifQ",
+      "customerPrice": "3490.00",
+      "currency": "KZT"
+    },
+    "KEN": {
+      "pricePointId": "eyJzIjoiNjc5OTAyMDQ5MCIsInQiOiJLRU4iLCJwIjoiMTAwODgifQ",
+      "customerPrice": "6.99",
+      "currency": "USD"
+    },
+    "KGZ": {
+      "pricePointId": "eyJzIjoiNjc5OTAyMDQ5MCIsInQiOiJLR1oiLCJwIjoiMTAwNzUifQ",
+      "customerPrice": "5.99",
+      "currency": "USD"
+    },
+    "KHM": {
+      "pricePointId": "eyJzIjoiNjc5OTAyMDQ5MCIsInQiOiJLSE0iLCJwIjoiMTAwNzUifQ",
+      "customerPrice": "5.99",
+      "currency": "USD"
+    },
+    "KNA": {
+      "pricePointId": "eyJzIjoiNjc5OTAyMDQ5MCIsInQiOiJLTkEiLCJwIjoiMTAwNzUifQ",
+      "customerPrice": "5.99",
+      "currency": "USD"
+    },
+    "KOR": {
+      "pricePointId": "eyJzIjoiNjc5OTAyMDQ5MCIsInQiOiJLT1IiLCJwIjoiMTAxMDUifQ",
+      "customerPrice": "9900.00",
+      "currency": "KRW"
+    },
+    "KWT": {
+      "pricePointId": "eyJzIjoiNjc5OTAyMDQ5MCIsInQiOiJLV1QiLCJwIjoiMTAwNzUifQ",
+      "customerPrice": "5.99",
+      "currency": "USD"
+    },
+    "LAO": {
+      "pricePointId": "eyJzIjoiNjc5OTAyMDQ5MCIsInQiOiJMQU8iLCJwIjoiMTAwNzUifQ",
+      "customerPrice": "5.99",
+      "currency": "USD"
+    },
+    "LBN": {
+      "pricePointId": "eyJzIjoiNjc5OTAyMDQ5MCIsInQiOiJMQk4iLCJwIjoiMTAwNzUifQ",
+      "customerPrice": "5.99",
+      "currency": "USD"
+    },
+    "LBR": {
+      "pricePointId": "eyJzIjoiNjc5OTAyMDQ5MCIsInQiOiJMQlIiLCJwIjoiMTAwNzUifQ",
+      "customerPrice": "5.99",
+      "currency": "USD"
+    },
+    "LBY": {
+      "pricePointId": "eyJzIjoiNjc5OTAyMDQ5MCIsInQiOiJMQlkiLCJwIjoiMTAwNzUifQ",
+      "customerPrice": "5.99",
+      "currency": "USD"
+    },
+    "LCA": {
+      "pricePointId": "eyJzIjoiNjc5OTAyMDQ5MCIsInQiOiJMQ0EiLCJwIjoiMTAwNzUifQ",
+      "customerPrice": "5.99",
+      "currency": "USD"
+    },
+    "LKA": {
+      "pricePointId": "eyJzIjoiNjc5OTAyMDQ5MCIsInQiOiJMS0EiLCJwIjoiMTAwNzUifQ",
+      "customerPrice": "5.99",
+      "currency": "USD"
+    },
+    "LTU": {
+      "pricePointId": "eyJzIjoiNjc5OTAyMDQ5MCIsInQiOiJMVFUiLCJwIjoiMTAwODgifQ",
+      "customerPrice": "6.99",
+      "currency": "EUR"
+    },
+    "LUX": {
+      "pricePointId": "eyJzIjoiNjc5OTAyMDQ5MCIsInQiOiJMVVgiLCJwIjoiMTAwODgifQ",
+      "customerPrice": "6.99",
+      "currency": "EUR"
+    },
+    "LVA": {
+      "pricePointId": "eyJzIjoiNjc5OTAyMDQ5MCIsInQiOiJMVkEiLCJwIjoiMTAwODgifQ",
+      "customerPrice": "6.99",
+      "currency": "EUR"
+    },
+    "MAC": {
+      "pricePointId": "eyJzIjoiNjc5OTAyMDQ5MCIsInQiOiJNQUMiLCJwIjoiMTAwNzUifQ",
+      "customerPrice": "5.99",
+      "currency": "USD"
+    },
+    "MAR": {
+      "pricePointId": "eyJzIjoiNjc5OTAyMDQ5MCIsInQiOiJNQVIiLCJwIjoiMTAwNzUifQ",
+      "customerPrice": "5.99",
+      "currency": "USD"
+    },
+    "MDA": {
+      "pricePointId": "eyJzIjoiNjc5OTAyMDQ5MCIsInQiOiJNREEiLCJwIjoiMTAwODgifQ",
+      "customerPrice": "6.99",
+      "currency": "USD"
+    },
+    "MDG": {
+      "pricePointId": "eyJzIjoiNjc5OTAyMDQ5MCIsInQiOiJNREciLCJwIjoiMTAwNzUifQ",
+      "customerPrice": "5.99",
+      "currency": "USD"
+    },
+    "MDV": {
+      "pricePointId": "eyJzIjoiNjc5OTAyMDQ5MCIsInQiOiJNRFYiLCJwIjoiMTAwNzUifQ",
+      "customerPrice": "5.99",
+      "currency": "USD"
+    },
+    "MEX": {
+      "pricePointId": "eyJzIjoiNjc5OTAyMDQ5MCIsInQiOiJNRVgiLCJwIjoiMTAxMjUifQ",
+      "customerPrice": "129.00",
+      "currency": "MXN"
+    },
+    "MKD": {
+      "pricePointId": "eyJzIjoiNjc5OTAyMDQ5MCIsInQiOiJNS0QiLCJwIjoiMTAwNzUifQ",
+      "customerPrice": "5.99",
+      "currency": "USD"
+    },
+    "MLI": {
+      "pricePointId": "eyJzIjoiNjc5OTAyMDQ5MCIsInQiOiJNTEkiLCJwIjoiMTAwNzUifQ",
+      "customerPrice": "5.99",
+      "currency": "USD"
+    },
+    "MLT": {
+      "pricePointId": "eyJzIjoiNjc5OTAyMDQ5MCIsInQiOiJNTFQiLCJwIjoiMTAwODgifQ",
+      "customerPrice": "6.99",
+      "currency": "EUR"
+    },
+    "MMR": {
+      "pricePointId": "eyJzIjoiNjc5OTAyMDQ5MCIsInQiOiJNTVIiLCJwIjoiMTAwNzUifQ",
+      "customerPrice": "5.99",
+      "currency": "USD"
+    },
+    "MNE": {
+      "pricePointId": "eyJzIjoiNjc5OTAyMDQ5MCIsInQiOiJNTkUiLCJwIjoiMTAwNzUifQ",
+      "customerPrice": "5.99",
+      "currency": "EUR"
+    },
+    "MNG": {
+      "pricePointId": "eyJzIjoiNjc5OTAyMDQ5MCIsInQiOiJNTkciLCJwIjoiMTAwNzUifQ",
+      "customerPrice": "5.99",
+      "currency": "USD"
+    },
+    "MOZ": {
+      "pricePointId": "eyJzIjoiNjc5OTAyMDQ5MCIsInQiOiJNT1oiLCJwIjoiMTAwNzUifQ",
+      "customerPrice": "5.99",
+      "currency": "USD"
+    },
+    "MRT": {
+      "pricePointId": "eyJzIjoiNjc5OTAyMDQ5MCIsInQiOiJNUlQiLCJwIjoiMTAwNzUifQ",
+      "customerPrice": "5.99",
+      "currency": "USD"
+    },
+    "MSR": {
+      "pricePointId": "eyJzIjoiNjc5OTAyMDQ5MCIsInQiOiJNU1IiLCJwIjoiMTAwNzUifQ",
+      "customerPrice": "5.99",
+      "currency": "USD"
+    },
+    "MUS": {
+      "pricePointId": "eyJzIjoiNjc5OTAyMDQ5MCIsInQiOiJNVVMiLCJwIjoiMTAwODgifQ",
+      "customerPrice": "6.99",
+      "currency": "USD"
+    },
+    "MWI": {
+      "pricePointId": "eyJzIjoiNjc5OTAyMDQ5MCIsInQiOiJNV0kiLCJwIjoiMTAwNzUifQ",
+      "customerPrice": "5.99",
+      "currency": "USD"
+    },
+    "MYS": {
+      "pricePointId": "eyJzIjoiNjc5OTAyMDQ5MCIsInQiOiJNWVMiLCJwIjoiMTAxMDgifQ",
+      "customerPrice": "29.90",
+      "currency": "MYR"
+    },
+    "NAM": {
+      "pricePointId": "eyJzIjoiNjc5OTAyMDQ5MCIsInQiOiJOQU0iLCJwIjoiMTAwNzUifQ",
+      "customerPrice": "5.99",
+      "currency": "USD"
+    },
+    "NER": {
+      "pricePointId": "eyJzIjoiNjc5OTAyMDQ5MCIsInQiOiJORVIiLCJwIjoiMTAwNzUifQ",
+      "customerPrice": "5.99",
+      "currency": "USD"
+    },
+    "NGA": {
+      "pricePointId": "eyJzIjoiNjc5OTAyMDQ5MCIsInQiOiJOR0EiLCJwIjoiMTAxOTQifQ",
+      "customerPrice": "9900.00",
+      "currency": "NGN"
+    },
+    "NIC": {
+      "pricePointId": "eyJzIjoiNjc5OTAyMDQ5MCIsInQiOiJOSUMiLCJwIjoiMTAwNzUifQ",
+      "customerPrice": "5.99",
+      "currency": "USD"
+    },
+    "NLD": {
+      "pricePointId": "eyJzIjoiNjc5OTAyMDQ5MCIsInQiOiJOTEQiLCJwIjoiMTAwODgifQ",
+      "customerPrice": "6.99",
+      "currency": "EUR"
+    },
+    "NOR": {
+      "pricePointId": "eyJzIjoiNjc5OTAyMDQ5MCIsInQiOiJOT1IiLCJwIjoiMTAwNzcifQ",
+      "customerPrice": "79.00",
+      "currency": "NOK"
+    },
+    "NPL": {
+      "pricePointId": "eyJzIjoiNjc5OTAyMDQ5MCIsInQiOiJOUEwiLCJwIjoiMTAwODgifQ",
+      "customerPrice": "6.99",
+      "currency": "USD"
+    },
+    "NRU": {
+      "pricePointId": "eyJzIjoiNjc5OTAyMDQ5MCIsInQiOiJOUlUiLCJwIjoiMTAwNzUifQ",
+      "customerPrice": "5.99",
+      "currency": "USD"
+    },
+    "NZL": {
+      "pricePointId": "eyJzIjoiNjc5OTAyMDQ5MCIsInQiOiJOWkwiLCJwIjoiMTAxMjYifQ",
+      "customerPrice": "9.99",
+      "currency": "NZD"
+    },
+    "OMN": {
+      "pricePointId": "eyJzIjoiNjc5OTAyMDQ5MCIsInQiOiJPTU4iLCJwIjoiMTAwNzUifQ",
+      "customerPrice": "5.99",
+      "currency": "USD"
+    },
+    "PAK": {
+      "pricePointId": "eyJzIjoiNjc5OTAyMDQ5MCIsInQiOiJQQUsiLCJwIjoiMTAxODMifQ",
+      "customerPrice": "1700.00",
+      "currency": "PKR"
+    },
+    "PAN": {
+      "pricePointId": "eyJzIjoiNjc5OTAyMDQ5MCIsInQiOiJQQU4iLCJwIjoiMTAwNzUifQ",
+      "customerPrice": "5.99",
+      "currency": "USD"
+    },
+    "PER": {
+      "pricePointId": "eyJzIjoiNjc5OTAyMDQ5MCIsInQiOiJQRVIiLCJwIjoiMTAwOTcifQ",
+      "customerPrice": "24.90",
+      "currency": "PEN"
+    },
+    "PHL": {
+      "pricePointId": "eyJzIjoiNjc5OTAyMDQ5MCIsInQiOiJQSEwiLCJwIjoiMTAxMTkifQ",
+      "customerPrice": "399.00",
+      "currency": "PHP"
+    },
+    "PLW": {
+      "pricePointId": "eyJzIjoiNjc5OTAyMDQ5MCIsInQiOiJQTFciLCJwIjoiMTAwNzUifQ",
+      "customerPrice": "5.99",
+      "currency": "USD"
+    },
+    "PNG": {
+      "pricePointId": "eyJzIjoiNjc5OTAyMDQ5MCIsInQiOiJQTkciLCJwIjoiMTAwNzUifQ",
+      "customerPrice": "5.99",
+      "currency": "USD"
+    },
+    "POL": {
+      "pricePointId": "eyJzIjoiNjc5OTAyMDQ5MCIsInQiOiJQT0wiLCJwIjoiMTAwOTEifQ",
+      "customerPrice": "29.99",
+      "currency": "PLN"
+    },
+    "PRT": {
+      "pricePointId": "eyJzIjoiNjc5OTAyMDQ5MCIsInQiOiJQUlQiLCJwIjoiMTAwODgifQ",
+      "customerPrice": "6.99",
+      "currency": "EUR"
+    },
+    "PRY": {
+      "pricePointId": "eyJzIjoiNjc5OTAyMDQ5MCIsInQiOiJQUlkiLCJwIjoiMTAwNzUifQ",
+      "customerPrice": "5.99",
+      "currency": "USD"
+    },
+    "QAT": {
+      "pricePointId": "eyJzIjoiNjc5OTAyMDQ5MCIsInQiOiJRQVQiLCJwIjoiMTAwNjYifQ",
+      "customerPrice": "19.99",
+      "currency": "QAR"
+    },
+    "ROU": {
+      "pricePointId": "eyJzIjoiNjc5OTAyMDQ5MCIsInQiOiJST1UiLCJwIjoiMTAwOTEifQ",
+      "customerPrice": "29.99",
+      "currency": "RON"
+    },
+    "RUS": {
+      "pricePointId": "eyJzIjoiNjc5OTAyMDQ5MCIsInQiOiJSVVMiLCJwIjoiMTAxNDYifQ",
+      "customerPrice": "499.00",
+      "currency": "RUB"
+    },
+    "RWA": {
+      "pricePointId": "eyJzIjoiNjc5OTAyMDQ5MCIsInQiOiJSV0EiLCJwIjoiMTAwNzUifQ",
+      "customerPrice": "5.99",
+      "currency": "USD"
+    },
+    "SAU": {
+      "pricePointId": "eyJzIjoiNjc5OTAyMDQ5MCIsInQiOiJTQVUiLCJwIjoiMTAwODMifQ",
+      "customerPrice": "24.99",
+      "currency": "SAR"
+    },
+    "SEN": {
+      "pricePointId": "eyJzIjoiNjc5OTAyMDQ5MCIsInQiOiJTRU4iLCJwIjoiMTAwODgifQ",
+      "customerPrice": "6.99",
+      "currency": "USD"
+    },
+    "SGP": {
+      "pricePointId": "eyJzIjoiNjc5OTAyMDQ5MCIsInQiOiJTR1AiLCJwIjoiMTAxMjAifQ",
+      "customerPrice": "8.98",
+      "currency": "SGD"
+    },
+    "SLB": {
+      "pricePointId": "eyJzIjoiNjc5OTAyMDQ5MCIsInQiOiJTTEIiLCJwIjoiMTAwNzUifQ",
+      "customerPrice": "5.99",
+      "currency": "USD"
+    },
+    "SLE": {
+      "pricePointId": "eyJzIjoiNjc5OTAyMDQ5MCIsInQiOiJTTEUiLCJwIjoiMTAwNzUifQ",
+      "customerPrice": "5.99",
+      "currency": "USD"
+    },
+    "SLV": {
+      "pricePointId": "eyJzIjoiNjc5OTAyMDQ5MCIsInQiOiJTTFYiLCJwIjoiMTAwNzUifQ",
+      "customerPrice": "5.99",
+      "currency": "USD"
+    },
+    "SRB": {
+      "pricePointId": "eyJzIjoiNjc5OTAyMDQ5MCIsInQiOiJTUkIiLCJwIjoiMTAwODgifQ",
+      "customerPrice": "6.99",
+      "currency": "EUR"
+    },
+    "STP": {
+      "pricePointId": "eyJzIjoiNjc5OTAyMDQ5MCIsInQiOiJTVFAiLCJwIjoiMTAwNzUifQ",
+      "customerPrice": "5.99",
+      "currency": "USD"
+    },
+    "SUR": {
+      "pricePointId": "eyJzIjoiNjc5OTAyMDQ5MCIsInQiOiJTVVIiLCJwIjoiMTAwNzUifQ",
+      "customerPrice": "5.99",
+      "currency": "USD"
+    },
+    "SVK": {
+      "pricePointId": "eyJzIjoiNjc5OTAyMDQ5MCIsInQiOiJTVksiLCJwIjoiMTAwODgifQ",
+      "customerPrice": "6.99",
+      "currency": "EUR"
+    },
+    "SVN": {
+      "pricePointId": "eyJzIjoiNjc5OTAyMDQ5MCIsInQiOiJTVk4iLCJwIjoiMTAwODgifQ",
+      "customerPrice": "6.99",
+      "currency": "EUR"
+    },
+    "SWE": {
+      "pricePointId": "eyJzIjoiNjc5OTAyMDQ5MCIsInQiOiJTV0UiLCJwIjoiMTAwNzcifQ",
+      "customerPrice": "79.00",
+      "currency": "SEK"
+    },
+    "SWZ": {
+      "pricePointId": "eyJzIjoiNjc5OTAyMDQ5MCIsInQiOiJTV1oiLCJwIjoiMTAwNzUifQ",
+      "customerPrice": "5.99",
+      "currency": "USD"
+    },
+    "SYC": {
+      "pricePointId": "eyJzIjoiNjc5OTAyMDQ5MCIsInQiOiJTWUMiLCJwIjoiMTAwNzUifQ",
+      "customerPrice": "5.99",
+      "currency": "USD"
+    },
+    "TCA": {
+      "pricePointId": "eyJzIjoiNjc5OTAyMDQ5MCIsInQiOiJUQ0EiLCJwIjoiMTAwNzUifQ",
+      "customerPrice": "5.99",
+      "currency": "USD"
+    },
+    "TCD": {
+      "pricePointId": "eyJzIjoiNjc5OTAyMDQ5MCIsInQiOiJUQ0QiLCJwIjoiMTAwNzUifQ",
+      "customerPrice": "5.99",
+      "currency": "USD"
+    },
+    "THA": {
+      "pricePointId": "eyJzIjoiNjc5OTAyMDQ5MCIsInQiOiJUSEEiLCJwIjoiMTAwNTkifQ",
+      "customerPrice": "199.00",
+      "currency": "THB"
+    },
+    "TJK": {
+      "pricePointId": "eyJzIjoiNjc5OTAyMDQ5MCIsInQiOiJUSksiLCJwIjoiMTAwNzUifQ",
+      "customerPrice": "5.99",
+      "currency": "USD"
+    },
+    "TKM": {
+      "pricePointId": "eyJzIjoiNjc5OTAyMDQ5MCIsInQiOiJUS00iLCJwIjoiMTAwNzUifQ",
+      "customerPrice": "5.99",
+      "currency": "USD"
+    },
+    "TON": {
+      "pricePointId": "eyJzIjoiNjc5OTAyMDQ5MCIsInQiOiJUT04iLCJwIjoiMTAwNzUifQ",
+      "customerPrice": "5.99",
+      "currency": "USD"
+    },
+    "TTO": {
+      "pricePointId": "eyJzIjoiNjc5OTAyMDQ5MCIsInQiOiJUVE8iLCJwIjoiMTAwNzUifQ",
+      "customerPrice": "5.99",
+      "currency": "USD"
+    },
+    "TUN": {
+      "pricePointId": "eyJzIjoiNjc5OTAyMDQ5MCIsInQiOiJUVU4iLCJwIjoiMTAwNzUifQ",
+      "customerPrice": "5.99",
+      "currency": "USD"
+    },
+    "TUR": {
+      "pricePointId": "eyJzIjoiNjc5OTAyMDQ5MCIsInQiOiJUVVIiLCJwIjoiMTAyNDMifQ",
+      "customerPrice": "299.99",
+      "currency": "TRY"
+    },
+    "TWN": {
+      "pricePointId": "eyJzIjoiNjc5OTAyMDQ5MCIsInQiOiJUV04iLCJwIjoiMTAwNTEifQ",
+      "customerPrice": "190.00",
+      "currency": "TWD"
+    },
+    "TZA": {
+      "pricePointId": "eyJzIjoiNjc5OTAyMDQ5MCIsInQiOiJUWkEiLCJwIjoiMTAxNTQifQ",
+      "customerPrice": "17900.00",
+      "currency": "TZS"
+    },
+    "UGA": {
+      "pricePointId": "eyJzIjoiNjc5OTAyMDQ5MCIsInQiOiJVR0EiLCJwIjoiMTAwODgifQ",
+      "customerPrice": "6.99",
+      "currency": "USD"
+    },
+    "UKR": {
+      "pricePointId": "eyJzIjoiNjc5OTAyMDQ5MCIsInQiOiJVS1IiLCJwIjoiMTAwODgifQ",
+      "customerPrice": "6.99",
+      "currency": "USD"
+    },
+    "URY": {
+      "pricePointId": "eyJzIjoiNjc5OTAyMDQ5MCIsInQiOiJVUlkiLCJwIjoiMTAwNzUifQ",
+      "customerPrice": "5.99",
+      "currency": "USD"
+    },
+    "USA": {
+      "pricePointId": "eyJzIjoiNjc5OTAyMDQ5MCIsInQiOiJVU0EiLCJwIjoiMTAwNzUifQ",
+      "customerPrice": "5.99",
+      "currency": "USD"
+    },
+    "UZB": {
+      "pricePointId": "eyJzIjoiNjc5OTAyMDQ5MCIsInQiOiJVWkIiLCJwIjoiMTAwNzUifQ",
+      "customerPrice": "5.99",
+      "currency": "USD"
+    },
+    "VCT": {
+      "pricePointId": "eyJzIjoiNjc5OTAyMDQ5MCIsInQiOiJWQ1QiLCJwIjoiMTAwNzUifQ",
+      "customerPrice": "5.99",
+      "currency": "USD"
+    },
+    "VEN": {
+      "pricePointId": "eyJzIjoiNjc5OTAyMDQ5MCIsInQiOiJWRU4iLCJwIjoiMTAwNzUifQ",
+      "customerPrice": "5.99",
+      "currency": "USD"
+    },
+    "VGB": {
+      "pricePointId": "eyJzIjoiNjc5OTAyMDQ5MCIsInQiOiJWR0IiLCJwIjoiMTAwNzUifQ",
+      "customerPrice": "5.99",
+      "currency": "USD"
+    },
+    "VNM": {
+      "pricePointId": "eyJzIjoiNjc5OTAyMDQ5MCIsInQiOiJWTk0iLCJwIjoiMTAxNjAifQ",
+      "customerPrice": "199000.00",
+      "currency": "VND"
+    },
+    "VUT": {
+      "pricePointId": "eyJzIjoiNjc5OTAyMDQ5MCIsInQiOiJWVVQiLCJwIjoiMTAwNzUifQ",
+      "customerPrice": "5.99",
+      "currency": "USD"
+    },
+    "XKS": {
+      "pricePointId": "eyJzIjoiNjc5OTAyMDQ5MCIsInQiOiJYS1MiLCJwIjoiMTAwODgifQ",
+      "customerPrice": "6.99",
+      "currency": "EUR"
+    },
+    "YEM": {
+      "pricePointId": "eyJzIjoiNjc5OTAyMDQ5MCIsInQiOiJZRU0iLCJwIjoiMTAwNzUifQ",
+      "customerPrice": "5.99",
+      "currency": "USD"
+    },
+    "ZAF": {
+      "pricePointId": "eyJzIjoiNjc5OTAyMDQ5MCIsInQiOiJaQUYiLCJwIjoiMTAxMzMifQ",
+      "customerPrice": "119.99",
+      "currency": "ZAR"
+    },
+    "ZMB": {
+      "pricePointId": "eyJzIjoiNjc5OTAyMDQ5MCIsInQiOiJaTUIiLCJwIjoiMTAwODgifQ",
+      "customerPrice": "6.99",
+      "currency": "USD"
+    },
+    "ZWE": {
+      "pricePointId": "eyJzIjoiNjc5OTAyMDQ5MCIsInQiOiJaV0UiLCJwIjoiMTAwODgifQ",
+      "customerPrice": "6.99",
+      "currency": "USD"
+    }
+  }
+}

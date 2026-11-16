@@ -14,7 +14,106 @@
 
   ],
   "products" : [
-
+    {
+      "displayPrice" : "39.99",
+      "familyShareable" : false,
+      "internalID" : "5B1E0C42",
+      "localizations" : [
+        {
+          "description" : "Every Pro tool with one payment.",
+          "displayName" : "Alike Pro Lifetime",
+          "locale" : "en_US"
+        },
+        {
+          "description" : "Усі функції Pro за одну оплату.",
+          "displayName" : "Alike Pro назавжди",
+          "locale" : "uk"
+        },
+        {
+          "description" : "Alle Pro-Funktionen, einmalige Zahlung.",
+          "displayName" : "Alike Pro dauerhaft",
+          "locale" : "de_DE"
+        },
+        {
+          "description" : "Tous les outils Pro, paiement unique.",
+          "displayName" : "Alike Pro à vie",
+          "locale" : "fr_FR"
+        },
+        {
+          "description" : "Todas las funciones Pro, pago único.",
+          "displayName" : "Alike Pro de por vida",
+          "locale" : "es_ES"
+        },
+        {
+          "description" : "Todas las funciones Pro, pago único.",
+          "displayName" : "Alike Pro de por vida",
+          "locale" : "es_MX"
+        },
+        {
+          "description" : "Todos os recursos Pro, pagamento único.",
+          "displayName" : "Alike Pro vitalício",
+          "locale" : "pt_BR"
+        },
+        {
+          "description" : "Todas as funções Pro, pagamento único.",
+          "displayName" : "Alike Pro vitalício",
+          "locale" : "pt_PT"
+        },
+        {
+          "description" : "Tutti gli strumenti Pro, pagamento unico.",
+          "displayName" : "Alike Pro a vita",
+          "locale" : "it_IT"
+        },
+        {
+          "description" : "Alle Pro-functies, eenmalig betaald.",
+          "displayName" : "Alike Pro levenslang",
+          "locale" : "nl_NL"
+        },
+        {
+          "description" : "Wszystkie funkcje Pro, jedna płatność.",
+          "displayName" : "Alike Pro dożywotnio",
+          "locale" : "pl_PL"
+        },
+        {
+          "description" : "Tüm Pro araçları, tek seferlik ödeme.",
+          "displayName" : "Alike Pro ömür boyu",
+          "locale" : "tr_TR"
+        },
+        {
+          "description" : "一次付款，解鎖所有 Pro 功能。",
+          "displayName" : "Alike Pro 終身版",
+          "locale" : "zh_TW"
+        },
+        {
+          "description" : "كل أدوات Pro بدفعة واحدة.",
+          "displayName" : "‏Alike Pro مدى الحياة",
+          "locale" : "ar_SA"
+        },
+        {
+          "description" : "Every Pro tool with one payment.",
+          "displayName" : "Alike Pro Lifetime",
+          "locale" : "en_GB"
+        },
+        {
+          "description" : "Every Pro tool with one payment.",
+          "displayName" : "Alike Pro Lifetime",
+          "locale" : "en_CA"
+        },
+        {
+          "description" : "Every Pro tool with one payment.",
+          "displayName" : "Alike Pro Lifetime",
+          "locale" : "en_AU"
+        },
+        {
+          "description" : "Tous les outils Pro, paiement unique.",
+          "displayName" : "Alike Pro à vie",
+          "locale" : "fr_CA"
+        }
+      ],
+      "productID" : "com.alike.app.pro.lifetime",
+      "referenceName" : "Alike Pro Lifetime",
+      "type" : "NonConsumable"
+    }
   ],
   "settings" : {
     "_askToBuyEnabled" : false,
@@ -134,8 +233,8 @@
           "billingPlans" : [
             {
               "billingPlanType" : "BILLED_UPFRONT",
-              "commitmentDisplayPrice" : "39.99",
-              "displayPrice" : "39.99",
+              "commitmentDisplayPrice" : "34.99",
+              "displayPrice" : "34.99",
               "internalID" : "D89CCEE7",
               "isEnabled" : true
             }
@@ -143,7 +242,7 @@
           "codeOffers" : [
 
           ],
-          "displayPrice" : "39.99",
+          "displayPrice" : "34.99",
           "familyShareable" : false,
           "groupNumber" : 1,
           "internalID" : "7C6E12FC",
@@ -271,8 +370,8 @@
           "billingPlans" : [
             {
               "billingPlanType" : "BILLED_UPFRONT",
-              "commitmentDisplayPrice" : "6.99",
-              "displayPrice" : "6.99",
+              "commitmentDisplayPrice" : "8.99",
+              "displayPrice" : "8.99",
               "internalID" : "ABFBF46F",
               "isEnabled" : true
             }
@@ -280,7 +379,7 @@
           "codeOffers" : [
 
           ],
-          "displayPrice" : "6.99",
+          "displayPrice" : "8.99",
           "familyShareable" : false,
           "groupNumber" : 2,
           "internalID" : "A8A5893E",

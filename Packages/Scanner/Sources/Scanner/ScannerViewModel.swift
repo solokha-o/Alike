@@ -4,6 +4,7 @@ import DesignSystem
 import Foundation
 import Observation
 import Purchases
+import Storage
 
 /// Scanner-only state. Cleanup content and reconciliation belong to the shared
 /// ``CleanupWorkspaceModel`` so they survive navigation between tabs.

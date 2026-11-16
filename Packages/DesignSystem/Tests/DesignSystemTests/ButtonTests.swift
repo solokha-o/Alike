@@ -2,124 +2,68 @@ import SwiftUI
 import Testing
 @testable import DesignSystem
 
-/// TODO(https://app.notion.com/p/41104d81c94381e4b33acee36f316cc3): these tests only build the value; add real checks or delete them.
 @MainActor
 struct ButtonTests {
-    // MARK: - PrimaryButton Tests
-
-    @Test func testPrimaryButtonCreation() {
-        // Given & When: Creating primary button
-        _ = PrimaryButton("Test") {}
-    }
+    // MARK: - PrimaryButton
 
     @Test func testPrimaryButtonWithIcon() {
-        // Given & When: Creating button with icon
-        _ = PrimaryButton("Test", icon: "star.fill") {}
+        let button = PrimaryButton("Test", icon: "star.fill") {}
+
+        #expect(button.icon == "star.fill")
     }
 
     @Test func testPrimaryButtonWithoutIcon() {
-        // Given & When: Creating button without icon
-        _ = PrimaryButton("Test") {}
+        #expect(PrimaryButton("Test") {}.icon == nil)
+        #expect(PrimaryButton("Test", icon: nil) {}.icon == nil)
     }
 
-    @Test func testPrimaryButtonActionTriggered() {
-        // Given: Button with action
-        _ = PrimaryButton("Test") {}
+    /// Checks that init stores the action. A tap needs a UI test; a package unit test cannot press the button.
+    @Test func testPrimaryButtonStoresAction() {
+        var triggerCount = 0
+        let button = PrimaryButton("Test") { triggerCount += 1 }
+        #expect(triggerCount == 0, "Action should not be called on creation")
 
-        // When: Simulating button press
-        // Note: In real tests, you'd use ViewInspector or similar
-        // Here we're testing the structure
+        button.action()
+
+        #expect(triggerCount == 1)
     }
 
-    // MARK: - SecondaryButton Tests
-
-    @Test func testSecondaryButtonCreation() {
-        // Given & When: Creating secondary button
-        _ = SecondaryButton("Test") {}
-    }
+    // MARK: - SecondaryButton
 
     @Test func testSecondaryButtonWithIcon() {
-        // Given & When: Creating button with icon
-        _ = SecondaryButton("Test", icon: "gear") {}
+        let button = SecondaryButton("Test", icon: "gear") {}
+
+        #expect(button.icon == "gear")
     }
 
     @Test func testSecondaryButtonWithoutIcon() {
-        // Given & When: Creating button without icon
-        _ = SecondaryButton("Test") {}
+        #expect(SecondaryButton("Test") {}.icon == nil)
+        #expect(SecondaryButton("Test", icon: nil) {}.icon == nil)
     }
 
-    // MARK: - Button State Tests
-
-    @Test func testPrimaryButtonFeedbackTrigger() {
-        // Given: Primary button
+    /// Checks that init stores the action. A tap needs a UI test; a package unit test cannot press the button.
+    @Test func testSecondaryButtonStoresAction() {
         var triggerCount = 0
-        _ = PrimaryButton("Test") {
-            triggerCount += 1
-        }
-
-        // Then: Button should be ready to trigger
+        let button = SecondaryButton("Test") { triggerCount += 1 }
         #expect(triggerCount == 0, "Action should not be called on creation")
+
+        button.action()
+
+        #expect(triggerCount == 1)
     }
 
-    @Test func testSecondaryButtonNoFeedback() {
-        // Given: Secondary button (no sensory feedback)
-        var triggerCount = 0
-        _ = SecondaryButton("Test") {
-            triggerCount += 1
-        }
+    // MARK: - Titles
 
-        // Then: Button should exist
-        #expect(triggerCount == 0, "Action should not be called on creation")
+    @Test func testStringTitleIsVerbatim() {
+        #expect(PrimaryButton("Settings") {}.title == Text(verbatim: "Settings"))
+        #expect(SecondaryButton("Settings") {}.title == Text(verbatim: "Settings"))
     }
 
-    // MARK: - Localization Tests
-
-    @Test func testButtonSupportsLocalizedStringKey() {
-        // Given: LocalizedStringKey
+    @Test func testLocalizedStringKeyTitleIsLocalized() {
         let localizedKey: LocalizedStringKey = "Settings"
 
-        // When: Creating buttons with localized string
-        _ = PrimaryButton(localizedKey) {}
-        _ = SecondaryButton(localizedKey) {}
-    }
-
-    // MARK: - Icon Tests
-
-    @Test func testButtonIconIsOptional() {
-        // Given: Buttons with and without icons
-        _ = PrimaryButton("Test", icon: "star") {}
-        _ = PrimaryButton("Test", icon: nil) {}
-        _ = PrimaryButton("Test") {}
-    }
-
-    // MARK: - Multiple Buttons Tests
-
-    @Test func testMultiplePrimaryButtons() {
-        // Given: Multiple primary buttons
-        _ = PrimaryButton("Button 1") {}
-        _ = PrimaryButton("Button 2", icon: "star") {}
-        _ = PrimaryButton("Button 3") {}
-    }
-
-    @Test func testMultipleSecondaryButtons() {
-        // Given: Multiple secondary buttons
-        _ = SecondaryButton("Button 1") {}
-        _ = SecondaryButton("Button 2", icon: "gear") {}
-        _ = SecondaryButton("Button 3") {}
-    }
-
-    // MARK: - Integration Tests
-
-    @Test func testPrimaryAndSecondaryButtonsTogether() {
-        // Given: Both button types
-        _ = PrimaryButton("Primary") {}
-        _ = SecondaryButton("Secondary") {}
-    }
-
-    @Test func testButtonsWithDifferentLocalizations() {
-        // Given: Buttons with different localized keys
-        _ = PrimaryButton("Save") {}
-        _ = SecondaryButton("Cancel") {}
-        _ = PrimaryButton("Delete") {}
+        #expect(PrimaryButton(localizedKey) {}.title == Text(localizedKey))
+        #expect(SecondaryButton(localizedKey) {}.title == Text(localizedKey))
+        #expect(PrimaryButton(localizedKey) {}.title != Text(verbatim: "Settings"))
     }
 }

@@ -32,36 +32,6 @@ public struct ClusterDetailsView: View {
     @State private var presentedPremiumFeature: PremiumFeature?
     @State private var enhancementRequest: EnhancementRequest?
 
-    public init(
-        cluster: PhotoCluster,
-        cleanupService: (any PhotoCleanupService)? = nil,
-        cleanupHistoryRepository: CleanupHistoryRepository = FileCleanupHistoryRepository(),
-        premiumAccess: any PremiumAccessControlling = PremiumAccessController(),
-        subscriptionStore: SubscriptionStore? = nil,
-        openSettingsAction: (@MainActor @Sendable () -> Void)? = nil,
-        qualityAnalyzer: any PhotoQualityAnalyzing = NoOpPhotoQualityAnalyzer(),
-        enhancementService: (any PhotoEnhancementService)? = nil,
-        overrideMetrics: (any BestShotOverrideMetricsRepository)? = nil,
-        personalizedConfigProvider: BestShotPersonalizedScoringConfigProvider? = nil,
-        onReviewStateChanged: (() -> Void)? = nil,
-        onCleanupCompleted: ((CleanupCompletionRecord) -> Void)? = nil
-    ) {
-        self.onReviewStateChanged = onReviewStateChanged
-        self.onCleanupCompleted = onCleanupCompleted
-        self.subscriptionStore = subscriptionStore
-        _viewModel = State(initialValue: ClusterDetailsViewModel(
-            cluster: cluster,
-            cleanupService: cleanupService ?? UnsupportedPhotoCleanupService(),
-            cleanupHistoryRepository: cleanupHistoryRepository,
-            premiumAccess: premiumAccess,
-            openSettingsAction: openSettingsAction,
-            qualityAnalyzer: qualityAnalyzer,
-            enhancementService: enhancementService,
-            overrideMetrics: overrideMetrics,
-            personalizedConfigProvider: personalizedConfigProvider
-        ))
-    }
-
     init(
         cluster _: PhotoCluster,
         viewModel: ClusterDetailsViewModel,
@@ -96,6 +66,7 @@ public struct ClusterDetailsView: View {
                     onDeleteSelected: requestDeleteConfirmation,
                     isDeleting: viewModel.isDeleting
                 )
+                .dsReadableContentWidth()
                 .padding(Spacing.xSmall)
                 .transition(actionBarTransition)
             }
@@ -246,6 +217,7 @@ public struct ClusterDetailsView: View {
                     estimatedSavingsText: viewModel.estimatedSavingsText,
                     isExecuting: viewModel.isDeleting
                 )
+                .dsReadableContentWidth()
             } else {
                 if viewModel.hasAssets {
                     ClusterReviewSummaryCard(
@@ -264,6 +236,9 @@ public struct ClusterDetailsView: View {
                         bestShotCelebrationCue: viewModel.bestShotCelebrationCue,
                         onBestShotCelebrationDismissed: viewModel.consumeBestShotCelebration
                     )
+                    // A single card above the grid: on iPad it keeps the readable
+                    // column, so its status and artwork stay next to the text.
+                    .dsReadableContentWidth()
                 }
 
                 if viewModel.requiresPremiumForCurrentSelection {
@@ -277,6 +252,7 @@ public struct ClusterDetailsView: View {
                             }
                         }
                     )
+                    .dsReadableContentWidth()
                 }
 
                 if !viewModel.hasAssets {
@@ -393,6 +369,45 @@ private struct EnhancementRequest: Identifiable {
     let id = UUID()
     /// The photo this preview belongs to, frozen when the action was tapped.
     let assetID: String
+}
+
+// MARK: - Public initializer
+
+/// In an extension so the type body stays inside SwiftLint's `type_body_length`.
+extension ClusterDetailsView {
+    public init(
+        cluster: PhotoCluster,
+        cleanupService: (any PhotoCleanupService)? = nil,
+        cleanupHistoryRepository: CleanupHistoryRepository = FileCleanupHistoryRepository(),
+        premiumAccess: any PremiumAccessControlling = PremiumAccessController(),
+        subscriptionStore: SubscriptionStore? = nil,
+        openSettingsAction: (@MainActor @Sendable () -> Void)? = nil,
+        qualityAnalyzer: any PhotoQualityAnalyzing = NoOpPhotoQualityAnalyzer(),
+        enhancementService: (any PhotoEnhancementService)? = nil,
+        overrideMetrics: (any BestShotOverrideMetricsRepository)? = nil,
+        personalizedConfigProvider: BestShotPersonalizedScoringConfigProvider? = nil,
+        // Defaulted, so every existing call site keeps the shipped file store; a host
+        // that keeps review state elsewhere (the DEBUG fake library) passes its own.
+        reviewRepository: any ClusterReviewStateRepository = FileClusterReviewStateRepository(),
+        onReviewStateChanged: (() -> Void)? = nil,
+        onCleanupCompleted: ((CleanupCompletionRecord) -> Void)? = nil
+    ) {
+        self.onReviewStateChanged = onReviewStateChanged
+        self.onCleanupCompleted = onCleanupCompleted
+        self.subscriptionStore = subscriptionStore
+        _viewModel = State(initialValue: ClusterDetailsViewModel(
+            cluster: cluster,
+            reviewRepository: reviewRepository,
+            cleanupService: cleanupService ?? UnsupportedPhotoCleanupService(),
+            cleanupHistoryRepository: cleanupHistoryRepository,
+            premiumAccess: premiumAccess,
+            openSettingsAction: openSettingsAction,
+            qualityAnalyzer: qualityAnalyzer,
+            enhancementService: enhancementService,
+            overrideMetrics: overrideMetrics,
+            personalizedConfigProvider: personalizedConfigProvider
+        ))
+    }
 }
 
 #else

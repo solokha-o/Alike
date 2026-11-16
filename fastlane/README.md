@@ -47,6 +47,14 @@ Upload only localized App Store text metadata (descriptions, keywords, review in
 
 Upload only App Store screenshots without text metadata, binary, or review submission.
 
+### ios creative_assets_upload
+
+```sh
+[bundle exec] fastlane ios creative_assets_upload
+```
+
+Upload creative assets (Product Page Header, Search Results) to the Asset Library and place them on one version. Dry run unless apply:true. Never deletes, submits or publishes.
+
 ### ios dsyms
 
 ```sh

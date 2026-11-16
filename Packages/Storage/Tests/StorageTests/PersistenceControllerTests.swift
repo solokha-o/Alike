@@ -65,12 +65,14 @@ struct PersistenceControllerTests {
     @Test func testPerformBackgroundTask() async throws {
         // Given: Controller
         let controller = PersistenceController.preview()
+        let viewContextID = ObjectIdentifier(controller.viewContext)
 
         // When: Performing background task
-        // Then: Task should be executed
+        // Then: Task runs on a private background context, not the view context
         try await confirmation("Background task executed") { taskExecuted in
-            try await controller.performBackgroundTask { _ in
-                #expect(Thread.isMainThread == false || true, "Task context should work")
+            try await controller.performBackgroundTask { context in
+                #expect(context.concurrencyType == .privateQueueConcurrencyType)
+                #expect(ObjectIdentifier(context) != viewContextID)
                 taskExecuted()
             }
         }

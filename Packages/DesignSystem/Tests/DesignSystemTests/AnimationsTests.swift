@@ -2,59 +2,54 @@ import SwiftUI
 import Testing
 @testable import DesignSystem
 
-/// TODO(https://app.notion.com/p/41104d81c94381e4b33acee36f316cc3): these tests only build the value; add real checks or delete them.
 struct AnimationsTests {
-    // MARK: - Spring Animation Tests
+    // MARK: - Spring Animations
 
     @Test func testSpringDefaultAnimation() {
-        // Given & When: Default spring animation
-        _ = Animations.spring
+        #expect(Animations.spring == .spring())
     }
 
     @Test func testSpringSoftAnimation() {
-        // Given & When: Soft spring animation
-        _ = Animations.springSoft
+        #expect(Animations.springSoft == .spring(response: 0.5, dampingFraction: 0.85, blendDuration: 0))
     }
 
     @Test func testSpringBouncyAnimation() {
-        // Given & When: Bouncy spring animation
-        _ = Animations.springBouncy
+        #expect(Animations.springBouncy == .spring(response: 0.6, dampingFraction: 0.7, blendDuration: 0))
+        #expect(Animations.springBouncy == .appBouncy)
     }
 
-    // MARK: - Timing Animation Tests
+    // MARK: - Timing Animations
 
     @Test func testEaseInOutAnimation() {
-        // Given & When: EaseInOut animation
-        _ = Animations.easeInOut
+        #expect(Animations.easeInOut == .easeInOut(duration: 0.25))
     }
 
     @Test func testEaseInAnimation() {
-        // Given & When: EaseIn animation
-        _ = Animations.easeIn
+        #expect(Animations.easeIn == .easeIn(duration: 0.25))
     }
 
     @Test func testEaseOutAnimation() {
-        // Given & When: EaseOut animation
-        _ = Animations.easeOut
+        #expect(Animations.easeOut == .easeOut(duration: 0.25))
     }
 
-    // MARK: - Custom Animation Tests
+    // MARK: - Custom Animations
 
     @Test func testQuickAnimation() {
-        // Given & When: Quick animation
-        _ = Animations.quick
+        #expect(Animations.quick == .spring(response: 0.3, dampingFraction: 0.75, blendDuration: 0))
+        #expect(Animations.quick == .appQuick)
     }
 
     @Test func testSmoothAnimation() {
-        // Given & When: Smooth animation
-        _ = Animations.smooth
+        #expect(Animations.smooth == .spring(response: 0.4, dampingFraction: 0.8, blendDuration: 0))
+        #expect(Animations.smooth == .appSmooth)
     }
 
-    // MARK: - Animation Consistency Tests
+    // MARK: - Consistency
 
     @Test func testAnimationsAreNotIdentical() {
-        // Given: Different animations
-        _ = Animations.spring
-        _ = Animations.easeInOut
+        #expect(Animations.spring != Animations.easeInOut)
+        #expect(Animations.easeIn != Animations.easeOut)
+        #expect(Animations.quick != Animations.smooth)
+        #expect(Animations.springSoft != Animations.springBouncy)
     }
 }

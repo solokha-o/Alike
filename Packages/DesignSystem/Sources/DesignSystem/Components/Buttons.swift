@@ -2,7 +2,7 @@ import SwiftUI
 
 /// Primary button component
 public struct PrimaryButton: View {
-    private let title: Text
+    let title: Text
     let icon: String?
     let action: () -> Void
 
@@ -54,7 +54,7 @@ public struct PrimaryButton: View {
 
 /// Secondary button component
 public struct SecondaryButton: View {
-    private let title: Text
+    let title: Text
     let icon: String?
     let action: () -> Void
 

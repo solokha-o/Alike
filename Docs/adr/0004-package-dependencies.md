@@ -94,8 +94,8 @@ and the baseline below in the same pull request.
 ## Baseline: current edges
 
 Source: `.package(path: "../X")` in each `Packages/*/Package.swift`, and the
-package products of each target in `Alike/Alike.xcodeproj` on 2026-11-07
-(develop `cd12c997`). All edges follow the matrix.
+package products of each target in `Alike/Alike.xcodeproj` on 2026-11-09
+(develop `b1d497e2`, plus `Scanner` → `Storage`). All edges follow the matrix.
 
 | Package | Category | Depends on |
 |---|---|---|
@@ -104,7 +104,7 @@ package products of each target in `Alike/Alike.xcodeproj` on 2026-11-07
 | `Cleanup` | Feature | `CleanupWorkspace`, `Core`, `DesignSystem`, `NavigationKit`, `PhotoAnalysis`, `Purchases`, `Storage` |
 | `Details` | Feature | `Core`, `DesignSystem`, `NavigationKit`, `Purchases`, `Storage` |
 | `Launch` | Feature | `DesignSystem` |
-| `Scanner` | Feature | `CleanupWorkspace`, `Core`, `DesignSystem`, `NavigationKit`, `Purchases`, `UserGuide` |
+| `Scanner` | Feature | `CleanupWorkspace`, `Core`, `DesignSystem`, `NavigationKit`, `Purchases`, `Storage`, `UserGuide` |
 | `Settings` | Feature | `Core`, `DesignSystem`, `Diagnostics`, `NavigationKit`, `PhotoAnalysis`, `Purchases`, `Storage`, `UserGuide` |
 | `Welcome` | Feature | `Core`, `DesignSystem`, `PhotoAnalysis` |
 | `CleanupWorkspace` | Foundation | `Core`, `PhotoAnalysis`, `Storage` |

@@ -6,6 +6,9 @@ import Observation
 @Observable
 public final class SubscriptionStore: PremiumAccessControlling {
     public private(set) var products: [SubscriptionPlan: SubscriptionProduct] = [:]
+    /// The lifetime product, when the catalog has one and StoreKit returned it.
+    /// Its absence never fails `loadProducts`: the plans load without it.
+    public private(set) var lifetimeProduct: LifetimeProduct?
     public private(set) var productLoadState: ProductLoadState = .idle
     public private(set) var entitlementState: PremiumEntitlementState = .unknown
     public private(set) var lastError: SubscriptionStoreError?
@@ -64,17 +67,33 @@ public final class SubscriptionStore: PremiumAccessControlling {
     public func loadProducts() async {
         guard catalog.isConfigured else {
             products = [:]
+            lifetimeProduct = nil
             productLoadState = .unconfigured
             return
         }
 
         products = [:]
+        lifetimeProduct = nil
         productLoadState = .loading
         do {
-            let storefrontProducts = try await client.loadProducts(ids: catalog.allProductIDs)
+            let storefrontProducts = try await client.loadProducts(ids: catalog.storefrontProductIDs)
             var loadedProducts: [SubscriptionPlan: SubscriptionProduct] = [:]
+            var loadedLifetimeProduct: LifetimeProduct?
             for product in storefrontProducts {
-                guard let plan = catalog.plan(for: product.id) else { continue }
+                if product.id == catalog.lifetimeProductID {
+                    loadedLifetimeProduct = LifetimeProduct(
+                        id: product.id,
+                        displayName: product.displayName,
+                        displayPrice: product.displayPrice,
+                        price: product.price
+                    )
+                    continue
+                }
+                // Only the product a plan sells today: an additional ID is never offered.
+                guard
+                    let plan = catalog.plan(for: product.id),
+                    catalog.productID(for: plan) == product.id
+                else { continue }
                 loadedProducts[plan] = SubscriptionProduct(
                     id: product.id,
                     plan: plan,
@@ -88,6 +107,7 @@ public final class SubscriptionStore: PremiumAccessControlling {
                 throw SubscriptionStoreError.productLoadingFailed("One or more subscription products are unavailable.")
             }
             products = loadedProducts
+            lifetimeProduct = loadedLifetimeProduct
             productLoadState = .loaded
             lastError = nil
         } catch let error as SubscriptionStoreError {
@@ -116,7 +136,23 @@ public final class SubscriptionStore: PremiumAccessControlling {
         guard products[plan] != nil else {
             throw SubscriptionStoreError.productUnavailable(plan)
         }
+        return try await purchase(productID: productID)
+    }
 
+    /// Buys the non-expiring Premium product. It must have loaded first.
+    public func purchaseLifetime() async throws -> PurchaseOutcome {
+        guard let productID = catalog.lifetimeProductID else {
+            throw SubscriptionStoreError.catalogNotConfigured
+        }
+        guard lifetimeProduct?.id == productID else {
+            let error = SubscriptionStoreError.purchaseFailed("The lifetime purchase is unavailable.")
+            lastError = error
+            throw error
+        }
+        return try await purchase(productID: productID)
+    }
+
+    private func purchase(productID: String) async throws -> PurchaseOutcome {
         do {
             switch try await client.purchase(productID: productID) {
             case .success(let entitlement):
@@ -230,9 +266,17 @@ public final class SubscriptionStore: PremiumAccessControlling {
                     $0.revocationDate == nil &&
                     !$0.isUpgraded &&
                     ($0.expirationDate == nil || $0.expirationDate! > now) &&
-                    catalog.plan(for: $0.productID) != nil
+                    catalog.grantsPremium(productID: $0.productID)
             }
-            .max { ($0.expirationDate ?? .distantFuture) < ($1.expirationDate ?? .distantFuture) }
+            // A lifetime purchase (no expiration date) outranks any subscription,
+            // including one that expires at `.distantFuture`.
+            .max { lhs, rhs in
+                switch (lhs.expirationDate, rhs.expirationDate) {
+                case (nil, _): false
+                case (_, nil): true
+                case (let lhsDate?, let rhsDate?): lhsDate < rhsDate
+                }
+            }
     }
 
     private func loadCachedEntitlement() {

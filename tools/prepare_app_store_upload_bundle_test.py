@@ -6,6 +6,7 @@ Run:
 """
 from __future__ import annotations
 
+import re
 import sys
 import unittest
 from pathlib import Path
@@ -45,6 +46,21 @@ class SearchFieldTests(unittest.TestCase):
     def test_subtitle_repeating_name_fails(self) -> None:
         self.assertTrue(any("subtitle repeats 'photos'" in error for error in self.errors("Find and clear similar photos", "delete")))
 
+    def test_intentional_name_repeat_passes_only_in_its_locale(self) -> None:
+        subtitle = "Find and clear similar photos"
+        self.assertEqual(bundle.search_field_errors("en-US", NAME, subtitle, "duplicate"), [])
+        self.assertTrue(
+            any("subtitle repeats 'photos'" in error for error in bundle.search_field_errors("en-GB", NAME, subtitle, "duplicate"))
+        )
+
+    def test_intentional_name_repeat_does_not_cover_other_name_words(self) -> None:
+        errors = bundle.search_field_errors("en-US", NAME, "Similar photo cleaner", "duplicate")
+        self.assertTrue(any("subtitle repeats 'cleaner'" in error for error in errors))
+
+    def test_intentional_name_repeat_does_not_cover_keywords(self) -> None:
+        errors = bundle.search_field_errors("en-US", NAME, "Find and clear similar photos", "duplicate,similar")
+        self.assertTrue(any("keyword 'similar' repeats the name" in error for error in errors))
+
     def test_han_keyword_inside_unspaced_subtitle_fails(self) -> None:
         self.assertTrue(any("repeats the subtitle" in error for error in self.errors("一鍵清理重複照片", "相似,清理")))
 
@@ -82,7 +98,15 @@ class SearchFieldTests(unittest.TestCase):
                 continue
             with self.subTest(locale=mapping.apple):
                 self.assertNotEqual(bundle.METADATA[mapping.apple]["keywords"], bundle.METADATA[source]["keywords"])
-                self.assertEqual(bundle.METADATA[mapping.apple]["subtitle"], bundle.METADATA[source]["subtitle"])
+                if mapping.apple not in ("en-GB", "en-CA", "en-AU"):
+                    self.assertEqual(bundle.METADATA[mapping.apple]["subtitle"], bundle.METADATA[source]["subtitle"])
+
+    def test_regional_english_listings_keep_their_subtitle(self) -> None:
+        # ASO iteration 2 changes the en-US subtitle only.
+        for locale in ("en-GB", "en-CA", "en-AU"):
+            with self.subTest(locale=locale):
+                self.assertEqual(bundle.METADATA[locale]["subtitle"], "Duplicate & Storage Cleanup")
+        self.assertNotEqual(bundle.METADATA["en-US"]["subtitle"], bundle.METADATA["en-GB"]["subtitle"])
 
     def test_british_listings_use_british_spelling(self) -> None:
         for locale in ("en-GB", "en-AU"):
@@ -91,6 +115,27 @@ class SearchFieldTests(unittest.TestCase):
                     text = bundle.METADATA[locale][field]
                     for american, _ in bundle.BRITISH_SPELLING:
                         self.assertNotIn(american, text)
+
+    def test_regional_listings_ship_their_source_release_notes(self) -> None:
+        # A late METADATA[...].update() with its own release_notes once kept
+        # en-CA and fr-CA on the previous version's text.
+        for locale, source in (("en-CA", "en-US"), ("fr-CA", "fr-FR")):
+            with self.subTest(locale=locale):
+                self.assertEqual(bundle.METADATA[locale]["release_notes"], bundle.METADATA[source]["release_notes"])
+        for locale in ("en-GB", "en-AU"):
+            with self.subTest(locale=locale):
+                self.assertEqual(
+                    bundle.METADATA[locale]["release_notes"],
+                    bundle.british_spelling(bundle.METADATA["en-US"]["release_notes"]),
+                )
+
+    def test_reviewed_overrides_leave_release_notes_alone(self) -> None:
+        # Release notes live only in the base METADATA dict, so one edit
+        # reaches every locale.
+        source = Path(bundle.__file__).read_text(encoding="utf-8")
+        start = re.search(r"\nMETADATA\[[\"']", source).start()
+        overrides = source[start:source.index("\ndef ", start)]
+        self.assertIsNone(re.search(r"[\"']release_notes[\"']", overrides))
 
     def test_shipped_metadata_passes(self) -> None:
         self.assertEqual(bundle.validate_source_search_fields(), [])
@@ -101,6 +146,48 @@ class SearchFieldTests(unittest.TestCase):
                 self.assertLessEqual(len(values["subtitle"]), bundle.APP_SUBTITLE_MAX_LENGTH)
                 self.assertLessEqual(len(values["keywords"]), bundle.APP_KEYWORDS_MAX_LENGTH)
                 self.assertLessEqual(len(values["promotional_text"]), bundle.APP_PROMOTIONAL_TEXT_MAX_LENGTH)
+
+
+
+class IpadScreenshotTests(unittest.TestCase):
+    def write_project(self, families: list[str], other_target_family: str = "1") -> Path:
+        import tempfile
+
+        def block(bundle_id: str, family: str) -> str:
+            return (
+                "\t\t\tbuildSettings = {\n"
+                f"\t\t\t\tPRODUCT_BUNDLE_IDENTIFIER = {bundle_id};\n"
+                f"\t\t\t\tTARGETED_DEVICE_FAMILY = {family};\n"
+                "\t\t\t};\n"
+            )
+
+        folder = Path(tempfile.mkdtemp())
+        path = folder / "project.pbxproj"
+        text = "".join(block("com.alike.app", f) for f in families)
+        text += block("com.alike.app.widgets", other_target_family) + block("com.alike.AlikeTests", other_target_family)
+        path.write_text(text, encoding="utf-8")
+        return path
+
+    def test_iphone_only_project_ships_no_ipad_screenshots(self) -> None:
+        self.assertFalse(bundle.app_supports_ipad(self.write_project(["1", "1"])))
+
+    def test_universal_project_ships_ipad_screenshots(self) -> None:
+        self.assertTrue(bundle.app_supports_ipad(self.write_project(['"1,2"', '"1,2"'])))
+
+    def test_partly_universal_project_is_not_universal(self) -> None:
+        self.assertFalse(bundle.app_supports_ipad(self.write_project(['"1,2"', "1"])))
+
+    def test_only_the_app_target_decides(self) -> None:
+        self.assertTrue(bundle.app_supports_ipad(self.write_project(['"1,2"', '"1,2"'], other_target_family="1")))
+        self.assertFalse(bundle.app_supports_ipad(self.write_project(["1", "1"], other_target_family='"1,2"')))
+
+    def test_the_real_project_matches_its_app_target(self) -> None:
+        self.assertFalse(bundle.app_supports_ipad())
+
+    def test_ipad_screenshot_keeps_its_number_and_a_distinct_name(self) -> None:
+        name = bundle.ipad_screenshot_name(Path("05-comparison-review.png"))
+        self.assertEqual(name, "05-ipad-comparison-review.png")
+        self.assertTrue(name[:2].isdigit())
 
 
 if __name__ == "__main__":

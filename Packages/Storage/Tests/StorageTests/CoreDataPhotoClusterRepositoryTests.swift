@@ -598,13 +598,26 @@ struct ClusterAssemblyTests {
 }
 
 /// Lets a fetch closure cancel the outer task, which reaches the detached
-/// work only through `withTaskCancellationHandler`.
+/// work only through `withTaskCancellationHandler`. `cancel()` waits until
+/// `set(_:)` has stored the task, so a fetch that runs first cannot miss it.
 private final class TaskHandle: @unchecked Sendable {
-    private let lock = NSLock()
+    private let condition = NSCondition()
     private var task: Task<[[String]], any Error>?
 
-    func set(_ task: Task<[[String]], any Error>) { lock.withLock { self.task = task } }
-    func cancel() { lock.withLock { task }?.cancel() }
+    func set(_ task: Task<[[String]], any Error>) {
+        condition.withLock {
+            self.task = task
+            condition.broadcast()
+        }
+    }
+
+    func cancel() {
+        let task = condition.withLock {
+            while self.task == nil { condition.wait() }
+            return self.task
+        }
+        task?.cancel()
+    }
 }
 
 private final class FetchRecorder: @unchecked Sendable {
