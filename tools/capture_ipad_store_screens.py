@@ -32,8 +32,6 @@ import tempfile
 import time
 from pathlib import Path
 
-from PIL import Image
-
 ROOT = Path(__file__).resolve().parents[1]
 PHOTOS = ROOT / "build" / "generated" / "fake-photo-library"
 OUTPUT = ROOT / "Docs" / "images" / "ipad" / "raw"
@@ -107,6 +105,8 @@ LAUNCH_SCREEN_COLOUR = (31, 160, 185)
 
 
 def is_launch_screen(path: Path) -> bool:
+    from PIL import Image
+
     with Image.open(path) as image:
         rgb = image.convert("RGB")
         pixel = rgb.getpixel((rgb.width // 2, rgb.height // 4))
@@ -136,6 +136,24 @@ def capture(udid: str, path: Path) -> None:
     print(path.relative_to(ROOT) if path.is_relative_to(ROOT) else path)
 
 
+def argument_error(locales: list[str], only: str | None, no_launch: bool) -> str | None:
+    """Why this combination would save a wrong screen, or `None` when it is safe."""
+    unknown = [code for code in locales if code not in LOCALES]
+    if unknown:
+        return f"Unknown locales: {', '.join(unknown)}"
+    if only is not None and only not in SCREENS and only not in MANUAL_SCREENS:
+        return f"Unknown screen: {only}"
+    if no_launch:
+        # The current screen is one screen in one language.
+        if only is None:
+            return "--no-launch captures the screen as it is: pass one screen with --only"
+        if len(locales) != 1:
+            return "--no-launch captures the screen as it is: pass one locale with --locales"
+    elif only in MANUAL_SCREENS:
+        return f"{only} needs taps by hand: open it, then capture it with --no-launch"
+    return None
+
+
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     parser.add_argument("--udid", required=True, help="Booted iPad simulator")
@@ -151,17 +169,12 @@ def main() -> None:
     args.photos = args.photos.resolve()
 
     locales = [code.strip() for code in args.locales.split(",") if code.strip()]
-    unknown = [code for code in locales if code not in LOCALES]
-    if unknown:
-        raise SystemExit(f"Unknown locales: {', '.join(unknown)}")
+    error = argument_error(locales, args.only, args.no_launch)
+    if error:
+        raise SystemExit(error)
     if len(list(args.photos.glob("*.jpg"))) < 54:
         raise SystemExit(f"Run tools/build_fake_photo_library.py first: {args.photos}")
-    if args.no_launch and len(locales) != 1:
-        raise SystemExit("--no-launch captures the screen as it is: pass one locale with --locales")
     names = [args.only] if args.only else list(SCREENS)
-    for name in names:
-        if name not in SCREENS and name not in MANUAL_SCREENS:
-            raise SystemExit(f"Unknown screen: {name}")
 
     # A photo access change terminates the running app, so the screen that
     # --no-launch is about to capture must not see one.
