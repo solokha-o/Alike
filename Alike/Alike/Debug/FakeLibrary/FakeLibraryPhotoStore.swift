@@ -12,26 +12,59 @@ import UIKit
 /// newest photos of the library instead.
 nonisolated enum FakeLibraryPhotoStore {
     static let albumTitle = "Alike Fake Library"
+    /// The album of the `store` scenario, kept apart from the drawn photos.
+    static let photoFolderAlbumTitle = "Alike Store Library"
+    /// Environment variable naming a folder of JPEG photos for the `store`
+    /// scenario. `simctl launch` passes it as `SIMCTL_CHILD_ALIKE_FAKE_LIBRARY_PHOTOS`.
+    static let photoFolderEnvironmentKey = "ALIKE_FAKE_LIBRARY_PHOTOS"
     /// Enough for the largest scenario (57 photos for 55 groups, plus categories).
     static let seededPhotoCount = 64
     /// Photos in one drawn series: the same scene with small changes, like a burst.
     static let photosPerSeries = 4
 
+    /// The photo folder of the `store` scenario, or `nil` when the variable is unset.
+    static func photoFolderFromEnvironment(
+        _ environment: [String: String] = ProcessInfo.processInfo.environment
+    ) -> URL? {
+        guard let path = environment[photoFolderEnvironmentKey], !path.isEmpty else { return nil }
+        return URL(fileURLWithPath: path, isDirectory: true)
+    }
+
+    /// JPEG files of a photo folder, sorted by name, so every run shows the same order.
+    static func photoFiles(in folder: URL) -> [URL] {
+        let files = (try? FileManager.default.contentsOfDirectory(
+            at: folder,
+            includingPropertiesForKeys: nil
+        )) ?? []
+        return files
+            .filter { ["jpg", "jpeg"].contains($0.pathExtension.lowercased()) }
+            .sorted { $0.lastPathComponent < $1.lastPathComponent }
+    }
+
     /// Photos for the fake library, oldest first, so every run shows the same order.
-    static func assets(minimumCount: Int, requestsAccess: Bool = true) async -> [PHAsset] {
+    /// With a `photoFolder`, the simulator fills a separate album from its files
+    /// instead of drawing photos.
+    static func assets(minimumCount: Int, requestsAccess: Bool = true, photoFolder: URL? = nil) async -> [PHAsset] {
         guard await hasReadWriteAccess(requestsAccess: requestsAccess) else {
             AppLog.photoKit.error("Fake library: no photo access, so the groups stay empty")
             return []
         }
 #if targetEnvironment(simulator)
-        if albumAssets().count < minimumCount {
+        let title = photoFolder == nil ? albumTitle : photoFolderAlbumTitle
+        if albumAssets(title: title).count < minimumCount {
             do {
-                try await seedAlbum()
+                if let photoFolder {
+                    try await seedAlbum(title: title, photos: photoFiles(in: photoFolder).compactMap {
+                        try? Data(contentsOf: $0)
+                    })
+                } else {
+                    try await seedAlbum(title: title, photos: (0 ..< seededPhotoCount).map(photoData(index:)))
+                }
             } catch {
                 AppLog.photoKit.error("Fake library: seeding failed: \(error.localizedDescription)")
             }
         }
-        let assets = albumAssets()
+        let assets = albumAssets(title: title)
 #else
         let assets = newestLibraryAssets(limit: max(minimumCount, seededPhotoCount))
 #endif
@@ -49,15 +82,15 @@ nonisolated enum FakeLibraryPhotoStore {
         return status == .authorized || status == .limited
     }
 
-    private static func album() -> PHAssetCollection? {
+    private static func album(title: String) -> PHAssetCollection? {
         let options = PHFetchOptions()
-        options.predicate = NSPredicate(format: "title == %@", albumTitle)
+        options.predicate = NSPredicate(format: "title == %@", title)
         return PHAssetCollection.fetchAssetCollections(with: .album, subtype: .albumRegular, options: options)
             .firstObject
     }
 
-    private static func albumAssets() -> [PHAsset] {
-        guard let album = album() else { return [] }
+    private static func albumAssets(title: String) -> [PHAsset] {
+        guard let album = album(title: title) else { return [] }
         let options = PHFetchOptions()
         options.sortDescriptors = [NSSortDescriptor(key: "creationDate", ascending: true)]
         options.predicate = NSPredicate(format: "mediaType == %d", PHAssetMediaType.image.rawValue)
@@ -77,14 +110,14 @@ nonisolated enum FakeLibraryPhotoStore {
 #endif
 
 #if targetEnvironment(simulator)
-    /// Adds the drawn photos to a new album. Simulator only: a device library is
-    /// never written.
-    private static func seedAlbum() async throws {
-        let existingAlbum = album()
-        let start = albumAssets().count
-        guard start < seededPhotoCount else { return }
-        let photos = (start ..< seededPhotoCount).map { index in
-            (index, photoData(index: index))
+    /// Adds the photos the album does not hold yet. Simulator only: a device
+    /// library is never written.
+    private static func seedAlbum(title: String, photos allPhotos: [Data]) async throws {
+        let existingAlbum = album(title: title)
+        let start = albumAssets(title: title).count
+        guard start < allPhotos.count else { return }
+        let photos = (start ..< allPhotos.count).map { index in
+            (index, allPhotos[index])
         }
         let baseDate = Date(timeIntervalSince1970: 1_790_000_000)
         try await PHPhotoLibrary.shared().performChanges {
@@ -92,7 +125,7 @@ nonisolated enum FakeLibraryPhotoStore {
                 if let existingAlbum {
                     PHAssetCollectionChangeRequest(for: existingAlbum)
                 } else {
-                    PHAssetCollectionChangeRequest.creationRequestForAssetCollection(withTitle: albumTitle)
+                    PHAssetCollectionChangeRequest.creationRequestForAssetCollection(withTitle: title)
                 }
             var placeholders: [PHObjectPlaceholder] = []
             for (index, data) in photos {

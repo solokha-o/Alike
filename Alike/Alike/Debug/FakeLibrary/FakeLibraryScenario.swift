@@ -23,14 +23,27 @@ enum FakeLibraryScenario: String, CaseIterable, Sendable {
     case afterCleanup
     /// Photo access denied: the app stops at the permission screen.
     case noPhotosAccess
+    /// 12 groups of 4 real-looking photos for the App Store screenshots. On the
+    /// simulator the photos come from the folder named by
+    /// `FakeLibraryPhotoStore.photoFolderEnvironmentKey`. Half of the groups are
+    /// reviewed, the rest are in review with 2 photos selected, and a cleanup never
+    /// finishes, so its progress screen stays up for a capture.
+    case store
 
     static let launchArgumentKey = "AlikeFakeLibrary"
     static let premiumLaunchArgumentKey = "AlikeFakePremium"
+    /// An `alike://` link to follow at launch, as a widget tap would, for example
+    /// `-AlikeFakeOpenURL alike://resume`. Read only while a scenario runs.
+    static let openURLLaunchArgumentKey = "AlikeFakeOpenURL"
 
     /// The scenario named by the launch arguments, or `nil` for the real library.
     static func fromLaunchArguments(_ defaults: UserDefaults = .standard) -> FakeLibraryScenario? {
         guard let rawValue = defaults.string(forKey: launchArgumentKey) else { return nil }
         return FakeLibraryScenario(rawValue: rawValue)
+    }
+
+    static func openURLFromLaunchArguments(_ defaults: UserDefaults = .standard) -> URL? {
+        defaults.string(forKey: openURLLaunchArgumentKey).flatMap(URL.init(string:))
     }
 
     static func isPremiumFromLaunchArguments(_ defaults: UserDefaults = .standard) -> Bool {
@@ -54,6 +67,8 @@ enum FakeLibraryScenario: String, CaseIterable, Sendable {
             [32, 3, 2]
         case .afterCleanup:
             [5, 4, 3, 3, 2, 2]
+        case .store:
+            Array(repeating: FakeLibraryPhotoStore.photosPerSeries, count: 12)
         }
     }
 
@@ -74,7 +89,7 @@ enum FakeLibraryScenario: String, CaseIterable, Sendable {
         switch self {
         case .empty, .noPhotosAccess, .oneCluster:
             0
-        case .manyClusters, .largeCluster, .afterCleanup:
+        case .manyClusters, .largeCluster, .afterCleanup, .store:
             6
         }
     }

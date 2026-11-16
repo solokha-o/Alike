@@ -40,6 +40,7 @@ struct FakeLibraryScenarioTests {
         (.largeCluster, 3, 32),
         (.afterCleanup, 6, 5),
         (.noPhotosAccess, 0, 0),
+        (.store, 12, 4),
     ])
     func testScenarioShape(scenario: FakeLibraryScenario, clusterCount: Int, largestCluster: Int) {
         let assets = (0 ..< 80).map { FakeLibraryTestAsset("asset-\($0)") }
@@ -60,6 +61,43 @@ struct FakeLibraryScenarioTests {
             #expect(Set(clusters.map(\.id)).count == clusters.count, "\(scenario)")
             #expect(clusters.allSatisfy { $0.count >= 2 }, "\(scenario)")
         }
+    }
+
+    /// The store screenshots need reviewed groups and a group to resume with a
+    /// decision half made: Best Shot kept, 2 other photos selected.
+    @Test func testStoreReviewStates() throws {
+        let assets = (0 ..< 54).map { FakeLibraryTestAsset("asset-\($0)") }
+        let clusters = FakeLibraryEnvironment.makeClusters(for: .store, from: assets)
+        let states = FakeLibraryEnvironment.makeStoreReviewStates(for: clusters)
+
+        #expect(states.count == 12)
+        #expect(states.values.count { $0.status == .reviewed } == 6)
+        #expect(states.values.count { $0.status == .inReview } == 6)
+        for cluster in clusters {
+            let state = try #require(states[cluster.id])
+            #expect(state.bestShotLocalIdentifier == cluster.assets[1].localIdentifier)
+            #expect(state.selectedLocalIdentifiers.count == 2)
+            #expect(!state.selectedLocalIdentifiers.contains(state.bestShotLocalIdentifier))
+        }
+    }
+
+    @Test func testStorePhotoFolderIsReadSortedFromTheEnvironment() throws {
+        #expect(FakeLibraryPhotoStore.photoFolderFromEnvironment([:]) == nil)
+        #expect(FakeLibraryPhotoStore.photoFolderFromEnvironment(["ALIKE_FAKE_LIBRARY_PHOTOS": ""]) == nil)
+
+        let folder = FileManager.default.temporaryDirectory
+            .appendingPathComponent("fake-library-\(UUID().uuidString)", isDirectory: true)
+        try FileManager.default.createDirectory(at: folder, withIntermediateDirectories: true)
+        defer { try? FileManager.default.removeItem(at: folder) }
+        for name in ["b-02.jpg", "a-01.JPG", "notes.txt", "c-03.jpeg"] {
+            try Data([0xFF]).write(to: folder.appendingPathComponent(name))
+        }
+
+        let resolved = try #require(FakeLibraryPhotoStore.photoFolderFromEnvironment(
+            ["ALIKE_FAKE_LIBRARY_PHOTOS": folder.path]
+        ))
+        #expect(FakeLibraryPhotoStore.photoFiles(in: resolved).map(\.lastPathComponent)
+            == ["a-01.JPG", "b-02.jpg", "c-03.jpeg"])
     }
 
     /// Too few photos gives fewer groups, never a crash.

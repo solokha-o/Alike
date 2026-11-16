@@ -13,6 +13,11 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 SOURCE_SCREENSHOTS_ROOT = ROOT / "Docs" / "images"
+# 13-inch iPad renders from tools/generate_ipad_store_screenshots.py. They ship
+# only when the app builds for iPad (app_supports_ipad), because App Store
+# Connect has no iPad slot for an iPhone-only binary.
+SOURCE_IPAD_SCREENSHOTS_ROOT = SOURCE_SCREENSHOTS_ROOT / "ipad" / "store"
+PROJECT_FILE = ROOT / "Alike" / "Alike.xcodeproj" / "project.pbxproj"
 generated_store_upload_root_value = os.environ.get("ALIKE_GENERATED_STORE_UPLOAD_ROOT", "").strip()
 # An empty override must fall back to the default: Path("") is the current
 # directory, and reset_output_dirs() would then rmtree ./metadata,
@@ -32,6 +37,7 @@ IAP_REVIEW_SCREENSHOT_PATH = Path(iap_review_screenshot_value) if iap_review_scr
 REVIEW_NOTES_FILE = ROOT / "Docs" / "app-store-review-notes.txt"
 STOREKIT_PATH = ROOT / "Alike" / "Configuration" / "Alike.storekit"
 EXPECTED_SCREENSHOT_SIZE = (1320, 2868)
+EXPECTED_IPAD_SCREENSHOT_SIZE = (2048, 2732)
 APP_IDENTIFIER = "com.alike.app"
 APP_NAME = "Alike: Similar Photo Cleaner"
 COPYRIGHT = "2026 Oleksandr Solokha"
@@ -2402,14 +2408,42 @@ def generate_review_information() -> None:
     write_text(root / "notes.txt", review_notes_text())
 
 
-def copy_screenshots() -> None:
+APP_BUNDLE_ID_SETTING = "PRODUCT_BUNDLE_IDENTIFIER = com.alike.app;"
+
+
+def app_supports_ipad(project_file: Path = PROJECT_FILE) -> bool:
+    """`True` when every build configuration of the app target targets iPad as
+    well as iPhone. Test and widget targets do not decide what the store needs."""
+    blocks = re.findall(r"buildSettings = \{(.*?)\n\t*\};", project_file.read_text(encoding="utf-8"), re.DOTALL)
+    families = [
+        match.group(1)
+        for block in blocks
+        if APP_BUNDLE_ID_SETTING in block
+        for match in [re.search(r'TARGETED_DEVICE_FAMILY = "?([0-9,]+)"?;', block)]
+        if match
+    ]
+    return bool(families) and all("2" in family.split(",") for family in families)
+
+
+def ipad_screenshot_name(source: Path) -> str:
+    """`01-scanner-idle.png` → `01-ipad-scanner-idle.png`: still numbered, never
+    the name of an iPhone slide. deliver tells the devices apart by size."""
+    return f"{source.name[:2]}-ipad-{source.name[3:]}"
+
+
+def copy_screenshots(include_ipad: bool | None = None) -> None:
     # Screenshots are rendered per language, so each source locale has its own
     # folder under Docs/images/.
+    if include_ipad is None:
+        include_ipad = app_supports_ipad()
     for mapping in UPLOAD_SAFE_LOCALES:
         destination_root = SCREENSHOTS_ROOT / mapping.apple
         destination_root.mkdir(parents=True, exist_ok=True)
         for source in numbered_pngs(SOURCE_SCREENSHOTS_ROOT / mapping.source):
             shutil.copy2(source, destination_root / source.name)
+        if include_ipad:
+            for source in numbered_pngs(SOURCE_IPAD_SCREENSHOTS_ROOT / mapping.source):
+                shutil.copy2(source, destination_root / ipad_screenshot_name(source))
 
 
 def load_storekit() -> dict:
@@ -3115,8 +3149,10 @@ def validate_iap_product_localizations(product_id: str, localizations: list[dict
     return errors
 
 
-def validate_screenshots(allow_placeholders: bool) -> list[str]:
+def validate_screenshots(allow_placeholders: bool, requires_ipad: bool | None = None) -> list[str]:
     errors: list[str] = []
+    if requires_ipad is None:
+        requires_ipad = app_supports_ipad()
     for mapping in UPLOAD_SAFE_LOCALES:
         locale_root = SCREENSHOTS_ROOT / mapping.apple
         files = numbered_pngs(locale_root)
@@ -3124,14 +3160,20 @@ def validate_screenshots(allow_placeholders: bool) -> list[str]:
             if not allow_placeholders:
                 errors.append(f"No numbered screenshots found in {locale_root}")
             continue
+        ipad_count = 0
         for path in files:
             try:
                 size = png_size(path)
             except ValueError as error:
                 errors.append(str(error))
                 continue
-            if size != EXPECTED_SCREENSHOT_SIZE:
+            if size == EXPECTED_IPAD_SCREENSHOT_SIZE and requires_ipad:
+                ipad_count += 1
+            elif size != EXPECTED_SCREENSHOT_SIZE:
                 errors.append(f"{path} has size {size}, expected {EXPECTED_SCREENSHOT_SIZE}")
+        # An iPad build with no iPad screenshots fails App Store review.
+        if requires_ipad and ipad_count == 0 and not allow_placeholders:
+            errors.append(f"No {EXPECTED_IPAD_SCREENSHOT_SIZE[0]}x{EXPECTED_IPAD_SCREENSHOT_SIZE[1]} iPad screenshots in {locale_root}")
         contact_sheets = sorted(locale_root.glob("*contact-sheet*.png"))
         if contact_sheets:
             errors.extend(f"Contact sheet must not be uploaded: {path}" for path in contact_sheets)
