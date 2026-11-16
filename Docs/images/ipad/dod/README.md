@@ -83,3 +83,12 @@ Follow `../audit/README.md`. Additions:
 - After an erase and boot, detach and attach the simulator panel again before
   you rotate. A rotate sent to a stale panel does nothing, and the test then
   fails with "The simulator is not in landscape".
+- The test saves device pixels (2×). Halve each PNG to get the 1× files here
+  (`../baseline/` keeps 2×):
+
+  ```bash
+  for f in <output>/*/*.png; do
+    w=$(sips -g pixelWidth "$f" | awk 'END {print $2}')
+    sips --resampleWidth $((w / 2)) "$f" --out "$f" >/dev/null
+  done
+  ```
