@@ -112,6 +112,12 @@ struct FullscreenZoomablePhotoView: View {
             .task(id: imageLoadTaskID(for: targetSize)) {
                 await loadImage(targetSize: targetSize)
             }
+            // On iPad a rotation or a Split View resize shrinks the viewport
+            // under a zoomed photo; only a drag clamps, so clamp here too.
+            .onChange(of: proxy.size) { _, newSize in
+                offset = ZoomingHelpers.clampedOffset(offset, in: newSize, scale: scale)
+                lastOffset = offset
+            }
         }
     }
 
