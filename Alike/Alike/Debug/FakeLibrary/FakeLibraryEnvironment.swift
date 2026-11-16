@@ -44,7 +44,8 @@ final class FakeLibraryEnvironment {
     let reviewRepository = MockClusterReviewStateRepository()
     let categoryRepository = MockCleanupCategorySnapshotRepository()
     let sessionRepository = MockCleanupSessionRepository()
-    let cleanupService = MockPhotoCleanupService()
+    /// Never finishes in the `store` scenario; see `HoldingPhotoCleanupService`.
+    let cleanupService: any PhotoCleanupService
     let historyRepository = MockCleanupHistoryRepository()
     let qualityAnalyzer = MockPhotoQualityAnalyzer()
     let assetByteSizeRepository = MockAssetByteSizeRepository()
@@ -73,6 +74,7 @@ final class FakeLibraryEnvironment {
         permissionManager = MockPhotoPermissionManager(
             authorizationStatus: scenario.hasPhotoAccess ? .authorized : .denied
         )
+        cleanupService = scenario == .store ? HoldingPhotoCleanupService() : MockPhotoCleanupService()
         scanUsageRepository = Self.makeEmptyScanUsageRepository(suiteName: scanUsageSuiteName)
     }
 
@@ -133,9 +135,14 @@ final class FakeLibraryEnvironment {
 
     private func load() async {
         guard scenario.hasPhotoAccess else { return }
+        let photoFolder = scenario == .store ? FakeLibraryPhotoStore.photoFolderFromEnvironment() : nil
+        if scenario == .store, photoFolder == nil {
+            AppLog.ui.error("Fake library: store needs \(FakeLibraryPhotoStore.photoFolderEnvironmentKey)")
+        }
         let assets = await FakeLibraryPhotoStore.assets(
             minimumCount: scenario.requiredPhotoCount + scenario.categoryPhotoCount,
-            requestsAccess: requestsPhotoAccess
+            requestsAccess: requestsPhotoAccess,
+            photoFolder: photoFolder
         )
         clusters = Self.makeClusters(for: scenario, from: assets)
         categoryAssets = Array(assets.suffix(min(scenario.categoryPhotoCount, assets.count)))
@@ -163,6 +170,41 @@ final class FakeLibraryEnvironment {
         if scenario == .afterCleanup {
             await seedFinishedReviews()
         }
+        if scenario == .store {
+            let states = Self.makeStoreReviewStates(for: clusters)
+            await reviewRepository.setStoredStates(states)
+            await sessionRepository.setStoredSession(CleanupSession(
+                createdAt: Self.referenceDate.addingTimeInterval(-2 * 86_400),
+                updatedAt: Self.referenceDate,
+                totalClusters: clusters.count,
+                reviewedClusters: states.values.count { $0.status == .reviewed },
+                estimatedSavingsBytes: states.values.reduce(0) { $0 + $1.estimatedSavingsBytes }
+            ))
+        }
+    }
+
+    /// The first half of the groups reviewed, the rest in review. Every group keeps
+    /// its second photo as the Best Shot and has 2 other photos selected, so the
+    /// resumed review opens on a group with a decision half made.
+    static func makeStoreReviewStates(for clusters: [PhotoCluster]) -> [UUID: ClusterReviewState] {
+        var states: [UUID: ClusterReviewState] = [:]
+        for (index, cluster) in clusters.enumerated() where cluster.count >= 3 {
+            let keeper = cluster.assets[1]
+            let selected = cluster.assets
+                .filter { $0.localIdentifier != keeper.localIdentifier }
+                .prefix(2)
+                .map(\.localIdentifier)
+            states[cluster.id] = ClusterReviewState(
+                clusterID: cluster.id,
+                bestShotLocalIdentifier: keeper.localIdentifier,
+                selectedLocalIdentifiers: Set(selected),
+                isReviewConfirmed: index < clusters.count / 2,
+                status: index < clusters.count / 2 ? .reviewed : .inReview,
+                estimatedSavingsBytes: Int64(selected.count) * 2_400_000,
+                updatedAt: referenceDate
+            )
+        }
+        return states
     }
 
     /// Groups in scenario order. IDs are fixed so review states can point at them.
@@ -246,6 +288,19 @@ final class FakeLibraryEnvironment {
             reviewedClusters: reviewed.count,
             estimatedSavingsBytes: history.reduce(0) { $0 + $1.estimatedSavingsBytes }
         ))
+    }
+}
+
+/// The `store` scenario's cleanup. It waits until its task is cancelled and
+/// deletes nothing, so the cleanup progress screen stays up for a capture.
+private struct HoldingPhotoCleanupService: PhotoCleanupService {
+    func deleteAssets(
+        localIdentifiers _: Set<String>,
+        sourceClusterID _: UUID,
+        estimatedSavingsBytes _: Int64
+    ) async throws -> CleanupCompletionRecord {
+        try await Task.sleep(for: .seconds(3_600))
+        throw CancellationError()
     }
 }
 #endif
