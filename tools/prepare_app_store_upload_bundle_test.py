@@ -148,5 +148,30 @@ class SearchFieldTests(unittest.TestCase):
                 self.assertLessEqual(len(values["promotional_text"]), bundle.APP_PROMOTIONAL_TEXT_MAX_LENGTH)
 
 
+
+class IpadScreenshotTests(unittest.TestCase):
+    def write_project(self, families: list[str]) -> Path:
+        import tempfile
+
+        folder = Path(tempfile.mkdtemp())
+        path = folder / "project.pbxproj"
+        path.write_text("".join(f"\t\t\t\tTARGETED_DEVICE_FAMILY = {f};\n" for f in families), encoding="utf-8")
+        return path
+
+    def test_iphone_only_project_ships_no_ipad_screenshots(self) -> None:
+        self.assertFalse(bundle.app_supports_ipad(self.write_project(["1", "1"])))
+
+    def test_universal_project_ships_ipad_screenshots(self) -> None:
+        self.assertTrue(bundle.app_supports_ipad(self.write_project(['"1,2"', '"1,2"'])))
+
+    def test_partly_universal_project_is_not_universal(self) -> None:
+        self.assertFalse(bundle.app_supports_ipad(self.write_project(['"1,2"', "1"])))
+
+    def test_ipad_screenshot_keeps_its_number_and_a_distinct_name(self) -> None:
+        name = bundle.ipad_screenshot_name(Path("05-comparison-review.png"))
+        self.assertEqual(name, "05-ipad-comparison-review.png")
+        self.assertTrue(name[:2].isdigit())
+
+
 if __name__ == "__main__":
     unittest.main()

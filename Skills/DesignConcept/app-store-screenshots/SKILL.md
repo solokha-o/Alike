@@ -121,6 +121,29 @@ Ask what the slide moves, not whether there is a free slot.
 - The captures are a real photo library — re-check every frame for faces,
   location clues, and legible personal data before an upload.
 
+## iPad Deck
+
+The 13-inch iPad deck is 4 slides (scan, queue, review, cleanup progress) from
+the DEBUG `store` fake library on an iPad simulator, because no real iPad exists.
+
+```sh
+build/tools-venv/bin/python tools/build_fake_photo_library.py
+build/tools-venv/bin/python tools/capture_ipad_store_screens.py --udid <ipad>
+build/tools-venv/bin/python tools/generate_ipad_store_screenshots.py
+```
+
+- Raw captures: `Docs/images/ipad/raw/<locale>/` (2048 x 2732, 9:41 status bar,
+  dark). `07-cleanup-progress` needs 2 taps by hand; the script says how.
+- Renders: `Docs/images/ipad/store/<locale>/`, 2048 x 2732.
+- `tools/generate_ipad_store_screenshots.py` imports this generator: same `COPY`,
+  fonts and palette, with "iPhone" swapped for "iPad" (`DEVICE_NAME_REPLACEMENTS`;
+  Turkish needs its own suffix). A copy change reaches both decks; re-render both.
+- The upload bundle adds the iPad renders (`NN-ipad-*.png`) only when
+  `project.pbxproj` targets iPad (`TARGETED_DEVICE_FAMILY = "1,2"`), and then
+  requires them in every locale.
+- The photos are generated images (`tools/assets/fake-library/README.md`). Keep
+  them free of people, text and logos.
+
 ## Creative Assets
 
 Product Page Header and Search Results images are a separate pipeline with

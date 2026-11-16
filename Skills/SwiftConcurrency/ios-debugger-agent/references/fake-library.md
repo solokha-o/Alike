@@ -8,8 +8,9 @@ reuses the public mocks from `Packages/Core/Sources/Core/Mocks`.
 
 | Argument | Values |
 |---|---|
-| `-AlikeFakeLibrary` | `empty`, `oneCluster`, `manyClusters` (55 groups), `largeCluster` (32 photos), `afterCleanup`, `noPhotosAccess` |
+| `-AlikeFakeLibrary` | `empty`, `oneCluster`, `manyClusters` (55 groups), `largeCluster` (32 photos), `afterCleanup`, `noPhotosAccess`, `store` (App Store screenshots) |
 | `-AlikeFakePremium` | `YES` or `NO` (default `NO`) |
+| `-AlikeFakeOpenURL` | An `alike://` link to follow at launch, as a widget tap does: `alike://cleanup`, `alike://resume`. No "Open in Alike?" prompt, unlike `simctl openurl` |
 
 Example, in the scheme's Arguments tab or with `simctl launch`:
 
@@ -37,6 +38,20 @@ xcrun simctl launch <udid> com.alike.app -AlikeFakeLibrary manyClusters -AlikeFa
 - Both categories show the same photos: the mock returns 1 list for any category.
 - If photo access is denied, the groups stay empty and only a log line says why.
   Grant access, then launch again.
+
+## The `store` scenario
+
+12 groups of 4 photos for the iPad App Store screenshots. Half are reviewed, the
+rest are in review with the Best Shot kept and 2 photos selected, so
+`alike://resume` opens a review half done. Its cleanup never finishes and deletes
+nothing, so the "Organizing Photos" screen stays up for a capture.
+
+The photos come from a folder, not from drawing: set `ALIKE_FAKE_LIBRARY_PHOTOS`
+(`SIMCTL_CHILD_ALIKE_FAKE_LIBRARY_PHOTOS` with `simctl launch`). They go into
+their own album, `Alike Store Library`. Build the folder with
+`tools/build_fake_photo_library.py` from the generated scenes in
+`tools/assets/fake-library/`. To replace the photos in the album, erase the
+simulator. `tools/capture_ipad_store_screens.py` runs the whole capture.
 
 ## Screen captures
 
