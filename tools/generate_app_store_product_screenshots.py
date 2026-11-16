@@ -289,9 +289,9 @@ COPY = {
             "Review at full size. Nothing is deleted without your confirmation.",
         ),
         (
-            "FREE SPACE",
-            "Watch the gigabytes\ncome back",
-            "Selected photos and estimated savings, tracked as you clean up.",
+            "SAFE CLEANUP",
+            "Change your mind\nfor 30 days",
+            "Deleted photos go to Recently Deleted, where iOS keeps them for 30 days.",
         ),
         (
             "RESTORE ANYTIME",
@@ -326,9 +326,9 @@ COPY = {
             "Перегляд у повний розмір. Нічого не видаляється без підтвердження.",
         ),
         (
-            "ВІЛЬНЕ МІСЦЕ",
-            "Поверніть\nгігабайти",
-            "«Обрано» й «Орієнтовна економія» — просто під час прибирання.",
+            "БЕЗПЕЧНО",
+            "30 днів, щоб\nпередумати",
+            "Видалені фото потрапляють до «Недавно видалених», де iOS зберігає їх 30 днів.",
         ),
         (
             "ОРИГІНАЛ ПОРУЧ",
@@ -368,9 +368,9 @@ COPY = {
             "Ansicht in voller Größe. Nichts wird ohne deine Bestätigung gelöscht.",
         ),
         (
-            "FREIER PLATZ",
-            "Hol dir die\nGigabyte zurück",
-            "Ausgewählte Fotos und geschätzte Ersparnis, während du aufräumst.",
+            "SICHER AUFRÄUMEN",
+            "30 Tage\nBedenkzeit",
+            "Gelöschte Fotos landen in „Zuletzt gelöscht“, wo iOS sie 30 Tage aufbewahrt.",
         ),
         (
             "JEDERZEIT ZURÜCK",
@@ -405,9 +405,9 @@ COPY = {
             "Examen en plein écran. Rien n’est supprimé sans votre confirmation.",
         ),
         (
-            "ESPACE LIBRE",
-            "Récupérez\nvos gigaoctets",
-            "Photos sélectionnées et économie estimée, suivies pendant le nettoyage.",
+            "SANS RISQUE",
+            "30 jours pour\nchanger d’avis",
+            "Les photos supprimées vont dans Supprimées récemment, où iOS les garde 30 jours.",
         ),
         (
             "TOUJOURS RÉVERSIBLE",
@@ -446,9 +446,9 @@ COPY = {
             "Revisión a tamaño completo. Nada se elimina sin tu confirmación.",
         ),
         (
-            "ESPACIO LIBRE",
-            "Recupera los\ngigabytes",
-            "Fotos seleccionadas y ahorro estimado, mientras vas limpiando.",
+            "SIN RIESGOS",
+            "30 días para\ncambiar de idea",
+            "Las fotos borradas pasan a Eliminados, donde iOS las guarda 30 días.",
         ),
         (
             "SIEMPRE REVERSIBLE",
@@ -483,9 +483,9 @@ COPY = {
             "Revisión a tamaño completo. Nada se elimina sin tu confirmación.",
         ),
         (
-            "ESPACIO LIBRE",
-            "Recupera los\ngigabytes",
-            "Fotos seleccionadas y ahorro estimado, mientras vas limpiando.",
+            "SIN RIESGOS",
+            "30 días para\ncambiar de opinión",
+            "Las fotos eliminadas pasan a Eliminados, donde iOS las guarda 30 días.",
         ),
         (
             "REGRESA AL ORIGINAL",
@@ -520,9 +520,9 @@ COPY = {
             "Revisão em tamanho real. Nada é apagado sem a sua confirmação.",
         ),
         (
-            "ESPAÇO LIVRE",
-            "Recupere os\ngigabytes",
-            "Fotos selecionadas e economia estimada, enquanto você limpa.",
+            "SEM RISCO",
+            "30 dias para\nmudar de ideia",
+            "As fotos apagadas vão para Apagados, onde o iOS as mantém por 30 dias.",
         ),
         (
             "SEMPRE REVERSÍVEL",
@@ -560,9 +560,9 @@ COPY = {
             "Revê em tamanho real. Nada é apagado sem a tua confirmação.",
         ),
         (
-            "ESPAÇO LIVRE",
-            "Recupera os\ngigabytes",
-            "Fotografias selecionadas e espaço recuperável estimado, enquanto limpas.",
+            "SEM RISCO",
+            "30 dias para\nmudar de ideias",
+            "As fotografias eliminadas vão para Apagado, onde o iOS as mantém por 30 dias.",
         ),
         (
             "SEMPRE REVERSÍVEL",
@@ -597,9 +597,9 @@ COPY = {
             "Controlla le foto a schermo intero. Nulla viene eliminato senza la tua conferma.",
         ),
         (
-            "SPAZIO LIBERO",
-            "Recupera i tuoi\ngigabyte",
-            "Foto selezionate e risparmio stimato, mentre fai pulizia.",
+            "IN SICUREZZA",
+            "30 giorni per\ncambiare idea",
+            "Le foto eliminate finiscono in «Eliminati di recente», dove iOS le conserva per 30 giorni.",
         ),
         (
             "SEMPRE REVERSIBILE",
@@ -634,9 +634,9 @@ COPY = {
             "Bekijk op volle grootte. Niets verdwijnt zonder je bevestiging.",
         ),
         (
-            "VRIJE RUIMTE",
-            "Zie de gigabytes\nterugkomen",
-            "Geselecteerde foto's en geschatte besparing, terwijl je opruimt.",
+            "VEILIG OPRUIMEN",
+            "30 dagen om\nje te bedenken",
+            "Verwijderde foto's gaan naar 'Recent verwijderd', waar iOS ze 30 dagen bewaart.",
         ),
         (
             "ALTIJD OMKEERBAAR",
@@ -671,9 +671,9 @@ COPY = {
             "Podgląd w pełnym rozmiarze. Nic nie znika bez potwierdzenia.",
         ),
         (
-            "WOLNE MIEJSCE",
-            "Odzyskaj\ngigabajty",
-            "Wybrane zdjęcia i szacowana oszczędność, na bieżąco podczas porządków.",
+            "BEZPIECZNIE",
+            "30 dni na\nzmianę zdania",
+            "Usunięte zdjęcia trafiają do „Ostatnio usunięte”, gdzie iOS przechowa je przez 30 dni.",
         ),
         (
             "ZAWSZE ODWRACALNE",
@@ -708,9 +708,9 @@ COPY = {
             "Tam boyutta incele. Onayın olmadan hiçbir şey silinmez.",
         ),
         (
-            "BOŞ ALAN",
-            "Gigabaytlarca\nalan kazan",
-            "Seçilenler ve tahmini kazanç, sen temizledikçe güncellenir.",
+            "GÜVENLİ TEMİZLİK",
+            "Fikrini değiştirmek\niçin 30 gün",
+            "Silinen fotoğraflar, iOS'un 30 gün sakladığı Son Silinenler'e gider.",
         ),
         (
             "GERİ ALINABİLİR",
@@ -748,9 +748,9 @@ COPY = {
             "以原尺寸檢視。未經你確認，不會刪除任何東西。",
         ),
         (
-            "騰出空間",
-            "看著空間\n一點一點回來",
-            "清理過程中隨時顯示已選取與預估可省空間。",
+            "安心清理",
+            "30 天內\n隨時反悔",
+            "刪除的照片會移到「最近刪除」，iOS 會保留 30 天。",
         ),
         (
             "隨時還原",
@@ -785,9 +785,9 @@ COPY = {
             "مراجعة بالحجم الكامل. لا يُحذف شيء دون تأكيدك.",
         ),
         (
-            "مساحة حرة",
-            "استرجع مساحتك\nجيجابايت تلو الآخر",
-            "الصور المحددة والتوفير التقديري، أمام عينيك طوال التنظيف.",
+            "تنظيف آمن",
+            "30 يومًا\nلتغيير رأيك",
+            "تنتقل الصور المحذوفة إلى «المحذوفة مؤخرًا»، حيث يحتفظ بها iOS مدة 30 يومًا.",
         ),
         (
             "الرجوع في أي وقت",
