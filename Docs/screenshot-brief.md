@@ -50,8 +50,9 @@ follows from that rule rather than from taste: slide 5 is
 aligned right because the previous `caption_bottom` — slide 4 — is left.
 
 The three band colours are the app's own: `accent` is the teal of the Start
-Scanning button, `purple` is the mascot, `green` is freed space. The green lands
-on the freed-space slide because that is the one about storage returned. Slide 6
+Scanning button, `purple` is the mascot, `green` is a cleanup that is safe to
+run. The green lands on slide 5, the cleanup in progress, whose copy says the
+deleted photos wait 30 days in Recently Deleted. Slide 6
 takes `accent`: `green` is spoken for and would repeat back to back with slide 5,
 `purple` belongs to the mascot, and teal is the colour of the app's own tappable
 controls — the right band for a slide whose subject is a control you can press
@@ -150,6 +151,18 @@ de tu fototeca" against "nunca se va de tu fototeca".
 | 4 | COMPARAR | Confira antes / de limpar | Revisão em tamanho real. Nada é apagado sem a sua confirmação. |
 | 5 | SEM RISCO | 30 dias para / mudar de ideia | As fotos apagadas vão para Apagados, onde o iOS as mantém por 30 dias. |
 | 6 | SEMPRE REVERSÍVEL | Melhore a que fica, / mantenha o original | Um toque melhora a melhor foto. Outro toque devolve o original — ele nunca sai da sua fototeca. |
+
+
+### pt-PT
+
+| # | Label | Headline | Supporting line |
+|---|---|---|---|
+| 1 | ESPAÇO LIVRE | Recupera / espaço | Vê quanto espaço vais libertar antes de eliminar qualquer coisa. |
+| 2 | UMA SÓ FILA | Cada grupo, / pronto a rever | Os grupos têm indicadores de revisão: vês sempre o que falta. |
+| 3 | MELHOR FOTOGRAFIA | A melhor fotografia / já está escolhida | O Alike destaca a melhor fotografia de cada grupo. Só tens de confirmar. |
+| 4 | COMPARAR | Revê antes / de limpar | Revê em tamanho real. Nada é apagado sem a tua confirmação. |
+| 5 | SEM RISCO | 30 dias para / mudar de ideias | As fotografias eliminadas vão para Apagado, onde o iOS as mantém por 30 dias. |
+| 6 | SEMPRE REVERSÍVEL | Melhora a fotografia, / mantém o original | Um toque melhora a melhor fotografia. Outro repõe o original, que permanece na tua fototeca. |
 
 
 ### it
