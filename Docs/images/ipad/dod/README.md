@@ -76,8 +76,9 @@ no large Alike widget. This is a product gap, not a defect.
 
 Follow `../audit/README.md`. Additions:
 
-- "Before" uses the default build (no `TARGETED_DEVICE_FAMILY` argument) in its
-  own DerivedData folder.
+- "Before" needs an iPhone-only build in its own DerivedData folder. Since
+  1.8.0 the project targets iPad, so pass `TARGETED_DEVICE_FAMILY=1` and leave
+  out the iPad orientations. "After" uses the default build.
 - Erase the simulator between the compatibility and the native run. Otherwise
   iPadOS can reopen the app in the iPhone-shaped window it remembered.
 - After an erase and boot, detach and attach the simulator panel again before

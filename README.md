@@ -23,21 +23,32 @@ Alike is an iOS app that finds and groups visually similar photos using Computer
 - 🩺 **Crash reports you send yourself** — after an unexpected close, Alike asks once whether to email the MetricKit report; you read the mail first, and Alike itself sends nothing
 - 📖 **In-app user guide** — searchable topics, one tap from the Scanner toolbar
 - 💾 **Persistent review state** — selection and review progress are saved locally between app launches
-- 📊 **Adaptive grid** — 1 to 2 columns on iPhone, remembered between screens and launches
+- 📊 **Adaptive grid** — 1 to 2 columns on iPhone; on iPad the column range follows the width, so tiles stay between 150 and 320 pt; the choice is remembered between screens and launches
+- 📱 **Native iPad** — full screen in every orientation, side by side with other apps, with lists and text in a readable column
 - 💾 **CoreData caching** — stores scan results, with PhotoKit change history driving rescan prompts
 - 🔒 **On-device by design** — no analytics, no tracking, no photo ever leaves the device
 - 🎨 **Teal design** — modern UI with animations and haptic feedback
-- 🌍 **Thirteen languages** — English, Ukrainian, Spanish (Spain and Latin America), Brazilian Portuguese, German, French, Italian, Dutch, Polish, Turkish, Traditional Chinese and Arabic
+- 🌍 **Fourteen languages** — English (with UK, Canadian and Australian English), Ukrainian, Spanish (Spain and Latin America), Portuguese (Brazil and Portugal), German, French (with Canadian French), Italian, Dutch, Polish, Turkish, Traditional Chinese and Arabic
 - 🌓 **Dark Mode** — full support
 
-## 🆕 What ships in 1.7.2
+## 🆕 What ships in 1.8.0
 
-A maintenance release with no user-visible change:
+A minor release: Alike runs natively on iPad.
+
+- **iPad, natively.** `TARGETED_DEVICE_FAMILY` is `1,2`. On iPad the app fills the screen, supports all 4 orientations and multitasking, and does not set `UIRequiresFullScreen`. iPhone stays portrait-only.
+- **Layout for wide screens.** Photo grids choose their column range from the width (`AdaptivePhotoGridLayoutPolicy.regular(containerWidth:)`). Lists, text and the Details cards sit in a 720 pt column (`dsReadableContentWidth()`, `dsReadableScrollContentMargins()`); the Cleanup cards follow the grid width and sit side by side from 888 pt. Navigation stays one stack (ADR-0005). These rules apply only in regular width, so iPhone screens do not change.
+- **Zoom keeps the photo in view.** The full-screen zoom clamps its offset again when the window size changes, after a rotation or a resize.
+- **Store listing.** New iPhone screenshots (slide 1 leads with free space, slide 5 with the 30 days in Recently Deleted) and the first 13-inch iPad set, in 14 locales.
+- **Purchases.** The catalog can grant Premium for several product IDs, to prepare a lifetime purchase. The paywall does not change: it shows the prices from App Store Connect.
+
+Stored data does not change.
+
+Earlier: 1.7.2 was a maintenance release with no user-visible change:
 
 - **Code health.** SwiftLint and SwiftFormat rules are on and enforced, with warnings treated as errors; `CleanupWorkspace` splits its workspace model by responsibility; `Scanner` declares `Storage` instead of re-exporting it. The DesignSystem and Storage tests check real values. There is no change to stored data.
 - **Store listing.** The en-US subtitle names similar photos again, with narrower keywords. What's New now comes from one place for every locale, so en-CA, fr-CA and the reviewed listings no longer keep the 1.7.0 text.
 
-Earlier: 1.7.1 was a patch release with one user-visible fix:
+Before 1.7.2, 1.7.1 was a patch release with one user-visible fix:
 
 - **No freeze while groups load.** `CoreDataPhotoClusterRepository.loadClusters()` used to call `PHAsset.fetchAssets` once per cluster on the main queue. On a large library the calls added up past the 10-second scene-update watchdog, and iOS killed the app (`0x8BADF00D`). The store is now read on a background context, and the assets are fetched on a background task in batches of up to 500 identifiers that never split a cluster. Each cluster is still resolved by a single fetch, so cluster order and the order of photos inside a cluster are unchanged.
 
@@ -81,7 +92,7 @@ The one thing Alike writes back is an enhancement you asked for: a non-destructi
 Modular SwiftUI architecture with Swift Packages:
 
 ```
-Alike/
+Packages/
 ├── Core/                    # Models, Protocols, Extensions
 ├── Storage/                 # CoreData persistence
 ├── PhotoAnalysis/           # Vision framework + clustering
@@ -95,12 +106,15 @@ Alike/
 ├── Purchases/               # StoreKit subscriptions, entitlements, paywalls
 ├── UserGuide/               # In-app guide catalog, hub and topics
 ├── Settings/                # Configuration
-└── Details/                 # Cluster details
+├── Details/                 # Cluster details
+├── Diagnostics/             # Crash reports the user sends by mail (MetricKit)
+├── WidgetSupport/           # Widget snapshot, compositions and deep links
+└── BestShotCalibration/     # Offline Best Shot calibration tool (CLI)
 ```
 
 ## 🛠 Tech stack
 
-- **Platform**: iOS 17+ (iPhone only)
+- **Platform**: iOS 17+ (iPhone and iPad)
 - **Language**: Swift 6.0 (Strict Concurrency)
 - **UI**: SwiftUI
 - **Frameworks**:
@@ -175,7 +189,7 @@ There are five shared schemes:
 - `Alike` — builds and runs **Release** with no debugger attached and no local StoreKit configuration, so ⌘R gives the same build the App Store gets. Normal logging (info/errors only). Its Test action stays on Debug, because the test targets need the `#if DEBUG` mocks in `Packages/Core/Sources/Core/Mocks`.
 - `Alike-VerboseLogs` — Debug build with verbose logging for scan/vision/storage via `OS_ACTIVITY_MODE=debug`.
 - `Alike-DebugVerboseLogs` — Debug build with verbose logging, profiled and analyzed in Debug too.
-- `Alike-Pseudolocale` — Debug build launched with `-NSDoubleLocalizedStrings YES -NSShowNonLocalizedStrings YES -NSSurroundLocalizedStrings [[]]`, so every string renders doubled and bracketed and anything unlocalized shows in capitals. It is the layout-and-coverage pass for thirteen languages without reading thirteen languages; see `Docs/Localization/pseudo-locale-qa.md`.
+- `Alike-Pseudolocale` — Debug build launched with `-NSDoubleLocalizedStrings YES -NSShowNonLocalizedStrings YES -NSSurroundLocalizedStrings [[]]`, so every string renders doubled and bracketed and anything unlocalized shows in capitals. It is the layout-and-coverage pass for fourteen languages without reading fourteen languages; see `Docs/Localization/pseudo-locale-qa.md`.
 - `Alike-RTL` — Debug build launched with `-AppleTextDirection YES -NSForceRightToLeftWritingDirection YES`, which flips the whole interface right-to-left for Arabic layout checks. It is how mirroring, directional symbols and composited art get checked; see `Docs/Localization/pseudo-locale-qa.md`.
 
 Use one of the verbose schemes for anything that needs a debugger, the debug menu, the premium overrides, or local StoreKit transactions — all of those are compiled out of `Alike`.
@@ -234,7 +248,7 @@ tools/quick
 tools/full
 ```
 
-`tools/quick` runs whitespace checks, the four package suites above, and App Store
+`tools/quick` runs whitespace checks, the seven package suites above, and App Store
 metadata bundle validation. `tools/full` adds every remaining package, the app
 compile gate, and `AlikeTests`. Release preflight, metadata upload, and TestFlight upload live behind
 `tools/release-check`, `tools/upload`, and `tools/upload-build`. `tools/symbolicate`
@@ -245,13 +259,14 @@ variables, and the safety rules that keep uploads deliberate.
 
 ## 📝 Localization
 
-Thirteen languages, each in per-package `Localizable.xcstrings` catalogs:
+Fourteen languages and 18 locales, each in per-package `Localizable.xcstrings` catalogs:
 
 | Tier | Locales |
 |---|---|
 | Base | 🇬🇧 `en` · 🇺🇦 `uk` |
-| Tier 1 | 🇲🇽 `es-419` · 🇪🇸 `es` · 🇧🇷 `pt-BR` · 🇩🇪 `de` · 🇫🇷 `fr` |
+| Tier 1 | 🇲🇽 `es-419` · 🇪🇸 `es` · 🇧🇷 `pt-BR` · 🇵🇹 `pt-PT` · 🇩🇪 `de` · 🇫🇷 `fr` |
 | Tier 3 | 🇮🇹 `it` · 🇳🇱 `nl` · 🇵🇱 `pl` · 🇹🇷 `tr` · 🇹🇼 `zh-Hant` · 🇸🇦 `ar` |
+| Regional | 🇬🇧 `en-GB` · 🇨🇦 `en-CA` · 🇦🇺 `en-AU` · 🇨🇦 `fr-CA` |
 
 A package that renders text owns its own catalog and typed `L10n` accessors; the app
 target's catalog holds app-level strings only. Every package has a `LocalizationCatalogTests`
