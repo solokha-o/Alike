@@ -181,8 +181,10 @@ class IpadScreenshotTests(unittest.TestCase):
         self.assertTrue(bundle.app_supports_ipad(self.write_project(['"1,2"', '"1,2"'], other_target_family="1")))
         self.assertFalse(bundle.app_supports_ipad(self.write_project(["1", "1"], other_target_family='"1,2"')))
 
-    def test_the_real_project_matches_its_app_target(self) -> None:
-        self.assertFalse(bundle.app_supports_ipad())
+    def test_the_real_project_ships_ipad_screenshots(self) -> None:
+        # The app supports iPad since 1.8.0. Apple does not allow an update to
+        # drop iPad, so the bundle must always carry the iPad deck.
+        self.assertTrue(bundle.app_supports_ipad())
 
     def test_ipad_screenshot_keeps_its_number_and_a_distinct_name(self) -> None:
         name = bundle.ipad_screenshot_name(Path("05-comparison-review.png"))
