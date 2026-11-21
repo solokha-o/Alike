@@ -269,9 +269,9 @@ SLIDES = (
 COPY = {
     "en-US": [
         (
-            "ON-DEVICE",
-            "Find the photos\nthat look alike",
-            "Alike scans your library with Apple Vision, entirely on your iPhone.",
+            "FREE SPACE",
+            "Get your\nstorage back",
+            "See how much space you could free before anything is deleted.",
         ),
         (
             "ONE QUEUE",
@@ -289,9 +289,9 @@ COPY = {
             "Review at full size. Nothing is deleted without your confirmation.",
         ),
         (
-            "FREE SPACE",
-            "Watch the gigabytes\ncome back",
-            "Selected photos and estimated savings, tracked as you clean up.",
+            "SAFE CLEANUP",
+            "Change your mind\nfor 30 days",
+            "Deleted photos go to Recently Deleted, where iOS keeps them for 30 days.",
         ),
         (
             "RESTORE ANYTIME",
@@ -306,9 +306,9 @@ COPY = {
     ],
     "uk": [
         (
-            "НА ПРИСТРОЇ",
-            "Знайдіть схожі\nфотографії",
-            "Alike сканує фототеку через Apple Vision повністю на вашому iPhone.",
+            "ВІЛЬНЕ МІСЦЕ",
+            "Поверніть\nсобі місце",
+            "Побачте, скільки місця можна звільнити, ще до видалення.",
         ),
         (
             "ЧЕРГА",
@@ -326,9 +326,9 @@ COPY = {
             "Перегляд у повний розмір. Нічого не видаляється без підтвердження.",
         ),
         (
-            "ВІЛЬНЕ МІСЦЕ",
-            "Поверніть\nгігабайти",
-            "«Обрано» й «Орієнтовна економія» — просто під час прибирання.",
+            "БЕЗПЕЧНО",
+            "30 днів, щоб\nпередумати",
+            "Видалені фото потрапляють до «Недавно видалених», де iOS зберігає їх 30 днів.",
         ),
         (
             "ОРИГІНАЛ ПОРУЧ",
@@ -348,9 +348,9 @@ COPY = {
     # as small text rather than as an error.
     "de": [
         (
-            "AUF DEM GERÄT",
-            "Finde die Fotos,\ndie sich ähneln",
-            "Alike durchsucht deine Mediathek mit Apple Vision, ganz auf dem iPhone.",
+            "FREIER PLATZ",
+            "Hol dir deinen\nSpeicher zurück",
+            "Du siehst vor dem Löschen, wie viel Platz frei werden kann.",
         ),
         (
             "EINE LISTE",
@@ -368,9 +368,9 @@ COPY = {
             "Ansicht in voller Größe. Nichts wird ohne deine Bestätigung gelöscht.",
         ),
         (
-            "FREIER PLATZ",
-            "Hol dir die\nGigabyte zurück",
-            "Ausgewählte Fotos und geschätzte Ersparnis, während du aufräumst.",
+            "SICHER AUFRÄUMEN",
+            "30 Tage\nBedenkzeit",
+            "Gelöschte Fotos landen in „Zuletzt gelöscht“, wo iOS sie 30 Tage aufbewahrt.",
         ),
         (
             "JEDERZEIT ZURÜCK",
@@ -385,9 +385,9 @@ COPY = {
     ],
     "fr": [
         (
-            "SUR L’APPAREIL",
-            "Trouvez les photos\nqui se ressemblent",
-            "Alike analyse votre photothèque avec Apple Vision, sur votre iPhone.",
+            "ESPACE LIBRE",
+            "Récupérez\nde l’espace",
+            "Voyez combien d’espace vous pouvez libérer avant toute suppression.",
         ),
         (
             "UNE SEULE FILE",
@@ -405,9 +405,9 @@ COPY = {
             "Examen en plein écran. Rien n’est supprimé sans votre confirmation.",
         ),
         (
-            "ESPACE LIBRE",
-            "Récupérez\nvos gigaoctets",
-            "Photos sélectionnées et économie estimée, suivies pendant le nettoyage.",
+            "SANS RISQUE",
+            "30 jours pour\nchanger d’avis",
+            "Les photos supprimées vont dans Supprimées récemment, où iOS les garde 30 jours.",
         ),
         (
             "TOUJOURS RÉVERSIBLE",
@@ -426,9 +426,9 @@ COPY = {
     # for es and es-419 alike.
     "es": [
         (
-            "EN EL DISPOSITIVO",
-            "Encuentra las fotos\nque se parecen",
-            "Alike analiza tu fototeca con Apple Vision, todo en tu iPhone.",
+            "ESPACIO LIBRE",
+            "Recupera\nespacio",
+            "Mira cuánto espacio puedes liberar antes de borrar nada.",
         ),
         (
             "UNA SOLA COLA",
@@ -446,9 +446,9 @@ COPY = {
             "Revisión a tamaño completo. Nada se elimina sin tu confirmación.",
         ),
         (
-            "ESPACIO LIBRE",
-            "Recupera los\ngigabytes",
-            "Fotos seleccionadas y ahorro estimado, mientras vas limpiando.",
+            "SIN RIESGOS",
+            "30 días para\ncambiar de idea",
+            "Las fotos borradas pasan a Eliminados, donde iOS las guarda 30 días.",
         ),
         (
             "SIEMPRE REVERSIBLE",
@@ -463,9 +463,9 @@ COPY = {
     ],
     "es-419": [
         (
-            "EN EL DISPOSITIVO",
-            "Encuentra las fotos\nque se parecen",
-            "Alike analiza tu fototeca con Apple Vision, todo en tu iPhone.",
+            "ESPACIO LIBRE",
+            "Recupera\nespacio",
+            "Mira cuánto espacio puedes liberar antes de eliminar nada.",
         ),
         (
             "UNA SOLA COLA",
@@ -483,9 +483,9 @@ COPY = {
             "Revisión a tamaño completo. Nada se elimina sin tu confirmación.",
         ),
         (
-            "ESPACIO LIBRE",
-            "Recupera los\ngigabytes",
-            "Fotos seleccionadas y ahorro estimado, mientras vas limpiando.",
+            "SIN RIESGOS",
+            "30 días para\ncambiar de opinión",
+            "Las fotos eliminadas pasan a Eliminados, donde iOS las guarda 30 días.",
         ),
         (
             "REGRESA AL ORIGINAL",
@@ -500,9 +500,9 @@ COPY = {
     ],
     "pt-BR": [
         (
-            "NO DISPOSITIVO",
-            "Encontre as fotos\nque se parecem",
-            "O Alike analisa sua fototeca com Apple Vision, no seu iPhone.",
+            "ESPAÇO LIVRE",
+            "Recupere\nespaço",
+            "Veja quanto espaço vai liberar antes de apagar qualquer coisa.",
         ),
         (
             "UMA SÓ FILA",
@@ -520,9 +520,9 @@ COPY = {
             "Revisão em tamanho real. Nada é apagado sem a sua confirmação.",
         ),
         (
-            "ESPAÇO LIVRE",
-            "Recupere os\ngigabytes",
-            "Fotos selecionadas e economia estimada, enquanto você limpa.",
+            "SEM RISCO",
+            "30 dias para\nmudar de ideia",
+            "As fotos apagadas vão para Apagados, onde o iOS as mantém por 30 dias.",
         ),
         (
             "SEMPRE REVERSÍVEL",
@@ -540,9 +540,9 @@ COPY = {
     # "ecrã", "eliminar", "rever", "poupança".
     "pt-PT": [
         (
-            "NO DISPOSITIVO",
-            "Encontra fotografias\nparecidas",
-            "O Alike analisa a tua fototeca com Apple Vision, no teu iPhone.",
+            "ESPAÇO LIVRE",
+            "Recupera\nespaço",
+            "Vê quanto espaço vais libertar antes de eliminar qualquer coisa.",
         ),
         (
             "UMA SÓ FILA",
@@ -560,9 +560,9 @@ COPY = {
             "Revê em tamanho real. Nada é apagado sem a tua confirmação.",
         ),
         (
-            "ESPAÇO LIVRE",
-            "Recupera os\ngigabytes",
-            "Fotografias selecionadas e espaço recuperável estimado, enquanto limpas.",
+            "SEM RISCO",
+            "30 dias para\nmudar de ideias",
+            "As fotografias eliminadas vão para Apagado, onde o iOS as mantém por 30 dias.",
         ),
         (
             "SEMPRE REVERSÍVEL",
@@ -577,9 +577,9 @@ COPY = {
     ],
     "it": [
         (
-            "SUL DISPOSITIVO",
-            "Trova le foto\nche si somigliano",
-            "Alike analizza la libreria con Apple Vision, tutto sul tuo iPhone.",
+            "SPAZIO LIBERO",
+            "Recupera\nspazio",
+            "Vedi quanto spazio liberi prima di eliminare qualcosa.",
         ),
         (
             "UNA SOLA CODA",
@@ -597,9 +597,9 @@ COPY = {
             "Controlla le foto a schermo intero. Nulla viene eliminato senza la tua conferma.",
         ),
         (
-            "SPAZIO LIBERO",
-            "Recupera i tuoi\ngigabyte",
-            "Foto selezionate e risparmio stimato, mentre fai pulizia.",
+            "IN SICUREZZA",
+            "30 giorni per\ncambiare idea",
+            "Le foto eliminate finiscono in «Eliminati di recente», dove iOS le conserva per 30 giorni.",
         ),
         (
             "SEMPRE REVERSIBILE",
@@ -614,9 +614,9 @@ COPY = {
     ],
     "nl": [
         (
-            "OP HET APPARAAT",
-            "Vind de foto's\ndie op elkaar lijken",
-            "Alike scant je bibliotheek met Apple Vision, volledig op je iPhone.",
+            "VRIJE RUIMTE",
+            "Win ruimte\nterug",
+            "Je ziet vóór het verwijderen hoeveel ruimte er vrijkomt.",
         ),
         (
             "ÉÉN WACHTRIJ",
@@ -634,9 +634,9 @@ COPY = {
             "Bekijk op volle grootte. Niets verdwijnt zonder je bevestiging.",
         ),
         (
-            "VRIJE RUIMTE",
-            "Zie de gigabytes\nterugkomen",
-            "Geselecteerde foto's en geschatte besparing, terwijl je opruimt.",
+            "VEILIG OPRUIMEN",
+            "30 dagen om\nje te bedenken",
+            "Verwijderde foto's gaan naar 'Recent verwijderd', waar iOS ze 30 dagen bewaart.",
         ),
         (
             "ALTIJD OMKEERBAAR",
@@ -651,9 +651,9 @@ COPY = {
     ],
     "pl": [
         (
-            "NA URZĄDZENIU",
-            "Znajdź zdjęcia,\nktóre są podobne",
-            "Alike skanuje bibliotekę za pomocą Apple Vision, w całości na iPhonie.",
+            "WOLNE MIEJSCE",
+            "Odzyskaj\nmiejsce",
+            "Zobacz, ile miejsca możesz zwolnić, zanim cokolwiek usuniesz.",
         ),
         (
             "JEDNA KOLEJKA",
@@ -671,9 +671,9 @@ COPY = {
             "Podgląd w pełnym rozmiarze. Nic nie znika bez potwierdzenia.",
         ),
         (
-            "WOLNE MIEJSCE",
-            "Odzyskaj\ngigabajty",
-            "Wybrane zdjęcia i szacowana oszczędność, na bieżąco podczas porządków.",
+            "BEZPIECZNIE",
+            "30 dni na\nzmianę zdania",
+            "Usunięte zdjęcia trafiają do „Ostatnio usunięte”, gdzie iOS przechowa je przez 30 dni.",
         ),
         (
             "ZAWSZE ODWRACALNE",
@@ -688,9 +688,9 @@ COPY = {
     ],
     "tr": [
         (
-            "CİHAZDA",
-            "Birbirine benzeyen\nfotoğrafları bul",
-            "Alike, fotoğraf arşivini Apple Vision ile tamamen iPhone'unda tarar.",
+            "BOŞ ALAN",
+            "Depolama alanını\ngeri kazan",
+            "Silmeden önce ne kadar alan açılacağını gör.",
         ),
         (
             "TEK KUYRUK",
@@ -708,9 +708,9 @@ COPY = {
             "Tam boyutta incele. Onayın olmadan hiçbir şey silinmez.",
         ),
         (
-            "BOŞ ALAN",
-            "Gigabaytlarca\nalan kazan",
-            "Seçilenler ve tahmini kazanç, sen temizledikçe güncellenir.",
+            "GÜVENLİ TEMİZLİK",
+            "Fikrini değiştirmek\niçin 30 gün",
+            "Silinen fotoğraflar, iOS'un 30 gün sakladığı Son Silinenler'e gider.",
         ),
         (
             "GERİ ALINABİLİR",
@@ -728,9 +728,9 @@ COPY = {
     # out. LOCALE_HEADLINE_SIZE starts this deck smaller; see the note there.
     "zh-Hant": [
         (
-            "在裝置上",
-            "找出看起來\n相像的照片",
-            "Alike 以 Apple Vision 掃描你的圖庫，全程在 iPhone 上完成。",
+            "騰出空間",
+            "把儲存空間\n拿回來",
+            "刪除之前，就能看到可以釋出多少空間。",
         ),
         (
             "同一條佇列",
@@ -748,9 +748,9 @@ COPY = {
             "以原尺寸檢視。未經你確認，不會刪除任何東西。",
         ),
         (
-            "騰出空間",
-            "看著空間\n一點一點回來",
-            "清理過程中隨時顯示已選取與預估可省空間。",
+            "安心清理",
+            "30 天內\n隨時反悔",
+            "刪除的照片會移到「最近刪除」，iOS 會保留 30 天。",
         ),
         (
             "隨時還原",
@@ -765,9 +765,9 @@ COPY = {
     ],
     "ar": [
         (
-            "على الجهاز",
-            "اعثر على الصور\nالمتشابهة",
-            "يفحص Alike مكتبتك بتقنية Apple Vision، والعملية كلها على جهاز iPhone.",
+            "مساحة حرة",
+            "استرجع\nمساحة التخزين",
+            "اعرف المساحة التي ستوفرها قبل حذف أي شيء.",
         ),
         (
             "قائمة واحدة",
@@ -785,9 +785,9 @@ COPY = {
             "مراجعة بالحجم الكامل. لا يُحذف شيء دون تأكيدك.",
         ),
         (
-            "مساحة حرة",
-            "استرجع مساحتك\nجيجابايت تلو الآخر",
-            "الصور المحددة والتوفير التقديري، أمام عينيك طوال التنظيف.",
+            "تنظيف آمن",
+            "30 يومًا\nلتغيير رأيك",
+            "تنتقل الصور المحذوفة إلى «المحذوفة مؤخرًا»، حيث يحتفظ بها iOS مدة 30 يومًا.",
         ),
         (
             "الرجوع في أي وقت",
@@ -851,8 +851,9 @@ DEFAULT_VARIANT = "spotlight"  # the direction shipping on the listing
 # (ASO stage 5). The first three slides are the ones search results show. Each
 # candidate replaces the copy of slide 1 only — same capture, same order, same
 # slides 2 and 3 — so a difference in conversion has one explanation. en-US
-# only until a winner exists; `COPY` stays what ships. No gigabyte figure: the
-# app has no measured one to promise.
+# only. Owner decision 30.09.2026: no store test, A ships as slide 1 of `COPY`
+# in every locale; the entry stays so --lead-variants can still render it. No
+# gigabyte figure: the app has no measured one to promise.
 LEAD_SLIDE_COUNT = 3
 LEAD_VARIANT_LOCALE = "en-US"
 LEAD_VARIANTS = {

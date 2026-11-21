@@ -29,6 +29,7 @@ public struct UserGuideHubView<Route: Hashable>: View {
         .navigationTitle(Text(UserGuideL10n.UserGuideHub.howToUse))
 #if os(iOS)
         .navigationBarTitleDisplayMode(.large)
+        .dsReadableScrollContentMargins()
 #endif
     }
 

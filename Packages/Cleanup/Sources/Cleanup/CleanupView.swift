@@ -230,6 +230,7 @@ public struct CleanupView<ClusterDestination: View, ScreenshotDestination: View>
                 onRequestScan: onRequestScan,
                 onDismiss: dismissReconciliation
             )
+            .dsReadableContentWidth()
             .frame(maxWidth: .infinity)
             .padding(.horizontal, Spacing.medium)
             .padding(.top, Spacing.xSmall)
@@ -333,15 +334,13 @@ public struct CleanupView<ClusterDestination: View, ScreenshotDestination: View>
 
     @ViewBuilder
     private func cleanupContent(router: StackRouter<CleanupRoute>) -> some View {
-        if arrangement.hasAnyCluster {
-            let entry = workspace.cleanupEntryCluster()
+        CleanupSummaryCards(showsProgress: arrangement.hasAnyCluster, showsCategories: !workspace.cleanupCategories.isEmpty) {
             CleanupProgressCard(
                 progress: workspace.sessionProgress(),
-                onContinue: entry.map { cluster in { router.push(.cluster(cluster)) } },
+                onContinue: workspace.cleanupEntryCluster().map { cluster in { router.push(.cluster(cluster)) } },
                 onOpenHistory: { router.push(.history) }
             )
-        }
-        if !workspace.cleanupCategories.isEmpty {
+        } categories: {
             CleanupCategoriesCard(categories: workspace.cleanupCategories, isLocked: { !premiumAccess.hasAccess(to: $0.premiumFeature) }, onTap: openCategory)
         }
         if CleanupPresentation.showsNoOpportunities(

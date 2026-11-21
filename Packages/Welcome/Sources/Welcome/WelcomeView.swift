@@ -418,6 +418,10 @@ public struct WelcomeView: View {
                     viewModel.openSettings()
                 }
             }
+            // The same column as the onboarding pages. An iPhone is narrower
+            // than 560 pt, so only iPad sees the limit.
+            .frame(maxWidth: 560)
+            .frame(maxWidth: .infinity)
             .padding(.horizontal, Spacing.large)
             .padding(.vertical, Spacing.xLarge)
         }

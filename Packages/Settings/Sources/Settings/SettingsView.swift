@@ -152,6 +152,7 @@ public struct SettingsView: View {
         .navigationTitle(Text(SettingsL10n.Main.settings))
 #if os(iOS)
         .navigationBarTitleDisplayMode(.large)
+        .dsReadableScrollContentMargins()
 #endif
     }
 
@@ -795,6 +796,7 @@ private struct DeleteAllDataView: View {
         .navigationTitle(Text(SettingsL10n.Main.deleteAlikeData))
 #if os(iOS)
         .navigationBarTitleDisplayMode(.inline)
+        .dsReadableScrollContentMargins()
 #endif
         .navigationBarBackButtonHidden(model.isDeleting)
         .confirmationDialog(

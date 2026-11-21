@@ -20,6 +20,15 @@ struct AlikeApp: App {
     /// payloads of a previous crash shortly after the first subscriber appears.
     init() {
         CrashDiagnosticsSubscriber.registerShared()
+#if DEBUG
+        // A fake library run can open a screen the way a widget link does, without
+        // the "Open in Alike?" prompt that `simctl openurl` shows.
+        if AppComposition.isFakeLibraryActive, let url = FakeLibraryScenario.openURLFromLaunchArguments() {
+            let pending = PendingWidgetDestination()
+            pending.handle(url)
+            _pendingWidgetDestination = State(initialValue: pending)
+        }
+#endif
     }
 
     var body: some Scene {

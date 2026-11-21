@@ -13,6 +13,11 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 SOURCE_SCREENSHOTS_ROOT = ROOT / "Docs" / "images"
+# 13-inch iPad renders from tools/generate_ipad_store_screenshots.py. They ship
+# only when the app builds for iPad (app_supports_ipad), because App Store
+# Connect has no iPad slot for an iPhone-only binary.
+SOURCE_IPAD_SCREENSHOTS_ROOT = SOURCE_SCREENSHOTS_ROOT / "ipad" / "store"
+PROJECT_FILE = ROOT / "Alike" / "Alike.xcodeproj" / "project.pbxproj"
 generated_store_upload_root_value = os.environ.get("ALIKE_GENERATED_STORE_UPLOAD_ROOT", "").strip()
 # An empty override must fall back to the default: Path("") is the current
 # directory, and reset_output_dirs() would then rmtree ./metadata,
@@ -32,6 +37,7 @@ IAP_REVIEW_SCREENSHOT_PATH = Path(iap_review_screenshot_value) if iap_review_scr
 REVIEW_NOTES_FILE = ROOT / "Docs" / "app-store-review-notes.txt"
 STOREKIT_PATH = ROOT / "Alike" / "Configuration" / "Alike.storekit"
 EXPECTED_SCREENSHOT_SIZE = (1320, 2868)
+EXPECTED_IPAD_SCREENSHOT_SIZE = (2048, 2732)
 APP_IDENTIFIER = "com.alike.app"
 APP_NAME = "Alike: Similar Photo Cleaner"
 COPYRIGHT = "2026 Oleksandr Solokha"
@@ -1074,7 +1080,7 @@ METADATA = {
         # new build. It opens on the benefit and the privacy promise; the trial
         # sits in the middle rather than as the closing line.
         "promotional_text": "See how much space you could free. Photos stay on your iPhone. Yearly Pro: 7 days free for eligible new subscribers. No ads, no account.",
-        "release_notes": "A quiet update this time. I spent the past few weeks tidying up Alike behind the scenes: the kind of work you won't see, but it keeps the app steady and makes room for what comes next.\n\nYour groups, choices and settings stay exactly as you left them.\n\nWhat would you like Alike to do next? Send me your idea through the support link on the App Store page — I'd love to hear it.",
+        "release_notes": "Alike now runs natively on iPad. No more enlarged iPhone window: the app fills the screen, turns with your iPad in any orientation, and works side by side with other apps.\n\nOn the larger screen, the photo grid shows more columns, and cards and text keep a comfortable width.\n\nYour groups, choices and settings stay exactly as you left them. On iPhone, everything works as before.\n\nUsing Alike on iPad? Tell me how it feels through the support link on the App Store page.",
     },
     "uk": {
         "subtitle": "Дублікати й очищення фото",
@@ -1083,7 +1089,7 @@ METADATA = {
         # hence the four English words at the end.
         "keywords": "видалити,видалення,памʼяті,галерея,схожі,скріншот,місце,сховище,клінер,cleanup,storage,clean,up",
         "promotional_text": "Поверніть місце: видно, скільки звільниться, ще до видалення, і жодне фото не залишає iPhone. Pro: 7 днів безкоштовно на річному плані. Без реклами й акаунта.",
-        "release_notes": "Цього разу тихе оновлення. Останні кілька тижнів я наводив лад усередині Alike: цієї роботи не видно, але вона тримає застосунок стабільним і готує ґрунт для нових можливостей.\n\nВаші групи, вибір і налаштування — на своїх місцях.\n\nЩо, на вашу думку, Alike має вміти далі? Надішліть ідею через посилання на підтримку на сторінці App Store — мені дуже цікаво її почути.",
+        "release_notes": "Тепер Alike працює на iPad як рідний застосунок. Більше ніякого збільшеного вікна iPhone: Alike заповнює весь екран, повертається разом з iPad у будь-якій орієнтації і працює поруч з іншими застосунками.\n\nНа великому екрані сітка фото має більше колонок, а картки й текст лишаються зручної ширини.\n\nВаші групи, вибір і налаштування — на своїх місцях. На iPhone усе працює як раніше.\n\nКористуєтеся Alike на iPad? Розкажіть, як вам, через посилання на підтримку на сторінці App Store.",
     },
     # Subtitle and keyword words below come from each storefront's own search
     # suggestions and Search Popularity (September 2026), not from a translation
@@ -1095,35 +1101,35 @@ METADATA = {
         "description": DE_DE_DESCRIPTION,
         "keywords": "aussortieren,bilder,duplikate,speicher,reinigen,aufräumen,galerie,sortieren,ähnliche,cleanup",
         "promotional_text": "Hol dir Speicher zurück: Du siehst vor dem Löschen, wie viel frei wird, und kein Foto verlässt dein iPhone. Pro: 7 Tage gratis im Jahresplan. Keine Werbung, kein Konto.",
-        "release_notes": "Diesmal ein leises Update. In den letzten Wochen habe ich hinter den Kulissen bei Alike aufgeräumt – Arbeit, die du nicht siehst, die die App aber stabil hält und Platz für Neues schafft.\n\nDeine Gruppen, deine Auswahl und deine Einstellungen bleiben genau so, wie du sie verlassen hast.\n\nWas soll Alike als Nächstes können? Schick mir deine Idee über den Support-Link auf der App-Store-Seite – ich freue mich darauf.",
+        "release_notes": "Alike läuft jetzt nativ auf dem iPad. Kein vergrößertes iPhone-Fenster mehr: Die App füllt den ganzen Bildschirm, dreht sich in jeder Ausrichtung mit und läuft neben anderen Apps.\n\nAuf dem großen Bildschirm zeigt das Fotoraster mehr Spalten, und Karten und Text behalten eine angenehme Breite.\n\nDeine Gruppen, deine Auswahl und deine Einstellungen bleiben genau so, wie du sie verlassen hast. Auf dem iPhone funktioniert alles wie bisher.\n\nNutzt du Alike auf dem iPad? Erzähl mir über den Support-Link auf der App-Store-Seite, wie es sich anfühlt.",
     },
     "fr-FR": {
         "subtitle": "Tri et nettoyage des doublons",
         "description": FR_FR_DESCRIPTION,
         "keywords": "supprimer,trier,nettoyeur,nettoyer,liberer,espace,stockage,galerie,similaires,double,capture,cleanup",
         "promotional_text": "Gagnez de l'espace : voyez combien vous libérez avant de supprimer, et aucune photo ne quitte votre iPhone. Pro : 7 jours offerts en formule annuelle. Ni pub ni compte.",
-        "release_notes": "Une mise à jour discrète cette fois. Ces dernières semaines, j’ai fait du rangement dans les coulisses d’Alike : un travail invisible, mais qui garde l’app stable et laisse de la place pour la suite.\n\nVos groupes, vos choix et vos réglages restent exactement comme vous les avez laissés.\n\nQu’aimeriez-vous qu’Alike sache faire ensuite ? Envoyez-moi votre idée via le lien d’assistance de la page App Store, j’ai hâte de la lire.",
+        "release_notes": "Alike fonctionne désormais nativement sur iPad. Fini la fenêtre d’iPhone agrandie : l’app occupe tout l’écran, suit votre iPad dans toutes les orientations et s’utilise à côté d’autres apps.\n\nSur le grand écran, la grille de photos affiche plus de colonnes, et les cartes et le texte gardent une largeur confortable.\n\nVos groupes, vos choix et vos réglages restent exactement comme vous les avez laissés. Sur iPhone, rien ne change.\n\nVous utilisez Alike sur iPad ? Dites-moi ce que vous en pensez via le lien d’assistance de la page App Store.",
     },
     "es-ES": {
         "subtitle": "Borrar fotos duplicadas",
         "description": ES_ES_DESCRIPTION,
         "keywords": "eliminar,repetidas,similares,limpiar,limpiador,liberar,espacio,almacenamiento,galería,captura",
         "promotional_text": "Recupera espacio: ves cuánto liberas antes de borrar nada y ninguna foto sale de tu iPhone. Pro: 7 días gratis en el plan anual. Sin anuncios ni cuenta.",
-        "release_notes": "Esta vez, una actualización tranquila. Estas últimas semanas he puesto orden en Alike por dentro: un trabajo que no se ve, pero que mantiene la app estable y deja espacio para lo que viene.\n\nTus grupos, tus elecciones y tus ajustes siguen tal como los dejaste.\n\n¿Qué te gustaría que Alike hiciera a continuación? Envíame tu idea a través del enlace de soporte de la página de App Store; me encantará leerla.",
+        "release_notes": "Alike ya funciona de forma nativa en el iPad. Se acabó la ventana de iPhone ampliada: la app ocupa toda la pantalla, gira con tu iPad en cualquier orientación y funciona junto a otras apps.\n\nEn la pantalla grande, la cuadrícula de fotos muestra más columnas, y las tarjetas y el texto mantienen un ancho cómodo.\n\nTus grupos, tus elecciones y tus ajustes siguen tal como los dejaste. En el iPhone, todo funciona como antes.\n\n¿Usas Alike en el iPad? Cuéntame qué tal a través del enlace de soporte de la página de App Store.",
     },
     "es-MX": {
         "subtitle": "Eliminar fotos duplicadas",
         "description": ES_MX_DESCRIPTION,
         "keywords": "borrar,repetidas,limpiar,limpiador,liberar,espacio,almacenamiento,galería,swipe,tidy,sort,picture",
         "promotional_text": "Recupera espacio: ves cuánto liberas antes de eliminar nada y ninguna foto sale de tu iPhone. Pro: 7 días gratis en el plan anual. Sin anuncios ni cuenta.",
-        "release_notes": "Esta vez, una actualización tranquila. En las últimas semanas puse orden en Alike por dentro: un trabajo que no se ve, pero que mantiene la app estable y deja espacio para lo que viene.\n\nTus grupos, tus elecciones y tu configuración siguen tal como los dejaste.\n\n¿Qué te gustaría que Alike hiciera después? Mándame tu idea con el enlace de soporte de la página de App Store; me encantará leerla.",
+        "release_notes": "Alike ya funciona de forma nativa en el iPad. Se acabó la ventana de iPhone ampliada: la app ocupa toda la pantalla, gira con tu iPad en cualquier orientación y funciona junto a otras apps.\n\nEn la pantalla grande, la cuadrícula de fotos muestra más columnas, y las tarjetas y el texto mantienen un ancho cómodo.\n\nTus grupos, tus elecciones y tu configuración siguen tal como los dejaste. En el iPhone, todo funciona como antes.\n\n¿Usas Alike en el iPad? Cuéntame qué te parece con el enlace de soporte de la página de App Store.",
     },
     "pt-BR": {
         "subtitle": "Apagar fotos duplicadas",
         "description": PT_BR_DESCRIPTION,
         "keywords": "limpar,limpeza,limpador,repetidas,iguais,excluir,liberar,espaço,armazenamento,galeria,organizar",
         "promotional_text": "Recupere espaço: veja quanto vai liberar antes de apagar qualquer coisa, e nenhuma foto sai do seu iPhone. Pro: 7 dias grátis no plano anual. Sem anúncios, sem conta.",
-        "release_notes": "Desta vez, uma atualização tranquila. Nas últimas semanas, arrumei o Alike por dentro: um trabalho que você não vê, mas que mantém o app estável e abre espaço para o que vem por aí.\n\nSeus grupos, suas escolhas e seus ajustes continuam do jeito que você deixou.\n\nO que você gostaria que o Alike fizesse a seguir? Mande sua ideia pelo link de suporte na página da App Store — vou adorar ler.",
+        "release_notes": "O Alike agora funciona de forma nativa no iPad. Chega de janela de iPhone ampliada: o app ocupa a tela inteira, gira com o iPad em qualquer orientação e funciona ao lado de outros apps.\n\nNa tela grande, a grade de fotos mostra mais colunas, e os cartões e o texto mantêm uma largura confortável.\n\nSeus grupos, suas escolhas e seus ajustes continuam do jeito que você deixou. No iPhone, tudo funciona como antes.\n\nUsa o Alike no iPad? Conte o que achou pelo link de suporte na página da App Store.",
     },
     # pt-PT: Portugal indexes en-GB next to pt-PT, so none of these repeats an
     # en-GB keyword (cross_indexed_keyword_errors() enforces it). The words
@@ -1134,7 +1140,7 @@ METADATA = {
         "description": PT_PT_DESCRIPTION,
         "keywords": "limpar,limpeza,repetidas,iguais,apagar,libertar,espaço,armazenamento,galeria,organizar,telemóvel",
         "promotional_text": "Recupere espaço: veja quanto vai libertar antes de eliminar o que quer que seja, e nenhuma foto sai do seu iPhone. Pro: 7 dias grátis no plano anual. Sem anúncios.",
-        "release_notes": "Desta vez, uma atualização tranquila. Nas últimas semanas, pus ordem no Alike por dentro: um trabalho que não vês, mas que mantém a app estável e abre espaço para o que aí vem.\n\nOs teus grupos, as tuas escolhas e as tuas definições ficam tal como os deixaste.\n\nO que gostavas que o Alike fizesse a seguir? Envia-me a tua ideia pela ligação de suporte na página da App Store — vou gostar muito de a ler.",
+        "release_notes": "O Alike agora funciona de forma nativa no iPad. Acabou a janela de iPhone ampliada: a app ocupa o ecrã inteiro, roda com o iPad em qualquer orientação e funciona ao lado de outras apps.\n\nNo ecrã grande, a grelha de fotografias mostra mais colunas, e os cartões e o texto mantêm uma largura confortável.\n\nOs teus grupos, as tuas escolhas e as tuas definições ficam tal como os deixaste. No iPhone, tudo funciona como antes.\n\nUsas o Alike no iPad? Conta-me o que achas pela ligação de suporte na página da App Store.",
     },
     # The same rules hold for the six locales below. tr keeps English words
     # because that is what that storefront measurably searches for, and the
@@ -1173,35 +1179,35 @@ METADATA = {
         "description": IT_DESCRIPTION,
         "keywords": "doppioni,galleria,pulisci,ordina,immagini,duplicati,scatti,raffica,sfocate,uguali,doppie,rimuovi",
         "promotional_text": "Recupera spazio: vedi quanto liberi prima di eliminare qualcosa, e nessuna foto lascia il tuo iPhone. Pro: 7 giorni gratis nel piano annuale. Senza pubblicità né account.",
-        "release_notes": "Questa volta un aggiornamento tranquillo. Nelle ultime settimane ho messo ordine dietro le quinte di Alike: un lavoro che non si vede, ma che mantiene l’app stabile e fa spazio a quello che verrà.\n\nI tuoi gruppi, le tue scelte e le tue impostazioni restano esattamente come li hai lasciati.\n\nCosa vorresti che Alike sapesse fare in futuro? Mandami la tua idea dal link di assistenza nella pagina App Store: sarò felice di leggerla.",
+        "release_notes": "Alike ora funziona in modo nativo su iPad. Niente più finestra da iPhone ingrandita: l’app occupa tutto lo schermo, ruota con l’iPad in ogni orientamento e funziona accanto ad altre app.\n\nSullo schermo grande la griglia delle foto mostra più colonne, e schede e testo mantengono una larghezza comoda.\n\nI tuoi gruppi, le tue scelte e le tue impostazioni restano esattamente come li hai lasciati. Su iPhone tutto funziona come prima.\n\nUsi Alike su iPad? Raccontami com’è dal link di assistenza nella pagina App Store.",
     },
     "nl-NL": {
         "subtitle": "Dubbele foto's verwijderen",
         "description": NL_NL_DESCRIPTION,
         "keywords": "opruimen,opschonen,opslag,galerij,telefoon,sorteren,ruimte,vergelijkbare,wazige,fotos,swipe,clean",
         "promotional_text": "Win ruimte terug: je ziet vóór het verwijderen hoeveel er vrijkomt, en geen foto verlaat je iPhone. Pro: 7 dagen gratis op het jaarabonnement. Geen reclame, geen account.",
-        "release_notes": "Deze keer een rustige update. De afgelopen weken heb ik achter de schermen in Alike opgeruimd: werk dat je niet ziet, maar dat de app stabiel houdt en ruimte maakt voor wat er komt.\n\nJe groepen, keuzes en instellingen blijven precies zoals je ze achterliet.\n\nWat zou Alike hierna moeten kunnen? Stuur me je idee via de ondersteuningslink op de App Store-pagina — ik hoor het graag.",
+        "release_notes": "Alike werkt nu native op de iPad. Geen vergroot iPhone-venster meer: de app vult het hele scherm, draait mee in elke stand en werkt naast andere apps.\n\nOp het grote scherm toont het fotoraster meer kolommen, en kaarten en tekst houden een prettige breedte.\n\nJe groepen, keuzes en instellingen blijven precies zoals je ze achterliet. Op de iPhone werkt alles zoals voorheen.\n\nGebruik je Alike op de iPad? Laat me via de ondersteuningslink op de App Store-pagina weten hoe het bevalt.",
     },
     "pl": {
         "subtitle": "Czyszczenie galerii, duplikaty",
         "description": PL_DESCRIPTION,
         "keywords": "usuwanie,zdjec,zdjęcia,podobne,pamieci,telefonu,sortowanie,porządki,miejsce,clean,swipe",
         "promotional_text": "Zobacz szacowane miejsce do odzyskania. Zdjęcia zostają na iPhonie. Plan roczny: 7 dni Pro gratis dla uprawnionych nowych subskrybentów. Bez reklam i konta.",
-        "release_notes": "Tym razem spokojna aktualizacja. Przez ostatnie tygodnie porządkowałem Alike od środka: tej pracy nie widać, ale dzięki niej aplikacja działa stabilnie i jest miejsce na nowe funkcje.\n\nTwoje grupy, wybory i ustawienia pozostają bez zmian.\n\nCo Alike powinien umieć w następnej kolejności? Wyślij mi swój pomysł przez link do pomocy na stronie App Store — chętnie go przeczytam.",
+        "release_notes": "Alike działa teraz natywnie na iPadzie. Koniec z powiększonym oknem iPhone’a: aplikacja wypełnia cały ekran, obraca się razem z iPadem w każdej orientacji i działa obok innych aplikacji.\n\nNa dużym ekranie siatka zdjęć ma więcej kolumn, a karty i tekst zachowują wygodną szerokość.\n\nTwoje grupy, wybory i ustawienia pozostają bez zmian. Na iPhonie wszystko działa jak dotąd.\n\nKorzystasz z Alike na iPadzie? Napisz mi, jak się sprawdza, przez link do pomocy na stronie App Store.",
     },
     "tr": {
         "subtitle": "Fotoğraf silme ve temizleyici",
         "description": TR_DESCRIPTION,
         "keywords": "temizleme,galeri,depolama,alanı,yer,açma,telefon,yinelenen,aynı,benzer,kopya,bulanık,albüm,cleanup",
         "promotional_text": "Yer kazan: silmeden önce ne kadar alan açılacağını gör; hiçbir fotoğraf iPhone'undan çıkmaz. Pro: yıllık planda 7 gün ücretsiz. Reklam yok, hesap yok.",
-        "release_notes": "Bu sefer sakin bir güncelleme. Son birkaç haftayı Alike'ın perde arkasını toparlamakla geçirdim: görünmeyen ama uygulamayı sağlam tutan ve yeni özelliklere yer açan bir iş.\n\nGrupların, seçimlerin ve ayarların bıraktığın gibi duruyor.\n\nAlike'ın sırada ne yapmasını isterdin? Fikrini App Store sayfasındaki destek bağlantısıyla bana gönder; okumayı çok isterim.",
+        "release_notes": "Alike artık iPad'de yerel olarak çalışıyor. Büyütülmüş iPhone penceresi yok: uygulama tüm ekranı kaplıyor, iPad'inle her yönde dönüyor ve diğer uygulamaların yanında çalışıyor.\n\nBüyük ekranda fotoğraf ızgarası daha fazla sütun gösteriyor; kartlar ve metin rahat bir genişlikte kalıyor.\n\nGrupların, seçimlerin ve ayarların bıraktığın gibi duruyor. iPhone'da her şey eskisi gibi çalışıyor.\n\nAlike'ı iPad'de mi kullanıyorsun? Nasıl olduğunu App Store sayfasındaki destek bağlantısıyla bana yaz.",
     },
     "zh-Hant": {
         "subtitle": "一鍵清理重複與多餘照片，整理手機相簿",
         "description": ZH_HANT_DESCRIPTION,
         "keywords": "相似,刪除,儲存,空間,截圖,大師,瘦身,釋放,連拍,模糊,相片,圖庫,助手,管家,清除,容量,記憶體,近似,最佳,分類,工具,圖片,智能,神器,優化,幫手,快照",
         "promotional_text": "騰出空間：刪除之前就能看到可以釋出多少空間，而且沒有任何照片會離開你的 iPhone。Pro：年繳方案 7 天免費。沒有廣告，不需帳戶。",
-        "release_notes": "這次是安靜的小更新。過去幾週，我在幕後替 Alike 做了整理：這些工作你看不到，卻能讓 App 保持穩定，也為接下來的功能騰出空間。\n\n你的群組、選擇和設定都維持原樣。\n\n你希望 Alike 接下來能做什麼？歡迎透過 App Store 頁面上的支援連結把想法告訴我，我很期待。",
+        "release_notes": "Alike 現在原生支援 iPad。不再是放大的 iPhone 視窗：App 會填滿整個螢幕，隨 iPad 轉向任何方向，也能和其他 App 並排使用。\n\n在大螢幕上，照片格狀排列會顯示更多欄，卡片和文字則維持舒適的寬度。\n\n你的群組、選擇和設定都維持原樣。iPhone 上的一切照舊。\n\n你在 iPad 上使用 Alike 嗎？歡迎透過 App Store 頁面上的支援連結告訴我使用感受。",
     },
     "ar-SA": {
         "subtitle": "حذف الصور المكررة من الجوال",
@@ -1210,7 +1216,7 @@ METADATA = {
         # in the SA storefront's suggestions.
         "keywords": "تنظيف,منظف,مساحة,تخزين,المكرره,الايفون,المتشابهة,معرض,ألبوم,ضبابية,لقطة,شاشة,ذاكرة,cleanup,storage",
         "promotional_text": "اعرف المساحة التي يمكنك استرجاعها قبل الحذف. صورك تبقى على iPhone. تجربة Pro مجانية لمدة 7 أيام بالخطة السنوية للمشتركين الجدد المؤهلين. بلا إعلانات أو حساب.",
-        "release_notes": "تحديث هادئ هذه المرة. قضيتُ الأسابيع الماضية في ترتيب Alike من الداخل: عمل لا تراه، لكنه يحافظ على ثبات التطبيق ويفسح المجال لما هو قادم.\n\nمجموعاتك واختياراتك وإعداداتك باقية كما تركتها.\n\nما الذي تودّ أن يفعله Alike لاحقًا؟ أرسل لي فكرتك عبر رابط الدعم في صفحة App Store، ويسعدني أن أقرأها.",
+        "release_notes": "يعمل Alike الآن على iPad بشكل أصلي. لا مزيد من نافذة iPhone المكبّرة: يملأ التطبيق الشاشة كلها، ويدور مع iPad في أي اتجاه، ويعمل بجانب التطبيقات الأخرى.\n\nعلى الشاشة الكبيرة تعرض شبكة الصور أعمدة أكثر، وتبقى البطاقات والنصوص بعرض مريح.\n\nتبقى مجموعاتك واختياراتك وإعداداتك كما تركتها تمامًا. وعلى iPhone يعمل كل شيء كما كان.\n\nهل تستخدم Alike على iPad؟ أخبرني برأيك عبر رابط الدعم في صفحة App Store.",
     },
 }
 
@@ -2402,14 +2408,42 @@ def generate_review_information() -> None:
     write_text(root / "notes.txt", review_notes_text())
 
 
-def copy_screenshots() -> None:
+APP_BUNDLE_ID_SETTING = "PRODUCT_BUNDLE_IDENTIFIER = com.alike.app;"
+
+
+def app_supports_ipad(project_file: Path = PROJECT_FILE) -> bool:
+    """`True` when every build configuration of the app target targets iPad as
+    well as iPhone. Test and widget targets do not decide what the store needs."""
+    blocks = re.findall(r"buildSettings = \{(.*?)\n\t*\};", project_file.read_text(encoding="utf-8"), re.DOTALL)
+    families = [
+        match.group(1)
+        for block in blocks
+        if APP_BUNDLE_ID_SETTING in block
+        for match in [re.search(r'TARGETED_DEVICE_FAMILY = "?([0-9,]+)"?;', block)]
+        if match
+    ]
+    return bool(families) and all("2" in family.split(",") for family in families)
+
+
+def ipad_screenshot_name(source: Path) -> str:
+    """`01-scanner-idle.png` → `01-ipad-scanner-idle.png`: still numbered, never
+    the name of an iPhone slide. deliver tells the devices apart by size."""
+    return f"{source.name[:2]}-ipad-{source.name[3:]}"
+
+
+def copy_screenshots(include_ipad: bool | None = None) -> None:
     # Screenshots are rendered per language, so each source locale has its own
     # folder under Docs/images/.
+    if include_ipad is None:
+        include_ipad = app_supports_ipad()
     for mapping in UPLOAD_SAFE_LOCALES:
         destination_root = SCREENSHOTS_ROOT / mapping.apple
         destination_root.mkdir(parents=True, exist_ok=True)
         for source in numbered_pngs(SOURCE_SCREENSHOTS_ROOT / mapping.source):
             shutil.copy2(source, destination_root / source.name)
+        if include_ipad:
+            for source in numbered_pngs(SOURCE_IPAD_SCREENSHOTS_ROOT / mapping.source):
+                shutil.copy2(source, destination_root / ipad_screenshot_name(source))
 
 
 def load_storekit() -> dict:
@@ -3115,8 +3149,10 @@ def validate_iap_product_localizations(product_id: str, localizations: list[dict
     return errors
 
 
-def validate_screenshots(allow_placeholders: bool) -> list[str]:
+def validate_screenshots(allow_placeholders: bool, requires_ipad: bool | None = None) -> list[str]:
     errors: list[str] = []
+    if requires_ipad is None:
+        requires_ipad = app_supports_ipad()
     for mapping in UPLOAD_SAFE_LOCALES:
         locale_root = SCREENSHOTS_ROOT / mapping.apple
         files = numbered_pngs(locale_root)
@@ -3124,14 +3160,20 @@ def validate_screenshots(allow_placeholders: bool) -> list[str]:
             if not allow_placeholders:
                 errors.append(f"No numbered screenshots found in {locale_root}")
             continue
+        ipad_count = 0
         for path in files:
             try:
                 size = png_size(path)
             except ValueError as error:
                 errors.append(str(error))
                 continue
-            if size != EXPECTED_SCREENSHOT_SIZE:
+            if size == EXPECTED_IPAD_SCREENSHOT_SIZE and requires_ipad:
+                ipad_count += 1
+            elif size != EXPECTED_SCREENSHOT_SIZE:
                 errors.append(f"{path} has size {size}, expected {EXPECTED_SCREENSHOT_SIZE}")
+        # An iPad build with no iPad screenshots fails App Store review.
+        if requires_ipad and ipad_count == 0 and not allow_placeholders:
+            errors.append(f"No {EXPECTED_IPAD_SCREENSHOT_SIZE[0]}x{EXPECTED_IPAD_SCREENSHOT_SIZE[1]} iPad screenshots in {locale_root}")
         contact_sheets = sorted(locale_root.glob("*contact-sheet*.png"))
         if contact_sheets:
             errors.extend(f"Contact sheet must not be uploaded: {path}" for path in contact_sheets)

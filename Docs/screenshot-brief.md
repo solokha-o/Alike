@@ -20,11 +20,11 @@ tilted iPhone carrying the capture.
 
 | # | Capture | Composition | Band | Job |
 |---|---|---|---|---|
-| 1 | `01-scanner-idle` | caption top, left, phone bleeding off the bottom | accent | What the app is, and that it runs on device |
+| 1 | `01-scanner-idle` | caption top, left, phone bleeding off the bottom | accent | The benefit: how much space the user can free |
 | 2 | `03-cleanup-queue` | caption bottom, right, complete device above | purple | There is a queue, and progress is visible |
 | 3 | `04-cluster-details` | caption top, right, phone bleeding off the bottom | accent | The keeper is chosen for you |
 | 4 | `05-comparison-review` | caption bottom, left, complete device above | purple | Nothing is deleted without review |
-| 5 | `07-cleanup-progress` | caption top, centre, phone bleeding off the bottom | green | The payoff — space comes back |
+| 5 | `07-cleanup-progress` | caption top, centre, phone bleeding off the bottom | green | Safety: deleted photos stay in Recently Deleted for 30 days |
 | 6 | `14-best-shot-enhanced` | caption bottom, right, complete device above | accent | The photo you keep can be improved, and put back |
 | 7 | `15-widgets-home` | caption top, left, complete device above | purple | The app is useful without being opened |
 
@@ -50,8 +50,9 @@ follows from that rule rather than from taste: slide 5 is
 aligned right because the previous `caption_bottom` — slide 4 — is left.
 
 The three band colours are the app's own: `accent` is the teal of the Start
-Scanning button, `purple` is the mascot, `green` is freed space. The green lands
-on the freed-space slide because that is the one about storage returned. Slide 6
+Scanning button, `purple` is the mascot, `green` is a cleanup that is safe to
+run. The green lands on slide 5, the cleanup in progress, whose copy says the
+deleted photos wait 30 days in Recently Deleted. Slide 6
 takes `accent`: `green` is spoken for and would repeat back to back with slide 5,
 `purple` belongs to the mascot, and teal is the colour of the app's own tappable
 controls — the right band for a slide whose subject is a control you can press
@@ -69,66 +70,66 @@ change with it.
 
 | # | Label | Headline | Supporting line |
 |---|---|---|---|
-| 1 | ON-DEVICE | Find the photos / that look alike | Alike scans your library with Apple Vision, entirely on your iPhone. |
+| 1 | FREE SPACE | Get your / storage back | See how much space you could free before anything is deleted. |
 | 2 | ONE QUEUE | Every group, / ready to review | Groups arrive with review badges, so you always know what is left. |
 | 3 | BEST SHOT | The keeper is / already picked | Alike highlights the best frame in each group. You just confirm. |
 | 4 | COMPARE | Check before / anything goes | Review at full size. Nothing is deleted without your confirmation. |
-| 5 | FREE SPACE | Watch the gigabytes / come back | Selected photos and estimated savings, tracked as you clean up. |
+| 5 | SAFE CLEANUP | Change your mind / for 30 days | Deleted photos go to Recently Deleted, where iOS keeps them for 30 days. |
 | 6 | RESTORE ANYTIME | Improve the keeper, / keep the original | One tap makes the best shot better. One tap puts it back — the original never leaves your library. |
 
 ### uk
 
 | # | Label | Headline | Supporting line |
 |---|---|---|---|
-| 1 | НА ПРИСТРОЇ | Знайдіть схожі / фотографії | Alike сканує медіатеку через Apple Vision повністю на вашому iPhone. |
+| 1 | ВІЛЬНЕ МІСЦЕ | Поверніть / собі місце | Побачте, скільки місця можна звільнити, ще до видалення. |
 | 2 | ЧЕРГА | Кожна група / готова до перегляду | Групи з позначками перегляду — завжди видно, що лишилось. |
 | 3 | НАЙКРАЩИЙ ЗНІМОК | Найкраще фото / вже обрано | Alike виділяє найвдаліший кадр у групі. Вам лишається підтвердити. |
 | 4 | ПОРІВНЯННЯ | Перевірте перед / видаленням | Перегляд у повний розмір. Нічого не видаляється без підтвердження. |
-| 5 | ВІЛЬНЕ МІСЦЕ | Поверніть / гігабайти | «Обрано» й «Орієнтовна економія» — просто під час прибирання. |
+| 5 | БЕЗПЕЧНО | 30 днів, щоб / передумати | Видалені фото потрапляють до «Недавно видалених», де iOS зберігає їх 30 днів. |
 | 6 | ОРИГІНАЛ ПОРУЧ | Покращте кадр, / збережіть оригінал | Один дотик покращує найкращий кадр. Один дотик повертає оригінал — він нікуди не зникає з медіатеки. |
 
 ### de
 
 | # | Label | Headline | Supporting line |
 |---|---|---|---|
-| 1 | AUF DEM GERÄT | Finde die Fotos, / die sich ähneln | Alike durchsucht deine Mediathek mit Apple Vision, ganz auf dem iPhone. |
+| 1 | FREIER PLATZ | Hol dir deinen / Speicher zurück | Du siehst vor dem Löschen, wie viel Platz frei werden kann. |
 | 2 | EINE LISTE | Jede Gruppe, / bereit zur Prüfung | Gruppen kommen mit Prüfstatus: du siehst immer, was noch offen ist. |
 | 3 | BESTE AUFNAHME | Die beste ist / schon gewählt | Alike hebt die beste Aufnahme jeder Gruppe hervor. Du bestätigst nur. |
 | 4 | VERGLEICHEN | Erst prüfen, / dann aufräumen | Ansicht in voller Größe. Nichts wird ohne deine Bestätigung gelöscht. |
-| 5 | FREIER PLATZ | Hol dir die / Gigabyte zurück | Ausgewählte Fotos und geschätzte Ersparnis, während du aufräumst. |
+| 5 | SICHER AUFRÄUMEN | 30 Tage / Bedenkzeit | Gelöschte Fotos landen in „Zuletzt gelöscht“, wo iOS sie 30 Tage aufbewahrt. |
 | 6 | JEDERZEIT ZURÜCK | Aufnahme verbessern, / Original behalten | Ein Tippen macht die beste Aufnahme besser. Ein Tippen holt das Original zurück — es bleibt in deiner Mediathek. |
 
 ### fr
 
 | # | Label | Headline | Supporting line |
 |---|---|---|---|
-| 1 | SUR L’APPAREIL | Trouvez les photos / qui se ressemblent | Alike analyse votre photothèque avec Apple Vision, sur votre iPhone. |
+| 1 | ESPACE LIBRE | Récupérez / de l’espace | Voyez combien d’espace vous pouvez libérer avant toute suppression. |
 | 2 | UNE SEULE FILE | Chaque groupe, / prêt à examiner | Les groupes arrivent avec des badges : vous voyez ce qui reste. |
 | 3 | MEILLEURE PHOTO | La photo à garder / est déjà choisie | Alike met en avant la meilleure de chaque groupe. Vous confirmez. |
 | 4 | COMPARER | Vérifiez avant / de nettoyer | Examen en plein écran. Rien n’est supprimé sans votre confirmation. |
-| 5 | ESPACE LIBRE | Récupérez / vos gigaoctets | Photos sélectionnées et économie estimée, suivies pendant le nettoyage. |
+| 5 | SANS RISQUE | 30 jours pour / changer d’avis | Les photos supprimées vont dans Supprimées récemment, où iOS les garde 30 jours. |
 | 6 | TOUJOURS RÉVERSIBLE | Améliorez la photo, / gardez l’original | Une touche améliore la meilleure photo. Une autre la remet comme avant — l’original reste dans votre photothèque. |
 
 ### es
 
 | # | Label | Headline | Supporting line |
 |---|---|---|---|
-| 1 | EN EL DISPOSITIVO | Encuentra las fotos / que se parecen | Alike analiza tu fototeca con Apple Vision, todo en tu iPhone. |
+| 1 | ESPACIO LIBRE | Recupera / espacio | Mira cuánto espacio puedes liberar antes de borrar nada. |
 | 2 | UNA SOLA COLA | Cada grupo, / listo para revisar | Los grupos llegan con indicadores: siempre sabes qué queda. |
 | 3 | MEJOR TOMA | La que conservas / ya está elegida | Alike destaca la mejor toma de cada grupo. Tú solo confirmas. |
 | 4 | COMPARAR | Comprueba antes / de limpiar | Revisión a tamaño completo. Nada se elimina sin tu confirmación. |
-| 5 | ESPACIO LIBRE | Recupera los / gigabytes | Fotos seleccionadas y ahorro estimado, mientras vas limpiando. |
+| 5 | SIN RIESGOS | 30 días para / cambiar de idea | Las fotos borradas pasan a Eliminados, donde iOS las guarda 30 días. |
 | 6 | SIEMPRE REVERSIBLE | Realza tu mejor toma, / conserva el original | Un toque mejora la mejor toma. Otro la deja como estaba — el original nunca sale de tu fototeca. |
 
 ### es-419
 
 | # | Label | Headline | Supporting line |
 |---|---|---|---|
-| 1 | EN EL DISPOSITIVO | Encuentra las fotos / que se parecen | Alike analiza tu fototeca con Apple Vision, todo en tu iPhone. |
+| 1 | ESPACIO LIBRE | Recupera / espacio | Mira cuánto espacio puedes liberar antes de eliminar nada. |
 | 2 | UNA SOLA COLA | Cada grupo, / listo para revisar | Los grupos llegan con indicadores: siempre sabes qué falta. |
 | 3 | MEJOR TOMA | La que conservas / ya está elegida | Alike destaca la mejor toma de cada grupo. Tú solo confirmas. |
 | 4 | COMPARAR | Revisa antes / de limpiar | Revisión a tamaño completo. Nada se elimina sin tu confirmación. |
-| 5 | ESPACIO LIBRE | Recupera los / gigabytes | Fotos seleccionadas y ahorro estimado, mientras vas limpiando. |
+| 5 | SIN RIESGOS | 30 días para / cambiar de opinión | Las fotos eliminadas pasan a Eliminados, donde iOS las guarda 30 días. |
 | 6 | REGRESA AL ORIGINAL | Mejora la que conservas, / el original sigue ahí | Un toque mejora la mejor toma. Otro la regresa a como estaba — el original nunca se va de tu fototeca. |
 
 `es` and `es-419` are deliberately not identical, but the queue is "cola" in
@@ -144,67 +145,79 @@ de tu fototeca" against "nunca se va de tu fototeca".
 
 | # | Label | Headline | Supporting line |
 |---|---|---|---|
-| 1 | NO DISPOSITIVO | Encontre as fotos / que se parecem | O Alike analisa sua fototeca com Apple Vision, no seu iPhone. |
+| 1 | ESPAÇO LIVRE | Recupere / espaço | Veja quanto espaço vai liberar antes de apagar qualquer coisa. |
 | 2 | UMA SÓ FILA | Cada grupo, / pronto para revisar | Os grupos chegam com selos: você sempre vê o que falta. |
 | 3 | MELHOR FOTO | A que fica / já está escolhida | O Alike destaca a melhor foto de cada grupo. Você só confirma. |
 | 4 | COMPARAR | Confira antes / de limpar | Revisão em tamanho real. Nada é apagado sem a sua confirmação. |
-| 5 | ESPAÇO LIVRE | Recupere os / gigabytes | Fotos selecionadas e economia estimada, enquanto você limpa. |
+| 5 | SEM RISCO | 30 dias para / mudar de ideia | As fotos apagadas vão para Apagados, onde o iOS as mantém por 30 dias. |
 | 6 | SEMPRE REVERSÍVEL | Melhore a que fica, / mantenha o original | Um toque melhora a melhor foto. Outro toque devolve o original — ele nunca sai da sua fototeca. |
+
+
+### pt-PT
+
+| # | Label | Headline | Supporting line |
+|---|---|---|---|
+| 1 | ESPAÇO LIVRE | Recupera / espaço | Vê quanto espaço vais libertar antes de eliminar qualquer coisa. |
+| 2 | UMA SÓ FILA | Cada grupo, / pronto a rever | Os grupos têm indicadores de revisão: vês sempre o que falta. |
+| 3 | MELHOR FOTOGRAFIA | A melhor fotografia / já está escolhida | O Alike destaca a melhor fotografia de cada grupo. Só tens de confirmar. |
+| 4 | COMPARAR | Revê antes / de limpar | Revê em tamanho real. Nada é apagado sem a tua confirmação. |
+| 5 | SEM RISCO | 30 dias para / mudar de ideias | As fotografias eliminadas vão para Apagado, onde o iOS as mantém por 30 dias. |
+| 6 | SEMPRE REVERSÍVEL | Melhora a fotografia, / mantém o original | Um toque melhora a melhor fotografia. Outro repõe o original, que permanece na tua fototeca. |
 
 
 ### it
 
 | # | Label | Headline | Supporting line |
 |---|---|---|---|
-| 1 | SUL DISPOSITIVO | Trova le foto / che si somigliano | Alike analizza la libreria con Apple Vision, tutto sul tuo iPhone. |
+| 1 | SPAZIO LIBERO | Recupera / spazio | Vedi quanto spazio liberi prima di eliminare qualcosa. |
 | 2 | UNA SOLA CODA | Ogni gruppo, / pronto da controllare | I gruppi arrivano con gli indicatori: vedi sempre cosa manca. |
 | 3 | SCATTO MIGLIORE | La foto da tenere / è già scelta | Alike evidenzia lo scatto migliore del gruppo. A te la conferma. |
 | 4 | CONFRONTA | Controlla prima / di eliminare | Revisione a dimensione piena. Niente sparisce senza conferma. |
-| 5 | SPAZIO LIBERO | Guarda tornare / i gigabyte | Foto selezionate e risparmio stimato, mentre fai pulizia. |
+| 5 | IN SICUREZZA | 30 giorni per / cambiare idea | Le foto eliminate finiscono in «Eliminati di recente», dove iOS le conserva per 30 giorni. |
 | 6 | SEMPRE REVERSIBILE | Migliora lo scatto, / tieni l’originale | Un tocco migliora lo scatto migliore. Un altro lo riporta com’era — l’originale non lascia mai la tua libreria. |
 
 ### nl
 
 | # | Label | Headline | Supporting line |
 |---|---|---|---|
-| 1 | OP HET APPARAAT | Vind de foto's / die op elkaar lijken | Alike scant je bibliotheek met Apple Vision, volledig op je iPhone. |
+| 1 | VRIJE RUIMTE | Win ruimte / terug | Je ziet vóór het verwijderen hoeveel ruimte er vrijkomt. |
 | 2 | ÉÉN WACHTRIJ | Elke groep, / klaar om te bekijken | Groepen komen met statuslabels: je ziet altijd wat er nog ligt. |
 | 3 | BESTE OPNAME | De blijver is / al gekozen | Alike licht de beste opname uit. Jij hoeft alleen te bevestigen. |
 | 4 | VERGELIJK | Kijk eerst, / ruim daarna op | Bekijk op volle grootte. Niets verdwijnt zonder je bevestiging. |
-| 5 | VRIJE RUIMTE | Zie de gigabytes / terugkomen | Geselecteerde foto's en geschatte besparing, terwijl je opruimt. |
+| 5 | VEILIG OPRUIMEN | 30 dagen om / je te bedenken | Verwijderde foto's gaan naar 'Recent verwijderd', waar iOS ze 30 dagen bewaart. |
 | 6 | ALTIJD OMKEERBAAR | Maak de blijver beter, / houd het origineel | Eén tik maakt de beste opname beter. Eén tik zet hem terug — het origineel blijft in je bibliotheek. |
 
 ### pl
 
 | # | Label | Headline | Supporting line |
 |---|---|---|---|
-| 1 | NA URZĄDZENIU | Znajdź zdjęcia, / które są podobne | Alike skanuje bibliotekę przez Apple Vision, w całości na iPhonie. |
+| 1 | WOLNE MIEJSCE | Odzyskaj / miejsce | Zobacz, ile miejsca możesz zwolnić, zanim cokolwiek usuniesz. |
 | 2 | JEDNA KOLEJKA | Każda grupa / gotowa do przeglądu | Grupy mają znaczniki przeglądu — zawsze wiesz, co zostało. |
 | 3 | NAJLEPSZE UJĘCIE | Zdjęcie do zostawienia / jest już wybrane | Alike wyróżnia najlepszy kadr w grupie. Ty tylko potwierdzasz. |
 | 4 | PORÓWNAJ | Sprawdź, zanim / cokolwiek zniknie | Podgląd w pełnym rozmiarze. Nic nie znika bez potwierdzenia. |
-| 5 | WOLNE MIEJSCE | Odzyskaj / gigabajty | Wybrane zdjęcia i szacowana oszczędność, na bieżąco podczas porządków. |
+| 5 | BEZPIECZNIE | 30 dni na / zmianę zdania | Usunięte zdjęcia trafiają do „Ostatnio usunięte”, gdzie iOS przechowa je przez 30 dni. |
 | 6 | ZAWSZE ODWRACALNE | Popraw ujęcie, / zachowaj oryginał | Jedno dotknięcie poprawia najlepsze ujęcie. Drugie przywraca oryginał — nigdy nie znika on z biblioteki. |
 
 ### tr
 
 | # | Label | Headline | Supporting line |
 |---|---|---|---|
-| 1 | CİHAZDA | Birbirine benzeyen / fotoğrafları bul | Alike, arşivini Apple Vision ile tamamen iPhone'unda tarar. |
+| 1 | BOŞ ALAN | Depolama alanını / geri kazan | Silmeden önce ne kadar alan açılacağını gör. |
 | 2 | TEK KUYRUK | Her grup / gözden geçirmeye hazır | Gruplar rozetleriyle gelir: ne kaldığını her zaman görürsün. |
 | 3 | EN İYİ KARE | Saklanacak kare / zaten seçili | Alike gruptaki en iyi kareyi öne çıkarır. Sen yalnızca onaylarsın. |
 | 4 | KARŞILAŞTIR | Silmeden önce / kontrol et | Tam boyutta incele. Onayın olmadan hiçbir şey silinmez. |
-| 5 | BOŞ ALAN | Gigabaytların / geri gelişini gör | Seçilenler ve tahmini kazanç, sen temizledikçe güncellenir. |
+| 5 | GÜVENLİ TEMİZLİK | Fikrini değiştirmek / için 30 gün | Silinen fotoğraflar, iOS'un 30 gün sakladığı Son Silinenler'e gider. |
 | 6 | GERİ ALINABİLİR | Kareyi iyileştir, / özgünü sakla | Bir dokunuş en iyi kareyi güzelleştirir. Bir dokunuş özgün hâline döndürür — özgün kare arşivinden hiç çıkmaz. |
 
 ### zh-Hant
 
 | # | Label | Headline | Supporting line |
 |---|---|---|---|
-| 1 | 在裝置上 | 找出看起來 / 相像的照片 | Alike 以 Apple Vision 掃描你的圖庫，全程在 iPhone 上完成。 |
+| 1 | 騰出空間 | 把儲存空間 / 拿回來 | 刪除之前，就能看到可以釋出多少空間。 |
 | 2 | 同一條佇列 | 每一組 / 都等著你檢視 | 每組都帶著檢視標記，隨時看得出還剩下什麼。 |
 | 3 | 最佳照片 | 要留下的那張 / 已經選好 | Alike 會標出每組最好的一張，你只需要確認。 |
 | 4 | 先比對 | 任何照片消失前 / 都先看過 | 以原尺寸檢視。未經你確認，不會刪除任何東西。 |
-| 5 | 騰出空間 | 看著空間 / 一點一點回來 | 清理過程中隨時顯示已選取與預估可省空間。 |
+| 5 | 安心清理 | 30 天內 / 隨時反悔 | 刪除的照片會移到「最近刪除」，iOS 會保留 30 天。 |
 | 6 | 隨時還原 | 讓最佳照片更好 / 原始檔一直都在 | 輕點一下讓最佳照片更出色，再輕點一下就還原；原始檔從未離開你的圖庫。 |
 
 Traditional Chinese is the one deck that does not use SF Pro. SF has no Han
@@ -251,11 +264,11 @@ Two things Pillow will not do on its own:
 
 | # | Label | Headline | Supporting line |
 | --- | --- | --- | --- |
-| 1 | على الجهاز | اعثر على الصور / المتشابهة | يفحص Alike مكتبتك بتقنية Apple Vision، والعملية كلها على جهاز iPhone. |
+| 1 | مساحة حرة | استرجع / مساحة التخزين | اعرف المساحة التي ستوفرها قبل حذف أي شيء. |
 | 2 | قائمة واحدة | كل مجموعة / جاهزة للمراجعة | تصل المجموعات بشاراتها، فتعرف دائمًا ما الذي بقي. |
 | 3 | أفضل لقطة | اللقطة التي تبقى / مختارة سلفًا | يبرز Alike أفضل لقطة في كل مجموعة، وما عليك سوى التأكيد. |
 | 4 | قارن أولًا | راجع كل صورة / قبل أن تختفي | مراجعة بالحجم الكامل. لا يُحذف شيء دون تأكيدك. |
-| 5 | مساحة حرة | استرجع مساحتك / جيجابايت تلو الآخر | الصور المحددة والتوفير التقديري، أمام عينيك طوال التنظيف. |
+| 5 | تنظيف آمن | 30 يومًا / لتغيير رأيك | تنتقل الصور المحذوفة إلى «المحذوفة مؤخرًا»، حيث يحتفظ بها iOS مدة 30 يومًا. |
 | 6 | الرجوع في أي وقت | حسّن اللقطة التي تبقى / واحتفظ بالأصل | لمسة واحدة تحسّن أفضل لقطة، ولمسة أخرى تعيد الأصل — وهو لا يغادر مكتبتك أبدًا. |
 
 The five `ar` source captures are taken the same way every other locale's are —
