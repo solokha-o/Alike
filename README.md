@@ -23,21 +23,32 @@ Alike is an iOS app that finds and groups visually similar photos using Computer
 - 🩺 **Crash reports you send yourself** — after an unexpected close, Alike asks once whether to email the MetricKit report; you read the mail first, and Alike itself sends nothing
 - 📖 **In-app user guide** — searchable topics, one tap from the Scanner toolbar
 - 💾 **Persistent review state** — selection and review progress are saved locally between app launches
-- 📊 **Adaptive grid** — 1 to 2 columns on iPhone, remembered between screens and launches
+- 📊 **Adaptive grid** — 1 to 2 columns on iPhone; on iPad the column range follows the width, so tiles stay between 150 and 320 pt; the choice is remembered between screens and launches
+- 📱 **Native iPad** — full screen in every orientation, side by side with other apps, with cards, lists and text in a readable column
 - 💾 **CoreData caching** — stores scan results, with PhotoKit change history driving rescan prompts
 - 🔒 **On-device by design** — no analytics, no tracking, no photo ever leaves the device
 - 🎨 **Teal design** — modern UI with animations and haptic feedback
 - 🌍 **Thirteen languages** — English, Ukrainian, Spanish (Spain and Latin America), Brazilian Portuguese, German, French, Italian, Dutch, Polish, Turkish, Traditional Chinese and Arabic
 - 🌓 **Dark Mode** — full support
 
-## 🆕 What ships in 1.7.2
+## 🆕 What ships in 1.8.0
 
-A maintenance release with no user-visible change:
+A minor release: Alike runs natively on iPad.
+
+- **iPad, natively.** `TARGETED_DEVICE_FAMILY` is `1,2`. On iPad the app fills the screen, supports all 4 orientations and multitasking, and does not set `UIRequiresFullScreen`. iPhone stays portrait-only.
+- **Layout for wide screens.** Photo grids choose their column range from the width (`AdaptivePhotoGridLayoutPolicy.regular(containerWidth:)`). Cards, lists and text sit in a 720 pt column (`dsReadableContentWidth()`, `dsReadableScrollContentMargins()`). Navigation stays one stack (ADR-0005). These rules apply only in regular width, so iPhone screens do not change.
+- **Zoom keeps the photo in view.** The full-screen zoom clamps its offset again when the window size changes, after a rotation or a resize.
+- **Store listing.** New iPhone screenshots (slide 1 leads with free space, slide 5 with the 30 days in Recently Deleted) and the first 13-inch iPad set, in 14 locales.
+- **Purchases.** The catalog can grant Premium for several product IDs, to prepare a lifetime purchase. The paywall does not change: it shows the prices from App Store Connect.
+
+Stored data does not change.
+
+Earlier: 1.7.2 was a maintenance release with no user-visible change:
 
 - **Code health.** SwiftLint and SwiftFormat rules are on and enforced, with warnings treated as errors; `CleanupWorkspace` splits its workspace model by responsibility; `Scanner` declares `Storage` instead of re-exporting it. The DesignSystem and Storage tests check real values. There is no change to stored data.
 - **Store listing.** The en-US subtitle names similar photos again, with narrower keywords. What's New now comes from one place for every locale, so en-CA, fr-CA and the reviewed listings no longer keep the 1.7.0 text.
 
-Earlier: 1.7.1 was a patch release with one user-visible fix:
+Before 1.7.2, 1.7.1 was a patch release with one user-visible fix:
 
 - **No freeze while groups load.** `CoreDataPhotoClusterRepository.loadClusters()` used to call `PHAsset.fetchAssets` once per cluster on the main queue. On a large library the calls added up past the 10-second scene-update watchdog, and iOS killed the app (`0x8BADF00D`). The store is now read on a background context, and the assets are fetched on a background task in batches of up to 500 identifiers that never split a cluster. Each cluster is still resolved by a single fetch, so cluster order and the order of photos inside a cluster are unchanged.
 
@@ -100,7 +111,7 @@ Alike/
 
 ## 🛠 Tech stack
 
-- **Platform**: iOS 17+ (iPhone only)
+- **Platform**: iOS 17+ (iPhone and iPad)
 - **Language**: Swift 6.0 (Strict Concurrency)
 - **UI**: SwiftUI
 - **Frameworks**:

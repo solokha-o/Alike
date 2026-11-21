@@ -19,8 +19,9 @@ Connect sold the United States at monthly $5.99 and yearly $34.99; Germany at
 €6.99 and €39.99; Ukraine at $6.99 and $39.99. Check the live price in App Store
 Connect before a price decision.
 
-Paywall Experiment A raises only the monthly price, on the release date of the
-ASO R2 texts. App Store Connect calculates every territory from a United States
+Paywall Experiment A raises only the monthly price. It started on 14.11.2026
+(scheduled on 13.11.2026 through the API; the plan first said the release date
+of the ASO R2 texts). App Store Connect calculates every territory from a United States
 base of $9.99 (Germany becomes €9.99), then the United States row is set to
 $8.99 by hand. The option "Preserve current price for existing subscribers"
 keeps the old price for current monthly subscribers. The yearly price does not
@@ -248,7 +249,8 @@ bundle exec ruby tools/app_store_iap_metadata.rb schedule-subscription-price \
   --snapshot Docs/price-snapshots/com.alike.app.pro.monthly-<date>.json
 ```
 
-Each territory prints one line, then a summary:
+Each territory prints one line, then a summary. This dry run used the first
+planned start date, 26.11.2026; the change that went live starts on 14.11.2026:
 
 ```text
 DEU EUR current=6.99 new=9.99 start=2026-11-26 preserveCurrentPrice=true action=create

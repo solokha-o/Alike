@@ -40,7 +40,8 @@ settings:
 
 - [ ] `CFBundleShortVersionString` and `CFBundleVersion` match the title
 - [ ] `ITSAppUsesNonExemptEncryption = false`
-- [ ] `UIDeviceFamily = [1]` — the app is iPhone-only
+- [ ] `UIDeviceFamily = [1, 2]` — iPhone and iPad since 1.8.0; an update must
+      never drop iPad, because Apple does not allow it
 - [ ] The binary carries the published legal URLs and no `stdeula` link
 
 **Legal and support site**
