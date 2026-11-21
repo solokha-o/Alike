@@ -277,12 +277,15 @@ monthly prices of 13.11.2026.
 ### Rollback of a price change
 
 Before the start date, delete the scheduled rows. Rows already in effect are
-never touched:
+never touched. Pass the start date of the scheduled change; this example uses
+the date of the dry run above:
 
 ```sh
 bundle exec ruby tools/app_store_iap_metadata.rb cancel-subscription-price \
-  --product com.alike.app.pro.monthly --start-date 2026-11-26
+  --product com.alike.app.pro.monthly --start-date <YYYY-MM-DD>
 ```
+
+Experiment A started on 14.11.2026, so its rollback is the next step.
 
 After the start date, schedule the old prices from the snapshot. The yearly
 price does not change:

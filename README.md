@@ -24,7 +24,7 @@ Alike is an iOS app that finds and groups visually similar photos using Computer
 - 📖 **In-app user guide** — searchable topics, one tap from the Scanner toolbar
 - 💾 **Persistent review state** — selection and review progress are saved locally between app launches
 - 📊 **Adaptive grid** — 1 to 2 columns on iPhone; on iPad the column range follows the width, so tiles stay between 150 and 320 pt; the choice is remembered between screens and launches
-- 📱 **Native iPad** — full screen in every orientation, side by side with other apps, with cards, lists and text in a readable column
+- 📱 **Native iPad** — full screen in every orientation, side by side with other apps, with lists and text in a readable column
 - 💾 **CoreData caching** — stores scan results, with PhotoKit change history driving rescan prompts
 - 🔒 **On-device by design** — no analytics, no tracking, no photo ever leaves the device
 - 🎨 **Teal design** — modern UI with animations and haptic feedback
@@ -36,7 +36,7 @@ Alike is an iOS app that finds and groups visually similar photos using Computer
 A minor release: Alike runs natively on iPad.
 
 - **iPad, natively.** `TARGETED_DEVICE_FAMILY` is `1,2`. On iPad the app fills the screen, supports all 4 orientations and multitasking, and does not set `UIRequiresFullScreen`. iPhone stays portrait-only.
-- **Layout for wide screens.** Photo grids choose their column range from the width (`AdaptivePhotoGridLayoutPolicy.regular(containerWidth:)`). Cards, lists and text sit in a 720 pt column (`dsReadableContentWidth()`, `dsReadableScrollContentMargins()`). Navigation stays one stack (ADR-0005). These rules apply only in regular width, so iPhone screens do not change.
+- **Layout for wide screens.** Photo grids choose their column range from the width (`AdaptivePhotoGridLayoutPolicy.regular(containerWidth:)`). Lists, text and the Details cards sit in a 720 pt column (`dsReadableContentWidth()`, `dsReadableScrollContentMargins()`); the Cleanup cards follow the grid width and sit side by side from 888 pt. Navigation stays one stack (ADR-0005). These rules apply only in regular width, so iPhone screens do not change.
 - **Zoom keeps the photo in view.** The full-screen zoom clamps its offset again when the window size changes, after a rotation or a resize.
 - **Store listing.** New iPhone screenshots (slide 1 leads with free space, slide 5 with the 30 days in Recently Deleted) and the first 13-inch iPad set, in 14 locales.
 - **Purchases.** The catalog can grant Premium for several product IDs, to prepare a lifetime purchase. The paywall does not change: it shows the prices from App Store Connect.
@@ -245,7 +245,7 @@ tools/quick
 tools/full
 ```
 
-`tools/quick` runs whitespace checks, the four package suites above, and App Store
+`tools/quick` runs whitespace checks, the seven package suites above, and App Store
 metadata bundle validation. `tools/full` adds every remaining package, the app
 compile gate, and `AlikeTests`. Release preflight, metadata upload, and TestFlight upload live behind
 `tools/release-check`, `tools/upload`, and `tools/upload-build`. `tools/symbolicate`

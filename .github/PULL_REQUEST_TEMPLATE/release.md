@@ -30,7 +30,8 @@ receives an unversioned release.
 **Validation — run on `<commit>`**
 
 - [ ] `tools/full` — whitespace, every package's tests, the app compile
-      gate, and `AlikeTests`. `Packages/Storage` is a standing skip, not a gap.
+      gate, and `AlikeTests`. Every package runs, `Packages/Storage` included
+      (through `xcodebuild`).
 - [ ] `tools/release-check X.Y.Z N` — version check, strict bundle validation,
       Release archive, no-upload IPA export.
 - [ ] Strict metadata generation exits 0 with zero `TODO:` markers.
@@ -57,9 +58,9 @@ for l in "" uk/ de/ fr/ es/ pt-br/ it/ nl/ pl/ tr/ zh-hant/ ar/; do for p in "" 
 
 **Store metadata**
 
-- [ ] Release notes written for all thirteen source listing localizations — `en-US`,
-      `uk`, `de-DE`, `fr-FR`, `es-ES`, `es-MX`, `pt-BR`, `it`, `nl-NL`, `pl`,
-      `tr`, `zh-Hant`, `ar-SA`. `en-GB`, `en-CA`, `en-AU` and `fr-CA` take theirs
+- [ ] Release notes written for all fourteen source listing localizations — `en-US`,
+      `uk`, `de-DE`, `fr-FR`, `es-ES`, `es-MX`, `pt-BR`, `pt-PT`, `it`, `nl-NL`,
+      `pl`, `tr`, `zh-Hant`, `ar-SA`. `en-GB`, `en-CA`, `en-AU` and `fr-CA` take theirs
       from `en-US` and `fr-FR`. Validation fails if `METADATA` and `UPLOAD_SAFE_LOCALES`
       drift apart, but nothing checks that a release note was actually
       refreshed — that is this box. `it`, `pl` and `tr` are bare codes on
